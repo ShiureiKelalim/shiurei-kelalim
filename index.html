@@ -7,100 +7,118 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Heebo', Arial, sans-serif;
-            background: #f5f5f0;
-            color: #333;
-         }
+        body { font-family: 'Heebo', Arial, sans-serif; background: #f5f5f0; color: #333; }
+
         header {
             background: linear-gradient(135deg, #1a1a2e, #2d4a7a);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
+            color: white; padding: 40px 20px; text-align: center;
         }
-        header h1 { font-size: 2.8rem; letter-spacing: 3px; margin-bottom: 8px; font-weight: 700; }
-        header p { font-size: 1.2rem; opacity: 0.85; font-weight: 300; }
+        header h1 { font-size: 2.8rem; margin-bottom: 8px; font-weight: 700; }
+        header p  { font-size: 1.2rem; opacity: 0.85; font-weight: 300; }
+
         .nav-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            padding: 25px 20px;
-            background: #fff;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 12px; padding: 25px 20px; background: #fff;
             box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: sticky; top: 0; z-index: 100;
         }
         .tab-btn {
-            padding: 12px 24px;
-            border: 2px solid #2d4a7a;
-            background: white;
-            color: #2d4a7a;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-family: 'Heebo', Arial, sans-serif;
-            font-weight: 600;
+            padding: 12px 24px; border: 2px solid #2d4a7a;
+            background: white; color: #2d4a7a; border-radius: 30px;
+            cursor: pointer; font-size: 1rem;
+            font-family: 'Heebo', Arial, sans-serif; font-weight: 600;
             transition: all 0.3s ease;
         }
-        .tab-btn:hover { background: #2d4a7a; color: white; transform: translateY(-2px); }
+        .tab-btn:hover  { background: #2d4a7a; color: white; transform: translateY(-2px); }
         .tab-btn.active { background: #2d4a7a; color: white; box-shadow: 0 4px 12px rgba(45,74,122,0.4); }
+
         .content-area { padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
-        .section-header {
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 20px; flex-wrap: wrap; min-height: 30px;
+        }
+        .bc-link {
+            color: #2d4a7a; cursor: pointer; font-weight: 600; font-size: 1rem;
+        }
+        .bc-link:hover { text-decoration: underline; }
+        .bc-sep { color: #bbb; font-size: 1.1rem; }
+        .bc-current { color: #333; font-size: 1rem; }
+
+        /* File list */
+        .file-list {
+            background: white; border-radius: 14px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.10); overflow: hidden;
+        }
+        .file-item {
+            display: flex; align-items: center; padding: 16px 22px;
+            border-bottom: 1px solid #f2f2f2; cursor: pointer;
+            transition: background 0.18s; gap: 14px;
+        }
+        .file-item:last-child { border-bottom: none; }
+        .file-item:hover { background: #eef2ff; }
+        .file-icon { font-size: 1.5rem; min-width: 32px; text-align: center; }
+        .file-name { font-size: 1.05rem; font-weight: 500; color: #1a1a2e; flex: 1; }
+        .badge {
+            font-size: 0.78rem; padding: 4px 12px;
+            border-radius: 20px; font-weight: 600; white-space: nowrap;
+        }
+        .badge-folder { background: #e8edf5; color: #2d4a7a; }
+        .badge-audio  { background: #e8f5e9; color: #2e7d32; }
+        .badge-file   { background: #fff3e0; color: #e65100; }
+
+        /* Audio Player */
+        .player-overlay {
             display: none;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #2d4a7a;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 1000;
+            justify-content: center; align-items: center;
         }
-        .section-header.active { display: flex; }
-        .section-title { font-size: 1.5rem; color: #1a1a2e; }
-        .open-drive-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: #4285F4;
-            color: white;
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-family: 'Heebo', Arial, sans-serif;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(66,133,244,0.3);
+        .player-overlay.open { display: flex; }
+        .player-box {
+            background: white; border-radius: 20px;
+            padding: 35px 40px; max-width: 480px; width: 92%;
+            text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
         }
-        .open-drive-btn:hover {
-            background: #3367d6;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(66,133,244,0.4);
+        .player-close {
+            position: absolute; top: 14px; left: 18px;
+            font-size: 1.6rem; cursor: pointer; color: #999;
+            background: none; border: none; line-height: 1;
         }
-        .open-drive-btn svg { width: 18px; height: 18px; }
-        .folder-frame {
-            display: none;
-            width: 100%;
-            height: 620px;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 6px 25px rgba(0,0,0,0.12);
-            background: white;
+        .player-close:hover { color: #333; }
+        .player-icon { font-size: 3.5rem; margin-bottom: 12px; }
+        .player-title {
+            font-size: 1.2rem; font-weight: 700;
+            color: #1a1a2e; margin-bottom: 20px; line-height: 1.4;
         }
-        .folder-frame.active { display: block; }
+        .player-box audio {
+            width: 100%; border-radius: 10px; outline: none;
+        }
+        .player-note {
+            margin-top: 14px; font-size: 0.82rem; color: #aaa;
+        }
+
+        .loading { text-align: center; padding: 60px 20px; color: #888; font-size: 1.1rem; }
+        .error-box {
+            text-align: center; padding: 35px 20px;
+            color: #c62828; background: #ffebee;
+            border-radius: 10px; line-height: 1.8;
+        }
+        .empty-box { text-align: center; padding: 50px; color: #aaa; }
+
         footer {
-            text-align: center;
-            padding: 25px;
-            background: #1a1a2e;
-            color: rgba(255,255,255,0.6);
-            font-size: 0.9rem;
-            margin-top: 50px;
+            text-align: center; padding: 25px;
+            background: #1a1a2e; color: rgba(255,255,255,0.6);
+            font-size: 0.9rem; margin-top: 50px;
         }
+
         @media (max-width: 600px) {
-            header h1 { font-size: 1.8rem; }
-            .tab-btn { padding: 9px 16px; font-size: 0.9rem; }
-            .folder-frame { height: 500px; }
-            .section-header { flex-direction: column; gap: 10px; align-items: flex-start; }
+            header h1 { font-size: 1.9rem; }
+            .tab-btn { padding: 9px 15px; font-size: 0.9rem; }
+            .file-item { padding: 13px 14px; }
+            .player-box { padding: 25px 20px; }
         }
     </style>
 </head>
@@ -112,75 +130,27 @@
 </header>
 
 <div class="nav-tabs">
-    <button class="tab-btn active" onclick="showTab('orach', this)">אורח חיים</button>
-    <button class="tab-btn" onclick="showTab('yoreh', this)">יורה דעה</button>
-    <button class="tab-btn" onclick="showTab('even', this)">אבן העזר</button>
-    <button class="tab-btn" onclick="showTab('choshen', this)">חושן משפט</button>
-    <button class="tab-btn" onclick="showTab('moadim', this)">מועדים וזמנים</button>
+    <button class="tab-btn active" onclick="showTab('orach',this)">אורח חיים</button>
+    <button class="tab-btn"        onclick="showTab('yoreh',this)">יורה דעה</button>
+    <button class="tab-btn"        onclick="showTab('even',this)">אבן העזר</button>
+    <button class="tab-btn"        onclick="showTab('choshen',this)">חושן משפט</button>
+    <button class="tab-btn"        onclick="showTab('moadim',this)">מועדים וזמנים</button>
 </div>
 
 <div class="content-area">
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="file-list"  id="file-list"><div class="loading">⏳ טוען...</div></div>
+</div>
 
-    <!-- אורח חיים -->
-    <div class="section-header active" id="header-orach">
-        <h2 class="section-title">📚 אורח חיים</h2>
-        <a class="open-drive-btn" href="https://drive.google.com/drive/folders/1piYche6sIP7V1cPOJab3gZkzB50aeaWr" target="_blank">
-            <svg viewBox="0 0 87.3 78" fill="white"><path d="m6.6 66.85  3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg>
-            עפן ביי Google Drive ↗
-        </a>
+<!-- Audio Player Popup -->
+<div class="player-overlay" id="player-overlay">
+    <div class="player-box">
+        <button class="player-close" onclick="closePlayer()">✕</button>
+        <div class="player-icon">🎵</div>
+        <div class="player-title" id="player-title"></div>
+        <audio id="audio-player" controls autoplay></audio>
+        <div class="player-note">© Shiurei Kelalim</div>
     </div>
-    <iframe class="folder-frame active" id="orach"
-        src="https://drive.google.com/embeddedfolderview?id=1piYche6sIP7V1cPOJab3gZkzB50aeaWr#list">
-    </iframe>
-
-    <!-- יורה דעה -->
-    <div class="section-header" id="header-yoreh">
-        <h2 class="section-title">📚 יורה דעה</h2>
-        <a class="open-drive-btn" href="https://drive.google.com/drive/folders/17LSuiqsmcgpS5Nvp_tsss0YolPMGZaTY" target="_blank">
-            <svg viewBox="0 0 87.3 78" fill="white"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg>
-            עפן ביי Google Drive ↗
-        </a>
-    </div>
-    <iframe class="folder-frame" id="yoreh"
-        src="https://drive.google.com/embeddedfolderview?id=17LSuiqsmcgpS5Nvp_tsss0YolPMGZaTY#list">
-    </iframe>
-
-    <!-- אבן העזר -->
-    <div class="section-header" id="header-even">
-        <h2 class="section-title">📚 אבן העזר</h2>
-        <a class="open-drive-btn" href="https://drive.google.com/drive/folders/1NLrWVUBhol6u9JZXne_r8FHygClrd_3W" target="_blank">
-            <svg viewBox="0 0 87.3 78" fill="white"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg>
-            עפן ביי Google Drive ↗
-        </a>
-    </div>
-    <iframe class="folder-frame" id="even"
-        src="https://drive.google.com/embeddedfolderview?id=1NLrWVUBhol6u9JZXne_r8FHygClrd_3W#list">
-    </iframe>
-
-    <!-- חושן משפט -->
-    <div class="section-header" id="header-choshen">
-        <h2 class="section-title">📚 חושן משפט</h2>
-        <a class="open-drive-btn" href="https://drive.google.com/drive/folders/1T3JFKo9HJch6-9Gn-fsSrl-udKOA9C9e" target="_blank">
-            <svg viewBox="0 0 87.3 78" fill="white"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg>
-            עפן ביי Google Drive ↗
-        </a>
-    </div>
-    <iframe class="folder-frame" id="choshen"
-        src="https://drive.google.com/embeddedfolderview?id=1T3JFKo9HJch6-9Gn-fsSrl-udKOA9C9e#list">
-    </iframe>
-
-    <!-- מועדים וזמנים -->
-    <div class="section-header" id="header-moadim">
-        <h2 class="section-title">📚 מועדים וזמנים</h2>
-        <a class="open-drive-btn" href="https://drive.google.com/drive/folders/1tBSkKyPr8OKfNoBJPTw8hIMm4ZV3yC8A" target="_blank">
-            <svg viewBox="0 0 87.3 78" fill="white"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47"/><path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/><path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/><path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/><path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg>
-            עפן ביי Google Drive ↗
-        </a>
-    </div>
-    <iframe class="folder-frame" id="moadim"
-        src="https://drive.google.com/embeddedfolderview?id=1tBSkKyPr8OKfNoBJPTw8hIMm4ZV3yC8A#list">
-    </iframe>
-
 </div>
 
 <footer>
@@ -188,18 +158,146 @@
 </footer>
 
 <script>
-    const tabs = ['orach','yoreh','even','choshen','moadim'];
-    function showTab(id, btn) {
-        tabs.forEach(t => {
-            document.getElementById(t).classList.remove('active');
-            document.getElementById('header-' + t).classList.remove('active');
-        });
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        document.getElementById('header-' + id).classList.add('active');
-        btn.classList.add('active');
-    }
-</script>
+// =========================================
+// PUT YOUR GOOGLE API KEY HERE:
+const API_KEY = 'AIzaSyAPagTKnIPrZgSqJiI6hwzaef-UC5HqckE';
+// =========================================
 
+const ROOT_FOLDERS = {
+    orach:   { id: '1piYche6sIP7V1cPOJab3gZkzB50aeaWr', name: 'אורח חיים'     },
+    yoreh:   { id: '17LSuiqsmcgpS5Nvp_tsss0YolPMGZaTY', name: 'יורה דעה'      },
+    even:    { id: '1NLrWVUBhol6u9JZXne_r8FHygClrd_3W', name: 'אבן העזר'      },
+    choshen: { id: '1T3JFKo9HJch6-9Gn-fsSrl-udKOA9C9e', name: 'חושן משפט'    },
+    moadim:  { id: '1tBSkKyPr8OKfNoBJPTw8hIMm4ZV3yC8A', name: 'מועדים וזמנים' },
+};
+
+let navStack = [];
+
+// Remove leading letter prefix like "א-" or "ב - "
+function cleanName(n) {
+    return n.replace(/^[א-ת]\s*[-–—]\s*/, '').trim();
+}
+
+function showTab(key, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    navStack = [{ id: ROOT_FOLDERS[key].id, name: ROOT_FOLDERS[key].name }];
+    renderBreadcrumb();
+    loadAndRender(ROOT_FOLDERS[key].id);
+}
+
+function renderBreadcrumb() {
+    document.getElementById('breadcrumb').innerHTML = navStack.map((item, i) => {
+        if (i === navStack.length - 1)
+            return `<span class="bc-current">${item.name}</span>`;
+        return `<span class="bc-link" onclick="goToLevel(${i})">${item.name}</span>
+                <span class="bc-sep">›</span>`;
+    }).join('');
+}
+
+function goToLevel(i) {
+    navStack = navStack.slice(0, i + 1);
+    renderBreadcrumb();
+    loadAndRender(navStack[navStack.length - 1].id);
+}
+
+async function loadAndRender(folderId) {
+    const el = document.getElementById('file-list');
+    el.innerHTML = '<div class="loading">⏳ טוען...</div>';
+    try {
+        const q   = encodeURIComponent(`'${folderId}' in parents and trashed=false`);
+        const url = `https://www.googleapis.com/drive/v3/files?q=${q}&key=${API_KEY}`
+                  + `&fields=files(id,name,mimeType,webContentLink,webViewLink)&orderBy=name&pageSize=500`;
+
+        const res  = await fetch(url);
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        const data = await res.json();
+        const files = data.files || [];
+
+        if (!files.length) {
+            el.innerHTML = '<div class="empty-box">📭 קיין פיילאס נישט</div>';
+            return;
+        }
+
+        // Folders first, then files
+        const sorted = [
+            ...files.filter(f => f.mimeType === 'application/vnd.google-apps.folder'),
+            ...files.filter(f => f.mimeType !== 'application/vnd.google-apps.folder'),
+        ];
+
+        el.innerHTML = sorted.map(f => {
+            const isFolder = f.mimeType === 'application/vnd.google-apps.folder';
+            const name     = cleanName(f.name);
+            const icon     = isFolder ? '📁' : getIcon(f.mimeType);
+            const badge    = isFolder
+                ? `<span class="badge badge-folder">פאלדער ›</span>`
+                : isAudio(f.mimeType)
+                    ? `<span class="badge badge-audio">▶ שיעור</span>`
+                    : `<span class="badge badge-file">פיילע</span>`;
+
+            const safeId   = f.id;
+            const safeName = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+            const safeMime = (f.mimeType||'').replace(/'/g,"\\'");
+
+            return `<div class="file-item"
+                        onclick="handleClick('${safeId}','${safeName}',${isFolder},'${safeMime}')">
+                        <span class="file-icon">${icon}</span>
+                        <span class="file-name">${name}</span>
+                        ${badge}
+                    </div>`;
+        }).join('');
+
+    } catch(err) {
+        el.innerHTML = `<div class="error-box">
+            ❌ Error loading files<br>
+            <small>${err.message}</small><br><br>
+            <small>Please make sure your API Key is correct and Google Drive API is enabled.</small>
+        </div>`;
+    }
+}
+
+function handleClick(id, name, isFolder, mimeType) {
+    if (isFolder) {
+        navStack.push({ id, name });
+        renderBreadcrumb();
+        loadAndRender(id);
+    } else if (isAudio(mimeType)) {
+        openPlayer(id, name);
+    } else {
+        window.open(`https://drive.google.com/file/d/${id}/view`, '_blank');
+    }
+}
+
+function openPlayer(fileId, name) {
+    document.getElementById('player-title').textContent = name;
+    document.getElementById('audio-player').src =
+        `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`;
+    document.getElementById('player-overlay').classList.add('open');
+}
+
+function closePlayer() {
+    const audio = document.getElementById('audio-player');
+    audio.pause();
+    audio.src = '';
+    document.getElementById('player-overlay').classList.remove('open');
+}
+
+// Close player on background click
+document.getElementById('player-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closePlayer();
+});
+
+function isAudio(m) { return m && m.includes('audio'); }
+function getIcon(m) {
+    if (!m) return '📎';
+    if (m.includes('audio')) return '🎵';
+    if (m.includes('video')) return '🎬';
+    if (m.includes('pdf'))   return '📄';
+    return '📎';
+}
+
+// Start
+showTab('orach', document.querySelector('.tab-btn.active'));
+</script>
 </body>
 </html>
