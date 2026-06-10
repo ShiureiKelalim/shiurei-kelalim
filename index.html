@@ -148,7 +148,7 @@
         <button class="player-close" onclick="closePlayer()">✕</button>
         <div class="player-icon">🎵</div>
         <div class="player-title" id="player-title"></div>
-        <audio id="audio-player" controls autoplay></audio>
+       <audio id="audio-player" controls autoplay controlsList="nodownload" oncontextmenu="return false;"></audio>
         <div class="player-note">© Shiurei Kelalim</div>
     </div>
 </div>
@@ -207,7 +207,7 @@ async function loadAndRender(folderId) {
     try {
         const q   = encodeURIComponent(`'${folderId}' in parents and trashed=false`);
         const url = `https://www.googleapis.com/drive/v3/files?q=${q}&key=${API_KEY}`
-                  + `&fields=files(id,name,mimeType,webContentLink,webViewLink)&orderBy=name&pageSize=500`;
+          + `&fields=files(id,name,mimeType,webContentLink,webViewLink,shortcutDetails)&orderBy=name&pageSize=500`;
 
         const res  = await fetch(url);
         if (!res.ok) throw new Error(`Status ${res.status}`);
@@ -226,7 +226,11 @@ async function loadAndRender(folderId) {
         ];
 
         el.innerHTML = sorted.map(f => {
-            const isFolder = f.mimeType === 'application/vnd.google-apps.folder';
+           const isShortcut = f.mimeType === 'application/vnd.google-apps.shortcut';
+const targetMime = isShortcut ? (f.shortcutDetails?.targetMimeType || '') : '';
+const targetId   = isShortcut ? (f.shortcutDetails?.targetId || '') : '';
+const isFolder   = f.mimeType === 'application/vnd.google-apps.folder' 
+                || (isShortcut && targetMime === 'application/vnd.google-apps.folder');
             const name     = cleanName(f.name);
             const icon     = isFolder ? '📁' : getIcon(f.mimeType);
             const badge    = isFolder
@@ -235,12 +239,14 @@ async function loadAndRender(folderId) {
                     ? `<span class="badge badge-audio">▶ שיעור</span>`
                     : `<span class="badge badge-file">פיילע</span>`;
 
-            const safeId   = f.id;
-            const safeName = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-            const safeMime = (f.mimeType||'').replace(/'/g,"\\'");
+            const safeId       = f.id;
+const safeName     = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+const safeMime     = (f.mimeType||'').replace(/'/g,"\\'");
+const safeTargetId = (targetId||'').replace(/'/g,"\\'");
+const safeTargetM  = (targetMime||'').replace(/'/g,"\\'");
 
-            return `<div class="file-item"
-                        onclick="handleClick('${safeId}','${safeName}',${isFolder},'${safeMime}')">
+return `<div class="file-item"
+            onclick="handleClick('${safeId}','${safeName}',${isFolder},'${safeMime}','${safeTargetId}','${safeTargetM}')">
                         <span class="file-icon">${icon}</span>
                         <span class="file-name">${name}</span>
                         ${badge}
@@ -256,7 +262,18 @@ async function loadAndRender(folderId) {
     }
 }
 
-function handleClick(id, name, isFolder, mimeType) {
+function handleClick(id, name, isFolder, mimeType, targetId, targetMime) {
+    // Handle Google Drive shortcuts
+    if (mimeType === 'application/vnd.google-apps.shortcut') {
+        if (targetMime === 'application/vnd.google-apps.folder') {
+            navStack.push({ id: targetId, name });
+            renderBreadcrumb();
+            loadAndRender(targetId);
+        } else if (isAudio(targetMime)) {
+            openPlayer(targetId, name);
+        }
+        return;
+    }
     if (isFolder) {
         navStack.push({ id, name });
         renderBreadcrumb();
