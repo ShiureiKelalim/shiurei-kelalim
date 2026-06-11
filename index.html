@@ -175,9 +175,10 @@ let navStack = [];
 
 // Remove leading letter prefix like "א-" or "ב - "
 
-console.log("א-הלכות קריאת שמע".replace(/^[א-ת][״"']?[א-ת]?[ \t\-–—]+/, '').trim());
-console.log("י\"א-הלכות פת הבאה בכיסנין".replace(/^[א-ת][״"']?[א-ת]?[ \t\-–—]+/, '').trim());
-console.log("י\"ב הלכות יין פוסל".replace(/^[א-ת][״"']?[א-ת]?[ \t\-–—]+/, '').trim());
+function cleanName(n) {
+    // Removes: א-, ב-, י"א-, י"ב- OR י"ב (space) prefixes
+    return n.replace(/^[א-ת][״"׳']?[א-ת]?[ \t\-–—]+/, '').trim();
+}
 
 function showTab(key, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
