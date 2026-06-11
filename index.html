@@ -176,8 +176,11 @@ let navStack = [];
 // Remove leading letter prefix like "א-" or "ב - "
 
 function cleanName(n) {
-    // Removes: א-, ב-, י"א-, י"ב-, י׳א- etc.
-    return n.replace(/^[\u05D0-\u05EA](?:[\u05F4\u05F3\u0022\u0027\u201C\u201D\u2018\u2019][\u05D0-\u05EA])?\s*[\u002D\u2013\u2014]\s*/, '').trim();
+    // Step 1: Remove י"א-, י"ב-, י"ג  (two-letter abbreviation + dash OR space)
+    n = n.replace(/^[\u05D0-\u05EA][\u05F4\u05F3\u0022\u201C\u201D\u2018\u2019][\u05D0-\u05EA]\s*(?:[\-\u2013\u2014]\s*|\s+)/, '');
+    // Step 2: Remove א-, ב-, ג- (single letter + dash)
+    n = n.replace(/^[\u05D0-\u05EA]\s*[\-\u2013\u2014]\s*/, '');
+    return n.trim();
 }
 
 function showTab(key, btn) {
