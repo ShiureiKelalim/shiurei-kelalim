@@ -174,10 +174,10 @@ const ROOT_FOLDERS = {
 let navStack = [];
 
 // Remove leading letter prefix like "א-" or "ב - "
-function cleanName(n) {
-    // Removes prefixes like: א-, ב-, י"א-, י"ב-, י"ב (space), etc.
-    return n.replace(/^[א-ת]["״׳']?[א-ת]?\s*(?:[-–—]\s*|\s+)/, '').trim();
-}
+// TEST - paste this in browser console (F12)
+console.log("א-הלכות קריאת שמע".replace(/^[א-ת][״"']?[א-ת]?[ \t\-–—]+/, '').trim());
+console.log("י\"א-הלכות פת הבאה בכיסנין".replace(/^[א-ת][״"']?[א-ת]?[ \t\-–—]+/, '').trim());
+console.log("י\"ב הלכות יין פוסל".replace(/^[א-ת][״"']?[א-ת]?[ \t\-–—]+/, '').trim());
 
 function showTab(key, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
