@@ -176,10 +176,20 @@ let navStack = [];
 // Remove leading letter prefix like "א-" or "ב - "
 
 function cleanName(n) {
-    // Step 1: Remove י"א-, י"ב-, י"ג  (two-letter abbreviation + dash OR space)
-    n = n.replace(/^[\u05D0-\u05EA][\u05F4\u05F3\u0022\u201C\u201D\u2018\u2019][\u05D0-\u05EA]\s*(?:[\-\u2013\u2014]\s*|\s+)/, '');
-    // Step 2: Remove א-, ב-, ג- (single letter + dash)
-    n = n.replace(/^[\u05D0-\u05EA]\s*[\-\u2013\u2014]\s*/, '');
+    // Case 1: dash within first 5 chars (א-, י"א-, י"ב- etc.)
+    for (var i = 1; i <= Math.min(5, n.length - 1); i++) {
+        var c = n.charCodeAt(i);
+        if (c === 45 || c === 8211 || c === 8212) { // hyphen / en-dash / em-dash
+            return n.slice(i + 1).trim();
+        }
+    }
+    // Case 2: Hebrew + any-char + Hebrew + space (e.g. י"ב הלכות...)
+    if (n.length > 4) {
+        var isHeb = function(code) { return code >= 0x05D0 && code <= 0x05EA; };
+        if (isHeb(n.charCodeAt(0)) && !isHeb(n.charCodeAt(1)) && isHeb(n.charCodeAt(2)) && n[3] === ' ') {
+            return n.slice(4).trim();
+        }
+    }
     return n.trim();
 }
 
