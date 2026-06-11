@@ -176,7 +176,8 @@ let navStack = [];
 // Remove leading letter prefix like "א-" or "ב - "
 
 function cleanName(n) {
-    return n.replace(/^[א-ת][״"׳']?[א-ת]?[ \t\-–—]+/, '').trim();
+    // \u05D0-\u05EA = א-ת, \u05F3 = geresh ׳, \u05F4 = gershayim ״
+    return n.replace(/^[\u05D0-\u05EA](?:[\u05F3\u05F4"'][\u05D0-\u05EA]|[\u05D0-\u05EA])?[-\u2013\u2014\s]+/, '').trim();
 }
 
 function showTab(key, btn) {
