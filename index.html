@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shiurei Kelalim</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z1GLNQLRH1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z1GLNQLRH1');
+</script>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -18,7 +25,7 @@
 
         .nav-tabs {
             display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 12px; padding: 25px 20px; background: #fff;
+            gap: 12px; padding: 20px 20px 15px; background: #fff;
             box-shadow: 0 3px 15px rgba(0,0,0,0.1);
             position: sticky; top: 0; z-index: 100;
         }
@@ -32,6 +39,22 @@
         .tab-btn:hover  { background: #2d4a7a; color: white; transform: translateY(-2px); }
         .tab-btn.active { background: #2d4a7a; color: white; box-shadow: 0 4px 12px rgba(45,74,122,0.4); }
 
+        /* Search row inside nav */
+        .search-row {
+            width: 100%; display: flex; justify-content: center; padding-top: 4px;
+        }
+        .search-input {
+            width: 100%; max-width: 520px; padding: 10px 20px;
+            border: 2px solid #dde3f0; border-radius: 30px;
+            font-size: 1rem; font-family: 'Heebo', Arial, sans-serif;
+            outline: none; color: #333; background: #f8f9ff; transition: border 0.2s;
+        }
+        .search-input:focus { border-color: #2d4a7a; background: #fff; }
+        .search-label {
+            text-align: center; color: #777; font-size: 0.88rem;
+            padding: 6px 0 0; min-height: 22px; background: #fff;
+        }
+
         .content-area { padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
 
         /* Breadcrumb */
@@ -39,9 +62,7 @@
             display: flex; align-items: center; gap: 8px;
             margin-bottom: 20px; flex-wrap: wrap; min-height: 30px;
         }
-        .bc-link {
-            color: #2d4a7a; cursor: pointer; font-weight: 600; font-size: 1rem;
-        }
+        .bc-link { color: #2d4a7a; cursor: pointer; font-weight: 600; font-size: 1rem; }
         .bc-link:hover { text-decoration: underline; }
         .bc-sep { color: #bbb; font-size: 1.1rem; }
         .bc-current { color: #333; font-size: 1rem; }
@@ -68,12 +89,20 @@
         .badge-audio  { background: #e8f5e9; color: #2e7d32; }
         .badge-file   { background: #fff3e0; color: #e65100; }
 
+        /* Shiur number badge */
+        .shiur-num {
+            display: inline-block; direction: ltr;
+            font-size: 1.25rem; font-weight: 700;
+            color: #fff; background: #2d4a7a;
+            padding: 1px 10px; border-radius: 8px;
+            margin-right: 8px; vertical-align: middle;
+        }
+
         /* Audio Player */
         .player-overlay {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 1000;
-            justify-content: center; align-items: center;
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+            z-index: 1000; justify-content: center; align-items: center;
         }
         .player-overlay.open { display: flex; }
         .player-box {
@@ -93,13 +122,24 @@
             font-size: 1.2rem; font-weight: 700;
             color: #1a1a2e; margin-bottom: 20px; line-height: 1.4;
         }
-        .player-box audio {
-            width: 100%; border-radius: 10px; outline: none;
+        .player-box audio { width: 100%; border-radius: 10px; outline: none; }
+
+        /* Download button */
+        .dl-btn {
+            display: inline-block; margin-top: 14px;
+            padding: 10px 28px; background: #2e7d32; color: white;
+            border-radius: 20px; text-decoration: none;
+            font-size: 0.92rem; font-weight: 600; transition: background 0.2s;
+            cursor: pointer;
         }
-        .player-note {
-            margin-top: 14px; font-size: 0.82rem; color: #aaa;
+        .dl-btn:hover { background: #1b5e20; }
+        .dl-limit-msg {
+            margin-top: 12px; padding: 8px 16px;
+            background: #fff3e0; color: #e65100;
+            border-radius: 8px; font-size: 0.88rem;
         }
 
+        .player-note { margin-top: 14px; font-size: 0.82rem; color: #aaa; }
         .loading { text-align: center; padding: 60px 20px; color: #888; font-size: 1.1rem; }
         .error-box {
             text-align: center; padding: 35px 20px;
@@ -135,7 +175,14 @@
     <button class="tab-btn"        onclick="showTab('even',this)">אבן העזר</button>
     <button class="tab-btn"        onclick="showTab('choshen',this)">חושן משפט</button>
     <button class="tab-btn"        onclick="showTab('moadim',this)">מועדים וזמנים</button>
+    <!-- Search bar -->
+    <div class="search-row">
+        <input class="search-input" id="search-input" type="text"
+               placeholder="🔍 חיפוש שיעורים..."
+               oninput="handleSearch(this.value)">
+    </div>
 </div>
+<div id="search-label" class="search-label"></div>
 
 <div class="content-area">
     <div class="breadcrumb" id="breadcrumb"></div>
@@ -148,7 +195,8 @@
         <button class="player-close" onclick="closePlayer()">✕</button>
         <div class="player-icon">🎵</div>
         <div class="player-title" id="player-title"></div>
-       <audio id="audio-player" controls autoplay controlsList="nodownload" oncontextmenu="return false;"></audio>
+        <audio id="audio-player" controls autoplay controlsList="nodownload" oncontextmenu="return false;"></audio>
+        <div id="download-section"></div>
         <div class="player-note">© Shiurei Kelalim</div>
     </div>
 </div>
@@ -159,7 +207,6 @@
 
 <script>
 // =========================================
-// PUT YOUR GOOGLE API KEY HERE:
 const API_KEY = 'AIzaSyAPagTKnIPrZgSqJiI6hwzaef-UC5HqckE';
 // =========================================
 
@@ -172,18 +219,17 @@ const ROOT_FOLDERS = {
 };
 
 let navStack = [];
+let searchTimeout = null;
+let currentFileId = '';
 
-// Remove leading letter prefix like "א-" or "ב - "
-
+// ── Clean prefix ─────────────────────────────────────────────
 function cleanName(n) {
-    // Case 1: dash within first 5 chars (א-, י"א-, י"ב- etc.)
     for (var i = 1; i <= Math.min(5, n.length - 1); i++) {
         var c = n.charCodeAt(i);
-        if (c === 45 || c === 8211 || c === 8212) { // hyphen / en-dash / em-dash
+        if (c === 45 || c === 8211 || c === 8212) {
             return n.slice(i + 1).trim();
         }
     }
-    // Case 2: Hebrew + any-char + Hebrew + space (e.g. י"ב הלכות...)
     if (n.length > 4) {
         var isHeb = function(code) { return code >= 0x05D0 && code <= 0x05EA; };
         if (isHeb(n.charCodeAt(0)) && !isHeb(n.charCodeAt(1)) && isHeb(n.charCodeAt(2)) && n[3] === ' ') {
@@ -193,9 +239,89 @@ function cleanName(n) {
     return n.trim();
 }
 
+// ── Format mp3.N → styled number badge ───────────────────────
+function formatFileName(name) {
+    const m = name.match(/^(.+?)\s+mp3\.(\d+)$/i);
+    if (m) return `${m[1]} <span class="shiur-num">${m[2]}</span>`;
+    return name;
+}
+
+// ── Download limit (5/day via localStorage) ──────────────────
+function getDlData() {
+    const today = new Date().toDateString();
+    let d = JSON.parse(localStorage.getItem('dlData') || '{"date":"","count":0}');
+    if (d.date !== today) { d.date = today; d.count = 0; }
+    return d;
+}
+function downloadsLeft() { return Math.max(0, 5 - getDlData().count); }
+function countDownload() {
+    let d = getDlData();
+    if (d.count < 5) { d.count++; localStorage.setItem('dlData', JSON.stringify(d)); }
+    setTimeout(refreshDlBtn, 150);
+}
+function refreshDlBtn() {
+    const left = downloadsLeft();
+    const sec  = document.getElementById('download-section');
+    if (!sec) return;
+    if (left <= 0) {
+        sec.innerHTML = `<div class="dl-limit-msg">⛔ דאנלוד לימיט (5 א טאג) דערגרייכט!</div>`;
+    } else {
+        const a = sec.querySelector('a');
+        if (a) a.textContent = `⬇️ דאנלוד (${left} פארבליבן היינט)`;
+    }
+}
+
+// ── Search ────────────────────────────────────────────────────
+function handleSearch(val) {
+    clearTimeout(searchTimeout);
+    val = val.trim();
+    const label = document.getElementById('search-label');
+    if (!val) {
+        label.textContent = '';
+        loadAndRender(navStack[navStack.length - 1].id);
+        return;
+    }
+    label.textContent = '🔍 זוכט...';
+    searchTimeout = setTimeout(() => searchDrive(val), 450);
+}
+
+async function searchDrive(term) {
+    const el    = document.getElementById('file-list');
+    const label = document.getElementById('search-label');
+    el.innerHTML = '<div class="loading">🔍 זוכט...</div>';
+    try {
+        const q   = encodeURIComponent(`name contains '${term}' and mimeType contains 'audio' and trashed=false`);
+        const url = `https://www.googleapis.com/drive/v3/files?q=${q}&key=${API_KEY}`
+                  + `&fields=files(id,name,mimeType)&orderBy=name&pageSize=50`;
+        const res  = await fetch(url);
+        if (!res.ok) throw new Error('Status ' + res.status);
+        const data = await res.json();
+        const files = data.files || [];
+        label.textContent = `נמצאו ${files.length} שיעורים עבור "${term}"`;
+        if (!files.length) {
+            el.innerHTML = '<div class="empty-box">🔍 קיין רעזולטאטן נישט</div>';
+            return;
+        }
+        el.innerHTML = files.map(f => {
+            const name     = cleanName(f.name);
+            const safeName = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+            return `<div class="file-item" onclick="handleClick('${f.id}','${safeName}',false,'${f.mimeType}','','')">
+                <span class="file-icon">🎵</span>
+                <span class="file-name">${formatFileName(name)}</span>
+                <span class="badge badge-audio">▶ שיעור</span>
+            </div>`;
+        }).join('');
+    } catch(err) {
+        el.innerHTML = `<div class="error-box">❌ ${err.message}</div>`;
+    }
+}
+
+// ── Navigation ────────────────────────────────────────────────
 function showTab(key, btn) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
+    document.getElementById('search-input').value = '';
+    document.getElementById('search-label').textContent = '';
     navStack = [{ id: ROOT_FOLDERS[key].id, name: ROOT_FOLDERS[key].name }];
     renderBreadcrumb();
     loadAndRender(ROOT_FOLDERS[key].id);
@@ -223,29 +349,24 @@ async function loadAndRender(folderId) {
         const q   = encodeURIComponent(`'${folderId}' in parents and trashed=false`);
         const url = `https://www.googleapis.com/drive/v3/files?q=${q}&key=${API_KEY}`
           + `&fields=files(id,name,mimeType,webContentLink,webViewLink,shortcutDetails)&orderBy=name&pageSize=500`;
-
         const res  = await fetch(url);
         if (!res.ok) throw new Error(`Status ${res.status}`);
         const data = await res.json();
         const files = data.files || [];
-
         if (!files.length) {
             el.innerHTML = '<div class="empty-box">📭 קיין פיילאס נישט</div>';
             return;
         }
-
-        // Folders first, then files
         const sorted = [
             ...files.filter(f => f.mimeType === 'application/vnd.google-apps.folder'),
             ...files.filter(f => f.mimeType !== 'application/vnd.google-apps.folder'),
         ];
-
         el.innerHTML = sorted.map(f => {
-           const isShortcut = f.mimeType === 'application/vnd.google-apps.shortcut';
-const targetMime = isShortcut ? (f.shortcutDetails?.targetMimeType || '') : '';
-const targetId   = isShortcut ? (f.shortcutDetails?.targetId || '') : '';
-const isFolder   = f.mimeType === 'application/vnd.google-apps.folder' 
-                || (isShortcut && targetMime === 'application/vnd.google-apps.folder');
+            const isShortcut = f.mimeType === 'application/vnd.google-apps.shortcut';
+            const targetMime = isShortcut ? (f.shortcutDetails?.targetMimeType || '') : '';
+            const targetId   = isShortcut ? (f.shortcutDetails?.targetId || '') : '';
+            const isFolder   = f.mimeType === 'application/vnd.google-apps.folder'
+                            || (isShortcut && targetMime === 'application/vnd.google-apps.folder');
             const name     = cleanName(f.name);
             const icon     = isFolder ? '📁' : getIcon(f.mimeType);
             const badge    = isFolder
@@ -253,21 +374,17 @@ const isFolder   = f.mimeType === 'application/vnd.google-apps.folder'
                 : isAudio(f.mimeType)
                     ? `<span class="badge badge-audio">▶ שיעור</span>`
                     : `<span class="badge badge-file">פיילע</span>`;
-
-            const safeId       = f.id;
-const safeName     = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-const safeMime     = (f.mimeType||'').replace(/'/g,"\\'");
-const safeTargetId = (targetId||'').replace(/'/g,"\\'");
-const safeTargetM  = (targetMime||'').replace(/'/g,"\\'");
-
-return `<div class="file-item"
-            onclick="handleClick('${safeId}','${safeName}',${isFolder},'${safeMime}','${safeTargetId}','${safeTargetM}')">
-                        <span class="file-icon">${icon}</span>
-                        <span class="file-name">${name}</span>
-                        ${badge}
-                    </div>`;
+            const safeName     = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+            const safeMime     = (f.mimeType||'').replace(/'/g,"\\'");
+            const safeTargetId = (targetId||'').replace(/'/g,"\\'");
+            const safeTargetM  = (targetMime||'').replace(/'/g,"\\'");
+            return `<div class="file-item"
+                onclick="handleClick('${f.id}','${safeName}',${isFolder},'${safeMime}','${safeTargetId}','${safeTargetM}')">
+                <span class="file-icon">${icon}</span>
+                <span class="file-name">${isFolder ? name : formatFileName(name)}</span>
+                ${badge}
+            </div>`;
         }).join('');
-
     } catch(err) {
         el.innerHTML = `<div class="error-box">
             ❌ Error loading files<br>
@@ -278,7 +395,6 @@ return `<div class="file-item"
 }
 
 function handleClick(id, name, isFolder, mimeType, targetId, targetMime) {
-    // Handle Google Drive shortcuts
     if (mimeType === 'application/vnd.google-apps.shortcut') {
         if (targetMime === 'application/vnd.google-apps.folder') {
             navStack.push({ id: targetId, name });
@@ -301,20 +417,30 @@ function handleClick(id, name, isFolder, mimeType, targetId, targetMime) {
 }
 
 function openPlayer(fileId, name) {
+    currentFileId = fileId;
     document.getElementById('player-title').textContent = name;
     document.getElementById('audio-player').src =
         `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`;
     document.getElementById('player-overlay').classList.add('open');
+    // Download section
+    const sec  = document.getElementById('download-section');
+    const left = downloadsLeft();
+    if (left > 0) {
+        sec.innerHTML = `<a class="dl-btn"
+            href="https://drive.google.com/uc?export=download&id=${fileId}"
+            target="_blank"
+            onclick="countDownload()">⬇️ דאנלוד (${left} פארבליבן היינט)</a>`;
+    } else {
+        sec.innerHTML = `<div class="dl-limit-msg">⛔ דאנלוד לימיט (5 א טאג) דערגרייכט!</div>`;
+    }
 }
 
 function closePlayer() {
     const audio = document.getElementById('audio-player');
-    audio.pause();
-    audio.src = '';
+    audio.pause(); audio.src = '';
     document.getElementById('player-overlay').classList.remove('open');
 }
 
-// Close player on background click
 document.getElementById('player-overlay').addEventListener('click', function(e) {
     if (e.target === this) closePlayer();
 });
@@ -328,7 +454,6 @@ function getIcon(m) {
     return '📎';
 }
 
-// Start
 showTab('orach', document.querySelector('.tab-btn.active'));
 </script>
 </body>
