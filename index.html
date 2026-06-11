@@ -176,7 +176,6 @@ let navStack = [];
 // Remove leading letter prefix like "א-" or "ב - "
 
 function cleanName(n) {
-    // Removes: א-, ב-, י"א-, י"ב- OR י"ב (space) prefixes
     return n.replace(/^[א-ת][״"׳']?[א-ת]?[ \t\-–—]+/, '').trim();
 }
 
