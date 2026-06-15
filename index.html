@@ -3,696 +3,458 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>שיעורי כללים</title>
-
-    <!-- Google Analytics -->
+    <title>Shiurei Kelalim</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z1GLNQLRH1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-Z1GLNQLRH1');
-    </script>
-
-    <!-- EmailJS -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Heebo:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-Z1GLNQLRH1');
+</script>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Heebo', Arial, sans-serif; background: #f5f5f0; color: #333; }
 
-        body {
-            font-family: 'Frank Ruhl Libre', 'Heebo', Arial, sans-serif;
-            background: #f0ece4; color: #2c1810; min-height: 100vh;
-        }
-
-        /* ── HEADER ─────────────────────────────────── */
         header {
-            position: relative; overflow: hidden;
-            background: linear-gradient(160deg, #08122a 0%, #162d5a 45%, #2a548f 75%, #162d5a 100%);
-            color: #fff; padding: 52px 20px 60px; text-align: center;
+            background: linear-gradient(135deg, #1a1a2e, #2d4a7a);
+            color: white; padding: 40px 20px; text-align: center;
         }
-        header::before {
-            content:''; position:absolute; inset:0;
-            background:
-                radial-gradient(ellipse at 15% 60%, rgba(212,175,55,.18) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% 40%, rgba(212,175,55,.12) 0%, transparent 55%);
-            pointer-events: none;
-        }
-        header::after {
-            content:''; position:absolute;
-            bottom:-40px; left:50%; transform:translateX(-50%);
-            width:140%; height:80px;
-            background: #f0ece4; border-radius:50% 50% 0 0;
-        }
-        .hdr { position:relative; z-index:1; }
-        .hdr-emblem { font-size:2.8rem; color:#d4af37; margin-bottom:10px; }
-        .hdr h1 {
-            font-size:3.2rem; font-weight:900; letter-spacing:3px;
-            text-shadow:0 3px 14px rgba(0,0,0,.35);
-        }
-        .gold-line {
-            width:120px; height:2px; margin:14px auto;
-            background: linear-gradient(90deg, transparent, #d4af37, transparent);
-        }
-        .hdr-sub  { font-size:1.05rem; color:#d4af37; margin-bottom:8px; }
-        .hdr-cred { font-size:.88rem; color:rgba(255,255,255,.72); line-height:1.75; }
-        .hdr-cred strong { color:#d4af37; }
+        header h1 { font-size: 2.8rem; margin-bottom: 8px; font-weight: 700; }
+        header p  { font-size: 1.2rem; opacity: 0.85; font-weight: 300; }
 
-        /* ── STICKY NAV ──────────────────────────────── */
-        .nav-wrap {
-            background:#fff;
-            box-shadow:0 3px 22px rgba(0,0,0,.11);
-            position:sticky; top:0; z-index:200;
-            padding-bottom:4px;
-        }
-        .action-row {
-            display:flex; flex-wrap:wrap; justify-content:center;
-            gap:7px; padding:12px 12px 8px;
-        }
-        .act-btn {
-            padding:7px 14px; border:none; border-radius:22px;
-            cursor:pointer; font-size:.82rem;
-            font-family:'Frank Ruhl Libre',serif; font-weight:600;
-            transition:all .22s; white-space:nowrap;
-        }
-        .act-btn:hover { transform:translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,.2); }
-        .btn-red    { background:linear-gradient(135deg,#b71c1c,#e53935); color:#fff; }
-        .btn-purple { background:linear-gradient(135deg,#6a1b9a,#9c27b0); color:#fff; }
-        .btn-teal   { background:linear-gradient(135deg,#00695c,#00897b); color:#fff; }
-        .btn-blue   { background:linear-gradient(135deg,#1565c0,#1e88e5); color:#fff; }
-        .btn-gold   { background:linear-gradient(135deg,#b8860b,#daa520); color:#2c1810; }
-        .btn-green  { background:linear-gradient(135deg,#1b5e20,#2e7d32); color:#fff; }
-
-        .tab-row {
-            display:flex; flex-wrap:wrap; justify-content:center;
-            gap:7px; padding:0 12px 8px;
+        .nav-tabs {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 12px; padding: 20px 20px 15px; background: #fff;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 100;
         }
         .tab-btn {
-            padding:9px 18px; border:2px solid #162d5a;
-            background:#fff; color:#162d5a;
-            border-radius:28px; cursor:pointer;
-            font-size:.9rem; white-space:nowrap;
-            font-family:'Frank Ruhl Libre',serif; font-weight:600;
-            transition:all .22s;
+            padding: 12px 24px; border: 2px solid #2d4a7a;
+            background: white; color: #2d4a7a; border-radius: 30px;
+            cursor: pointer; font-size: 1rem;
+            font-family: 'Heebo', Arial, sans-serif; font-weight: 600;
+            transition: all 0.3s ease;
         }
-        .tab-btn:hover  { background:#162d5a; color:#fff; }
-        .tab-btn.active { background:#162d5a; color:#fff; box-shadow:0 4px 12px rgba(22,45,90,.35); }
-        .tab-btn.back   { border-color:#aaa; color:#888; font-size:.8rem; padding:7px 13px; }
-        .tab-btn.back:hover { background:#eee; color:#444; }
+        .tab-btn:hover  { background: #2d4a7a; color: white; transform: translateY(-2px); }
+        .tab-btn.active { background: #2d4a7a; color: white; box-shadow: 0 4px 12px rgba(45,74,122,0.4); }
 
-        .search-wrap {
-            display:flex; justify-content:center;
-            padding:0 12px 8px;
+        /* Search row inside nav */
+        .search-row {
+            width: 100%; display: flex; justify-content: center; padding-top: 4px;
         }
         .search-input {
-            width:100%; max-width:500px;
-            padding:9px 20px; border:2px solid #dde3f0;
-            border-radius:28px; font-size:.95rem;
-            font-family:'Frank Ruhl Libre',serif;
-            outline:none; background:#f8f9ff; transition:border .2s;
+            width: 100%; max-width: 520px; padding: 10px 20px;
+            border: 2px solid #dde3f0; border-radius: 30px;
+            font-size: 1rem; font-family: 'Heebo', Arial, sans-serif;
+            outline: none; color: #333; background: #f8f9ff; transition: border 0.2s;
         }
-        .search-input:focus { border-color:#162d5a; background:#fff; }
-        .search-info {
-            text-align:center; color:#888;
-            font-size:.85rem; min-height:20px;
-            padding:2px 0; background:#fff;
+        .search-input:focus { border-color: #2d4a7a; background: #fff; }
+        .search-label {
+            text-align: center; color: #777; font-size: 0.88rem;
+            padding: 6px 0 0; min-height: 22px; background: #fff;
         }
 
-        /* ── LANDING PAGE ────────────────────────────── */
-        #landing { padding:70px 16px 40px; }
-        .land-inner { max-width:900px; margin:0 auto; }
+        .content-area { padding: 30px 20px; max-width: 1100px; margin: 0 auto; }
 
-        .latest-strip {
-            display:flex; align-items:center; gap:14px;
-            background:linear-gradient(135deg,#162d5a,#2a548f);
-            border-radius:16px; padding:18px 22px; color:#fff;
-            cursor:pointer; margin-bottom:32px; transition:all .24s;
-        }
-        .latest-strip:hover { transform:translateY(-3px); box-shadow:0 10px 30px rgba(22,45,90,.35); }
-        .ls-icon { font-size:2.4rem; flex-shrink:0; }
-        .ls-info h3 { font-size:1rem; font-weight:700; margin-bottom:4px; }
-        .ls-info p  { font-size:.85rem; opacity:.82; }
-
-        .land-heading {
-            text-align:center; font-size:1.4rem; font-weight:700;
-            color:#162d5a; margin-bottom:22px;
-        }
-        .cards-grid {
-            display:grid;
-            grid-template-columns:repeat(auto-fit, minmax(170px,1fr));
-            gap:18px;
-        }
-        .sec-card {
-            background:#fff; border-radius:18px;
-            padding:28px 16px; text-align:center;
-            cursor:pointer; border:2px solid transparent;
-            box-shadow:0 4px 18px rgba(0,0,0,.07);
-            transition:all .27s; position:relative; overflow:hidden;
-        }
-        .sec-card::before {
-            content:''; position:absolute;
-            top:0; left:0; right:0; height:4px;
-        }
-        .sec-card:hover {
-            transform:translateY(-6px);
-            box-shadow:0 14px 40px rgba(0,0,0,.14);
-            border-color:#d4af37;
-        }
-        .c-orach::before   { background:linear-gradient(90deg,#162d5a,#2a548f); }
-        .c-yoreh::before   { background:linear-gradient(90deg,#6a1b9a,#9c27b0); }
-        .c-even::before    { background:linear-gradient(90deg,#b71c1c,#e53935); }
-        .c-choshen::before { background:linear-gradient(90deg,#00695c,#00897b); }
-        .c-moadim::before  { background:linear-gradient(90deg,#b8860b,#daa520); }
-        .sc-icon  { font-size:2.8rem; margin-bottom:12px; }
-        .sc-title { font-size:1.2rem; font-weight:700; color:#162d5a; margin-bottom:4px; }
-        .sc-sub   { font-size:.78rem; color:#999; }
-
-        /* ── CONTENT AREA ────────────────────────────── */
-        #content-area {
-            display:none; padding:22px 16px 40px;
-            max-width:960px; margin:0 auto;
-        }
-        .sec-banner {
-            border-radius:16px; padding:26px 20px;
-            margin-bottom:22px; color:#fff; text-align:center;
-        }
-        .sec-banner h2 { font-size:1.9rem; font-weight:900; }
-        .sec-banner p  { opacity:.82; font-size:.9rem; margin-top:4px; }
-        .bn-orach   { background:linear-gradient(135deg,#08122a,#162d5a,#2a548f); }
-        .bn-yoreh   { background:linear-gradient(135deg,#3c0060,#6a1b9a,#9c27b0); }
-        .bn-even    { background:linear-gradient(135deg,#7c0000,#b71c1c,#e53935); }
-        .bn-choshen { background:linear-gradient(135deg,#003d33,#00695c,#00897b); }
-        .bn-moadim  { background:linear-gradient(135deg,#7a6010,#b8860b,#daa520); }
-        .bn-yomtov  { background:linear-gradient(135deg,#4a0072,#6a1b9a,#b8860b); }
-
+        /* Breadcrumb */
         .breadcrumb {
-            display:flex; align-items:center;
-            gap:7px; margin-bottom:14px; flex-wrap:wrap; min-height:28px;
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 20px; flex-wrap: wrap; min-height: 30px;
         }
-        .bc-link { color:#162d5a; cursor:pointer; font-weight:700; font-size:.95rem; }
-        .bc-link:hover { text-decoration:underline; }
-        .bc-sep { color:#ccc; }
-        .bc-cur { color:#555; font-size:.95rem; }
+        .bc-link { color: #2d4a7a; cursor: pointer; font-weight: 600; font-size: 1rem; }
+        .bc-link:hover { text-decoration: underline; }
+        .bc-sep { color: #bbb; font-size: 1.1rem; }
+        .bc-current { color: #333; font-size: 1rem; }
 
+        /* File list */
         .file-list {
-            background:#fff; border-radius:14px;
-            box-shadow:0 4px 20px rgba(0,0,0,.07); overflow:hidden;
+            background: white; border-radius: 14px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.10); overflow: hidden;
         }
         .file-item {
-            display:flex; align-items:center;
-            padding:15px 20px; border-bottom:1px solid #f0ece4;
-            cursor:pointer; gap:12px; transition:background .16s;
+            display: flex; align-items: center; padding: 16px 22px;
+            border-bottom: 1px solid #f2f2f2; cursor: pointer;
+            transition: background 0.18s; gap: 14px;
         }
-        .file-item:last-child { border-bottom:none; }
-        .file-item:hover { background:#f0f4ff; }
-        .fi-icon { font-size:1.45rem; min-width:30px; text-align:center; }
-        .fi-name { font-size:1rem; font-weight:500; color:#1a1a2e; flex:1; line-height:1.4; }
+        .file-item:last-child { border-bottom: none; }
+        .file-item:hover { background: #eef2ff; }
+        .file-icon { font-size: 1.5rem; min-width: 32px; text-align: center; }
+        .file-name { font-size: 1.05rem; font-weight: 500; color: #1a1a2e; flex: 1; }
         .badge {
-            font-size:.75rem; padding:3px 10px;
-            border-radius:18px; font-weight:700; white-space:nowrap;
+            font-size: 0.78rem; padding: 4px 12px;
+            border-radius: 20px; font-weight: 600; white-space: nowrap;
         }
-        .bg-folder { background:#e8ecf5; color:#162d5a; }
-        .bg-audio  { background:#e8f5e9; color:#2e7d32; }
-        .bg-file   { background:#fff3e0; color:#e65100; }
+        .badge-folder { background: #e8edf5; color: #2d4a7a; }
+        .badge-audio  { background: #e8f5e9; color: #2e7d32; }
+        .badge-file   { background: #fff3e0; color: #e65100; }
+
+        /* Shiur number badge */
         .shiur-num {
-            display:inline-block; direction:ltr;
-            font-weight:800; color:#fff; background:#162d5a;
-            font-size:1rem; padding:1px 7px; border-radius:6px;
-            margin-right:5px; vertical-align:middle;
+            display: inline-block; direction: ltr;
+            font-size: 1.25rem; font-weight: 700;
+            color: #fff; background: #2d4a7a;
+            padding: 1px 10px; border-radius: 8px;
+            margin-right: 8px; vertical-align: middle;
         }
 
-        /* ── AUDIO PLAYER ────────────────────────────── */
+        /* Audio Player */
         .player-overlay {
-            display:none; position:fixed; inset:0;
-            background:rgba(0,0,0,.72); z-index:1000;
-            justify-content:center; align-items:center;
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+            z-index: 1000; justify-content: center; align-items: center;
         }
-        .player-overlay.open { display:flex; }
+        .player-overlay.open { display: flex; }
         .player-box {
-            background:#fff; border-radius:24px;
-            max-width:420px; width:93%;
-            box-shadow:0 24px 70px rgba(0,0,0,.4);
-            position:relative; overflow:hidden;
-        }
-        .player-visual {
-            width:100%; height:170px;
-            background:linear-gradient(135deg,#162d5a,#2a548f);
-            display:flex; align-items:center; justify-content:center;
-            font-size:5rem;
+            background: white; border-radius: 20px;
+            padding: 35px 40px; max-width: 480px; width: 92%;
+            text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
         }
         .player-close {
-            position:absolute; top:10px; left:12px;
-            background:rgba(0,0,0,.45); color:#fff;
-            border:none; border-radius:50%;
-            width:32px; height:32px; font-size:1.1rem;
-            cursor:pointer; display:flex; align-items:center;
-            justify-content:center; z-index:10;
+            position: absolute; top: 14px; left: 18px;
+            font-size: 1.6rem; cursor: pointer; color: #999;
+            background: none; border: none; line-height: 1;
         }
-        .player-close:hover { background:rgba(0,0,0,.7); }
-        .player-body { padding:22px 26px; text-align:center; }
+        .player-close:hover { color: #333; }
+        .player-icon { font-size: 3.5rem; margin-bottom: 12px; }
         .player-title {
-            font-size:1.1rem; font-weight:700;
-            color:#162d5a; margin-bottom:14px; line-height:1.4;
+            font-size: 1.2rem; font-weight: 700;
+            color: #1a1a2e; margin-bottom: 20px; line-height: 1.4;
         }
-        .player-body audio { width:100%; border-radius:10px; }
-        .dots-btn {
-            background:none; border:none; cursor:pointer;
-            font-size:1.5rem; color:#aaa;
-            padding:6px 10px; border-radius:8px;
-            margin-top:8px; display:block; margin-left:auto; margin-right:auto;
-        }
-        .dots-btn:hover { background:#f0f0f0; color:#555; }
-        .dots-menu { display:none; }
-        .dots-menu.open { display:block; }
+        .player-box audio { width: 100%; border-radius: 10px; outline: none; }
+
+        /* Download button */
         .dl-btn {
-            display:inline-block; margin-top:8px;
-            padding:9px 22px;
-            background:linear-gradient(135deg,#1b5e20,#2e7d32);
-            color:#fff; border-radius:20px;
-            text-decoration:none; font-size:.88rem; font-weight:700;
-            transition:all .2s;
+            display: inline-block; margin-top: 14px;
+            padding: 10px 28px; background: #2e7d32; color: white;
+            border-radius: 20px; text-decoration: none;
+            font-size: 0.92rem; font-weight: 600; transition: background 0.2s;
+            cursor: pointer;
         }
-        .dl-btn:hover { filter:brightness(1.1); }
-        .dl-limit {
-            margin-top:8px; padding:7px 14px;
-            background:#fff3e0; color:#e65100;
-            border-radius:8px; font-size:.84rem;
-        }
-        .player-copy { margin-top:12px; font-size:.77rem; color:#ccc; }
-
-        /* ── MODALS ──────────────────────────────────── */
-        .modal-ov {
-            display:none; position:fixed; inset:0;
-            background:rgba(0,0,0,.68); z-index:900;
-            justify-content:center; align-items:center;
-        }
-        .modal-ov.open { display:flex; }
-        .modal-box {
-            background:#fff; border-radius:22px;
-            padding:34px 28px;
-            max-width:460px; width:93%;
-            box-shadow:0 22px 65px rgba(0,0,0,.33);
-            position:relative; max-height:90vh; overflow-y:auto;
-        }
-        .modal-x {
-            position:absolute; top:14px; left:16px;
-            font-size:1.35rem; cursor:pointer;
-            color:#bbb; background:none; border:none;
-        }
-        .modal-x:hover { color:#444; }
-        .modal-icon  { font-size:2.6rem; text-align:center; margin-bottom:10px; }
-        .modal-title {
-            font-size:1.45rem; font-weight:700;
-            color:#162d5a; text-align:center; margin-bottom:18px;
-        }
-        .fld { margin-bottom:14px; }
-        .fld label {
-            display:block; font-weight:600;
-            margin-bottom:5px; color:#444; font-size:.9rem;
-        }
-        .fld input, .fld textarea {
-            width:100%; padding:10px 13px;
-            border:2px solid #dde3f0; border-radius:10px;
-            font-family:'Frank Ruhl Libre',serif; font-size:.95rem;
-            outline:none; transition:border .2s; background:#fafbff;
-        }
-        .fld input:focus, .fld textarea:focus { border-color:#162d5a; background:#fff; }
-        .fld textarea { min-height:90px; resize:vertical; }
-        .submit-btn {
-            display:block; width:100%; padding:12px;
-            background:linear-gradient(135deg,#162d5a,#2a548f);
-            color:#fff; border:none; border-radius:12px;
-            font-size:1rem; font-weight:700;
-            font-family:'Frank Ruhl Libre',serif;
-            cursor:pointer; transition:all .22s;
-        }
-        .submit-btn:hover { filter:brightness(1.08); transform:translateY(-1px); }
-        .ok-msg {
-            text-align:center; padding:18px 0;
-            font-size:1.1rem; font-weight:600; color:#2e7d32;
+        .dl-btn:hover { background: #1b5e20; }
+        .dl-limit-msg {
+            margin-top: 12px; padding: 8px 16px;
+            background: #fff3e0; color: #e65100;
+            border-radius: 8px; font-size: 0.88rem;
         }
 
-        /* ── HOTLINE ─────────────────────────────────── */
-        .hl-row {
-            display:flex; align-items:center; justify-content:space-between;
-            padding:15px 0; border-bottom:1px solid #f0ece4;
+        .player-note { margin-top: 14px; font-size: 0.82rem; color: #aaa; }
+        .loading { text-align: center; padding: 60px 20px; color: #888; font-size: 1.1rem; }
+        .error-box {
+            text-align: center; padding: 35px 20px;
+            color: #c62828; background: #ffebee;
+            border-radius: 10px; line-height: 1.8;
         }
-        .hl-row:last-child { border-bottom:none; }
-        .hl-country { font-weight:700; color:#162d5a; font-size:1rem; }
-        .hl-num {
-            font-size:1rem; color:#162d5a; text-decoration:none;
-            font-weight:600; direction:ltr; display:inline-block;
-        }
-        .hl-num:hover { text-decoration:underline; }
-
-        /* ── DONATE ──────────────────────────────────── */
-        .don-opts { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
-        .don-opt {
-            padding:13px 16px; border:2px solid #e8ecf5;
-            border-radius:12px; cursor:pointer; text-align:center; transition:all .2s;
-        }
-        .don-opt:hover, .don-opt.sel { border-color:#d4af37; background:#fffbf0; }
-        .don-opt h4 { font-weight:700; color:#162d5a; margin-bottom:2px; }
-        .don-opt p  { font-size:.82rem; color:#999; }
-
-        /* ── PASSWORD ────────────────────────────────── */
-        .pwd-inp {
-            display:block; width:100%; padding:12px;
-            border:2px solid #dde3f0; border-radius:10px;
-            font-size:1.3rem; text-align:center;
-            letter-spacing:5px; font-family:monospace;
-            outline:none; margin-bottom:14px; background:#fafbff; transition:border .2s;
-        }
-        .pwd-inp:focus { border-color:#162d5a; }
-        .pwd-err { color:#c62828; font-size:.85rem; text-align:center; display:none; margin-bottom:10px; }
-
-        /* ── YOM TOV POPUP ───────────────────────────── */
-        #ytov-popup {
-            display:none; position:fixed; inset:0;
-            background:rgba(0,0,0,.73); z-index:950;
-            justify-content:center; align-items:center;
-        }
-        #ytov-popup.open { display:flex; }
-        .ytov-box {
-            background:#fff; border-radius:24px;
-            max-width:400px; width:93%;
-            box-shadow:0 22px 65px rgba(0,0,0,.4); overflow:hidden;
-        }
-        .ytov-hdr {
-            background:linear-gradient(135deg,#6a1b9a,#b8860b);
-            padding:28px 20px; text-align:center; color:#fff;
-        }
-        .ytov-hdr h2 { font-size:1.7rem; font-weight:900; }
-        .ytov-hdr p  { opacity:.88; margin-top:4px; font-size:.9rem; }
-        .ytov-body  { padding:22px; }
-        .ytov-body p {
-            color:#555; line-height:1.75; text-align:center;
-            margin-bottom:16px; font-size:.95rem;
-        }
-        .ytov-go {
-            display:block; width:100%; padding:12px;
-            background:linear-gradient(135deg,#6a1b9a,#9c27b0);
-            color:#fff; border:none; border-radius:12px;
-            font-size:1rem; font-weight:700;
-            font-family:'Frank Ruhl Libre',serif;
-            cursor:pointer; transition:all .2s; margin-bottom:8px;
-        }
-        .ytov-go:hover { filter:brightness(1.08); transform:translateY(-1px); }
-        .ytov-cls {
-            display:block; width:100%; padding:10px;
-            background:#f0f0f0; color:#666; border:none;
-            border-radius:12px; font-size:.9rem; font-weight:600;
-            font-family:'Frank Ruhl Libre',serif; cursor:pointer; transition:all .2s;
-        }
-        .ytov-cls:hover { background:#e0e0e0; }
-
-        /* ── MISC ────────────────────────────────────── */
-        .loading   { text-align:center; padding:55px 20px; color:#999; font-size:1.05rem; }
-        .err-box   { text-align:center; padding:30px; color:#c62828; background:#ffebee; border-radius:10px; line-height:1.8; }
-        .empty-box { text-align:center; padding:45px; color:#bbb; font-size:1rem; }
+        .empty-box { text-align: center; padding: 50px; color: #aaa; }
 
         footer {
-            text-align:center; padding:26px;
-            background:linear-gradient(135deg,#08122a,#162d5a);
-            color:rgba(255,255,255,.55); font-size:.88rem; margin-top:50px;
+            text-align: center; padding: 25px;
+            background: #1a1a2e; color: rgba(255,255,255,0.6);
+            font-size: 0.9rem; margin-top: 50px;
         }
-        footer a { color:#d4af37; text-decoration:none; }
 
-        /* ── RESPONSIVE ──────────────────────────────── */
-        @media (max-width:580px) {
-            .hdr h1 { font-size:2rem; }
-            .cards-grid { grid-template-columns:1fr 1fr; }
-            .tab-btn { padding:7px 12px; font-size:.8rem; }
-            .file-item { padding:12px 13px; }
-            .modal-box { padding:22px 16px; }
-        }
-        @media (max-width:360px) {
-            .cards-grid { grid-template-columns:1fr; }
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.9rem; }
+            .tab-btn { padding: 9px 15px; font-size: 0.9rem; }
+            .file-item { padding: 13px 14px; }
+            .player-box { padding: 25px 20px; }
         }
     </style>
 </head>
 <body>
 
-<!-- ═══════════ HEADER ═══════════ -->
 <header>
-    <div class="hdr">
-        <div class="hdr-emblem">✡</div>
-        <h1>שיעורי כללים</h1>
-        <div class="gold-line"></div>
-        <p class="hdr-sub">על ד' חלקי שולחן ערוך</p>
-        <p class="hdr-cred">
-            נלמד בטוב טעם ודעת ע"י <strong>הרב יואל פילאפף שליט"א</strong><br>
-            דומ"ץ בטאהש
-        </p>
-    </div>
+    <h1>🎙️ Shiurei Kelalim</h1>
+    <p>שיעורי כללים</p>
 </header>
 
-<!-- ═══════════ NAV ═══════════ -->
-<div class="nav-wrap">
-    <div class="action-row">
-        <button class="act-btn btn-red"    onclick="openLatestModal()">🔴 דער נייעסטע שיעור</button>
-        <button class="act-btn btn-purple" onclick="openYomTovBtn()">🕍 שיעורים פאר יו"ט</button>
-        <button class="act-btn btn-teal"   onclick="openM('hotline-modal')">📞 האטליין</button>
-        <button class="act-btn btn-blue"   onclick="openM('contact-modal')">✉️ קאנטאקט</button>
-        <button class="act-btn btn-gold"   onclick="openM('donate-modal')">💛 דאנעיט</button>
-        <button class="act-btn btn-green"  onclick="openM('subscribe-modal')">📧 סובסקרייב</button>
-    </div>
-    <div class="tab-row" id="tab-row" style="display:none;">
-        <button class="tab-btn" onclick="showTab('orach',this)">אורח חיים</button>
-        <button class="tab-btn" onclick="showTab('yoreh',this)">יורה דעה</button>
-        <button class="tab-btn" onclick="showTab('even',this)">אבן העזר</button>
-        <button class="tab-btn" onclick="showTab('choshen',this)">חושן משפט</button>
-        <button class="tab-btn" onclick="showTab('moadim',this)">מועדים וזמנים</button>
-        <button class="tab-btn back" onclick="showLanding()">↩ ראשי</button>
-    </div>
-    <div class="search-wrap" id="search-wrap" style="display:none;">
-        <input class="search-input" id="srch" type="text"
-               placeholder="🔍 זוכן שיעורים..."
+<div class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('orach',this)">אורח חיים</button>
+    <button class="tab-btn"        onclick="showTab('yoreh',this)">יורה דעה</button>
+    <button class="tab-btn"        onclick="showTab('even',this)">אבן העזר</button>
+    <button class="tab-btn"        onclick="showTab('choshen',this)">חושן משפט</button>
+    <button class="tab-btn"        onclick="showTab('moadim',this)">מועדים וזמנים</button>
+    <!-- Search bar -->
+    <div class="search-row">
+        <input class="search-input" id="search-input" type="text"
+               placeholder="🔍 חיפוש שיעורים..."
                oninput="handleSearch(this.value)">
     </div>
-    <div class="search-info" id="srch-info"></div>
 </div>
+<div id="search-label" class="search-label"></div>
 
-<!-- ═══════════ LANDING ═══════════ -->
-<div id="landing" style="padding-top:70px;">
-    <div class="land-inner">
-        <div class="latest-strip" onclick="openLatestModal()">
-            <div class="ls-icon">🔴</div>
-            <div class="ls-info">
-                <h3>דער נייעסטע שיעור אויף די סיסטעם</h3>
-                <p id="land-name">טוען...</p>
-                <p id="land-date" style="font-size:.77rem;opacity:.7;margin-top:2px;"></p>
-            </div>
-        </div>
-        <div class="land-heading">בחר נושא</div>
-        <div class="cards-grid">
-            <div class="sec-card c-orach"   onclick="showTab('orach',null)">
-                <div class="sc-icon">🕍</div>
-                <div class="sc-title">אורח חיים</div>
-                <div class="sc-sub">תפילה, שבת, מועדים</div>
-            </div>
-            <div class="sec-card c-yoreh"   onclick="showTab('yoreh',null)">
-                <div class="sc-icon">🍷</div>
-                <div class="sc-title">יורה דעה</div>
-                <div class="sc-sub">איסור והיתר</div>
-            </div>
-            <div class="sec-card c-even"    onclick="showTab('even',null)">
-                <div class="sc-icon">💒</div>
-                <div class="sc-title">אבן העזר</div>
-                <div class="sc-sub">חופה וקידושין</div>
-            </div>
-            <div class="sec-card c-choshen" onclick="showTab('choshen',null)">
-                <div class="sc-icon">⚖️</div>
-                <div class="sc-title">חושן משפט</div>
-                <div class="sc-sub">דיני ממונות</div>
-            </div>
-            <div class="sec-card c-moadim"  onclick="showTab('moadim',null)">
-                <div class="sc-icon">🕯️</div>
-                <div class="sc-title">מועדים וזמנים</div>
-                <div class="sc-sub">חגים ומועדים</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ═══════════ CONTENT AREA ═══════════ -->
-<div id="content-area">
-    <div id="sec-banner" class="sec-banner bn-orach"></div>
+<div class="content-area">
     <div class="breadcrumb" id="breadcrumb"></div>
     <div class="file-list"  id="file-list"><div class="loading">⏳ טוען...</div></div>
 </div>
 
-<!-- ═══════════ AUDIO PLAYER ═══════════ -->
+<!-- Audio Player Popup -->
 <div class="player-overlay" id="player-overlay">
     <div class="player-box">
         <button class="player-close" onclick="closePlayer()">✕</button>
-        <div class="player-visual" id="player-visual">🎵</div>
-        <div class="player-body">
-            <div class="player-title" id="player-title"></div>
-            <audio id="audio-el" controls autoplay controlsList="nodownload" oncontextmenu="return false;"></audio>
-            <button class="dots-btn" onclick="toggleDots()">⋮</button>
-            <div class="dots-menu" id="dots-menu">
-                <div id="dl-section"></div>
-            </div>
-            <div class="player-copy">© שיעורי כללים</div>
-        </div>
+        <div class="player-icon">🎵</div>
+        <div class="player-title" id="player-title"></div>
+        <audio id="audio-player" controls autoplay controlsList="nodownload" oncontextmenu="return false;"></audio>
+        <div id="download-section"></div>
+        <div class="player-note">© Shiurei Kelalim</div>
     </div>
 </div>
 
-<!-- ═══════════ YOM TOV POPUP ═══════════ -->
-<div id="ytov-popup">
-    <div class="ytov-box">
-        <div class="ytov-hdr">
-            <h2 id="ytov-title">🕍 שיעורים פאר יו"ט</h2>
-            <p  id="ytov-sub">קומט א יום טוב!</p>
-        </div>
-        <div class="ytov-body">
-            <p id="ytov-body">עס קומט א יום טוב! לשמוע שיעורים:</p>
-            <button class="ytov-go" onclick="goToYomTov()">▶ צו די שיעורים</button>
-            <button class="ytov-cls" onclick="closeYtov()">✕ שלים</button>
-        </div>
-    </div>
-</div>
+<footer>
+    <p>© Shiurei Kelalim — All Rights Reserved</p>
+</footer>
 
-<!-- ═══════════ MODALS ═══════════ -->
+<script>
+// =========================================
+const API_KEY = 'AIzaSyAPagTKnIPrZgSqJiI6hwzaef-UC5HqckE';
+// =========================================
 
-<!-- Password -->
-<div class="modal-ov" id="pwd-modal">
-    <div class="modal-box" style="max-width:340px;text-align:center;">
-        <button class="modal-x" onclick="closeM('pwd-modal')">✕</button>
-        <div class="modal-icon">🔒</div>
-        <div class="modal-title">געשלאסענע אפטיילונג</div>
-        <p style="color:#666;margin-bottom:18px;line-height:1.7;font-size:.9rem;">
-            צו באקומען צוגאנג, מוז מען אריינרופן די האטליין:<br>
-            <a href="tel:+16054777451" style="color:#162d5a;font-weight:700;">🇺🇸 1-605-477-7451</a><br>
-            <a href="tel:+97277336801" style="color:#162d5a;font-weight:700;">🇮🇱 077-336-8013</a><br>
-            <small style="color:#aaa;">דריקן נר. 91 • איבערלאזן נאמען + פאון נאמבער</small>
-        </p>
-        <input class="pwd-inp" type="password" id="pwd-inp" placeholder="••••" maxlength="12"
-               onkeyup="if(event.key==='Enter')checkPwd()">
-        <div class="pwd-err" id="pwd-err">❌ פאלשן פאסווארד</div>
-        <button class="submit-btn" onclick="checkPwd()">אריין →</button>
-    </div>
-</div>
+const ROOT_FOLDERS = {
+    orach:   { id: '1piYche6sIP7V1cPOJab3gZkzB50aeaWr', name: 'אורח חיים'     },
+    yoreh:   { id: '17LSuiqsmcgpS5Nvp_tsss0YolPMGZaTY', name: 'יורה דעה'      },
+    even:    { id: '1NLrWVUBhol6u9JZXne_r8FHygClrd_3W', name: 'אבן העזר'      },
+    choshen: { id: '1T3JFKo9HJch6-9Gn-fsSrl-udKOA9C9e', name: 'חושן משפט'    },
+    moadim:  { id: '1tBSkKyPr8OKfNoBJPTw8hIMm4ZV3yC8A', name: 'מועדים וזמנים' },
+};
 
-<!-- No Yom Tov -->
-<div class="modal-ov" id="no-ytov-modal">
-    <div class="modal-box" style="max-width:360px;text-align:center;">
-        <button class="modal-x" onclick="closeM('no-ytov-modal')">✕</button>
-        <div class="modal-icon">🕍</div>
-        <div class="modal-title">שיעורים פאר יו"ט</div>
-        <p style="color:#666;line-height:1.75;margin-bottom:20px;">
-            ס'איז נישטא קיין קומענדיגן יו"ט שיעור יעצט.<br>
-            דו קענסט זען אלע שיעורים פון:
-        </p>
-        <button class="submit-btn" onclick="closeM('no-ytov-modal');showTab('moadim',null);">
-            🕯️ מועדים וזמנים
-        </button>
-    </div>
-</div>
+let navStack = [];
+let searchTimeout = null;
+let currentFileId = '';
 
-<!-- Hotline -->
-<div class="modal-ov" id="hotline-modal">
-    <div class="modal-box" style="max-width:360px;">
-        <button class="modal-x" onclick="closeM('hotline-modal')">✕</button>
-        <div class="modal-icon">📞</div>
-        <div class="modal-title">האטליין נאמבערס</div>
-        <div class="hl-row">
-            <span class="hl-country">🇺🇸 אמעריקע</span>
-            <a class="hl-num" href="tel:+16054777451">1-605-477-7451</a>
-        </div>
-        <div class="hl-row">
-            <span class="hl-country">🇮🇱 ארץ ישראל</span>
-            <a class="hl-num" href="tel:+97277336801">077-336-8013</a>
-        </div>
-        <div class="hl-row">
-            <span class="hl-country">🇬🇧 לאנדאן</span>
-            <a class="hl-num" href="tel:+443306131016">0330-613-1016</a>
-        </div>
-        <p style="text-align:center;font-size:.82rem;color:#aaa;margin-top:14px;">קליק אויפן נאמבער צו קאלן</p>
-    </div>
-</div>
+// ── Clean prefix ─────────────────────────────────────────────
+function cleanName(n) {
+    for (var i = 1; i <= Math.min(5, n.length - 1); i++) {
+        var c = n.charCodeAt(i);
+        if (c === 45 || c === 8211 || c === 8212) {
+            return n.slice(i + 1).trim();
+        }
+    }
+    if (n.length > 4) {
+        var isHeb = function(code) { return code >= 0x05D0 && code <= 0x05EA; };
+        if (isHeb(n.charCodeAt(0)) && !isHeb(n.charCodeAt(1)) && isHeb(n.charCodeAt(2)) && n[3] === ' ') {
+            return n.slice(4).trim();
+        }
+    }
+    return n.trim();
+}
 
-<!-- Contact -->
-<div class="modal-ov" id="contact-modal">
-    <div class="modal-box">
-        <button class="modal-x" onclick="closeM('contact-modal')">✕</button>
-        <div class="modal-icon">✉️</div>
-        <div class="modal-title">קאנטאקט / פידבעק</div>
-        <div id="contact-form">
-            <div class="fld"><label>נאמען</label><input id="cn" type="text" placeholder="דיין נאמען"></div>
-            <div class="fld"><label>אימעיל</label><input id="ce" type="email" placeholder="דיין אימעיל"></div>
-            <div class="fld"><label>מעסעדזש</label><textarea id="cm" placeholder="שרייב דיין מעסעדזש..."></textarea></div>
-            <button class="submit-btn" onclick="sendContact()">📨 שיקן</button>
-        </div>
-        <div id="contact-ok" class="ok-msg" style="display:none;">
-            ✅ דאנקשיין! דיין מעסעדזש איז אנגעקומען.<br>
-            <small style="color:#aaa;">מיר וועלן זיך צוריקמעלדן.</small>
-        </div>
-    </div>
-</div>
+// ── Format mp3.N → styled number badge ───────────────────────
+function formatFileName(name) {
+    const m = name.match(/^(.+?)\s+mp3\.(\d+)$/i);
+    if (m) return `${m[1]} <span class="shiur-num">${m[2]}</span>`;
+    return name;
+}
 
-<!-- Subscribe -->
-<div class="modal-ov" id="subscribe-modal">
-    <div class="modal-box">
-        <button class="modal-x" onclick="closeM('subscribe-modal')">✕</button>
-        <div class="modal-icon">📧</div>
-        <div class="modal-title">סובסקרייב</div>
-        <p style="text-align:center;color:#666;margin-bottom:18px;line-height:1.7;font-size:.9rem;">
-            לאז אריין דיין אימעיל — יעדע מאל ווען א נייע שיעור<br>איז ארויפגעלייגט, וועסטו באקומען א הודעה.
-        </p>
-        <div id="sub-form">
-            <div class="fld"><label>נאמען</label><input id="sn" type="text" placeholder="דיין נאמען"></div>
-            <div class="fld"><label>אימעיל</label><input id="se" type="email" placeholder="דיין@אימעיל.קאם"></div>
-            <button class="submit-btn" onclick="doSubscribe()">✅ סובסקרייבן</button>
-        </div>
-        <div id="sub-ok" class="ok-msg" style="display:none;">
-            ✅ דאנקשיין! דו ביסט יעצט סובסקרייבט!<br>
-            <small style="color:#aaa;">דו וועסט באקומען אן אימעיל ביי יעדן נייעם שיעור.</small>
-        </div>
-    </div>
-</div>
+// ── Download limit (5/day via localStorage) ──────────────────
+function getDlData() {
+    const today = new Date().toDateString();
+    let d = JSON.parse(localStorage.getItem('dlData') || '{"date":"","count":0}');
+    if (d.date !== today) { d.date = today; d.count = 0; }
+    return d;
+}
+function downloadsLeft() { return Math.max(0, 5 - getDlData().count); }
+function countDownload() {
+    let d = getDlData();
+    if (d.count < 5) { d.count++; localStorage.setItem('dlData', JSON.stringify(d)); }
+    setTimeout(refreshDlBtn, 150);
+}
+function refreshDlBtn() {
+    const left = downloadsLeft();
+    const sec  = document.getElementById('download-section');
+    if (!sec) return;
+    if (left <= 0) {
+        sec.innerHTML = `<div class="dl-limit-msg">⛔ דאנלוד לימיט (5 א טאג) דערגרייכט!</div>`;
+    } else {
+        const a = sec.querySelector('a');
+        if (a) a.textContent = `⬇️ דאנלוד (${left} פארבליבן היינט)`;
+    }
+}
 
-<!-- Donate -->
-<div class="modal-ov" id="donate-modal">
-    <div class="modal-box">
-        <button class="modal-x" onclick="closeM('donate-modal')">✕</button>
-        <div class="modal-icon">💛</div>
-        <div class="modal-title">תרומה לתורה</div>
-        <p style="text-align:center;color:#777;margin-bottom:18px;font-size:.9rem;line-height:1.6;">
-            בזכות שמידי התורה<br>
-            <small style="color:#aaa;">פראסעסט ביז 24 שעה • קארד נאמען: <strong style="color:#162d5a;">חסדי חיים</strong></small>
-        </p>
-        <div class="don-opts">
-            <div class="don-opt" onclick="selDon(this,'18')">
-                <h4>🕍 פרנס השבוע — $18</h4>
-                <p>לעילוי נשמה / לזכות</p>
-            </div>
-            <div class="don-opt" onclick="selDon(this,'custom')">
-                <h4>💛 אנדערע סומע</h4>
-                <p>אליין אויסוועלן</p>
-            </div>
-        </div>
-        <div id="don-soul-wrap" style="display:none;">
-            <div class="fld">
-                <label>נשמת / זכות נאמען (אפציאנאל)</label>
-                <input id="don-soul" type="text" placeholder="לזכות / נשמת...">
-                <small style="color:#aaa;display:block;margin-top:3px;">וועט אריינגעזאגט ווערן אויף דער האטליין</small>
-            </div>
-        </div>
-        <button class="submit-btn"
-                style="background:linear-gradient(135deg,#b8860b,#daa520);color:#2c1810;"
-                onclick="doDonate()">
-            💛 שיק תרומה
-        </button>
-    </div>
-</div>
+// ── Search ────────────────────────────────────────────────────
+function handleSearch(val) {
+    clearTimeout(searchTimeout);
+    val = val.trim();
+    const label = document.getElementById('search-label');
+    if (!val) {
+        label.textContent = '';
+        loadAndRender(navStack[navStack.length - 1].id);
+        return;
+    }
+    label.textContent = '🔍 זוכט...';
+    searchTimeout = setTimeout(() => searchDrive(val), 450);
+}
 
-<!-- Latest shiur modal -->
-<div class="modal-ov" id="latest-modal">
-    <div class="modal-box" style="max-width:400px;text-align:center;">
-        <button class="modal-x" onclick="closeM('latest-modal')">✕</button>
-        <div class="modal-icon">
+async function searchDrive(term) {
+    const el    = document.getElementById('file-list');
+    const label = document.getElementById('search-label');
+    el.innerHTML = '<div class="loading">🔍 זוכט...</div>';
+    try {
+        const q   = encodeURIComponent(`name contains '${term}' and mimeType contains 'audio' and trashed=false`);
+        const url = `https://www.googleapis.com/drive/v3/files?q=${q}&key=${API_KEY}`
+                  + `&fields=files(id,name,mimeType)&orderBy=name&pageSize=50`;
+        const res  = await fetch(url);
+        if (!res.ok) throw new Error('Status ' + res.status);
+        const data = await res.json();
+        const files = data.files || [];
+        label.textContent = `נמצאו ${files.length} שיעורים עבור "${term}"`;
+        if (!files.length) {
+            el.innerHTML = '<div class="empty-box">🔍 קיין רעזולטאטן נישט</div>';
+            return;
+        }
+        el.innerHTML = files.map(f => {
+            const name     = cleanName(f.name);
+            const safeName = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+            return `<div class="file-item" onclick="handleClick('${f.id}','${safeName}',false,'${f.mimeType}','','')">
+                <span class="file-icon">🎵</span>
+                <span class="file-name">${formatFileName(name)}</span>
+                <span class="badge badge-audio">▶ שיעור</span>
+            </div>`;
+        }).join('');
+    } catch(err) {
+        el.innerHTML = `<div class="error-box">❌ ${err.message}</div>`;
+    }
+}
+
+// ── Navigation ────────────────────────────────────────────────
+function showTab(key, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('search-input').value = '';
+    document.getElementById('search-label').textContent = '';
+    navStack = [{ id: ROOT_FOLDERS[key].id, name: ROOT_FOLDERS[key].name }];
+    renderBreadcrumb();
+    loadAndRender(ROOT_FOLDERS[key].id);
+}
+
+function renderBreadcrumb() {
+    document.getElementById('breadcrumb').innerHTML = navStack.map((item, i) => {
+        if (i === navStack.length - 1)
+            return `<span class="bc-current">${item.name}</span>`;
+        return `<span class="bc-link" onclick="goToLevel(${i})">${item.name}</span>
+                <span class="bc-sep">›</span>`;
+    }).join('');
+}
+
+function goToLevel(i) {
+    navStack = navStack.slice(0, i + 1);
+    renderBreadcrumb();
+    loadAndRender(navStack[navStack.length - 1].id);
+}
+
+async function loadAndRender(folderId) {
+    const el = document.getElementById('file-list');
+    el.innerHTML = '<div class="loading">⏳ טוען...</div>';
+    try {
+        const q   = encodeURIComponent(`'${folderId}' in parents and trashed=false`);
+        const url = `https://www.googleapis.com/drive/v3/files?q=${q}&key=${API_KEY}`
+          + `&fields=files(id,name,mimeType,webContentLink,webViewLink,shortcutDetails)&orderBy=name&pageSize=500`;
+        const res  = await fetch(url);
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        const data = await res.json();
+        const files = data.files || [];
+        if (!files.length) {
+            el.innerHTML = '<div class="empty-box">📭 קיין פיילאס נישט</div>';
+            return;
+        }
+        const sorted = [
+            ...files.filter(f => f.mimeType === 'application/vnd.google-apps.folder'),
+            ...files.filter(f => f.mimeType !== 'application/vnd.google-apps.folder'),
+        ];
+        el.innerHTML = sorted.map(f => {
+            const isShortcut = f.mimeType === 'application/vnd.google-apps.shortcut';
+            const targetMime = isShortcut ? (f.shortcutDetails?.targetMimeType || '') : '';
+            const targetId   = isShortcut ? (f.shortcutDetails?.targetId || '') : '';
+            const isFolder   = f.mimeType === 'application/vnd.google-apps.folder'
+                            || (isShortcut && targetMime === 'application/vnd.google-apps.folder');
+            const name     = cleanName(f.name);
+            const icon     = isFolder ? '📁' : getIcon(f.mimeType);
+            const badge    = isFolder
+                ? `<span class="badge badge-folder">פאלדער ›</span>`
+                : isAudio(f.mimeType)
+                    ? `<span class="badge badge-audio">▶ שיעור</span>`
+                    : `<span class="badge badge-file">פיילע</span>`;
+            const safeName     = name.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+            const safeMime     = (f.mimeType||'').replace(/'/g,"\\'");
+            const safeTargetId = (targetId||'').replace(/'/g,"\\'");
+            const safeTargetM  = (targetMime||'').replace(/'/g,"\\'");
+            return `<div class="file-item"
+                onclick="handleClick('${f.id}','${safeName}',${isFolder},'${safeMime}','${safeTargetId}','${safeTargetM}')">
+                <span class="file-icon">${icon}</span>
+                <span class="file-name">${isFolder ? name : formatFileName(name)}</span>
+                ${badge}
+            </div>`;
+        }).join('');
+    } catch(err) {
+        el.innerHTML = `<div class="error-box">
+            ❌ Error loading files<br>
+            <small>${err.message}</small><br><br>
+            <small>Please make sure your API Key is correct and Google Drive API is enabled.</small>
+        </div>`;
+    }
+}
+
+function handleClick(id, name, isFolder, mimeType, targetId, targetMime) {
+    if (mimeType === 'application/vnd.google-apps.shortcut') {
+        if (targetMime === 'application/vnd.google-apps.folder') {
+            navStack.push({ id: targetId, name });
+            renderBreadcrumb();
+            loadAndRender(targetId);
+        } else if (isAudio(targetMime)) {
+            openPlayer(targetId, name);
+        }
+        return;
+    }
+    if (isFolder) {
+        navStack.push({ id, name });
+        renderBreadcrumb();
+        loadAndRender(id);
+    } else if (isAudio(mimeType)) {
+        openPlayer(id, name);
+    } else {
+        window.open(`https://drive.google.com/file/d/${id}/view`, '_blank');
+    }
+}
+
+function openPlayer(fileId, name) {
+    currentFileId = fileId;
+    document.getElementById('player-title').textContent = name;
+    document.getElementById('audio-player').src =
+        `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${API_KEY}`;
+    document.getElementById('player-overlay').classList.add('open');
+    // Download section
+    const sec  = document.getElementById('download-section');
+    const left = downloadsLeft();
+    if (left > 0) {
+        sec.innerHTML = `<a class="dl-btn"
+            href="https://drive.google.com/uc?export=download&id=${fileId}"
+            target="_blank"
+            onclick="countDownload()">⬇️ דאנלוד (${left} פארבליבן היינט)</a>`;
+    } else {
+        sec.innerHTML = `<div class="dl-limit-msg">⛔ דאנלוד לימיט (5 א טאג) דערגרייכט!</div>`;
+    }
+}
+
+function closePlayer() {
+    const audio = document.getElementById('audio-player');
+    audio.pause(); audio.src = '';
+    document.getElementById('player-overlay').classList.remove('open');
+}
+
+document.getElementById('player-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closePlayer();
+});
+
+function isAudio(m) { return m && m.includes('audio'); }
+function getIcon(m) {
+    if (!m) return '📎';
+    if (m.includes('audio')) return '🎵';
+    if (m.includes('video')) return '🎬';
+    if (m.includes('pdf'))   return '📄';
+    return '📎';
+}
+
+showTab('orach', document.querySelector('.tab-btn.active'));
+</script>
+</body>
+</html>
