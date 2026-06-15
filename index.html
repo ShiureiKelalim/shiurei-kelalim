@@ -563,38 +563,17 @@ async function doSrch(term){
   }
   var el=document.getElementById('fl'),si=document.getElementById('sinfo');
   el.innerHTML='<div class="loading">🔍 Searching...</div>';
-
+  var ids=await _getFIds();
   var all=[],seen={};
-  var mainIds=Object.keys(TABS).map(function(k){return TABS[k].id;});
-  var safeTerm=term.replace(/'/g,"\\'");
-
-  // Step 1: get all subfolders from all 5 main folders in parallel
-  var subIds=[];
-  try{
-    var folderResults=await Promise.all(mainIds.map(async function(fId){
-      try{
-        var q=encodeURIComponent("'"+fId+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
-        var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id)&pageSize=100');
-        if(!r.ok)return[];
-        var d=await r.json();
-        return(d.files||[]).map(function(f){return f.id;});
-      }catch(e){return[];}
-    }));
-    folderResults.forEach(function(ids){subIds=subIds.concat(ids);});
-  }catch(e){}
-
-  // Step 2: search in main folders + all subfolders in parallel
-  var searchIn=mainIds.concat(subIds);
-  await Promise.all(searchIn.map(async function(fId){
+  var safe=term.replace(/'/g,"\\'");
+  await Promise.all(ids.map(async function(fId){
     try{
-      var q=encodeURIComponent("'"+fId+"' in parents and name contains '"+safeTerm+"' and mimeType contains 'audio' and trashed=false");
+      var q=encodeURIComponent("'"+fId+"' in parents and name contains '"+safe+"' and mimeType contains 'audio' and trashed=false");
       var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=50');
-      if(!r.ok)return;
-      var d=await r.json();
+      if(!r.ok)return;var d=await r.json();
       if(d.files)d.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
     }catch(e){}
   }));
-
   si.textContent=all.length+' result'+(all.length===1?'':'s')+' for "'+term+'"';
   if(!all.length){el.innerHTML='<div class="empb">🔍 No results found for "'+term+'"</div>';return;}
   el.innerHTML=all.map(function(f){
@@ -618,51 +597,49 @@ function closePl(){var a=document.getElementById('au');a.pause();a.src='';docume
 function togDots(){document.getElementById('dotm').classList.toggle('open');}
 document.getElementById('plov').addEventListener('click',function(e){if(e.target===this)closePl();});
 
+var _fIds=null;
+async function _getFIds(){
+  if(_fIds)return _fIds;
+  var main=Object.keys(TABS).map(function(k){return TABS[k].id;});
+  var all=main.slice(),l1=[];
+  var r1=await Promise.all(main.map(async function(id){
+    try{
+      var q=encodeURIComponent("'"+id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
+      var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id)&pageSize=100');
+      if(!r.ok)return[];var d=await r.json();
+      return(d.files||[]).map(function(f){return f.id;});
+    }catch(e){return[];}
+  }));
+  r1.forEach(function(ids){l1=l1.concat(ids);});
+  all=all.concat(l1);
+  if(l1.length){
+    var r2=await Promise.all(l1.map(async function(id){
+      try{
+        var q=encodeURIComponent("'"+id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
+         var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id)&pageSize=100');
+        if(!r.ok)return[];var d=await r.json();
+        return(d.files||[]).map(function(f){return f.id;});
+      }catch(e){return[];}
+    }));
+    r2.forEach(function(ids){all=all.concat(ids);});
+  }
+  _fIds=all;return all;
+}
 async function loadLatest(){
   try{
+    var ids=await _getFIds();
     var allFiles=[];
-    var mainIds=Object.keys(TABS).map(function(k){return TABS[k].id;});
-
-    // Step 1: get contents of all 5 main folders in parallel
-    var step1=await Promise.all(mainIds.map(async function(fId){
+    await Promise.all(ids.map(async function(fId){
       try{
-        var q=encodeURIComponent("'"+fId+"' in parents and trashed=false");
-        var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType,modifiedTime)&orderBy=modifiedTime+desc&pageSize=50');
-        if(!r.ok)return{audio:[],folders:[]};
-        var d=await r.json();
-        var f=d.files||[];
-        return{
-          audio:f.filter(function(x){return x.mimeType&&x.mimeType.includes('audio');}),
-          folders:f.filter(function(x){return x.mimeType==='application/vnd.google-apps.folder';})
-        };
-      }catch(e){return{audio:[],folders:[]};}
+        var q=encodeURIComponent("'"+fId+"' in parents and mimeType contains 'audio' and trashed=false");
+        var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,modifiedTime)&orderBy=modifiedTime+desc&pageSize=3');
+        if(!r.ok)return;var d=await r.json();
+        if(d.files)allFiles=allFiles.concat(d.files);
+      }catch(e){}
     }));
-
-    var subIds=[];
-    step1.forEach(function(res){
-      allFiles=allFiles.concat(res.audio);
-      subIds=subIds.concat(res.folders.map(function(f){return f.id;}));
-    });
-
-    // Step 2: get audio from all immediate subfolders in parallel
-    if(subIds.length){
-      var step2=await Promise.all(subIds.map(async function(fId){
-        try{
-          var q=encodeURIComponent("'"+fId+"' in parents and mimeType contains 'audio' and trashed=false");
-          var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,modifiedTime)&orderBy=modifiedTime+desc&pageSize=10');
-          if(!r.ok)return[];
-          var d=await r.json();
-          return d.files||[];
-        }catch(e){return[];}
-      }));
-      step2.forEach(function(files){allFiles=allFiles.concat(files);});
-    }
-
     allFiles.sort(function(a,b){return new Date(b.modifiedTime)-new Date(a.modifiedTime);});
-
     if(allFiles.length){
-      latF=allFiles[0];
-      var nm=cln(latF.name);
+      latF=allFiles[0];var nm=cln(latF.name);
       document.getElementById('lname').textContent=nm;
       document.getElementById('latname').textContent=nm;
       var dt=new Date(latF.modifiedTime);
@@ -672,9 +649,7 @@ async function loadLatest(){
     }else{
       document.getElementById('lname').textContent='No shiurim found';
     }
-  }catch(e){
-    document.getElementById('lname').textContent='Error loading';
-  }
+  }catch(e){document.getElementById('lname').textContent='Error loading';}
 }
 function openLatestModal(){openM('m-lat');}
 function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
