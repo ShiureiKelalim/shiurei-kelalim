@@ -34,6 +34,12 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .hsrch .hsi:hover{color:#d4af37}
 .nbrand{color:#fff;font-weight:900;font-size:.95rem;cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none}
 .nbrand span{color:#d4af37}
+.nav-srch-btn{background:none;border:none;color:rgba(255,255,255,.65);font-size:1.15rem;cursor:pointer;padding:3px 8px;border-radius:7px;transition:color .2s;flex-shrink:0}
+.nav-srch-btn:hover{color:#d4af37}
+.sarr{position:fixed;bottom:22px;left:14px;z-index:499;display:flex;gap:8px}
+.sarb{background:rgba(10,22,40,.88);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:38px;height:38px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.sarb:hover{background:#162d5a;color:#d4af37}
+.sarb:disabled{opacity:.22;cursor:default;pointer-events:none}
 .nsrch{flex:1;min-width:80px;max-width:260px;position:relative}
 .nsrch input{width:100%;padding:6px 10px 6px 28px;border-radius:20px;border:none;background:rgba(255,255,255,.13);color:#fff;font-size:.78rem;font-family:'Frank Ruhl Libre',serif;outline:none}
 .nsrch input::placeholder{color:rgba(255,255,255,.4)}
@@ -196,6 +202,7 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
 <!-- TOP NAV -->
 <nav class="tnav">
   <div class="nbrand" onclick="showLanding()">🎙️ <span>Shiurei</span> Kelalim</div>
+  <button class="nav-srch-btn" onclick="focusSearch()" title="זיך שיעורים">🔍</button>
   <div class="ntabs">
     <button class="ntb" onclick="showLanding()">הויפט בלאט</button>
     <button class="ntb" id="tb-or" onclick="showTab('orach',this)">אורח חיים</button>
@@ -238,7 +245,7 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
 <!-- LANDING -->
 <div id="land">
   <div class="hsrch" style="max-width:480px;margin:18px auto 0;padding:0 16px;position:relative">
-  <input type="text" id="srch" placeholder="...זוך שיעורים" oninput="clearIfEmpty(this.value)" onkeyup="if(event.key==='Enter')triggerSearch()" dir="rtl" style="width:100%;padding:11px 42px 11px 16px;border-radius:25px;border:2px solid rgba(0,0,0,.15);background:#fff;color:#162d5a;font-size:1rem;font-family:'Frank Ruhl Libre',serif;outline:none;text-align:right;box-sizing:border-box">
+  <input type="text" id="srch" placeholder="זיך שיעורים..." oninput="clearIfEmpty(this.value)" onkeyup="if(event.key==='Enter')triggerSearch()" dir="rtl" style="width:100%;padding:11px 42px 11px 16px;border-radius:25px;border:2px solid rgba(0,0,0,.15);background:#fff;color:#162d5a;font-size:1rem;font-family:'Frank Ruhl Libre',serif;outline:none;text-align:right;box-sizing:border-box">
   <span onclick="triggerSearch()" style="position:absolute;left:28px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1.1rem">🔍</span>
 </div>
 <div class="latw">
@@ -439,6 +446,10 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
   </div>
 </div>
 
+<div class="sarr" id="sarr" style="display:none">
+  <button class="sarb" id="sab" onclick="goBack()" title="צוריק" disabled>◀</button>
+  <button class="sarb" id="saf" onclick="goFwd()" title="פאראויס" disabled>▶</button>
+</div>
 <footer><p>© Shiurei Kelalim — All Rights Reserved</p></footer>
 
 <script>
@@ -490,6 +501,7 @@ document.querySelectorAll('.mov').forEach(function(o){
 document.getElementById('ytp').addEventListener('click',function(e){if(e.target===this)closeYtp()});
 
 function showLanding(){
+  _ph();
   document.getElementById('hero').style.display='';
   document.getElementById('land').style.display='';
   document.getElementById('ca').style.display='none';
@@ -498,6 +510,7 @@ function showLanding(){
 document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')}); }
 
 function showTab(key,btn){
+  _ph();
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
@@ -530,11 +543,19 @@ function rBC(){
     return'<span class="bcl" onclick="goLv('+i+')">'+item.name+'</span><span class="bcs">›</span>';
   }).join('');
 }
-function goLv(i){nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
+function goLv(i){_ph();nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
 
 async function lFld(fId){
   var el=document.getElementById('fl');
   el.innerHTML='<div class="loading">⏳ Loading...</div>';
+  try{
+    var _tk=Object.keys(TABS).find(function(k){return nav.length&&TABS[k].id===nav[0].id;})||'';
+    var _cn=nav.length?nav[nav.length-1]:null;
+    if(_cn){
+      if(nav.length===1&&_tk)_setHash('tab='+_tk);
+      else _setHash((_tk?'tab='+_tk+'&':'')+'fid='+encodeURIComponent(_cn.id)+'&fn='+encodeURIComponent(_cn.name));
+    }
+  }catch(e){}
   try{
     var q=encodeURIComponent("'"+fId+"' in parents and trashed=false");
     var url='https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType,shortcutDetails)&orderBy=name&pageSize=500';
@@ -567,11 +588,11 @@ async function lFld(fId){
 
 function hCl(id,nm,isF,mime,tId,tMime){
   if(mime==='application/vnd.google-apps.shortcut'){
-    if(tMime==='application/vnd.google-apps.folder'){if(isPr(nm)&&!pwOk){pend={id:tId,name:nm};openM('m-pwd');return;}nav.push({id:tId,name:nm});rBC();lFld(tId);}
+    if(tMime==='application/vnd.google-apps.folder'){if(isPr(nm)&&!pwOk){pend={id:tId,name:nm};openM('m-pwd');return;}_ph();nav.push({id:tId,name:nm});rBC();lFld(tId);}
     else if(isA(tMime))opPl(tId,nm);
     return;
   }
-  if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}nav.push({id:id,name:nm});rBC();lFld(id);}
+  if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();nav.push({id:id,name:nm});rBC();lFld(id);}
   else if(isA(mime))opPl(id,nm);
   else window.open('https://drive.google.com/file/d/'+id+'/view','_blank');
 }
@@ -606,14 +627,13 @@ function handleSearch(val){
 }
 
 async function doSrch(term){
-  if(document.getElementById('ca').style.display==='none'){
-    document.getElementById('hero').style.display='none';
-    document.getElementById('land').style.display='none';
-    document.getElementById('ca').style.display='block';
-    document.getElementById('sbn').className='sbn bno';
-    document.getElementById('sbn').innerHTML='<h2>🔍 Search Results</h2>';
-    document.getElementById('bc').innerHTML='';
-  }
+  _ph();
+  document.getElementById('hero').style.display='none';
+  document.getElementById('land').style.display='none';
+  document.getElementById('ca').style.display='block';
+  document.getElementById('sbn').className='sbn bno';
+  document.getElementById('sbn').innerHTML='<h2>🔍 Search Results</h2>';
+  document.getElementById('bc').innerHTML='';
   var el=document.getElementById('fl'),si=document.getElementById('sinfo');
   el.innerHTML='<div class="loading">🔍 Searching...</div>';
   var ids=await _getFIds();
@@ -645,23 +665,23 @@ async function doSrch(term){
                }));
     }catch(e){}
   }));
-  si.textContent=all.length+' result'+(all.length===1?'':'s')+' for "'+term+'"';
-  if(!all.length){el.innerHTML='<div class="empb">🔍 No results found for "'+term+'"</div>';return;}
-   var _sq=document.getElementById('srch').value.trim();
-  el.innerHTML=all.map(function(f){
-    var nm=cln(f.name);
-    var hl=hlTxt(fmN(nm),_sq);
-    if(f._type==='folder'){
-      var fn=nm.replace(/'/g,"\\'");
-      return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';
-    }
-    var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-    return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';
-  }).join('');
+   if(!all.length){si.textContent='🔍 נישט קיין רעזולטאטן פאר "'+term+'"';el.innerHTML='<div class="empb">🔍 נישט קיין רעזולטאטן פאר "'+term+'"</div>';return;}
+  var _sq=document.getElementById('srch').value.trim();
+  var tl=_sq.toLowerCase();
+  var exact=all.filter(function(f){return f.name.toLowerCase().split(/[\s\-–—\/,;:()\[\].]+/).some(function(w){return w===tl||w.replace(/^[^\u05d0-\u05ea]*/,'').replace(/[^\u05d0-\u05ea]*$/,'')===tl;});});
+  var partial=all.filter(function(f){return exact.indexOf(f)<0;});
+  si.textContent=all.length+' רעזולטאטן פאר "'+term+'"';
+  var html='';
+  if(exact.length)html+='<div style="padding:6px 14px 3px;font-size:.71rem;color:#555;font-weight:700;background:#f5f5f5;border-bottom:1px solid #e8e8e8">✅ דירעקטע טרעפערס — '+exact.length+'</div>';
+  html+=exact.map(function(f){var nm=cln(f.name);var hl=hlTxt(fmN(nm),_sq);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';}).join('');
+  if(partial.length)html+='<div style="padding:6px 14px 3px;font-size:.71rem;color:#555;font-weight:700;background:#f5f5f5;border-bottom:1px solid #e8e8e8">🔍 נאך רעזולטאטן — '+partial.length+'</div>';
+  html+=partial.map(function(f){var nm=cln(f.name);var hl=hlTxt(fmN(nm),_sq);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';}).join('');
+  el.innerHTML=html;
   setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},150);
 }
 
 function opFldr(id,name){
+  _ph();
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
@@ -892,6 +912,14 @@ function closeDon(){closeM('m-don');setTimeout(function(){document.getElementByI
 function fmtCC(el){var v=el.value.replace(/\D/g,'').substring(0,16);el.value=v.replace(/(.{4})/g,'$1 ').trim();}
 function fmtExp(el){var v=el.value.replace(/\D/g,'');if(v.length>=3)v=v.substring(0,2)+'/'+v.substring(2,4);el.value=v;}
 
+var _pH=[],_pF=[];
+function _sv(){return{ca:document.getElementById('ca').style.display,hero:document.getElementById('hero').style.display,land:document.getElementById('land').style.display,nav:nav.slice(),sbn:document.getElementById('sbn').innerHTML,sbnC:document.getElementById('sbn').className,fl:document.getElementById('fl').innerHTML,bc:document.getElementById('bc').innerHTML,si:document.getElementById('sinfo').textContent,sr:document.getElementById('srch').value};}
+function _rs(s){document.getElementById('ca').style.display=s.ca;document.getElementById('hero').style.display=s.hero;document.getElementById('land').style.display=s.land;nav=s.nav.slice();document.getElementById('sbn').innerHTML=s.sbn;document.getElementById('sbn').className=s.sbnC;document.getElementById('fl').innerHTML=s.fl;document.getElementById('bc').innerHTML=s.bc;document.getElementById('sinfo').textContent=s.si;document.getElementById('srch').value=s.sr;_ua();}
+function _ph(){_pH.push(_sv());_pF=[];_ua();}
+function goBack(){if(!_pH.length)return;_pF.push(_sv());_rs(_pH.pop());}
+function goFwd(){if(!_pF.length)return;_pH.push(_sv());_rs(_pF.pop());}
+function _ua(){var ar=document.getElementById('sarr'),ab=document.getElementById('sab'),af=document.getElementById('saf');if(!ar)return;ar.style.display=(_pH.length||_pF.length)?'flex':'none';if(ab)ab.disabled=!_pH.length;if(af)af.disabled=!_pF.length;}
+function focusSearch(){var s=document.getElementById('srch');document.getElementById('hero').style.display='';document.getElementById('land').style.display='';document.getElementById('ca').style.display='none';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});setTimeout(function(){s.focus();s.scrollIntoView({behavior:'smooth',block:'center'});},150);}
 loadLatest();
 checkYomTov();
 </script>
