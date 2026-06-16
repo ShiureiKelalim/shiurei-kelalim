@@ -37,7 +37,7 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .tbar{background:#162d5a;display:flex;justify-content:center;gap:5px;padding:6px 8px;flex-wrap:wrap;position:sticky;top:52px;z-index:299}
 .tb{padding:5px 13px;border:1.5px solid rgba(255,255,255,.25);background:transparent;color:rgba(255,255,255,.7);border-radius:18px;cursor:pointer;font-size:.83rem;font-family:'Frank Ruhl Libre',serif;font-weight:700;transition:all .2s;white-space:nowrap}
 .tb:hover{background:rgba(255,255,255,.12);color:#fff} .tb.active{background:#fff;color:#162d5a;border-color:#fff}
-.sinfo{text-align:center;color:#888;font-size:.79rem;min-height:19px;padding:2px 0;background:#f0ece4}
+.sinfo{text-align:center;color:#222;font-size:1.05rem;font-weight:700;min-height:30px;padding:6px 0;background:#f0ece4;letter-spacing:.2px}
 
 /* HERO */
 .hero{background:linear-gradient(160deg,#08122a 0%,#162d5a 55%,#2a548f 100%);color:#fff;padding:40px 16px 55px;text-align:center;position:relative;overflow:hidden} .hero::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:140%;height:50px;background:#f0ece4;border-radius:50% 50% 0 0}
@@ -49,8 +49,8 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .hs2{color:rgba(255,255,255,.68);font-size:.82rem;line-height:1.85} .hs2 b{color:#d4af37}
 
 /* LANDING */
-.latw{max-width:780px;margin:50px auto 16px;padding:0 12px}
-.latc{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#162d5a,#2a548f);border-radius:14px;padding:15px 18px;color:#fff;cursor:pointer;transition:all .24s}
+.latw{max-width:780px;margin:50px auto 35px;padding:0 12px}
+.latc{display:flex;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#162d5a,#2a548f);border-radius:14px;padding:20px 22px;color:#fff;cursor:pointer;transition:all .24s;text-align:center}
 .latc:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(22,45,90,.33)}
 .ldot{width:13px;height:13px;background:#e53935;border-radius:50%;flex-shrink:0;animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,.5)}50%{box-shadow:0 0 0 7px rgba(229,57,53,0)}}
@@ -408,7 +408,8 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
     <div class="mt">די נייעסטע שיעור</div>
     <p id="latname" style="font-size:.97rem;font-weight:700;color:#162d5a;margin-bottom:4px">Loading...</p>
     <p id="latdate" style="color:#aaa;font-size:.77rem;margin-bottom:14px"></p>
-    <button class="sbtn" onclick="playLatest()">▶ Listen Now</button>
+    <button class="sbtn" onclick="playLatest()" style="margin-bottom:8px">▶ הער יעצט</button>
+    <button class="sbtn" onclick="goToLatestShiur()" style="background:linear-gradient(135deg,#2e7d32,#388e3c)">📂 גיי צום שיעור</button>
   </div>
 </div>
 
@@ -555,11 +556,11 @@ function triggerSearch(){
   var val=document.getElementById('srch').value.trim();
   if(!val)return;
   document.getElementById('sinfo').textContent='🔍 זוכט...';
-  doSrch(val);
-  setTimeout(function(){
-    var ca=document.getElementById('ca');
-    if(ca.style.display!=='none')ca.scrollIntoView({behavior:'smooth',block:'start'});
-  },200);
+  doSrch(val).then(function(){
+    setTimeout(function(){
+      document.getElementById('ca').scrollIntoView({behavior:'smooth',block:'start'});
+    },100);
+  });
 }
 function handleSearch(val){
   clearTimeout(stmr);
@@ -597,7 +598,7 @@ async function doSrch(term){
 }
 
 function opPl(fId,nm){
-  document.getElementById('plti').textContent=nm;
+  document.getElementById('plti').innerHTML=fmN(nm);
   document.getElementById('au').src='https://www.googleapis.com/drive/v3/files/'+fId+'?alt=media&key='+KEY;
   document.getElementById('dotm').classList.remove('open');
   var l=dlL();
@@ -638,44 +639,89 @@ async function _getFIds(){
   }
   _fIds=all;return all;
 }
-  async function getParsha(){
+  function hebrewYear(num){
+  var n=num%1000;
+  var vals=[400,300,200,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1];
+  var lets=['ת','ש','ר','ק','צ','פ','ע','ס','נ','מ','ל','כ','י','ט','ח','ז','ו','ה','ד','ג','ב','א'];
+  var result='',rem=n;
+  for(var i=0;i<vals.length;i++){while(rem>=vals[i]){result+=lets[i];rem-=vals[i];}}
+  result=result.replace('יה','טו').replace('יו','טז');
+  if(result.length===1)return result+'׳';
+  return result.slice(0,-1)+'״'+result.slice(-1);
+}
+async function getParsha(){
   try{
+    var now=new Date();
+    var cr=await fetch('https://www.hebcal.com/converter?cfg=json&gy='+now.getFullYear()+'&gm='+(now.getMonth()+1)+'&gd='+now.getDate()+'&g2h=1');
+    var cd=await cr.json();
+    var yr=hebrewYear(cd.hy);
     var r=await fetch('https://www.hebcal.com/shabbat?cfg=json&geo=none&M=on&a=on&lg=he');
     var d=await r.json();
     var p=d.items&&d.items.find(function(x){return x.category==='parashat';});
-    if(p)return p.hebrew||p.title;
+    if(p){
+      var name=(p.hebrew||p.title||'').replace(/^פרש[הת]\s*/,'').replace(/^Parashat\s*/i,'');
+      return 'פרשת '+name+' — '+yr;
+    }
   }catch(e){}
   return null;
 }
+var latTabKey=null,latParentFolderId=null,latParentFolderName=null;
 async function loadLatest(){
   try{
-    var ids=await _getFIds();
-    var allFiles=[];
-    await Promise.all(ids.map(async function(fId){
+    var best=null;
+    latTabKey=null;latParentFolderId=null;latParentFolderName=null;
+    for(var k in TABS){
+      var t=TABS[k];
+      var subs=[];
       try{
-        var q=encodeURIComponent("'"+fId+"' in parents and mimeType contains 'audio' and trashed=false");
-        var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,modifiedTime)&orderBy=modifiedTime+desc&pageSize=3');
-        if(!r.ok)return;var d=await r.json();
-        if(d.files)allFiles=allFiles.concat(d.files);
+        var q0=encodeURIComponent("'"+t.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
+        var r0=await fetch('https://www.googleapis.com/drive/v3/files?q='+q0+'&key='+KEY+'&fields=files(id,name)&pageSize=100');
+        if(r0.ok){var d0=await r0.json();subs=d0.files||[];}
       }catch(e){}
-    }));
-    allFiles.sort(function(a,b){return new Date(b.modifiedTime)-new Date(a.modifiedTime);});
-    if(allFiles.length){
-      latF=allFiles[0];var nm=cln(latF.name);
-      document.getElementById('lname').textContent=nm;
-      document.getElementById('latname').textContent=nm;
+      var toSearch=[{id:t.id,name:t.name}].concat(subs);
+      var kk=k;
+      await Promise.all(toSearch.map(async function(folder){
+        try{
+          var q=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");
+          var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,modifiedTime)&orderBy=modifiedTime+desc&pageSize=2');
+          if(!r.ok)return;
+          var d=await r.json();
+          (d.files||[]).forEach(function(f){
+            if(!best||new Date(f.modifiedTime)>new Date(best.file.modifiedTime)){
+              best={file:f,tabKey:kk,parentId:folder.id,parentName:folder.name};
+            }
+          });
+        }catch(e){}
+      }));
+    }
+    if(best){
+      latF=best.file;latTabKey=best.tabKey;
+      latParentFolderId=best.parentId;latParentFolderName=best.parentName;
+      var nm=cln(latF.name);
+      document.getElementById('lname').innerHTML=fmN(nm);
+      document.getElementById('latname').innerHTML=fmN(nm);
       var parsha=await getParsha();
-      var ds=parsha?'פרשת '+parsha:'';
+      var ds=parsha||'';
       document.getElementById('ldate').textContent=ds;
       document.getElementById('latdate').textContent=ds;
     }else{
-      document.getElementById('lname').textContent='No shiurim found';
+      document.getElementById('lname').textContent='שיעורים נישט דא';
     }
-  }catch(e){document.getElementById('lname').textContent='Error loading';}
+  }catch(e){document.getElementById('lname').textContent='פעלער';}
 }
 function openLatestModal(){openM('m-lat');}
 function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
-
+function goToLatestShiur(){
+  if(!latTabKey)return;
+  closeM('m-lat');
+  showTab(latTabKey,null);
+  if(latParentFolderId&&latParentFolderId!==TABS[latTabKey].id){
+    setTimeout(function(){
+      nav.push({id:latParentFolderId,name:latParentFolderName||'...'});
+      rBC();lFld(latParentFolderId);
+    },350);
+  }
+}
 async function checkYomTov(){
   try{
     var q=encodeURIComponent("'"+YTID+"' in parents and trashed=false and mimeType='application/vnd.google-apps.shortcut'");
