@@ -592,7 +592,7 @@ function hCl(id,nm,isF,mime,tId,tMime){
     else if(isA(tMime))opPl(tId,nm);
     return;
   }
-  if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();  if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();nav.push({id:id,name:nm});rBC();lFld(id);}
+   if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();nav.push({id:id,name:nm});rBC();lFld(id);}
   else if(isA(mime))opPl(id,nm);
   else window.open('https://drive.google.com/file/d/'+id+'/view','_blank');
 }
