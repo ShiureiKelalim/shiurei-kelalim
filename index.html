@@ -104,6 +104,8 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .bdg{font-size:.67rem;padding:2px 8px;border-radius:13px;font-weight:700;white-space:nowrap}
 .bf{background:#e8ecf5;color:#162d5a}
 .ba{background:#e8f5e9;color:#2e7d32}
+.hi{background:#ffd700;color:#1a1000;border-radius:2px;padding:0 2px;font-weight:700}
+.baf{background:#e6a817;color:#fff}
 .bpf{background:#fff3e0;color:#e65100}
 .snum{display:inline-block;direction:ltr;font-weight:800;color:#fff;background:#162d5a;font-size:.82rem;padding:1px 6px;border-radius:5px;margin-right:3px;vertical-align:middle}
 
@@ -454,7 +456,12 @@ var TABS={
 var MO=['ניסן','אייר','סיון','תמוז','אב','אלול','תשרי','חשון','כסלו','טבת','שבט','אדר'];
 var nav=[],stmr=null,ytFId='',ytNm='',pwOk=false,pend=null,dAmt=18,latF=null;
 
-function cln(n){
+function hlTxt(txt,q){
+  if(!q||!txt)return txt;
+  var esc=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return txt.replace(new RegExp('('+esc+')','gi'),'<span class="hi">$1</span>');
+}
+function cln(s){
   for(var i=1;i<=Math.min(5,n.length-1);i++){var c=n.charCodeAt(i);if(c===45||c===8211||c===8212)return n.slice(i+1).trim();}
   if(n.length>4){var h=function(x){return x>=0x05D0&&x<=0x05EA};if(h(n.charCodeAt(0))&&!h(n.charCodeAt(1))&&h(n.charCodeAt(2))&&n[3]===' ')return n.slice(4).trim();}
   return n.trim();
@@ -623,7 +630,11 @@ async function doSrch(term){
         var fr=await fetch('https://www.googleapis.com/drive/v3/files?q='+fq+'&key='+KEY+'&fields=files(id,name)&pageSize=20');
         if(!fr.ok)return;var fd=await fr.json();
         var folders=fd.files||[];
-        await Promise.all(folders.map(async function(folder){
+               await Promise.all(folders.map(async function(folder){
+          if(!seen['fd_'+folder.id]){
+            seen['fd_'+folder.id]=1;
+            all.push({id:folder.id,name:folder.name,_type:'folder'});
+          }
           try{
             var aq=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");
             var ar=await fetch('https://www.googleapis.com/drive/v3/files?q='+aq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
@@ -631,18 +642,46 @@ async function doSrch(term){
             if(ad.files)ad.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
           }catch(e){}
         }));
-      }catch(e){}
-  }));
   si.textContent=all.length+' result'+(all.length===1?'':'s')+' for "'+term+'"';
   if(!all.length){el.innerHTML='<div class="empb">🔍 No results found for "'+term+'"</div>';return;}
+   var _sq=document.getElementById('srch').value.trim();
   el.innerHTML=all.map(function(f){
     var nm=cln(f.name);
+    var hl=hlTxt(fmN(nm),_sq);
+    if(f._type==='folder'){
+      var fn=nm.replace(/'/g,"\\'");
+      return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';
+    }
     var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-    return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+fmN(nm)+'</span><span class="bdg ba">▶ Shiur</span></div>';
+    return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';
   }).join('');
   setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},150);
 }
 
+function opFldr(id,name){
+  document.getElementById('hero').style.display='none';
+  document.getElementById('land').style.display='none';
+  document.getElementById('ca').style.display='block';
+  document.getElementById('sbn').className='sbn bno';
+  document.getElementById('sbn').innerHTML='<h2>📁 '+name+'</h2>';
+  var el=document.getElementById('fl'),si=document.getElementById('sinfo');
+  el.innerHTML='<div class="loading">⏳ לאדט...</div>';
+  fetch('https://www.googleapis.com/drive/v3/files?q='+encodeURIComponent("'"+id+"' in parents and trashed=false")+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=100')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var files=d.files||[];
+      if(!files.length){el.innerHTML='<p style="text-align:center;padding:20px">נישט געפונן</p>';return;}
+      el.innerHTML=files.map(function(f){
+        var nm=cln(f.name);
+        if(f.mimeType==='application/vnd.google-apps.folder'){
+          return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">📁</span><span class="fin">'+fmN(nm)+'</span><span class="bdg baf">📂 Folder</span></div>';
+        }
+        var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+        return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+fmN(nm)+'</span><span class="bdg ba">▶ Shiur</span></div>';
+      }).join('');
+      si.textContent='';
+    }).catch(function(){el.innerHTML='<p>פעלער</p>';});
+}
 function opPl(fId,nm){
   document.getElementById('plti').innerHTML=fmN(nm);
   document.getElementById('au').src='https://www.googleapis.com/drive/v3/files/'+fId+'?alt=media&key='+KEY;
