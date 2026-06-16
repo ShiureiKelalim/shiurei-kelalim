@@ -26,12 +26,10 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .nsi:hover{color:#fff}
 .nbtns{flex:1;display:flex;gap:5px;justify-content:center;flex-wrap:wrap;padding:0 6px}
 .nb{padding:5px 9px;border:none;border-radius:16px;cursor:pointer;font-size:.71rem;font-family:'Frank Ruhl Libre',serif;font-weight:700;white-space:nowrap;transition:all .2s}
-.nb:hover{filter:brightness(1.15);transform:translateY(-1px)}
-.nr{background:#e53935;color:#fff}
-.np{background:#8e24aa;color:#fff} .nt{background:#00897b;color:#fff}
-.nbl{background:#1565c0;color:#fff}
-.ng{background:#daa520;color:#1a1000}
-.ngr{background:#2e7d32;color:#fff}
+.nb{padding:4px 15px;border:none;border-right:1px solid rgba(255,255,255,.25);background:none;cursor:pointer;font-size:.85rem;font-family:'Frank Ruhl Libre',serif;font-weight:700;white-space:nowrap;color:rgba(255,255,255,.88);transition:color .2s;border-radius:0}
+.nb:hover{color:#d4af37}
+.nb:last-child{border-right:none}
+.nr,.np,.nt,.nbl,.ng,.ngr{background:none;color:rgba(255,255,255,.88)}
 
 /* TABS */
 .tbar{background:#162d5a;display:flex;justify-content:center;gap:5px;padding:6px 8px;flex-wrap:wrap;position:sticky;top:52px;z-index:299}
@@ -56,6 +54,8 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(229,57,53,.5)}50%{box-shadow:0 0 0 7px rgba(229,57,53,0)}}
 .li h3{font-size:.9rem;font-weight:700;margin-bottom:2px}
 .li p{font-size:.77rem;opacity:.8}
+#ldate{color:#ff6b6b;font-weight:700;font-size:.82rem;opacity:1;margin-top:3px}
+#latdate{color:#e53935;font-weight:700;font-size:.82rem}
 .secw{max-width:780px;margin:0 auto;padding:0 12px 40px}
 .sech{text-align:center;font-size:1.15rem;font-weight:700;color:#162d5a;margin-bottom:14px}
 .cg{display:flex;flex-wrap:wrap;justify-content:center;gap:14px}
@@ -595,6 +595,7 @@ async function doSrch(term){
     var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
     return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+fmN(nm)+'</span><span class="bdg ba">▶ Shiur</span></div>';
   }).join('');
+  setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},150);
 }
 
 function opPl(fId,nm){
@@ -671,25 +672,34 @@ async function loadLatest(){
     var best=null;
     latTabKey=null;latParentFolderId=null;latParentFolderName=null;
     for(var k in TABS){
-      var t=TABS[k];
-      var subs=[];
+      var t=TABS[k];var kk=k;
+      var level0=[{id:t.id,name:t.name}];
+      var level1=[],level2=[];
       try{
         var q0=encodeURIComponent("'"+t.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
         var r0=await fetch('https://www.googleapis.com/drive/v3/files?q='+q0+'&key='+KEY+'&fields=files(id,name)&pageSize=100');
-        if(r0.ok){var d0=await r0.json();subs=d0.files||[];}
+        if(r0.ok){var d0=await r0.json();level1=d0.files||[];}
       }catch(e){}
-      var toSearch=[{id:t.id,name:t.name}].concat(subs);
-      var kk=k;
+      if(level1.length){
+        var l2r=await Promise.all(level1.map(async function(sf){
+          try{
+            var q2=encodeURIComponent("'"+sf.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
+            var r2=await fetch('https://www.googleapis.com/drive/v3/files?q='+q2+'&key='+KEY+'&fields=files(id,name)&pageSize=100');
+            if(!r2.ok)return[];var d2=await r2.json();return d2.files||[];
+          }catch(e){return[];}
+        }));
+        l2r.forEach(function(arr){level2=level2.concat(arr);});
+      }
+      var toSearch=level0.concat(level1).concat(level2);
       await Promise.all(toSearch.map(async function(folder){
         try{
           var q=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");
-          var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,modifiedTime)&orderBy=modifiedTime+desc&pageSize=2');
-          if(!r.ok)return;
-          var d=await r.json();
+          var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,modifiedTime,createdTime)&orderBy=modifiedTime+desc&pageSize=3');
+          if(!r.ok)return;var d=await r.json();
           (d.files||[]).forEach(function(f){
-            if(!best||new Date(f.modifiedTime)>new Date(best.file.modifiedTime)){
-              best={file:f,tabKey:kk,parentId:folder.id,parentName:folder.name};
-            }
+            var ft=new Date(f.createdTime||f.modifiedTime);
+            var bt=best?new Date(best.file.createdTime||best.file.modifiedTime):null;
+            if(!best||ft>bt){best={file:f,tabKey:kk,parentId:folder.id,parentName:folder.name};}
           });
         }catch(e){}
       }));
@@ -701,9 +711,8 @@ async function loadLatest(){
       document.getElementById('lname').innerHTML=fmN(nm);
       document.getElementById('latname').innerHTML=fmN(nm);
       var parsha=await getParsha();
-      var ds=parsha||'';
-      document.getElementById('ldate').textContent=ds;
-      document.getElementById('latdate').textContent=ds;
+      document.getElementById('ldate').textContent=parsha||'';
+      document.getElementById('latdate').textContent=parsha||'';
     }else{
       document.getElementById('lname').textContent='שיעורים נישט דא';
     }
