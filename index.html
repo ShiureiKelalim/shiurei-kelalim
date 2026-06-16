@@ -578,11 +578,20 @@ function triggerSearch(){
   var val=document.getElementById('srch').value.trim();
   if(!val)return;
   document.getElementById('sinfo').textContent='🔍 זוכט...';
-  doSrch(val).then(function(){
+  var p=doSrch(val);
+  if(p&&p.then){
+    p.then(function(){
+      setTimeout(function(){
+        var ca=document.getElementById('ca');
+        if(ca){ca.style.display='block';ca.scrollIntoView({behavior:'smooth',block:'start'});}
+      },300);
+    });
+  }else{
     setTimeout(function(){
-      document.getElementById('ca').scrollIntoView({behavior:'smooth',block:'start'});
-    },100);
-  });
+      var ca=document.getElementById('ca');
+      if(ca){ca.style.display='block';ca.scrollIntoView({behavior:'smooth',block:'start'});}
+    },800);
+  }
 }
 function handleSearch(val){
   clearTimeout(stmr);
@@ -602,13 +611,27 @@ async function doSrch(term){
   var ids=await _getFIds();
   var all=[],seen={};
   var safe=term.replace(/'/g,"\\'");
-  await Promise.all(ids.map(async function(fId){
-    try{
-      var q=encodeURIComponent("'"+fId+"' in parents and name contains '"+safe+"' and mimeType contains 'audio' and trashed=false");
-      var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=50');
-      if(!r.ok)return;var d=await r.json();
-      if(d.files)d.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
-    }catch(e){}
+     await Promise.all(ids.map(async function(fId){
+      try{
+        var q=encodeURIComponent("'"+fId+"' in parents and name contains '"+safe+"' and mimeType contains 'audio' and trashed=false");
+        var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=50');
+        if(!r.ok)return;var d=await r.json();
+        if(d.files)d.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
+      }catch(e){}
+      try{
+        var fq=encodeURIComponent("'"+fId+"' in parents and name contains '"+safe+"' and mimeType='application/vnd.google-apps.folder' and trashed=false");
+        var fr=await fetch('https://www.googleapis.com/drive/v3/files?q='+fq+'&key='+KEY+'&fields=files(id,name)&pageSize=20');
+        if(!fr.ok)return;var fd=await fr.json();
+        var folders=fd.files||[];
+        await Promise.all(folders.map(async function(folder){
+          try{
+            var aq=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");
+            var ar=await fetch('https://www.googleapis.com/drive/v3/files?q='+aq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
+            if(!ar.ok)return;var ad=await ar.json();
+            if(ad.files)ad.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
+          }catch(e){}
+        }));
+      }catch(e){}
   }));
   si.textContent=all.length+' result'+(all.length===1?'':'s')+' for "'+term+'"';
   if(!all.length){el.innerHTML='<div class="empb">🔍 No results found for "'+term+'"</div>';return;}
