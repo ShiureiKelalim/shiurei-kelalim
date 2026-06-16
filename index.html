@@ -511,7 +511,6 @@ document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active
 
 function showTab(key,btn){
   _ph();
-  _setHash('tab='+key);
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
@@ -593,7 +592,7 @@ function hCl(id,nm,isF,mime,tId,tMime){
     else if(isA(tMime))opPl(tId,nm);
     return;
   }
-  if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();var _tk=Object.keys(TABS).find(function(k){return nav[0]&&TABS[k].id===nav[0].id;})||'';_setHash((_tk?'tab='+_tk+'&':'')+'fid='+encodeURIComponent(id)+'&fn='+encodeURIComponent(nm));nav.push({id:id,name:nm});rBC();lFld(id);}
+  if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();  if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();nav.push({id:id,name:nm});rBC();lFld(id);}
   else if(isA(mime))opPl(id,nm);
   else window.open('https://drive.google.com/file/d/'+id+'/view','_blank');
 }
@@ -684,7 +683,6 @@ async function doSrch(term){
 
 function opFldr(id,name){
   _ph();
-  _setHash('fid='+encodeURIComponent(id)+'&fn='+encodeURIComponent(name));
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
@@ -709,7 +707,7 @@ function opFldr(id,name){
     }).catch(function(){el.innerHTML='<p>פעלער</p>';});
 }
 function opPl(fId,nm){
-  _setHash('sid='+encodeURIComponent(fId)+'&sn='+encodeURIComponent(nm));
+  try{_setHash((location.hash.replace('#','').split('&').filter(function(x){return x.indexOf('sid=')<0&&x.indexOf('sn=')<0;}).join('&')+'&sid='+encodeURIComponent(fId)+'&sn='+encodeURIComponent(nm)).replace(/^&/,''));}catch(e){}
   document.getElementById('plti').innerHTML=fmN(nm);
   document.getElementById('au').src='https://www.googleapis.com/drive/v3/files/'+fId+'?alt=media&key='+KEY;
   document.getElementById('dotm').classList.remove('open');
