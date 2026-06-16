@@ -462,9 +462,9 @@ function hlTxt(txt,q){
   return txt.replace(new RegExp('('+esc+')','gi'),'<span class="hi">$1</span>');
 }
 function cln(s){
-  for(var i=1;i<=Math.min(5,n.length-1);i++){var c=n.charCodeAt(i);if(c===45||c===8211||c===8212)return n.slice(i+1).trim();}
-  if(n.length>4){var h=function(x){return x>=0x05D0&&x<=0x05EA};if(h(n.charCodeAt(0))&&!h(n.charCodeAt(1))&&h(n.charCodeAt(2))&&n[3]===' ')return n.slice(4).trim();}
-  return n.trim();
+  for(var i=1;i<=Math.min(5,s.length-1);i++){var c=s.charCodeAt(i);if(c===45||c===8211||c===8212)return s.slice(i+1).trim();}
+  if(s.length>4){var h=function(x){return x>=0x05D0&&x<=0x05EA};if(h(s.charCodeAt(0))&&!h(s.charCodeAt(1))&&h(s.charCodeAt(2))&&s[3]===' ')return s.slice(4).trim();}
+  return s.trim();
 }
 function fmN(n){
   var m=n.match(/^(.+?)\s+mp3\.(\d+)$/i);
@@ -641,7 +641,9 @@ async function doSrch(term){
             if(!ar.ok)return;var ad=await ar.json();
             if(ad.files)ad.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
           }catch(e){}
-        }));
+               }));
+    }catch(e){}
+  }));
   si.textContent=all.length+' result'+(all.length===1?'':'s')+' for "'+term+'"';
   if(!all.length){el.innerHTML='<div class="empb">🔍 No results found for "'+term+'"</div>';return;}
    var _sq=document.getElementById('srch').value.trim();
