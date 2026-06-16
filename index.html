@@ -781,7 +781,7 @@ function opPl(fId,nm){
     ?'<button class="dlbtn" onclick="doDl(\''+fId+'\')">⬇️ Download ('+l+' left today)</button>'
     :'<div class="dllim">⛔ Download limit reached (5/day)</div>';
   document.getElementById('plov').classList.add('open'); }
-function doDl(fId){cDl();window.open('https://drive.google.com/uc?export=download&id='+fId,'_blank');}
+function doDl(fId){   cDl();   var fr=document.createElement('iframe');   fr.style.display='none';   fr.src='https://drive.google.com/uc?export=download&id='+fId;   document.body.appendChild(fr);   setTimeout(function(){document.body.removeChild(fr);},8000); }
 function closePl(){var a=document.getElementById('au');a.pause();a.src='';document.getElementById('plov').classList.remove('open');}
 function togDots(){document.getElementById('dotm').classList.toggle('open');}
 document.getElementById('plov').addEventListener('click',function(e){if(e.target===this)closePl();});
