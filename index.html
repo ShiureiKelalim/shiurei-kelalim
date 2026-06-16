@@ -654,8 +654,11 @@ async function doSrch(term){
   var el=document.getElementById('fl'),si=document.getElementById('sinfo');
   el.innerHTML='<div class="loading">🔍 Searching...</div>';
   var ids=await _getFIds();
-  var all=[],seen={};
+  var all=[],allBroader=[],seen={};
   var safe=term.replace(/'/g,"\\'");
+  var _hPfx=/^[\u05d1\u05d3\u05d4\u05d5\u05d6\u05db\u05dc\u05de\u05e9]+/;
+  var root=term.replace(_hPfx,'');
+  var safeRoot=(root.length>=2&&root!==term)?root.replace(/'/g,"\\'"):null;
      await Promise.all(ids.map(async function(fId){
       try{
         var q=encodeURIComponent("'"+fId+"' in parents and name contains '"+safe+"' and mimeType contains 'audio' and trashed=false");
@@ -673,32 +676,72 @@ async function doSrch(term){
             seen['fd_'+folder.id]=1;
             all.push({id:folder.id,name:folder.name,_type:'folder'});
           }
-          try{
+                    try{
             var aq=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");
             var ar=await fetch('https://www.googleapis.com/drive/v3/files?q='+aq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
             if(!ar.ok)return;var ad=await ar.json();
             if(ad.files)ad.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
           }catch(e){}
+          try{
+            var sfq=encodeURIComponent("'"+folder.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
+            var sfr=await fetch('https://www.googleapis.com/drive/v3/files?q='+sfq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
+            if(!sfr.ok)return;var sfd=await sfr.json();
+            await Promise.all((sfd.files||[]).map(async function(sf){
+              try{
+                var saq=encodeURIComponent("'"+sf.id+"' in parents and mimeType contains 'audio' and trashed=false");
+                var sar=await fetch('https://www.googleapis.com/drive/v3/files?q='+saq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
+                if(!sar.ok)return;var sad=await sar.json();
+                if(sad.files)sad.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
+              }catch(e){}
+            }));
+          }catch(e){}
                }));
     }catch(e){}
   }));
-   if(!all.length){si.textContent='🔍 נישט קיין רעזולטאטן פאר "'+term+'"';el.innerHTML='<div class="empb">🔍 נישט קיין רעזולטאטן פאר "'+term+'"</div>';return;}
+     if(safeRoot){
+    await Promise.all(ids.map(async function(fId){
+      try{
+        var qr=encodeURIComponent("'"+fId+"' in parents and name contains '"+safeRoot+"' and mimeType contains 'audio' and trashed=false");
+        var rr=await fetch('https://www.googleapis.com/drive/v3/files?q='+qr+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=50');
+        if(!rr.ok)return;var dr=await rr.json();
+        if(dr.files)dr.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;allBroader.push(f);}});
+      }catch(e){}
+      try{
+        var fqr=encodeURIComponent("'"+fId+"' in parents and name contains '"+safeRoot+"' and mimeType='application/vnd.google-apps.folder' and trashed=false");
+        var frr=await fetch('https://www.googleapis.com/drive/v3/files?q='+fqr+'&key='+KEY+'&fields=files(id,name)&pageSize=20');
+        if(!frr.ok)return;var fdr=await frr.json();
+        await Promise.all((fdr.files||[]).map(async function(folder){
+          if(!seen['fd_'+folder.id]){seen['fd_'+folder.id]=1;allBroader.push({id:folder.id,name:folder.name,_type:'folder'});}
+          try{
+            var aqr=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");
+            var arr=await fetch('https://www.googleapis.com/drive/v3/files?q='+aqr+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
+            if(!arr.ok)return;var adr=await arr.json();
+            if(adr.files)adr.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;allBroader.push(f);}});
+          }catch(e){}
+          try{
+            var sfqr=encodeURIComponent("'"+folder.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
+            var sfrr=await fetch('https://www.googleapis.com/drive/v3/files?q='+sfqr+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
+            if(!sfrr.ok)return;var sfdr=await sfrr.json();
+            await Promise.all((sfdr.files||[]).map(async function(sf){
+              try{
+                var saqr=encodeURIComponent("'"+sf.id+"' in parents and mimeType contains 'audio' and trashed=false");
+                var sarr=await fetch('https://www.googleapis.com/drive/v3/files?q='+saqr+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
+                if(!sarr.ok)return;var sadr=await sarr.json();
+                if(sadr.files)sadr.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;allBroader.push(f);}});
+              }catch(e){}
+            }));
+          }catch(e){}
+        }));
+      }catch(e){}
+    }));
+  }
+  if(!all.length&&!allBroader.length){si.textContent='🔍 נישט קיין רעזולטאטן פאר "'+term+'"';el.innerHTML='<div class="empb">🔍 נישט קיין רעזולטאטן פאר "'+term+'"</div>';return;}
   var _sq=document.getElementById('srch').value.trim();
-  var tl=_sq.toLowerCase();
-  var hPre=/^[\u05d1\u05db\u05dc\u05de\u05d5\u05d4\u05e9]+/;
-  var exact=all.filter(function(f){
-    return f.name.split(/[\s\-–—\/,;:()\[\].]+/).some(function(w){
-      var c=w.replace(/^[^\u05d0-\u05ea]*/,'').replace(/[^\u05d0-\u05ea]*$/,'');
-      return c===_sq||c.replace(hPre,'')===_sq||w.toLowerCase()===tl;
-    });
-  });
-  var partial=all.filter(function(f){return exact.indexOf(f)<0;});
-  si.textContent=all.length+' רעזולטאטן פאר "'+term+'"';
+  si.textContent=(all.length+allBroader.length)+' רעזולטאטן פאר "'+term+'"';
+  function _rItem(f,q){var nm=cln(f.name);var hl=hlTxt(fmN(nm),q);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';}
   var html='';
-  if(exact.length)html+='<div style="padding:6px 14px 3px;font-size:.71rem;color:#555;font-weight:700;background:#f5f5f5;border-bottom:1px solid #e8e8e8">✅ דירעקטע טרעפערס — '+exact.length+'</div>';
-  html+=exact.map(function(f){var nm=cln(f.name);var hl=hlTxt(fmN(nm),_sq);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';}).join('');
-  if(partial.length)html+='<div style="padding:6px 14px 3px;font-size:.71rem;color:#555;font-weight:700;background:#f5f5f5;border-bottom:1px solid #e8e8e8">🔍 נאך רעזולטאטן — '+partial.length+'</div>';
-  html+=partial.map(function(f){var nm=cln(f.name);var hl=hlTxt(fmN(nm),_sq);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';}).join('');
+  if(all.length){html+='<div style="padding:6px 14px 3px;font-size:.71rem;color:#555;font-weight:700;background:#f5f5f5;border-bottom:1px solid #e8e8e8">✅ ספעציפישע רעזולטאטן — "'+term+'" — '+all.length+'</div>';html+=all.map(function(f){return _rItem(f,_sq);}).join('');}
+  if(allBroader.length){html+='<div style="padding:6px 14px 3px;font-size:.71rem;color:#777;font-weight:700;background:#fafafa;border-bottom:1px solid #e8e8e8">🔍 ברייטערע רעזולטאטן — "'+root+'" — '+allBroader.length+'</div>';html+=allBroader.map(function(f){return _rItem(f,root);}).join('');}
   el.innerHTML=html;
   setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},150);
 }
