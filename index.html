@@ -954,12 +954,14 @@ function sendContact(e){
   .then(function(r){return r.json();}).then(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';}).catch(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';});
 }
 
+var SCRIPT_URL='https://script.google.com/macros/s/AKfycbwgNS0eN4lMJWU5Pc6C3XjgSOMOjC2IOCRqKtrhNzynHXuxvUTJYzM9H7XYlFkCSg1sDg/exec';
 function doSub(e){
   e.preventDefault();
   var em=document.getElementById('sube').value.trim();
   if(!em||!em.includes('@'))return;
-  fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:em,_subject:'New Subscriber - Shiurei Kelalim',message:'New subscriber: '+em})})
-  .then(function(){document.getElementById('subf').style.display='none';document.getElementById('subok').style.display='block';}).catch(function(){document.getElementById('subf').style.display='none';document.getElementById('subok').style.display='block';});
+  fetch(SCRIPT_URL+'?email='+encodeURIComponent(em))
+  .then(function(){document.getElementById('subf').style.display='none';document.getElementById('subok').style.display='block';})
+  .catch(function(){document.getElementById('subf').style.display='none';document.getElementById('subok').style.display='block';});
 }
 
 function selAmt(amt,el){
