@@ -959,9 +959,14 @@ function doSub(e){
   e.preventDefault();
   var em=document.getElementById('sube').value.trim();
   if(!em||!em.includes('@'))return;
-  fetch(SCRIPT_URL+'?email='+encodeURIComponent(em))
-  .then(function(){document.getElementById('subf').style.display='none';document.getElementById('subok').style.display='block';})
-  .catch(function(){document.getElementById('subf').style.display='none';document.getElementById('subok').style.display='block';});
+  var _img=new Image();
+  _img.onload=_img.onerror=function(){
+    document.getElementById('subf').style.display='none';
+    document.getElementById('subok').innerHTML='✅ You are now subscribed!';
+    document.getElementById('subok').style.color='#2e7d32';
+    document.getElementById('subok').style.display='block';
+  };
+  _img.src=SCRIPT_URL+'?email='+encodeURIComponent(em)+'&t='+Date.now();
 }
 
 function selAmt(amt,el){
