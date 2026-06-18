@@ -727,7 +727,7 @@ async function doSrch(term){
       }catch(e){}
     }));
   }
-  if(!all.length&&!allBroader.length){si.textContent='🔍 נישט קיין רעזולטאטן פאר "'+term+'"';el.innerHTML='<div class="empb">🔍 נישט קיין רעזולטאטן פאר "'+term+'"</div>';return;}
+  if(!all.length&&!allBroader.length){si.textContent='🔍 נישט קיין רעזולטאטן פאר "'+term+'"';el.innerHTML='<div class="empb">🔍 נישט געטראפען קיין רעזולטאטן פאר "'+term+'"</div>';return;}
   var _sq=document.getElementById('srch').value.trim();
   si.textContent=(all.length+allBroader.length)+' רעזולטאטן פאר "'+term+'"';
   function _rItem(f,q){var nm=cln(f.name);var hl=hlTxt(fmN(nm),q);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';}
