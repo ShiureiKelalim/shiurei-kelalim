@@ -959,14 +959,15 @@ function doSub(e){
   e.preventDefault();
   var em=document.getElementById('sube').value.trim();
   if(!em||!em.includes('@'))return;
-  var _img=new Image();
-  _img.onload=_img.onerror=function(){
-    document.getElementById('subf').style.display='none';
-    document.getElementById('subok').innerHTML='✅ You are now subscribed!';
-    document.getElementById('subok').style.color='#2e7d32';
-    document.getElementById('subok').style.display='block';
-  };
-  _img.src=SCRIPT_URL+'?email='+encodeURIComponent(em)+'&t='+Date.now();
+  var fr=document.createElement('iframe');
+  fr.style.display='none';
+  fr.src=SCRIPT_URL+'?email='+encodeURIComponent(em)+'&t='+Date.now();
+  document.body.appendChild(fr);
+  document.getElementById('subf').style.display='none';
+  document.getElementById('subok').innerHTML='✅ You are now subscribed!';
+  document.getElementById('subok').style.color='#2e7d32';
+  document.getElementById('subok').style.display='block';
+  setTimeout(function(){if(fr.parentNode)fr.parentNode.removeChild(fr);},10000);
 }
 
 function selAmt(amt,el){
