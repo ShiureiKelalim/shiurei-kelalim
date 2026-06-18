@@ -1020,6 +1020,7 @@ window.addEventListener('popstate',function(){if(_pH.length){_pF.push(_sv());_rs
   else if(p.fid){document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+(p.fn||'')+'</h2>';nav=[{id:p.fid,name:p.fn||'...'}];rBC();lFld(p.fid);}
   else if(p.sid){setTimeout(function(){opPl(p.sid,p.sn||'');},400);}
   else if(p.q){document.getElementById('srch').value=p.q;setTimeout(function(){triggerSearch();},400);}
+  else if(p.m){setTimeout(function(){openM(p.m);},400);}
 }
 loadLatest();
 checkYomTov();
