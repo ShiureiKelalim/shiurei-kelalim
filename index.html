@@ -959,7 +959,7 @@ function doSub(e){
   e.preventDefault();
   var em=document.getElementById('sube').value.trim();
   if(!em||!em.includes('@'))return;
-  fetch(SCRIPT_URL+'?email='+encodeURIComponent(em))
+  fetch(SCRIPT_URL+'?email='+encodeURIComponent(em), {mode:'no-cors'})
   .then(function(){document.getElementById('subf').style.display='none';document.getElementById('subok').style.display='block';})
   .catch(function(){document.getElementById('subf').style.display='none';document.getElementById('subok').style.display='block';});
 }
