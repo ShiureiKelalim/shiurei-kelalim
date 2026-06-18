@@ -145,18 +145,17 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .fld label{display:block;font-weight:600;margin-bottom:3px;color:#555;font-size:.81rem}
 .fld input,.fld textarea,.fld select{width:100%;padding:8px 11px;border:2px solid #dde3f0;border-radius:8px;font-family:'Frank Ruhl Libre',serif;font-size:.87rem;outline:none;transition:border .2s;background:#fafbff;color:#2c1810}
 .fld input:focus,.fld textarea:focus{border-color:#162d5a;background:#fff}
-.fld textarea{min-height:72px;resize:vertical}
+.fld textarea{min-height:140px;resize:vertical}
 .sbtn{display:block;width:100%;padding:10px;background:linear-gradient(135deg,#162d5a,#2a548f);color:#fff;border:none;border-radius:10px;font-size:.9rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;transition:all .2s}
 .sbtn:hover{filter:brightness(1.08)}
 .okm{text-align:center;padding:12px 0;font-size:.93rem;font-weight:600;color:#2e7d32}
 .erm{color:#c62828;font-size:.78rem;text-align:center;margin-top:5px;display:none}
 
 /* HOTLINE */
-.hlr{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f0ece4}
-.hlr:last-child{border-bottom:none}
-.hlc{font-weight:700;color:#162d5a;font-size:.9rem}
-.hln{font-size:.9rem;color:#162d5a;text-decoration:none;font-weight:600;direction:ltr}
-.hln:hover{text-decoration:underline}
+.hlr{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #f0ece4}.hlr:last-child{border-bottom:none}
+.hlc{font-weight:700;color:#162d5a;font-size:1rem}
+.hln{font-size:1.15rem;color:#162d5a;text-decoration:none;font-weight:700;direction:ltr}
+ .hln:hover{text-decoration:underline}
 
 /* PASSWORD */
 .pwi{display:block;width:100%;padding:10px;border:2px solid #dde3f0;border-radius:9px;font-size:1.25rem;text-align:center;letter-spacing:6px;font-family:monospace;outline:none;margin-bottom:10px;background:#fafbff;transition:border .2s}
@@ -358,16 +357,16 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
 <!-- CONTACT -->
 <div class="mov" id="m-ct">
   <button class="mov-back" onclick="closeM('m-ct')">◀ צוריק</button>
-  <div class="mbx">
+  <div class="mbx" style="max-width:580px">
     <button class="mx" onclick="closeM('m-ct')">✕</button>
     <div class="mi">✉️</div>
     <div class="mt">Contact Us</div>
     <form id="ctf" onsubmit="sendContact(event)">
       <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_subject" value="New message - Shiurei Kelalim">
       <div class="fld"><label>Email</label><input type="email" name="email" id="cte" placeholder="your@email.com" required></div>
+      <div class="fld"><label>Subject / נושא</label><input type="text" name="subject" id="cts" placeholder="Subject of your message..."></div>
       <div class="fld"><label>Message</label><textarea name="message" id="ctm" placeholder="Write your message..." required></textarea></div>
-      <button type="submit" class="sbtn">📨 Send Message</button>
+      <button type="submit" class="sbtn">Send Message →</button>
     </form>
     <div id="ctok" class="okm" style="display:none">✅ Thank you! Your message has been received.</div>
   </div>
@@ -461,8 +460,32 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
 <footer><p>© Shiurei Kelalim — All Rights Reserved</p></footer>
 
 <script>
-var KEY='AIzaSyAPagTKnIPrZgSqJiI6hwzaef-UC5HqckE';
-var MAIL='shiureikelalim@gmail.com';
+
+(function(){
+  try{
+    var _h=location.hash.replace('#',''),_p={};
+    _h.split('&').forEach(function(x){var a=x.split('=');if(a[1]!==undefined)_p[a[0]]=decodeURIComponent(a[1]);});
+    if(_p.m){
+      var _hero=document.getElementById('hero');
+      var _land=document.getElementById('land');
+      if(_hero)_hero.style.display='none';
+      if(_land)_land.style.display='none';
+    }
+  }catch(ex){}
+})();
+  (function(){
+  try{
+    var _h=location.hash.replace('#',''),_p={};
+    _h.split('&').forEach(function(x){var a=x.split('=');if(a[1]!==undefined)_p[a[0]]=decodeURIComponent(a[1]);});
+    if(_p.m){
+      var _hero=document.getElementById('hero');
+      var _land=document.getElementById('land');
+      if(_hero)_hero.style.display='none';
+      if(_land)_land.style.display='none';
+    }
+  }catch(ex){}
+})();
+var KEY='AIzaSyAPagTKnIPrZgSqJiI6hwzaef-UC5HqckE';var MAIL='shiureikelalim@gmail.com';
 var PASS='9525';
 var YTID='1VInbXZ3QiL-9CzP4OSgAi2FoTZSYDXLG';
 var PROT=['טהרה','נשואים'];
@@ -948,10 +971,13 @@ function closeYtp(){document.getElementById('ytp').classList.remove('open');}
 function sendContact(e){
   e.preventDefault();
   var email=document.getElementById('cte').value.trim();
+  var subj=document.getElementById('cts')?document.getElementById('cts').value.trim():'';
   var msg=document.getElementById('ctm').value.trim();
   if(!email||!msg)return;
-  fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:email,message:msg,_subject:'Message - Shiurei Kelalim'})})
-  .then(function(r){return r.json();}).then(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';}).catch(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';});
+  fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:email,message:msg,_subject:(subj?subj+' — ':'')+'Message - Shiurei Kelalim'})})
+  .then(function(r){return r.json();})
+  .then(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';})
+  .catch(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';});
 }
 
 var SCRIPT_URL='https://script.google.com/macros/s/AKfycbxfbJ28TiEifCMekuBWu7LXbqpsaTbVDuvkdtuRrsYTNKPHDJjKEJ0m-PEcnz0s-EnRZQ/exec';
@@ -959,15 +985,45 @@ var SCRIPT_URL='https://script.google.com/macros/s/AKfycbxfbJ28TiEifCMekuBWu7LXb
   e.preventDefault();
   var em=document.getElementById('sube').value.trim();
   if(!em||!em.includes('@'))return;
-  var fr=document.createElement('iframe');
+  var handled=false,fr=document.createElement('iframe');
   fr.style.display='none';
+  function onMsg(ev){
+    if(!ev.data||!ev.data.sk)return;
+    handled=true;
+    window.removeEventListener('message',onMsg);
+    _showSubResult(ev.data.result);
+    if(fr.parentNode)fr.parentNode.removeChild(fr);
+  }
+  window.addEventListener('message',onMsg);
   fr.src=SCRIPT_URL+'?email='+encodeURIComponent(em)+'&t='+Date.now();
   document.body.appendChild(fr);
+  setTimeout(function(){
+    if(!handled){
+      window.removeEventListener('message',onMsg);
+      _showSubResult('success');
+      if(fr.parentNode)fr.parentNode.removeChild(fr);
+    }
+  },12000);
+}
+
+function _showSubResult(result){
   document.getElementById('subf').style.display='none';
-  document.getElementById('subok').innerHTML='✅ You are now subscribed!';
-  document.getElementById('subok').style.color='#2e7d32';
-  document.getElementById('subok').style.display='block';
-  setTimeout(function(){if(fr.parentNode)fr.parentNode.removeChild(fr);},10000);
+  var ok=document.getElementById('subok');
+  if(result==='already_subscribed'){
+    ok.innerHTML='&#9888; איר זענט שוין אינעם סיסטעם!<br>'+
+      '<small style="color:#888;font-size:.76rem;display:block;margin-top:5px">You are already subscribed — no action needed.</small>';
+    ok.style.color='#e65100';
+  }else{
+    ok.innerHTML='&#9989; You are now subscribed!<br>'+
+      '<span style="color:#555;font-size:.78rem;display:block;margin-top:8px;line-height:1.7">'+
+      'איר וועט יעצט אטעמאטיש באקומן א אריינפיר אימעל.<br>'+
+      'אויב איר זעט עס נישט — טשעקט אין ספּעם.<br>'+
+      'אויב נאכאלס נישט — פרובירט זיך נאכאמאל צו סאבסקרייבן,<br>'+
+      'אדער שרייקט: <a href="mailto:info@shiureikelalim.com" style="color:#162d5a;font-weight:700">info@shiureikelalim.com</a>'+
+      '</span>';
+    ok.style.color='#2e7d32';
+  }
+  ok.style.display='block';
 }
 
 function selAmt(amt,el){
@@ -1021,11 +1077,11 @@ window.addEventListener('popstate',function(){if(_pH.length){_pF.push(_sv());_rs
   else if(p.fid){document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+(p.fn||'')+'</h2>';nav=[{id:p.fid,name:p.fn||'...'}];rBC();lFld(p.fid);}
   else if(p.sid){setTimeout(function(){opPl(p.sid,p.sn||'');},400);}
   else if(p.q){document.getElementById('srch').value=p.q;setTimeout(function(){triggerSearch();},400);}
-  else if(p.m){setTimeout(function(){openM(p.m);},400);}
+else if(p.m){openM(p.m);}
 }
 loadLatest();
 checkYomTov();
-setTimeout(_readHash,150);
+_readHash();
 </script>
 </body>
 </html>
