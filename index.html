@@ -41,10 +41,7 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .nav-si.open{max-width:220px}
 .nav-si input{background:none;border:none;color:#fff;font-family:'Frank Ruhl Libre',serif;font-size:.82rem;padding:5px 10px;outline:none;width:200px;direction:rtl}
 .nav-si input::placeholder{color:rgba(255,255,255,.45)}
-.sarr{position:fixed;bottom:22px;left:14px;z-index:499;display:flex;gap:8px}
-.sarb{background:rgba(10,22,40,.88);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2);border-radius:50%;width:38px;height:38px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.sarb:hover{background:#162d5a;color:#d4af37}
-.sarb:disabled{opacity:.22;cursor:default;pointer-events:none}
+
 
 /* TABS */
 .tbar{display:none}
@@ -577,7 +574,73 @@ function fmN(n){
 }
 function isA(m){return m&&m.includes('audio')}
 function gIco(m){if(!m)return'📎';if(m.includes('audio'))return'🎵';if(m.includes('video'))return'🎬';if(m.includes('pdf'))return'📄';return'📎';}
-function isPr(nm){return PROT.some(function(k){return nm.includes(k)})}
+
+// Auto-emoji by folder name keywords
+var FOLDER_ICONS={
+  'ציצית':'🧣','ציצת':'🧣',
+  'שבת':'🕯️','שבתות':'🕯️',
+  'בשר':'🥩','בשרי':'🥩',
+  'חלב':'🥛','חלבי':'🥛',
+  'כשר':'✡️','כשרות':'✡️',
+  'תפילה':'📿','תפלה':'📿',
+  'ברכה':'🍇','ברכות':'🍇',
+  'נטל':'💧','נטילה':'💧','נטילת':'💧',
+  'יום טוב':'🎊','יו"ט':'🎊',
+  'ראש השנה':'🍎','ר"ה':'🍎',
+  'יום כיפור':'📖','כיפור':'📖',
+  'סוכות':'🌿','סוכה':'🌿',
+  'חנוכה':'🕎',
+  'פורים':'🎭',
+  'פסח':'🍷','פסחים':'🍷',
+  'שבועות':'🌸',
+  'תשעה':'😔','תשעה באב':'😔',
+  'אבל':'🪦','אבלות':'🪦',
+  'רפואה':'💊','חולה':'💊',
+  'ממון':'💰','הלוואה':'💰',
+  'שכירות':'🏠','שכר':'🏠',
+  'שותפות':'🤝','עסק':'🤝',
+  'מקוה':'💧','טהרה':'🌊',
+  'נשואין':'💍','נשואים':'💍','חתונה':'💍',
+  'גט':'📄',
+  'עדות':'⚖️',
+  'ניקור':'🔪',
+  'בישול':'🍲','בישולי':'🍲',
+  'תערובת':'🫙',
+  'כלים':'🥄',
+  'אורח':'📖',
+  'יורה':'🍷',
+  'אבן':'💍',
+  'חושן':'⚖️',
+  'מועד':'🕯️','מועדים':'🕯️'
+};
+function getFolderEmoji(name){
+  var n=name||'';
+  for(var k in FOLDER_ICONS){if(n.includes(k))return FOLDER_ICONS[k];}
+  return'📁';
+}
+
+var FOLDER_COLORS={
+  'ציצית':'linear-gradient(135deg,#1a4a1a,#2e7d32)',
+  'שבת':'linear-gradient(135deg,#3d2a00,#b8860b)',
+  'בשר':'linear-gradient(135deg,#5c1a00,#b71c1c)',
+  'חלב':'linear-gradient(135deg,#003366,#1565c0)',
+  'תפילה':'linear-gradient(135deg,#1a0045,#6a1b9a)',
+  'ברכות':'linear-gradient(135deg,#004d00,#2e7d32)',
+  'נטילת':'linear-gradient(135deg,#003d4d,#0277bd)',
+  'נטילה':'linear-gradient(135deg,#003d4d,#0277bd)',
+  'חנוכה':'linear-gradient(135deg,#002060,#1565c0)',
+  'פסח':'linear-gradient(135deg,#3d0000,#b71c1c)',
+  'סוכות':'linear-gradient(135deg,#1a3d00,#388e3c)',
+  'יום טוב':'linear-gradient(135deg,#2a2000,#b8860b)',
+  'ממון':'linear-gradient(135deg,#002a1a,#00695c)',
+  'רפואה':'linear-gradient(135deg,#1a0030,#7b1fa2)'
+};
+function getFolderColor(name){
+  var n=name||'';
+  for(var k in FOLDER_COLORS){if(n.includes(k))return FOLDER_COLORS[k];}
+  return null;
+}
+  function isPr(nm){return PROT.some(function(k){return nm.includes(k)})}
 
 function gDl(){var t=new Date().toDateString();var d=JSON.parse(localStorage.getItem('dlx')||'{"d":"","c":0}');if(d.d!==t){d.d=t;d.c=0;}return d;}
 function dlL(){return Math.max(0,5-gDl().c)}
@@ -696,9 +759,12 @@ async function lFld(fId){
       var ico=isF?'📁':gIco(f.mimeType);
       var badge=isF?'<span class="bdg bf">Folder ›</span>':isA(f.mimeType)?'<span class="bdg ba">▶ Shiur</span>':'<span class="bdg bpf">File</span>';
       var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-      var fiCls=isF?'fi fi-fld':'fi';
-      var tImg=isF?'<img src="img/siddur.jpg" onerror="this.remove()" alt="">':'<img src="img/audio.jpg" onerror="this.remove()" alt="">';
-      return'<div class="'+fiCls+'" onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+f.mimeType.replace(/'/g,"\\'")+'\',\''+tI.replace(/'/g,"\\'")+'\',\''+tM.replace(/'/g,"\\'")+'\')"><span class="fii">'+ico+tImg+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';
+var fiCls=isF?'fi fi-fld':'fi';
+var folderEmoji=isF?getFolderEmoji(nm):'';
+var folderColor=isF?getFolderColor(nm):'';
+var folderStyle=isF&&folderColor?'style="'+folderColor+'!important"':'';
+      var tImg=isF?'':'';
+      return'<div class="'+fiCls+'" '+(folderStyle||'')+' onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+f.mimeType.replace(/'/g,"\\'")+'\',\''+tI.replace(/'/g,"\\'")+'\',\''+tM.replace(/'/g,"\\'")+'\')"><span class="fii">'+ico+tImg+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';
     }).join('');
   }catch(e){el.innerHTML='<div class="errb">❌ Error: '+e.message+'</div>';}
 }
