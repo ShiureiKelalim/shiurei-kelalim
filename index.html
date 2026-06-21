@@ -197,7 +197,78 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
   .ntb{font-size:.65rem;padding:3px 6px}
 }
 @media(max-width:340px){.cg{grid-template-columns:1fr}}
-</style>
+/* ===== BEAUTIFUL GRADIENT THEME ===== */
+
+/* Section cards on landing - gradient like the hero card */
+.sc{
+  background:linear-gradient(135deg,#08122a 0%,#162d5a 100%)!important;
+  color:#fff!important;
+  border:none!important;
+  box-shadow:0 4px 18px rgba(8,18,42,.3)!important;
+}
+.sc:hover{
+  transform:translateY(-4px)!important;
+  box-shadow:0 10px 28px rgba(8,18,42,.45)!important;
+}
+.co{background:linear-gradient(135deg,#08122a,#162d5a)!important}
+.co:hover{background:linear-gradient(135deg,#162d5a,#2a548f)!important}
+.cy{background:linear-gradient(135deg,#2a0045,#6a1b9a)!important}
+.cy:hover{background:linear-gradient(135deg,#6a1b9a,#9c27b0)!important}
+.ce{background:linear-gradient(135deg,#5c0000,#b71c1c)!important}
+.ce:hover{background:linear-gradient(135deg,#b71c1c,#e53935)!important}
+.cc{background:linear-gradient(135deg,#00251a,#00695c)!important}
+.cc:hover{background:linear-gradient(135deg,#00695c,#00897b)!important}
+.cm{background:linear-gradient(135deg,#4a3800,#b8860b)!important}
+.cm:hover{background:linear-gradient(135deg,#b8860b,#daa520)!important}
+
+.sct{color:#fff!important}
+.scs{color:rgba(255,255,255,.65)!important}
+.sc::before{background:rgba(212,175,55,.6)!important}
+
+/* File list container - remove white box */
+.fl{
+  background:transparent!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:7px!important;
+}
+
+/* Every file/folder item - beautiful mini-card */
+.fi{
+  background:linear-gradient(135deg,#0d1f40 0%,#162d5a 60%,#1e3a6e 100%);
+  color:#fff;
+  border-radius:12px;
+  border-bottom:none!important;
+  box-shadow:0 3px 10px rgba(8,18,42,.28);
+  padding:14px 18px;
+  transition:all .22s;
+}
+.fi:hover{
+  background:linear-gradient(135deg,#162d5a,#2a548f)!important;
+  transform:translateY(-2px);
+  box-shadow:0 7px 20px rgba(8,18,42,.42)!important;
+}
+
+/* Folder items - darker navy */
+.fi.fi-fld{
+  background:linear-gradient(135deg,#06101f,#0e1e3d)!important;
+}
+.fi.fi-fld:hover{
+  background:linear-gradient(135deg,#0e1e3d,#162d5a)!important;
+}
+
+/* Text colors inside file items */
+.fin{color:#fff!important}
+.fii{color:#d4af37}
+
+/* Badges */
+.bdg.bf{background:rgba(212,175,55,.18);color:#d4af37;border:1px solid rgba(212,175,55,.4)}
+.bdg.ba{background:rgba(100,200,120,.15);color:#81c784;border:1px solid rgba(100,200,120,.3)}
+.bdg.baf{background:rgba(212,175,55,.18);color:#d4af37;border:1px solid rgba(212,175,55,.35)}
+.bdg.bpf{background:rgba(255,183,77,.15);color:#ffb74d}
 </head>
 <body>
 
@@ -602,7 +673,8 @@ async function lFld(fId){
       var ico=isF?'📁':gIco(f.mimeType);
       var badge=isF?'<span class="bdg bf">Folder ›</span>':isA(f.mimeType)?'<span class="bdg ba">▶ Shiur</span>':'<span class="bdg bpf">File</span>';
       var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-      return'<div class="fi" onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+f.mimeType.replace(/'/g,"\\'")+'\',\''+tI.replace(/'/g,"\\'")+'\',\''+tM.replace(/'/g,"\\'")+'\')"><span class="fii">'+ico+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';
+      var fiCls=isF?'fi fi-fld':'fi';
+return'<div class="'+fiCls+'" onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+f.mimeType.replace(/'/g,"\\'")+'\',\''+tI.replace(/'/g,"\\'")+'\',\''+tM.replace(/'/g,"\\'")+'\')"><span class="fii">'+ico+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';
     }).join('');
   }catch(e){el.innerHTML='<div class="errb">❌ Error: '+e.message+'</div>';}
 }
@@ -744,7 +816,7 @@ async function doSrch(term){
   if(!all.length&&!allBroader.length){si.textContent='🔍 נישט קיין רעזולטאטן פאר "'+term+'"';el.innerHTML='<div class="empb">🔍 נישט געטראפען קיין רעזולטאטן פאר "'+term+'"</div>';return;}
   var _sq=document.getElementById('srch').value.trim();
   si.textContent=(all.length+allBroader.length)+' רעזולטאטן פאר "'+term+'"';
-  function _rItem(f,q){var nm=cln(f.name);var hl=hlTxt(fmN(nm),q);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';}
+  function _rItem(f,q){var nm=cln(f.name);var hl=hlTxt(fmN(nm),q);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';}
   var allAudio=all.filter(function(f){return!f._type;});
   var allFoldsEx=all.filter(function(f){return f._type==='folder';});
   var html='';
@@ -776,7 +848,7 @@ function opFldr(id,name){
       el.innerHTML=files.map(function(f){
         var nm=cln(f.name);
         if(f.mimeType==='application/vnd.google-apps.folder'){
-          return'<div class="fi" style="background:#fffde7" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">📁</span><span class="fin">'+fmN(nm)+'</span><span class="bdg baf">📂 Folder</span></div>';
+          return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">📁</span><span class="fin">'+fmN(nm)+'</span><span class="bdg baf">📂 Folder</span></div>';
         }
         var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
         return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+fmN(nm)+'</span><span class="bdg ba">▶ Shiur</span></div>';
