@@ -260,8 +260,9 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
         <div class="li" style="text-align:center;flex:1">
         <h3>די נייעסטע שיעור</h3>
         <p id="lname">Loading...</p>
-        <p id="ldate" style="font-size:.7rem;opacity:.7;margin-top:2px"></p>
-      </div>
+<p id="ldate" style="font-size:.75rem;color:#ff6b6b;font-weight:700;margin-top:3px"></p>
+<p style="font-size:.65rem;color:rgba(255,255,255,.5);margin-top:4px;font-style:italic">(א יעדע וואך איז דא א פרישע שיעור אי"ה)</p>
+        </div>
     </div>
   </div>
   <div class="secw">
@@ -450,8 +451,9 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
     <div class="mi">🔴</div>
     <div class="mt">די נייעסטע שיעור</div>
     <p id="latname" style="font-size:.97rem;font-weight:700;color:#162d5a;margin-bottom:4px">Loading...</p>
-    <p id="latdate" style="color:#aaa;font-size:.77rem;margin-bottom:14px"></p>
-    <button class="sbtn" onclick="playLatest()" style="margin-bottom:8px">▶ הער יעצט</button>
+<p id="latdate" style="color:#162d5a;font-size:.82rem;font-weight:700;margin-bottom:4px"></p>
+<p style="color:#aaa;font-size:.72rem;margin-bottom:14px;font-style:italic">(א יעדע וואך איז דא א פרישע שיעור אי"ה)</p>
+   <button class="sbtn" onclick="playLatest()" style="margin-bottom:8px">▶ הער יעצט</button>
     <button class="sbtn" onclick="goToLatestShiur()" style="background:linear-gradient(135deg,#2e7d32,#388e3c)">📂 גיי צום שיעור</button>
   </div>
 </div>
@@ -854,18 +856,19 @@ async function _getFIds(){
   if(result.length===1)return result+'׳';
   return result.slice(0,-1)+'״'+result.slice(-1);
 }
-async function getParsha(){
+async function getParshaForDate(dateObj){
   try{
-    var now=new Date();
-    var cr=await fetch('https://www.hebcal.com/converter?cfg=json&gy='+now.getFullYear()+'&gm='+(now.getMonth()+1)+'&gd='+now.getDate()+'&g2h=1');
+    var now=dateObj||new Date();
+    var yr=now.getFullYear(),mo=now.getMonth()+1,dy=now.getDate();
+    var cr=await fetch('https://www.hebcal.com/converter?cfg=json&gy='+yr+'&gm='+mo+'&gd='+dy+'&g2h=1');
     var cd=await cr.json();
-    var yr=hebrewYear(cd.hy);
-    var r=await fetch('https://www.hebcal.com/shabbat?cfg=json&geo=none&M=on&a=on&lg=he');
+    var hebrY=hebrewYear(cd.hy);
+    var r=await fetch('https://www.hebcal.com/shabbat?cfg=json&geo=none&M=on&a=on&lg=he&gy='+yr+'&gm='+mo+'&gd='+dy);
     var d=await r.json();
     var p=d.items&&d.items.find(function(x){return x.category==='parashat';});
     if(p){
       var name=(p.hebrew||p.title||'').replace(/^פרש[הת]\s*/,'').replace(/^Parashat\s*/i,'');
-      return 'פרשת '+name+' — '+yr;
+      return 'פרשת '+name+' — '+hebrY;
     }
   }catch(e){}
   return null;
@@ -913,9 +916,11 @@ async function loadLatest(){
 latParentFolderId=best.parentId;latParentFolderName=cln(best.parentName);      var nm=cln(latF.name);
       document.getElementById('lname').innerHTML=fmN(nm);
       document.getElementById('latname').innerHTML=fmN(nm);
-      var parsha=await getParsha();
-      document.getElementById('ldate').textContent=parsha||'';
-      document.getElementById('latdate').textContent=parsha||'';
+var uploadDate=new Date(latF.createdTime||latF.modifiedTime);
+var parsha=await getParshaForDate(uploadDate);
+var parshaLabel=parsha?'די שיעור איז געווארן פארגעלערנט '+parsha:'';
+document.getElementById('ldate').textContent=parshaLabel;
+document.getElementById('latdate').textContent=parshaLabel;
     }else{
       document.getElementById('lname').textContent='שיעורים נישט דא';
     }
