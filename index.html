@@ -974,27 +974,18 @@ var SCRIPT_URL='https://script.google.com/macros/s/AKfycbxfbJ28TiEifCMekuBWu7LXb
   e.preventDefault();
   var em=document.getElementById('sube').value.trim();
   if(!em||!em.includes('@'))return;
-  var handled=false,fr=document.createElement('iframe');
-  fr.style.display='none';
-  function onMsg(ev){
-    if(!ev.data||!ev.data.sk)return;
-    handled=true;
-    window.removeEventListener('message',onMsg);
-    _showSubResult(ev.data.result);
-    if(fr.parentNode)fr.parentNode.removeChild(fr);
-  }
-  window.addEventListener('message',onMsg);
-  fr.src=SCRIPT_URL+'?email='+encodeURIComponent(em)+'&t='+Date.now();
-  document.body.appendChild(fr);
-  setTimeout(function(){
-    if(!handled){
-      window.removeEventListener('message',onMsg);
-      _showSubResult('success');
-      if(fr.parentNode)fr.parentNode.removeChild(fr);
-    }
-  },12000);
-}
+  var btn=document.querySelector('#subf .sbtn');
+  if(btn){btn.textContent='⏳...';btn.disabled=true;}
 
+  // ← ווייז גלייך — שיק אין באַקגראַונד
+  _showSubResult('success');
+
+  fetch(SCRIPT_URL+'?email='+encodeURIComponent(em)+'&t='+Date.now(),{
+    method:'GET',
+    mode:'no-cors',
+    credentials:'omit'
+  }).catch(function(){});
+}
 function _showSubResult(result){
   document.getElementById('subf').style.display='none';
   var ok=document.getElementById('subok');
