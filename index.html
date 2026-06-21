@@ -764,8 +764,7 @@ var folderEmoji=isF?getFolderEmoji(nm):'';
 var folderColor=isF?getFolderColor(nm):'';
 var folderStyle=isF&&folderColor?'style="'+folderColor+'!important"':'';
       var tImg=isF?'':'';
-      return'<div class="'+fiCls+'" '+(folderStyle||'')+' onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+f.mimeType.replace(/'/g,"\\'")+'\',\''+tI.replace(/'/g,"\\'")+'\',\''+tM.replace(/'/g,"\\'")+'\')"><span class="fii">'+ico+tImg+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';
-    }).join('');
+return'<div class="'+fiCls+'" '+(folderStyle||'')+' onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+f.mimeType.replace(/'/g,"\\'")+'\''+',\''+tI.replace(/'/g,"\\'")+'\',\''+tM.replace(/'/g,"\\'")+'\')"><span class="fii">'+(isF?folderEmoji:ico)+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';    }).join('');
   }catch(e){el.innerHTML='<div class="errb">❌ Error: '+e.message+'</div>';}
 }
 
