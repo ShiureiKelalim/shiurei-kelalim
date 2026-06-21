@@ -5,8 +5,9 @@
 <title>Shiurei Kelalim — Download</title>
 <script>
   var id = new URLSearchParams(window.location.search).get('id');
-  if(id){
+    if(id){
     window.location.href = 'https://drive.google.com/uc?export=download&id=' + id;
+    setTimeout(function(){ window.close(); }, 2000);
   } else {
     window.location.href = 'https://www.shiureikelalim.com';
   }
