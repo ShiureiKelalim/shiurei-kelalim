@@ -109,23 +109,39 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 
 /* FILE LIST */
 .fl{background:transparent!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;display:flex!important;flex-direction:column!important;gap:7px!important}
-.fi{background:linear-gradient(135deg,#0d1f40 0%,#162d5a 60%,#1e3a6e 100%)!important;color:#fff!important;border-radius:12px!important;border-bottom:none!important;box-shadow:0 3px 10px rgba(8,18,42,.28)!important;padding:10px 14px!important;transition:all .22s!important;display:flex!important;align-items:center!important;gap:10px!important;cursor:pointer!important}
-.fi:hover{background:linear-gradient(135deg,#162d5a,#2a548f)!important;transform:translateY(-2px)!important;box-shadow:0 7px 20px rgba(8,18,42,.42)!important}
-.fi.fi-fld{background:linear-gradient(135deg,#06101f,#0e1e3d)!important}
-.fi.fi-fld:hover{background:linear-gradient(135deg,#0e1e3d,#162d5a)!important}
-.fii{font-size:1.35rem!important;width:46px!important;min-width:46px!important;height:46px!important;border-radius:9px!important;background:rgba(255,255,255,.1)!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;position:relative!important;overflow:hidden!important}
-.fi.fi-fld .fii{background:rgba(212,175,55,.12)!important}
-.fii img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:9px!important}
+
+/* Audio file rows — medium blue */
+.fi{background:linear-gradient(135deg,#2c5282 0%,#3d7ab5 60%,#4a90d9 100%)!important;color:#fff!important;border-radius:12px!important;border-bottom:none!important;box-shadow:0 2px 10px rgba(30,60,120,.25)!important;padding:10px 14px!important;transition:all .22s!important;display:flex!important;align-items:center!important;gap:10px!important;cursor:pointer!important}
+.fi:hover{background:linear-gradient(135deg,#3d7ab5,#5a9fd0)!important;transform:translateY(-2px)!important;box-shadow:0 6px 18px rgba(30,60,120,.35)!important}
+
+/* Folder rows — warm gold-navy */
+.fi.fi-fld{background:linear-gradient(135deg,#2a3f6b,#3a5a9a,#4a6fb5)!important}
+.fi.fi-fld:hover{background:linear-gradient(135deg,#3a5a9a,#5070c0)!important}
+
+/* Thumbnail box */
+.fii{font-size:1.4rem!important;width:48px!important;min-width:48px!important;height:48px!important;border-radius:10px!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;position:relative!important;overflow:hidden!important;
+  /* Audio: light blue shimmer */
+  background:linear-gradient(145deg,rgba(255,255,255,.25),rgba(255,255,255,.08))!important;
+  border:1px solid rgba(255,255,255,.2)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3)!important;
+}
+/* Folder thumbnail: gold shimmer */
+.fi.fi-fld .fii{
+  background:linear-gradient(145deg,rgba(212,175,55,.35),rgba(212,175,55,.1))!important;
+  border:1px solid rgba(212,175,55,.35)!important;
+  box-shadow:inset 0 1px 0 rgba(255,220,100,.3)!important;
+}
+.fii img{display:none!important}/* hide broken imgs */
+
 .fin{color:#fff!important;font-size:.88rem!important;font-weight:600!important;flex:1!important;line-height:1.35!important}
 .bdg{font-size:.67rem;padding:2px 8px;border-radius:13px;font-weight:700;white-space:nowrap}
-.bdg.bf{background:rgba(212,175,55,.18);color:#d4af37;border:1px solid rgba(212,175,55,.4)}
-.bdg.ba{background:rgba(46,180,100,.15);color:#81c784;border:1px solid rgba(46,180,100,.3)}
+.bdg.bf{background:rgba(255,220,80,.2);color:#ffe87a;border:1px solid rgba(255,220,80,.4)}
+.bdg.ba{background:rgba(80,220,120,.18);color:#80ffaa;border:1px solid rgba(80,220,120,.3)}
 .hi{background:#ffd700;color:#1a1000;border-radius:2px;padding:0 2px;font-weight:700}
-.bdg.baf{background:rgba(212,175,55,.18);color:#d4af37;border:1px solid rgba(212,175,55,.35)}
-.bdg.bpf{background:rgba(255,183,77,.15);color:#ffb74d}
-.snum{display:inline-block;direction:ltr;font-weight:800;color:#fff;background:#162d5a;font-size:.82rem;padding:1px 6px;border-radius:5px;margin-right:3px;vertical-align:middle}
-.sr-hdr{padding:8px 14px 5px;font-size:.71rem;font-weight:700;background:rgba(8,18,42,.7);color:rgba(255,255,255,.65);border-bottom:1px solid rgba(255,255,255,.1);border-radius:10px 10px 0 0;margin-bottom:2px}
-
+.bdg.baf{background:rgba(255,200,50,.2);color:#ffd060;border:1px solid rgba(255,200,50,.35)}
+.bdg.bpf{background:rgba(255,183,77,.2);color:#ffcc77}
+.snum{display:inline-block;direction:ltr;font-weight:800;color:#fff;background:rgba(255,255,255,.2);font-size:.82rem;padding:1px 6px;border-radius:5px;margin-right:3px;vertical-align:middle}
+.sr-hdr{padding:8px 14px 5px;font-size:.71rem;font-weight:700;background:rgba(30,60,120,.75);color:rgba(255,255,255,.8);border-bottom:1px solid rgba(255,255,255,.12);border-radius:10px 10px 0 0;margin-bottom:2px}
 /* PLAYER */
 .plov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;justify-content:center;align-items:center;padding:12px}
 .plov.open{display:flex}
@@ -208,6 +224,15 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
   .ntb{font-size:.65rem;padding:3px 6px}
 }
 @media(max-width:340px){.cg{grid-template-columns:1fr}}
+  /* Section card image-wrap decorative */
+.sc-img-wrap{width:100%;height:72px;border-radius:10px;overflow:hidden;margin-bottom:6px;display:flex;align-items:center;justify-content:center;position:relative;gap:10px}
+.sc-ltr{font-size:1.55rem;font-weight:900;opacity:.25;position:absolute;left:12px;bottom:2px;letter-spacing:-1px;line-height:1;color:#fff;font-family:'Frank Ruhl Libre',serif}
+.sc-ic{font-size:2.6rem;position:relative;z-index:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+.sc-or{background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.03))}
+.sc-yo{background:linear-gradient(135deg,rgba(200,100,255,.15),rgba(150,50,200,.08))}
+.sc-ev{background:linear-gradient(135deg,rgba(255,80,80,.15),rgba(180,20,20,.08))}
+.sc-ch{background:linear-gradient(135deg,rgba(50,220,180,.15),rgba(0,120,100,.08))}
+.sc-mo{background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(180,130,0,.08))}
 </style>
 </head>
 <body>
@@ -282,17 +307,17 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
     <div class="sech">Select Section / בחר נושא</div>
     <div class="cg">
       <div class="sc co" onclick="showTab('orach',null)">
-        <div class="sc-img-wrap"><img src="img/orach.jpg" onerror="this.style.display='none'" alt="">📖</div>
+        <div class="sc-img-wrap sc-or"><span class="sc-ltr">א״ח</span><span class="sc-ic">📖</span></div>
         <div class="sct">אורח חיים</div>
         <div class="scs">ברכות · תפילה · שבת · מועדים</div>
       </div>
       <div class="sc cy" onclick="showTab('yoreh',null)">
-        <div class="sc-img-wrap"><img src="img/yoreh.jpg" onerror="this.style.display='none'" alt="">🍷</div>
+        <div class="sc-img-wrap sc-yo"><span class="sc-ltr">י״ד</span><span class="sc-ic">🍷</span></div>
         <div class="sct">יורה דעה</div>
         <div class="scs">איסור והיתר</div>
       </div>
       <div class="sc ce" onclick="showTab('even',null)">
-        <div class="sc-img-wrap"><img src="img/even.jpg" onerror="this.style.display='none'" alt="">💍</div>
+        <div class="sc-img-wrap sc-ev"><span class="sc-ltr">א״ה</span><span class="sc-ic">💍</span></div>
         <div class="sct">אבן העזר</div>
         <div class="scs">הלכות יחוד</div>
       </div>
@@ -485,11 +510,7 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
   </div>
 </div>
 
-<!-- BACK/FORWARD BUTTONS -->
-<div class="sarr" id="sarr" style="display:none">
-  <button class="sarb" id="sab" onclick="goBack()">◀</button>
-  <button class="sarb" id="saf" onclick="goFwd()">▶</button>
-</div>
+
 
 <!-- DONATION IFRAME OVERLAY -->
 <div id="don-overlay" style="display:none;position:fixed;inset:0;z-index:990;flex-direction:column;background:#f0ece4">
