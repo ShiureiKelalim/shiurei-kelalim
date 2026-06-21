@@ -1065,3 +1065,27 @@ _readHash();
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Shiurei Kelalim — Download</title>
+<script>
+  var id = new URLSearchParams(window.location.search).get('id');
+  if(id){
+    window.location.href = 'https://drive.google.com/uc?export=download&id=' + id;
+  } else {
+    window.location.href = 'https://www.shiureikelalim.com';
+  }
+</script>
+</head>
+<body style="font-family:Arial;text-align:center;padding:60px;background:#f0ece4;direction:rtl">
+  <div style="font-size:2rem;margin-bottom:16px">&#11015;</div>
+  <p style="color:#162d5a;font-weight:bold;font-size:1.1rem">דאָנלאָד הייבט זיך אָן...</p>
+  <p style="color:#888;font-size:.85rem">אויב עס הייבט זיך נישט אָן — <a id="dlink" href="#" style="color:#162d5a">קליקט דאָ</a></p>
+  <script>
+    if(id) document.getElementById('dlink').href =
+      'https://drive.google.com/uc?export=download&id=' + id;
+  </script>
+</body>
+</html>
