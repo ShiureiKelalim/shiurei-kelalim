@@ -319,12 +319,12 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
         <div class="scs">הלכות יחוד</div>
       </div>
       <div class="sc cc" onclick="showTab('choshen',null)">
-        <div class="sc-img-wrap"><img src="img/choshen.jpg" onerror="this.style.display='none'" alt="">⚖️</div>
+        <div class="sc-img-wrap sc-ch"><span class="sc-ltr"></span><span class="sc-ic">⚖️</span></div>
         <div class="sct">חושן משפט</div>
         <div class="scs">דיני ממונות</div>
       </div>
       <div class="sc cm" onclick="showTab('moadim',null)">
-        <div class="sc-img-wrap"><img src="img/moadim.jpg" onerror="this.style.display='none'" alt="">🕯️</div>
+        <div class="sc-img-wrap sc-mo"><span class="sc-ltr"></span><span class="sc-ic">🕯️</span></div>
         <div class="sct">מועדים וזמנים</div>
         <div class="scs">חגים ומועדים</div>
       </div>
@@ -509,18 +509,7 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
 
 
 
-<!-- DONATION IFRAME OVERLAY -->
-<div id="don-overlay" style="display:none;position:fixed;inset:0;z-index:990;flex-direction:column;background:#f0ece4">
-  <div style="background:#0a1628;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-    <button onclick="closeDonOverlay()" style="background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:20px;padding:5px 14px;cursor:pointer;font-size:.82rem;font-family:'Frank Ruhl Libre',serif">✕ סגור</button>
-    <span style="color:#d4af37;font-weight:700;font-size:.85rem">🔒 Shiurei Kelalim · Secure Donation</span>
-    <a id="don-ext-link" href="#" target="_blank" style="color:rgba(255,255,255,.55);font-size:.72rem;text-decoration:none">עפן ⤴</a>
-  </div>
-  <iframe id="don-iframe" src="about:blank" style="flex:1;border:none;width:100%;min-height:0"></iframe>
-  <div style="background:#fff3e0;padding:7px 16px;text-align:center;font-size:.76rem;color:#e65100;flex-shrink:0">
-    לאדט נישט? → <a id="don-fallback-link" href="#" target="_blank" style="color:#162d5a;font-weight:700">קליק דא ⤴</a>
-  </div>
-</div>
+
 
 <!-- PWA INSTALL BUTTON -->
 <button id="pwa-install-btn" onclick="installPWA()" style="display:none;position:fixed;bottom:70px;left:14px;z-index:498;background:linear-gradient(135deg,#162d5a,#2a548f);color:#fff;border:none;border-radius:22px;padding:8px 16px;font-size:.78rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;box-shadow:0 4px 14px rgba(8,18,42,.4)">📲 Install App</button>
@@ -893,10 +882,10 @@ async function doSrch(term){
     var nm=cln(f.name);var hl=hlTxt(fmN(nm),q);
     if(f._type==='folder'){
       var fn=nm.replace(/'/g,"\\'");
-      return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">📁<img src="img/siddur.jpg" onerror="this.remove()" alt=""></span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';
+      return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span></div>';
     }
     var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-    return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵<img src="img/audio.jpg" onerror="this.remove()" alt=""></span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';
+return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span></div>';
   }
   var allAudio=all.filter(function(f){return!f._type;});
   var allFoldsEx=all.filter(function(f){return f._type==='folder';});
@@ -1152,10 +1141,7 @@ function goPay(){
 function backAmt(){document.getElementById('ds2').style.display='none';document.getElementById('ds1').style.display='block';}
 function dShowReceipt(){document.getElementById('d-receipt-field').style.display='block';}
 function goDonate(){
-  document.getElementById('don-ext-link').href=DON_URL;
-  document.getElementById('don-fallback-link').href=DON_URL;
-  document.getElementById('don-iframe').src=DON_URL;
-  document.getElementById('don-overlay').style.display='flex';
+  window.open(DON_URL,'_blank');
   closeM('m-don');
 }
 function closeDonOverlay(){
