@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="שיעורי כללים">
 <meta name="theme-color" content="#0a1628">
+<link rel="apple-touch-icon" href="img/icon-512.png">
 <title>Shiurei Kelalim</title>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z1GLNQLRH1"></script>
 <script>
@@ -42,7 +43,6 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .nav-si input{background:none;border:none;color:#fff;font-family:'Frank Ruhl Libre',serif;font-size:.82rem;padding:5px 10px;outline:none;width:200px;direction:rtl}
 .nav-si input::placeholder{color:rgba(255,255,255,.45)}
 
-
 /* TABS */
 .tbar{display:none}
 .tb,.tb:hover,.tb.active{display:none}
@@ -74,6 +74,18 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .secw{max-width:780px;margin:0 auto;padding:0 12px 40px}
 .sech{text-align:center;font-size:1.15rem;font-weight:700;color:#162d5a;margin-bottom:14px}
 
+/* APP DOWNLOAD */
+.app-dl{max-width:580px;margin:0 auto 28px;padding:0 12px}
+.app-dl-inner{background:linear-gradient(135deg,#162d5a,#1e3a6e);border-radius:14px;padding:18px 20px}
+.app-dl-title{text-align:center;color:#d4af37;font-size:.88rem;font-weight:700;margin-bottom:12px;letter-spacing:.3px}
+.app-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.app-btn{display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:10px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:#fff;font-family:'Frank Ruhl Libre',serif;font-size:.8rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap}
+.app-btn:hover{background:rgba(255,255,255,.16);border-color:rgba(212,175,55,.6);color:#d4af37}
+.app-btn-wa{border-color:rgba(37,211,102,.4);background:rgba(37,211,102,.06)}
+.app-btn-wa:hover{background:rgba(37,211,102,.16)}
+.app-btn-tg{border-color:rgba(0,136,204,.4);background:rgba(0,136,204,.06)}
+.app-btn-tg:hover{background:rgba(0,136,204,.16)}
+
 /* SECTION CARDS */
 .cg{display:flex;flex-direction:column;align-items:stretch;gap:10px;max-width:580px;margin:0 auto}
 .sc{border-radius:12px!important;padding:20px 26px;text-align:center;cursor:pointer;border:none!important;box-shadow:0 4px 18px rgba(8,18,42,.3)!important;transition:all .24s;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
@@ -86,7 +98,6 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .cm{background:linear-gradient(135deg,#4a3800,#b8860b)!important}.cm:hover{background:linear-gradient(135deg,#b8860b,#daa520)!important}
 .sc::before{background:rgba(212,175,55,.6)!important}
 .sc-img-wrap{width:100%;height:68px;border-radius:9px;overflow:hidden;margin-bottom:4px;display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;background:rgba(255,255,255,.1)}
-.sc-img-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:9px}
 .sct{font-size:1.35rem;font-weight:900;color:#fff!important;margin-bottom:4px}
 .scs{font-size:.85rem;color:rgba(255,255,255,.65)!important;line-height:1.6}
 
@@ -106,30 +117,13 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 
 /* FILE LIST */
 .fl{background:transparent!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;display:flex!important;flex-direction:column!important;gap:7px!important}
-
-/* Audio file rows — medium blue */
 .fi{background:linear-gradient(135deg,#2c5282 0%,#3d7ab5 60%,#4a90d9 100%)!important;color:#fff!important;border-radius:12px!important;border-bottom:none!important;box-shadow:0 2px 10px rgba(30,60,120,.25)!important;padding:10px 14px!important;transition:all .22s!important;display:flex!important;align-items:center!important;gap:10px!important;cursor:pointer!important}
 .fi:hover{background:linear-gradient(135deg,#3d7ab5,#5a9fd0)!important;transform:translateY(-2px)!important;box-shadow:0 6px 18px rgba(30,60,120,.35)!important}
-
-/* Folder rows — warm gold-navy */
 .fi.fi-fld{background:linear-gradient(135deg,#2a3f6b,#3a5a9a,#4a6fb5)!important}
 .fi.fi-fld:hover{background:linear-gradient(135deg,#3a5a9a,#5070c0)!important}
-
-/* Thumbnail box */
-.fii{font-size:1.4rem!important;width:48px!important;min-width:48px!important;height:48px!important;border-radius:10px!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;position:relative!important;overflow:hidden!important;
-  /* Audio: light blue shimmer */
-  background:linear-gradient(145deg,rgba(255,255,255,.25),rgba(255,255,255,.08))!important;
-  border:1px solid rgba(255,255,255,.2)!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.3)!important;
-}
-/* Folder thumbnail: gold shimmer */
-.fi.fi-fld .fii{
-  background:linear-gradient(145deg,rgba(212,175,55,.35),rgba(212,175,55,.1))!important;
-  border:1px solid rgba(212,175,55,.35)!important;
-  box-shadow:inset 0 1px 0 rgba(255,220,100,.3)!important;
-}
-.fii img{display:none!important}/* hide broken imgs */
-
+.fii{font-size:1.4rem!important;width:48px!important;min-width:48px!important;height:48px!important;border-radius:10px!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;background:linear-gradient(145deg,rgba(255,255,255,.25),rgba(255,255,255,.08))!important;border:1px solid rgba(255,255,255,.2)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)!important}
+.fi.fi-fld .fii{background:linear-gradient(145deg,rgba(212,175,55,.35),rgba(212,175,55,.1))!important;border:1px solid rgba(212,175,55,.35)!important;box-shadow:inset 0 1px 0 rgba(255,220,100,.3)!important}
+.fii img{display:none!important}
 .fin{color:#fff!important;font-size:.88rem!important;font-weight:600!important;flex:1!important;line-height:1.35!important}
 .bdg{font-size:.67rem;padding:2px 8px;border-radius:13px;font-weight:700;white-space:nowrap}
 .bdg.bf{background:rgba(255,220,80,.2);color:#ffe87a;border:1px solid rgba(255,220,80,.4)}
@@ -139,6 +133,7 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .bdg.bpf{background:rgba(255,183,77,.2);color:#ffcc77}
 .snum{display:inline-block;direction:ltr;font-weight:800;color:#fff;background:rgba(255,255,255,.2);font-size:.82rem;padding:1px 6px;border-radius:5px;margin-right:3px;vertical-align:middle}
 .sr-hdr{padding:8px 14px 5px;font-size:.71rem;font-weight:700;background:rgba(30,60,120,.75);color:rgba(255,255,255,.8);border-bottom:1px solid rgba(255,255,255,.12);border-radius:10px 10px 0 0;margin-bottom:2px}
+
 /* PLAYER */
 .plov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;justify-content:center;align-items:center;padding:12px}
 .plov.open{display:flex}
@@ -188,28 +183,37 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .pwi:focus{border-color:#162d5a}
 .pwe{color:#c62828;font-size:.78rem;text-align:center;margin-bottom:8px;display:none}
 
-/* DONATE */
-.dopt{padding:10px 12px;border:2px solid #e8ecf5;border-radius:10px;cursor:pointer;margin-bottom:7px;transition:all .2s;text-align:center}
-.dopt:hover,.dopt.sel{border-color:#d4af37;background:#fffbf0}
-.dopt h4{font-weight:700;color:#162d5a;font-size:.9rem;margin-bottom:1px}
-.dopt p{font-size:.72rem;color:#aaa}
-
 /* YOM TOV */
 #ytp{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:950;justify-content:center;align-items:center;padding:12px}
 #ytp.open{display:flex}
 .ytbx{background:#fff;border-radius:18px;max-width:430px;width:100%;overflow:hidden;position:relative}
-.yth{background:linear-gradient(135deg,#6a1b9a,#b8860b);padding:20px 16px;text-align:center;color:#fff}
-.yth h2{font-size:1.35rem;font-weight:900}
-.yth p{opacity:.85;font-size:.82rem;margin-top:2px}
-.ytbd{padding:17px}
-.ytbd p{color:#666;line-height:1.7;text-align:center;margin-bottom:12px;font-size:.86rem}
-.ytgo{display:block;width:100%;padding:10px;background:linear-gradient(135deg,#6a1b9a,#9c27b0);color:#fff;border:none;border-radius:10px;font-size:.9rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;margin-bottom:6px}
-.ytcl{display:block;width:100%;padding:8px;background:#f0f0f0;color:#777;border:none;border-radius:10px;font-size:.83rem;font-family:'Frank Ruhl Libre',serif;cursor:pointer}
+.yth{background:linear-gradient(135deg,#08122a,#162d5a);padding:22px 16px;text-align:center;color:#fff}
+.yth h2{font-size:1.25rem;font-weight:900;margin-bottom:4px}
+.yth p{opacity:.8;font-size:.82rem;margin:0}
+.ytbd{padding:20px}
+.ytbd p{color:#555;line-height:1.75;text-align:center;margin-bottom:16px;font-size:.88rem}
+.ytgo{display:block;width:100%;padding:11px;background:linear-gradient(135deg,#162d5a,#2a548f);color:#fff;border:none;border-radius:10px;font-size:.9rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;margin-bottom:8px}
+.ytcl{display:block;width:100%;padding:9px;background:#f0f0f0;color:#666;border:none;border-radius:10px;font-size:.85rem;font-family:'Frank Ruhl Libre',serif;cursor:pointer}
+
+/* DONATE */
+.don-zchus{background:linear-gradient(135deg,#fffbf0,#fff8e0);border:1.5px solid #d4af37;border-radius:12px;padding:14px 16px;margin-bottom:14px;text-align:center}
+.don-soul{width:100%;border:2px solid #dde3f0;border-radius:10px;padding:10px 13px;font-family:'Frank Ruhl Libre',serif;font-size:.92rem;text-align:center;outline:none;background:#fafbff;color:#162d5a;direction:rtl;transition:border .2s}
+.don-soul:focus{border-color:#d4af37}
+
+/* iOS STEPS */
+.ios-step{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0ece4}
+.ios-step:last-child{border-bottom:none}
+.ios-num{width:26px;min-width:26px;height:26px;background:#162d5a;color:#d4af37;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.8rem;flex-shrink:0;margin-top:2px}
+.ios-text{font-size:.85rem;color:#444;line-height:1.65}
 
 .loading{text-align:center;padding:44px 18px;color:#999;font-size:.9rem}
 .errb{text-align:center;padding:22px;color:#c62828;background:#ffebee;border-radius:9px;line-height:1.75}
 .empb{text-align:center;padding:34px;color:#bbb}
-footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,#162d5a);color:rgba(255,255,255,.45);font-size:.8rem;margin-top:44px}
+
+footer{text-align:center;padding:22px 16px;background:linear-gradient(135deg,#08122a,#162d5a);color:rgba(255,255,255,.45);font-size:.8rem;margin-top:44px}
+.ftr-links{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:12px}
+.ftr-link{color:rgba(212,175,55,.65);text-decoration:none;font-size:.78rem;transition:color .2s}
+.ftr-link:hover{color:#d4af37}
 
 #srch::placeholder{color:rgba(22,45,90,0.38)}
 
@@ -219,9 +223,11 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
   .ntabs{flex-wrap:wrap}
   .nb{font-size:.6rem;padding:3px 5px}
   .ntb{font-size:.65rem;padding:3px 6px}
+  .app-btns{flex-direction:column;align-items:stretch}
 }
 @media(max-width:340px){.cg{grid-template-columns:1fr}}
-  /* Section card image-wrap decorative */
+
+/* Section card image-wrap */
 .sc-img-wrap{width:100%;height:72px;border-radius:10px;overflow:hidden;margin-bottom:6px;display:flex;align-items:center;justify-content:center;position:relative;gap:10px}
 .sc-ltr{font-size:1.55rem;font-weight:900;opacity:.25;position:absolute;left:12px;bottom:2px;letter-spacing:-1px;line-height:1;color:#fff;font-family:'Frank Ruhl Libre',serif}
 .sc-ic{font-size:2.6rem;position:relative;z-index:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
@@ -300,6 +306,27 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
     </div>
   </div>
 
+  <!-- APP DOWNLOAD SECTION -->
+  <div class="app-dl">
+    <div class="app-dl-inner">
+      <div class="app-dl-title">📲 לייגט צו אייעררע גערעטשאפטן</div>
+      <div class="app-btns">
+        <a href="#" onclick="openM('m-ios');return false;" class="app-btn">
+          <span style="font-size:1.2rem">🍎</span><span>iPhone / iPad</span>
+        </a>
+        <a href="#" onclick="installPWA_or_show();return false;" class="app-btn" id="android-btn">
+          <span style="font-size:1.2rem">🤖</span><span>Android App</span>
+        </a>
+        <a href="https://t.me/ShiureiKelalim" target="_blank" class="app-btn app-btn-tg">
+          <span style="font-size:1.2rem">✈️</span><span>Telegram</span>
+        </a>
+        <a href="https://chat.whatsapp.com/REPLACE_WITH_YOUR_LINK" target="_blank" class="app-btn app-btn-wa" id="wa-btn">
+          <span style="font-size:1.2rem">💬</span><span>WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <div class="secw">
     <div class="sech">Select Section / בחר נושא</div>
     <div class="cg">
@@ -354,30 +381,32 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
   </div>
 </div>
 
-<!-- YOM TOV POPUP -->
+<!-- YOM TOV POPUP - UPDATED -->
 <div id="ytp">
   <div class="ytbx">
-    <button onclick="closeYtp()" style="position:absolute;top:10px;right:12px;background:rgba(255,255,255,0.25);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.85rem;z-index:5;display:flex;align-items:center;justify-content:center">✕</button>
-    <div class="yth"><h2 id="ytpt">🕍 Yom Tov Shiurim</h2><p id="ytps">Upcoming Yom Tov!</p></div>
+    <button onclick="closeYtp()" style="position:absolute;top:10px;left:12px;background:rgba(255,255,255,0.15);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.85rem;z-index:5;display:flex;align-items:center;justify-content:center">✕</button>
+    <div class="yth">
+      <h2 id="ytpt">🕍 שיעורים</h2>
+      <p id="ytps"></p>
+    </div>
     <div class="ytbd">
-      <p id="ytpp">Shiurim available for the upcoming Yom Tov:</p>
-      <button class="ytgo" onclick="goYomTov()">▶ Go to Shiurim</button>
-      <button class="ytcl" onclick="closeYtp()">✕ Close</button>
+      <p id="ytpp"></p>
+      <button class="ytgo" onclick="goYomTov()">▶ הער די שיעורים</button>
+      <button class="ytcl" onclick="closeYtp()">פארמאכן</button>
     </div>
   </div>
 </div>
 
-<!-- PASSWORD MODAL -->
+<!-- PASSWORD MODAL - UPDATED -->
 <div class="mov" id="m-pwd">
   <button class="mov-back" onclick="closeM('m-pwd')">◀ צוריק</button>
   <div class="mbx" style="max-width:430px;text-align:center">
     <button class="mx" onclick="closeM('m-pwd')">✕</button>
     <div class="mi">🔒</div>
     <div class="mt">Restricted Section</div>
-    <p style="color:#777;margin-bottom:12px;line-height:1.8;font-size:.82rem">
-      To receive access, please call the Hotline:<br>
-      <a href="tel:+16054777451" style="color:#162d5a;font-weight:700">🇺🇸 1-605-477-7451</a><br>
-      <a href="tel:+97277336801" style="color:#162d5a;font-weight:700">🇮🇱 077-336-8013</a><br>
+    <p style="color:#777;margin-bottom:16px;line-height:1.9;font-size:.84rem">
+      צו קריגן צוגאנג, ביטע רופט דעם
+      <a href="#" onclick="closeM('m-pwd');openM('m-hl');return false;" style="color:#162d5a;font-weight:700;text-decoration:underline">האטליין</a><br>
       <small style="color:#bbb">Press #91 · Leave your name & phone number</small><br>
       <b style="color:#444;font-size:.82rem">We will call you back with the password</b>
     </p>
@@ -447,48 +476,41 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
   </div>
 </div>
 
-<!-- DONATE -->
+<!-- DONATE - COMPLETELY NEW -->
 <div class="mov" id="m-don">
   <button class="mov-back" onclick="closeM('m-don')">◀ צוריק</button>
   <div class="mbx">
     <button class="mx" onclick="closeM('m-don')">✕</button>
-    <!-- Step 1 -->
-    <div id="ds1">
-      <div class="mi">💛</div>
-      <div class="mt">Donate לתורה</div>
-      <p style="text-align:center;color:#888;margin-bottom:12px;font-size:.81rem;line-height:1.6">In the merit of Torah learners<br><small style="color:#bbb">Card name: <b style="color:#162d5a">חסדי חיים</b></small></p>
-      <div class="dopt" id="d18" onclick="selAmt(18,this)"><h4>🕍 פרנס השבוע — $18</h4><p>Weekly dedication</p></div>
-      <div class="dopt" id="d50" onclick="selAmt(50,this)"><h4>🌟 פרנס החודש — $50</h4><p>Monthly dedication</p></div>
-      <div class="dopt" id="dcust" onclick="selAmt('c',this)"><h4>💛 Custom Amount</h4><p>Choose your own</p></div>
-      <div id="dcw" style="display:none;margin-top:6px">
-        <div class="fld"><label>Amount ($)</label><input type="number" id="dca" min="1" placeholder="Enter amount"></div>
-      </div>
-      <div id="dsw" style="display:none;margin-top:7px">
-        <div class="fld">
-          <label>Dedication — לזכות / לעילוי נשמת (Optional)</label>
-          <input type="text" id="dsoul" placeholder="Name for dedication...">
-          <small style="color:#777;display:block;margin-top:2px">✨ Will be announced on the Hotline & published on the site</small>
-        </div>
-      </div>
-      <button class="sbtn" style="background:linear-gradient(135deg,#b8860b,#daa520);color:#2c1810;margin-top:9px" onclick="goPay()">Next → Payment 💳</button>
-      <div class="erm" id="d1err"></div>
+    <div class="mi">💛</div>
+    <div style="text-align:center;color:#162d5a;font-size:1.15rem;font-weight:900;margin-bottom:2px">נעמט א חלק</div>
+    <div style="text-align:center;color:#162d5a;font-size:.88rem;font-weight:700;margin-bottom:16px;line-height:1.9">
+      אין די געוואלדיגע זיכוי הרבים<br>אין הרבצת התורה
     </div>
-    <!-- Step 2: Receipt question -->
-    <div id="ds2" style="display:none;text-align:center">
-      <div class="mi">🧾</div>
-      <div class="mt" style="font-size:1rem">האסטו ליב א ריסיט?</div>
-      <p id="damtd" style="font-size:.9rem;font-weight:700;color:#162d5a;margin-bottom:12px"></p>
-      <p style="color:#888;font-size:.81rem;margin-bottom:16px;line-height:1.7">ווילסטו באקומן א קוויטל פאר דיין דאנעיט?</p>
-      <div id="d-receipt-field" style="display:none;margin-bottom:12px">
-        <div class="fld"><label>Email for receipt</label><input type="email" id="d-receipt-email" placeholder="your@email.com"></div>
-        <button class="sbtn" style="background:linear-gradient(135deg,#b8860b,#daa520);color:#2c1810" onclick="goDonate()">💛 Donate Now →</button>
-      </div>
-      <button class="sbtn" style="background:linear-gradient(135deg,#b8860b,#daa520);color:#2c1810;margin-bottom:8px" onclick="dShowReceipt()">✅ יא — שיק מיר א קוויטל</button>
-      <button class="sbtn" style="margin-bottom:8px" onclick="goDonate()">💳 ניין — גיי גלייך צו פעמינט</button>
-      <button onclick="backAmt()" style="display:block;width:100%;padding:6px;background:none;border:none;color:#aaa;cursor:pointer;margin-top:4px;font-size:.78rem">← Back</button>
-      <div class="erm" id="d2err"></div>
+
+    <div class="don-zchus">
+      <p style="color:#888;font-size:.78rem;margin-bottom:7px">די נדבות ווערן געפראסעט דורך</p>
+      <a href="https://charity-funds.org/donate/cc/1748" target="_blank" onclick="trackDon(event)" style="color:#162d5a;font-weight:900;font-size:1.05rem;text-decoration:none">✡️ חסדי חיים</a>
     </div>
-    <div id="dok" class="okm" style="display:none">✅ Thank you for your donation!<br><small style="color:#aaa">Confirmation within 24 hours.</small></div>
+
+    <p style="text-align:center;color:#555;font-size:.84rem;margin-bottom:14px;line-height:1.9">
+      איר קענט מנדב זיין:<br>
+      <b style="color:#162d5a">פרנס השבוע — $18</b> &nbsp;|&nbsp; <b style="color:#162d5a">פרנס החודש — $50</b>
+    </p>
+
+    <div style="margin-bottom:10px">
+      <input class="don-soul" type="text" id="dsoul" placeholder='לע"נ .... לזכות'>
+    </div>
+
+    <p style="font-size:.76rem;color:#888;text-align:center;line-height:1.75;margin-bottom:16px">
+      שרייבט דא אריין לע"נ אדער לזכות —<br>
+      עס וועט <b style="color:#162d5a">געוויזן ווערן אויפן סייט</b>,<br>
+      און <b style="color:#162d5a">געזאגט ווערן אויפן האטליין</b><br>
+      <span style="color:#d4af37;font-weight:700">✨ תזכו למצות</span>
+    </p>
+
+    <button class="sbtn" style="background:linear-gradient(135deg,#b8860b,#daa520);color:#2c1810;font-size:1rem;padding:12px" onclick="goDonate()">
+      💰 צו מנדב זיין →
+    </button>
   </div>
 </div>
 
@@ -507,14 +529,46 @@ footer{text-align:center;padding:20px;background:linear-gradient(135deg,#08122a,
   </div>
 </div>
 
-
-
-
+<!-- iOS INSTALL MODAL - NEW -->
+<div class="mov" id="m-ios">
+  <button class="mov-back" onclick="closeM('m-ios')">◀ צוריק</button>
+  <div class="mbx" style="max-width:430px">
+    <button class="mx" onclick="closeM('m-ios')">✕</button>
+    <div class="mi">🍎</div>
+    <div class="mt">הוסף לאייפון / iPad</div>
+    <p style="text-align:center;color:#666;font-size:.84rem;margin-bottom:16px">עפנט דעם סייט אין <b>Safari</b> אויף אייעם Apple גערעטשאפט, דאן:</p>
+    <div class="ios-step">
+      <div class="ios-num">1</div>
+      <div class="ios-text">דריקט אויף דעם <b>שערן קנעפל</b> (□↑) אינטן פון Safari</div>
+    </div>
+    <div class="ios-step">
+      <div class="ios-num">2</div>
+      <div class="ios-text">זוכט <b>"Add to Home Screen"</b> אין דער אויסוואל</div>
+    </div>
+    <div class="ios-step">
+      <div class="ios-num">3</div>
+      <div class="ios-text">דריקט <b>"Add"</b> — א שיעורי כללים icon ווערט צוגעלייגט!</div>
+    </div>
+    <div style="background:#f0f7ff;border-radius:10px;padding:12px;margin-top:14px;text-align:center">
+      <p style="font-size:.77rem;color:#555">💡 עס ווערט אויסזען ווי א ריכטיגע עפּ — פולשטענדיג אן Safari ראמען!</p>
+    </div>
+  </div>
+</div>
 
 <!-- PWA INSTALL BUTTON -->
-<button id="pwa-install-btn" onclick="installPWA()" style="display:none;position:fixed;bottom:70px;left:14px;z-index:498;background:linear-gradient(135deg,#162d5a,#2a548f);color:#fff;border:none;border-radius:22px;padding:8px 16px;font-size:.78rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;box-shadow:0 4px 14px rgba(8,18,42,.4)">📲 Install App</button>
+<button id="pwa-install-btn" onclick="installPWA()" style="display:none;position:fixed;bottom:22px;left:14px;z-index:498;background:linear-gradient(135deg,#162d5a,#2a548f);color:#fff;border:none;border-radius:22px;padding:8px 16px;font-size:.78rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;box-shadow:0 4px 14px rgba(8,18,42,.4)">📲 Install App</button>
 
-<footer><p>© Shiurei Kelalim — All Rights Reserved</p></footer>
+<footer>
+  <div class="ftr-links">
+    <a href="#" onclick="openM('m-ios');return false;" class="ftr-link">🍎 iPhone</a>
+    <a href="#" onclick="installPWA_or_show();return false;" class="ftr-link">🤖 Android</a>
+    <a href="https://t.me/ShiureiKelalim" target="_blank" class="ftr-link">✈️ Telegram</a>
+    <a href="https://chat.whatsapp.com/REPLACE_WITH_YOUR_LINK" target="_blank" class="ftr-link">💬 WhatsApp</a>
+    <a href="#" onclick="openM('m-sub');return false;" class="ftr-link">📧 Subscribe</a>
+    <a href="#" onclick="openM('m-don');return false;" class="ftr-link">💛 Donate</a>
+  </div>
+  <p>© Shiurei Kelalim — All Rights Reserved</p>
+</footer>
 
 <script>
 (function(){
@@ -546,632 +600,6 @@ var TABS={
 var MO=['ניסן','אייר','סיון','תמוז','אב','אלול','תשרי','חשון','כסלו','טבת','שבט','אדר'];
 var nav=[],stmr=null,ytFId='',ytNm='',pwOk=false,pend=null,dAmt=18,latF=null;
 
-function hlTxt(txt,q){
-  if(!q||!txt)return txt;
-  var esc=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-  return txt.replace(new RegExp('('+esc+')','gi'),'<span class="hi">$1</span>');
-}
-function cln(s){
-  for(var i=1;i<=Math.min(5,s.length-1);i++){var c=s.charCodeAt(i);if(c===45||c===8211||c===8212)return s.slice(i+1).trim();}
-  if(s.length>4){var h=function(x){return x>=0x05D0&&x<=0x05EA};if(h(s.charCodeAt(0))&&!h(s.charCodeAt(1))&&h(s.charCodeAt(2))&&s[3]===' ')return s.slice(4).trim();}
-  return s.trim();
-}
-function fmN(n){
-  var m=n.match(/^(.+?)\s+mp3\.(\d+)$/i);
-  if(m)return m[1]+' <span class="snum">'+m[2]+'</span>';
-  return n.replace(/\bmp3\b/gi,'').replace(/\.\s*$/,'').trim();
-}
-function isA(m){return m&&m.includes('audio')}
-function gIco(m){if(!m)return'📎';if(m.includes('audio'))return'🎵';if(m.includes('video'))return'🎬';if(m.includes('pdf'))return'📄';return'📎';}
-
-// Auto-emoji by folder name keywords
-var FOLDER_ICONS={
-  'ציצית':'🧣','ציצת':'🧣',
-  'שבת':'🕯️','שבתות':'🕯️',
-  'בשר':'🥩','בשרי':'🥩',
-  'חלב':'🥛','חלבי':'🥛',
-  'כשר':'✡️','כשרות':'✡️',
-  'תפילה':'📿','תפלה':'📿',
-  'ברכה':'🍇','ברכות':'🍇',
-  'נטל':'💧','נטילה':'💧','נטילת':'💧',
-  'יום טוב':'🎊','יו"ט':'🎊',
-  'ראש השנה':'🍎','ר"ה':'🍎',
-  'יום כיפור':'📖','כיפור':'📖',
-  'סוכות':'🌿','סוכה':'🌿',
-  'חנוכה':'🕎',
-  'פורים':'🎭',
-  'פסח':'🍷','פסחים':'🍷',
-  'שבועות':'🌸',
-  'תשעה':'😔','תשעה באב':'😔',
-  'אבל':'🪦','אבלות':'🪦',
-  'רפואה':'💊','חולה':'💊',
-  'ממון':'💰','הלוואה':'💰',
-  'שכירות':'🏠','שכר':'🏠',
-  'שותפות':'🤝','עסק':'🤝',
-  'מקוה':'💧','טהרה':'🌊',
-  'נשואין':'💍','נשואים':'💍','חתונה':'💍',
-  'גט':'📄',
-  'עדות':'⚖️',
-  'ניקור':'🔪',
-  'בישול':'🍲','בישולי':'🍲',
-  'תערובת':'🫙',
-  'כלים':'🥄',
-  'אורח':'📖',
-  'יורה':'🍷',
-  'אבן':'💍',
-  'חושן':'⚖️',
-  'מועד':'🕯️','מועדים':'🕯️'
-};
-function getFolderEmoji(name){
-  var n=name||'';
-  for(var k in FOLDER_ICONS){if(n.includes(k))return FOLDER_ICONS[k];}
-  return'📁';
-}
-
-var FOLDER_COLORS={
-  'ציצית':'linear-gradient(135deg,#1a4a1a,#2e7d32)',
-  'שבת':'linear-gradient(135deg,#3d2a00,#b8860b)',
-  'בשר':'linear-gradient(135deg,#5c1a00,#b71c1c)',
-  'חלב':'linear-gradient(135deg,#003366,#1565c0)',
-  'תפילה':'linear-gradient(135deg,#1a0045,#6a1b9a)',
-  'ברכות':'linear-gradient(135deg,#004d00,#2e7d32)',
-  'נטילת':'linear-gradient(135deg,#003d4d,#0277bd)',
-  'נטילה':'linear-gradient(135deg,#003d4d,#0277bd)',
-  'חנוכה':'linear-gradient(135deg,#002060,#1565c0)',
-  'פסח':'linear-gradient(135deg,#3d0000,#b71c1c)',
-  'סוכות':'linear-gradient(135deg,#1a3d00,#388e3c)',
-  'יום טוב':'linear-gradient(135deg,#2a2000,#b8860b)',
-  'ממון':'linear-gradient(135deg,#002a1a,#00695c)',
-  'רפואה':'linear-gradient(135deg,#1a0030,#7b1fa2)'
-};
-function getFolderColor(name){
-  var n=name||'';
-  for(var k in FOLDER_COLORS){if(n.includes(k))return FOLDER_COLORS[k];}
-  return null;
-}
-  function isPr(nm){return PROT.some(function(k){return nm.includes(k)})}
-
-function gDl(){var t=new Date().toDateString();var d=JSON.parse(localStorage.getItem('dlx')||'{"d":"","c":0}');if(d.d!==t){d.d=t;d.c=0;}return d;}
-function dlL(){return Math.max(0,5-gDl().c)}
-function cDl(){var d=gDl();if(d.c<5){d.c++;localStorage.setItem('dlx',JSON.stringify(d));}setTimeout(rfDl,150);}
-function rfDl(){var l=dlL(),s=document.getElementById('dlsec');if(!s)return;if(l<=0)s.innerHTML='<div class="dllim">⛔ Download limit reached (5/day)</div>';else{var b=s.querySelector('button');if(b)b.textContent='⬇️ Download ('+l+' left today)';}}
-
-function openM(id){try{_setHash('m='+id);}catch(e){}document.getElementById(id).classList.add('open')}
-function closeM(id){document.getElementById(id).classList.remove('open');try{if(location.hash.includes('m='+id)){history.pushState(null,'',location.pathname);}}catch(e){}}
-document.querySelectorAll('.mov').forEach(function(o){o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')});});
-document.getElementById('ytp').addEventListener('click',function(e){if(e.target===this)closeYtp()});
-
-function showLanding(){
-  _ph();
-  try{history.pushState(null,'',location.pathname);}catch(e){}
-  document.getElementById('hero').style.display='';
-  document.getElementById('land').style.display='';
-  document.getElementById('ca').style.display='none';
-  document.getElementById('sinfo').textContent='';
-  document.getElementById('srch').value='';
-  document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});
-}
-
-function showTab(key,btn){
-  _ph();
-  document.getElementById('hero').style.display='none';
-  document.getElementById('land').style.display='none';
-  document.getElementById('ca').style.display='block';
-  document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});
-  var ab=btn||(key==='orach'?document.getElementById('tb-or'):key==='yoreh'?document.getElementById('tb-yo'):key==='even'?document.getElementById('tb-ev'):key==='choshen'?document.getElementById('tb-ch'):document.getElementById('tb-mo'));
-  if(ab&&ab.classList)ab.classList.add('active');
-  var t=TABS[key];
-  var bn=document.getElementById('sbn');
-  bn.className='sbn '+t.bn;
-  bn.innerHTML='<h2>'+t.ic+' '+t.name+'</h2>';
-  document.getElementById('srch').value='';
-  document.getElementById('sinfo').textContent='';
-  nav=[{id:t.id,name:t.name}];
-  rBC();lFld(t.id);
-}
-
-function checkPwd(){
-  var v=document.getElementById('pwi').value.trim();
-  if(!v)return;
-  // simple obfuscated check
-  var p=[57,53,50,53].map(function(c){return String.fromCharCode(c);}).join('');
-  if(v===p){
-    pwOk=true;
-    document.getElementById('pwe').style.display='none';
-    document.getElementById('pwi').value='';
-    closeM('m-pwd');
-    if(pend){nav.push(pend);rBC();lFld(pend.id);pend=null;}
-  }else{
-    document.getElementById('pwe').style.display='block';
-  }
-}
-
-function rBC(){
-  document.getElementById('bc').innerHTML=nav.map(function(item,i){
-    if(i===nav.length-1)return'<span class="bcc">'+item.name+'</span>';
-    return'<span class="bcl" onclick="goLv('+i+')">'+item.name+'</span><span class="bcs">›</span>';
-  }).join('');
-}
-function goLv(i){_ph();nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
-
-async function lFld(fId){
-  var el=document.getElementById('fl');
-  el.innerHTML='<div class="loading">⏳ Loading...</div>';
-  try{
-    var _tk=Object.keys(TABS).find(function(k){return nav.length&&TABS[k].id===nav[0].id;})||'';
-    var _cn=nav.length?nav[nav.length-1]:null;
-    if(_cn){
-      if(nav.length===1&&_tk)_setHash('tab='+_tk);
-      else _setHash((_tk?'tab='+_tk+'&':'')+'fid='+encodeURIComponent(_cn.id)+'&fn='+encodeURIComponent(_cn.name));
-    }
-  }catch(e){}
-  try{
-    var q=encodeURIComponent("'"+fId+"' in parents and trashed=false");
-    var url='https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType,shortcutDetails)&orderBy=name&pageSize=500';
-    var res=await fetch(url);
-    if(!res.ok)throw new Error('Status '+res.status);
-    var data=await res.json();
-    var files=data.files||[];
-    if(!files.length){el.innerHTML='<div class="empb">📭 No shiurim found</div>';return;}
-    var fols=files.filter(function(f){return f.mimeType==='application/vnd.google-apps.folder'});
-    var oth=files.filter(function(f){return f.mimeType!=='application/vnd.google-apps.folder'});
-    fols.sort(function(a,b){
-      var na=cln(a.name),nb=cln(b.name);
-      var ia=MO.indexOf(na),ib=MO.indexOf(nb);
-      if(ia>=0&&ib>=0)return ia-ib;
-      return a.name.localeCompare(b.name,'he');
-    });
-    el.innerHTML=fols.concat(oth).map(function(f){
-      var isSh=f.mimeType==='application/vnd.google-apps.shortcut';
-      var tM=isSh?(f.shortcutDetails&&f.shortcutDetails.targetMimeType||''):'';
-      var tI=isSh?(f.shortcutDetails&&f.shortcutDetails.targetId||''):'';
-      var isF=f.mimeType==='application/vnd.google-apps.folder'||(isSh&&tM==='application/vnd.google-apps.folder');
-      var nm=cln(f.name);
-      var ico=isF?'📁':gIco(f.mimeType);
-      var badge=isF?'<span class="bdg bf">Folder ›</span>':isA(f.mimeType)?'<span class="bdg ba">▶ Shiur</span>':'<span class="bdg bpf">File</span>';
-      var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-var fiCls=isF?'fi fi-fld':'fi';
-var folderEmoji=isF?getFolderEmoji(nm):'';
-var folderColor=isF?getFolderColor(nm):'';
-var folderStyle=isF&&folderColor?'style="'+folderColor+'!important"':'';
-      var tImg=isF?'':'';
-return'<div class="'+fiCls+'" '+(folderStyle||'')+' onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+f.mimeType.replace(/'/g,"\\'")+'\''+',\''+tI.replace(/'/g,"\\'")+'\',\''+tM.replace(/'/g,"\\'")+'\')"><span class="fii">'+(isF?folderEmoji:ico)+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';    }).join('');
-  }catch(e){el.innerHTML='<div class="errb">❌ Error: '+e.message+'</div>';}
-}
-
-function hCl(id,nm,isF,mime,tId,tMime){
-  if(mime==='application/vnd.google-apps.shortcut'){
-    if(tMime==='application/vnd.google-apps.folder'){if(isPr(nm)&&!pwOk){pend={id:tId,name:nm};openM('m-pwd');return;}_ph();nav.push({id:tId,name:nm});rBC();lFld(tId);}
-    else if(isA(tMime))opPl(tId,nm);
-    return;
-  }
-  if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();nav.push({id:id,name:nm});rBC();lFld(id);}
-  else if(isA(mime))opPl(id,nm);
-  else window.open('https://drive.google.com/file/d/'+id+'/view','_blank');
-}
-
-function clearIfEmpty(val){
-  if(!val.trim()){
-    document.getElementById('sinfo').textContent='';
-    if(nav.length>0&&document.getElementById('ca').style.display!=='none')lFld(nav[nav.length-1].id);
-  }
-}
-function triggerSearch(){
-  var val=document.getElementById('srch').value.trim();
-  if(!val)return;
-  _setHash('q='+encodeURIComponent(val));
-  document.getElementById('sinfo').textContent='🔍 זוכט...';
-  var p=doSrch(val);
-  if(p&&p.then){p.then(function(){setTimeout(function(){var ca=document.getElementById('ca');if(ca){ca.style.display='block';ca.scrollIntoView({behavior:'smooth',block:'start'});}},300);});}
-  else{setTimeout(function(){var ca=document.getElementById('ca');if(ca){ca.style.display='block';ca.scrollIntoView({behavior:'smooth',block:'start'});}},800);}
-}
-function handleSearch(val){clearTimeout(stmr);}
-
-async function doSrch(term){
-  _ph();
-  document.getElementById('hero').style.display='none';
-  document.getElementById('land').style.display='none';
-  document.getElementById('ca').style.display='block';
-  document.getElementById('sbn').className='sbn bno';
-  var tEsc=term.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-  document.getElementById('sbn').innerHTML='<h2>🔍 זוך רעזולטאטן</h2><div style="margin:10px auto 0;max-width:460px;padding:0 16px;position:relative"><input id="ca-srch" value="'+tEsc+'" style="width:100%;padding:9px 38px 9px 14px;border-radius:20px;border:2px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;font-size:.88rem;font-family:\'Frank Ruhl Libre\',serif;outline:none;text-align:right;box-sizing:border-box;direction:rtl" placeholder="זיך פאר שיעורים..." onkeyup="if(event.key===\'Enter\'){var v=this.value.trim();if(v){document.getElementById(\'srch\').value=v;triggerSearch();}}"><span onclick="var v=document.getElementById(\'ca-srch\').value.trim();if(v){document.getElementById(\'srch\').value=v;triggerSearch();}" style="position:absolute;left:28px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1rem;color:rgba(255,255,255,.7)">🔍</span></div>';
-  document.getElementById('bc').innerHTML='';
-  var el=document.getElementById('fl'),si=document.getElementById('sinfo');
-  el.innerHTML='<div class="loading">🔍 ביטע ווארט א מינוט...</div>';
-  var ids=await _getFIds();
-  var all=[],allBroader=[],seen={};
-  var safe=term.replace(/'/g,"\\'");
-  var _hPfx=/^[\u05d1\u05d3\u05d4\u05d5\u05d6\u05db\u05dc\u05de\u05e9]+/;
-  var root=term.replace(_hPfx,'');
-  var safeRoot=(root.length>=2&&root!==term)?root.replace(/'/g,"\\'"):null;
-  await Promise.all(ids.map(async function(fId){
-    try{
-      var q=encodeURIComponent("'"+fId+"' in parents and name contains '"+safe+"' and mimeType contains 'audio' and trashed=false");
-      var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=50');
-      if(!r.ok)return;var d=await r.json();
-      if(d.files)d.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
-    }catch(e){}
-    try{
-      var fq=encodeURIComponent("'"+fId+"' in parents and name contains '"+safe+"' and mimeType='application/vnd.google-apps.folder' and trashed=false");
-      var fr=await fetch('https://www.googleapis.com/drive/v3/files?q='+fq+'&key='+KEY+'&fields=files(id,name)&pageSize=20');
-      if(!fr.ok)return;var fd=await fr.json();
-      var folders=fd.files||[];
-      await Promise.all(folders.map(async function(folder){
-        if(!seen['fd_'+folder.id]){seen['fd_'+folder.id]=1;all.push({id:folder.id,name:folder.name,_type:'folder'});}
-        try{
-          var aq=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");
-          var ar=await fetch('https://www.googleapis.com/drive/v3/files?q='+aq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
-          if(!ar.ok)return;var ad=await ar.json();
-          if(ad.files)ad.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
-        }catch(e){}
-        try{
-          var sfq=encodeURIComponent("'"+folder.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
-          var sfr=await fetch('https://www.googleapis.com/drive/v3/files?q='+sfq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
-          if(!sfr.ok)return;var sfd=await sfr.json();
-          await Promise.all((sfd.files||[]).map(async function(sf){
-            try{
-              var saq=encodeURIComponent("'"+sf.id+"' in parents and mimeType contains 'audio' and trashed=false");
-              var sar=await fetch('https://www.googleapis.com/drive/v3/files?q='+saq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
-              if(!sar.ok)return;var sad=await sar.json();
-              if(sad.files)sad.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});
-            }catch(e){}
-          }));
-        }catch(e){}
-      }));
-    }catch(e){}
-  }));
-  if(safeRoot){
-    await Promise.all(ids.map(async function(fId){
-      try{
-        var qr=encodeURIComponent("'"+fId+"' in parents and name contains '"+safeRoot+"' and mimeType contains 'audio' and trashed=false");
-        var rr=await fetch('https://www.googleapis.com/drive/v3/files?q='+qr+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=50');
-        if(!rr.ok)return;var dr=await rr.json();
-        if(dr.files)dr.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;allBroader.push(f);}});
-      }catch(e){}
-      try{
-        var fqr=encodeURIComponent("'"+fId+"' in parents and name contains '"+safeRoot+"' and mimeType='application/vnd.google-apps.folder' and trashed=false");
-        var frr=await fetch('https://www.googleapis.com/drive/v3/files?q='+fqr+'&key='+KEY+'&fields=files(id,name)&pageSize=20');
-        if(!frr.ok)return;var fdr=await frr.json();
-        await Promise.all((fdr.files||[]).map(async function(folder){
-          if(!seen['fd_'+folder.id]){seen['fd_'+folder.id]=1;allBroader.push({id:folder.id,name:folder.name,_type:'folder'});}
-          try{
-            var aqr=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");
-            var arr=await fetch('https://www.googleapis.com/drive/v3/files?q='+aqr+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
-            if(!arr.ok)return;var adr=await arr.json();
-            if(adr.files)adr.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;allBroader.push(f);}});
-          }catch(e){}
-          try{
-            var sfqr=encodeURIComponent("'"+folder.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
-            var sfrr=await fetch('https://www.googleapis.com/drive/v3/files?q='+sfqr+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
-            if(!sfrr.ok)return;var sfdr=await sfrr.json();
-            await Promise.all((sfdr.files||[]).map(async function(sf){
-              try{
-                var saqr=encodeURIComponent("'"+sf.id+"' in parents and mimeType contains 'audio' and trashed=false");
-                var sarr=await fetch('https://www.googleapis.com/drive/v3/files?q='+saqr+'&key='+KEY+'&fields=files(id,name)&pageSize=50');
-                if(!sarr.ok)return;var sadr=await sarr.json();
-                if(sadr.files)sadr.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;allBroader.push(f);}});
-              }catch(e){}
-            }));
-          }catch(e){}
-        }));
-      }catch(e){}
-    }));
-  }
-  if(!all.length&&!allBroader.length){si.textContent='🔍 נישט קיין רעזולטאטן פאר "'+term+'"';el.innerHTML='<div class="empb">🔍 נישט געטראפען קיין רעזולטאטן פאר "'+term+'"</div>';return;}
-  var _sq=document.getElementById('srch').value.trim();
-  si.textContent=(all.length+allBroader.length)+' רעזולטאטן פאר "'+term+'"';
-  function _rItem(f,q){
-    var nm=cln(f.name);var hl=hlTxt(fmN(nm),q);
-    if(f._type==='folder'){
-      var fn=nm.replace(/'/g,"\\'");
-return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+fmN(nm)+'</span><span class="bdg baf">📂 Folder</span></div>';
-    }
-    var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';
-  }
-  var allAudio=all.filter(function(f){return!f._type;});
-  var allFoldsEx=all.filter(function(f){return f._type==='folder';});
-  var html='';
-  if(allAudio.length){html+='<div class="sr-hdr">✅ ספעציפישע שיעורים — "'+term+'" — '+allAudio.length+'</div>';html+=allAudio.map(function(f){return _rItem(f,_sq);}).join('');}
-  if(allFoldsEx.length){if(allAudio.length)html+='<div style="height:8px"></div>';html+='<div class="sr-hdr">📁 ספעציפישע פאלדערס — "'+term+'" — '+allFoldsEx.length+'</div>';html+=allFoldsEx.map(function(f){return _rItem(f,_sq);}).join('');}
-  if(allBroader.length){if(all.length)html+='<div style="height:8px"></div>';html+='<div class="sr-hdr">🔍 ברייטערע רעזולטאטן — "'+root+'" — '+allBroader.length+'</div>';html+=allBroader.map(function(f){return _rItem(f,root);}).join('');}
-  el.innerHTML=html;
-  setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},150);
-}
-
-function opFldr(id,name){
-  _ph();
-  document.getElementById('hero').style.display='none';
-  document.getElementById('land').style.display='none';
-  document.getElementById('ca').style.display='block';
-  document.getElementById('sbn').className='sbn bno';
-  document.getElementById('sbn').innerHTML='<h2>📁 '+name+'</h2>';
-  var el=document.getElementById('fl'),si=document.getElementById('sinfo');
-  el.innerHTML='<div class="loading">⏳ לאדט...</div>';
-  fetch('https://www.googleapis.com/drive/v3/files?q='+encodeURIComponent("'"+id+"' in parents and trashed=false")+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=100')
-    .then(function(r){return r.json();})
-    .then(function(d){
-      var files=d.files||[];
-      if(!files.length){el.innerHTML='<p style="text-align:center;padding:20px">נישט געפונן</p>';return;}
-      el.innerHTML=files.map(function(f){
-        var nm=cln(f.name);
-        if(f.mimeType==='application/vnd.google-apps.folder'){
-          return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">📁<img src="img/siddur.jpg" onerror="this.remove()" alt=""></span><span class="fin">'+fmN(nm)+'</span><span class="bdg baf">📂 Folder</span></div>';
-        }
-        var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+fmN(nm)+'</span><span class="bdg ba">▶ Shiur</span></div>';
-      }).join('');
-      si.textContent='';
-    }).catch(function(){el.innerHTML='<p>פעלער</p>';});
-}
-
-function opPl(fId,nm){
-  try{_setHash((location.hash.replace('#','').split('&').filter(function(x){return x.indexOf('sid=')<0&&x.indexOf('sn=')<0;}).join('&')+'&sid='+encodeURIComponent(fId)+'&sn='+encodeURIComponent(nm)).replace(/^&/,''));}catch(e){}
-  document.getElementById('plti').innerHTML=fmN(nm);
-  document.getElementById('au').src='https://www.googleapis.com/drive/v3/files/'+fId+'?alt=media&key='+KEY;
-  document.getElementById('dotm').classList.remove('open');
-  var l=dlL();
-  var dlNm=nm.replace(/'/g,"\\'").replace(/"/g,'&quot;');
-  document.getElementById('dlsec').innerHTML=l>0
-    ?'<button class="dlbtn" onclick="doDl(\''+fId+'\',\''+dlNm+'\')">⬇️ Download ('+l+' left today)</button>'
-    :'<div class="dllim">⛔ Download limit reached (5/day)</div>';
-  document.getElementById('plov').classList.add('open');
-}
-function doDl(fId,nm){
-  cDl();
-  fetch('https://www.googleapis.com/drive/v3/files/'+fId+'?alt=media&key='+KEY)
-    .then(function(r){return r.blob();})
-    .then(function(blob){
-      var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(nm||'shiur')+'.mp3';
-      document.body.appendChild(a);a.click();
-      setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href);},2000);
-    })
-    .catch(function(){
-      var fr=document.createElement('iframe');fr.style.display='none';
-      fr.src='https://drive.google.com/uc?export=download&id='+fId;
-      document.body.appendChild(fr);setTimeout(function(){document.body.removeChild(fr);},8000);
-    });
-}
-function closePl(){var a=document.getElementById('au');a.pause();a.src='';document.getElementById('plov').classList.remove('open');}
-function togDots(){document.getElementById('dotm').classList.toggle('open');}
-document.getElementById('plov').addEventListener('click',function(e){if(e.target===this)closePl();});
-
-var _fIds=null;
-async function _getFIds(){
-  if(_fIds)return _fIds;
-  var main=Object.keys(TABS).map(function(k){return TABS[k].id;});
-  var all=main.slice(),l1=[];
-  var r1=await Promise.all(main.map(async function(id){
-    try{
-      var q=encodeURIComponent("'"+id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
-      var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id)&pageSize=100');
-      if(!r.ok)return[];var d=await r.json();return(d.files||[]).map(function(f){return f.id;});
-    }catch(e){return[];}
-  }));
-  r1.forEach(function(ids){l1=l1.concat(ids);});all=all.concat(l1);
-  if(l1.length){
-    var r2=await Promise.all(l1.map(async function(id){
-      try{
-        var q=encodeURIComponent("'"+id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
-        var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id)&pageSize=100');
-        if(!r.ok)return[];var d=await r.json();return(d.files||[]).map(function(f){return f.id;});
-      }catch(e){return[];}
-    }));
-    r2.forEach(function(ids){all=all.concat(ids);});
-  }
-  _fIds=all;return all;
-}
-
-function hebrewYear(num){
-  var n=num%1000;
-  var vals=[400,300,200,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1];
-  var lets=['ת','ש','ר','ק','צ','פ','ע','ס','נ','מ','ל','כ','י','ט','ח','ז','ו','ה','ד','ג','ב','א'];
-  var result='',rem=n;
-  for(var i=0;i<vals.length;i++){while(rem>=vals[i]){result+=lets[i];rem-=vals[i];}}
-  result=result.replace('יה','טו').replace('יו','טז');
-  if(result.length===1)return result+'׳';
-  return result.slice(0,-1)+'״'+result.slice(-1);
-}
-
-async function getParshaForDate(dateObj){
-  try{
-    var now=dateObj||new Date();
-    var yr=now.getFullYear(),mo=now.getMonth()+1,dy=now.getDate();
-    var cr=await fetch('https://www.hebcal.com/converter?cfg=json&gy='+yr+'&gm='+mo+'&gd='+dy+'&g2h=1');
-    var cd=await cr.json();
-    var hebrY=hebrewYear(cd.hy);
-    var r=await fetch('https://www.hebcal.com/shabbat?cfg=json&geo=none&M=on&a=on&lg=he&gy='+yr+'&gm='+mo+'&gd='+dy);
-    var d=await r.json();
-    var p=d.items&&d.items.find(function(x){return x.category==='parashat';});
-    if(p){
-      var name=(p.hebrew||p.title||'').replace(/^פרש[הת]\s*/,'').replace(/^Parashat\s*/i,'');
-      return 'פרשת '+name+' — '+hebrY;
-    }
-  }catch(e){}
-  return null;
-}
-
-var latTabKey=null,latParentFolderId=null,latParentFolderName=null;
-async function loadLatest(){
-  try{
-    var best=null;
-    latTabKey=null;latParentFolderId=null;latParentFolderName=null;
-    for(var k in TABS){
-      var t=TABS[k];var kk=k;
-      var level0=[{id:t.id,name:t.name}],level1=[],level2=[];
-      try{
-        var q0=encodeURIComponent("'"+t.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
-        var r0=await fetch('https://www.googleapis.com/drive/v3/files?q='+q0+'&key='+KEY+'&fields=files(id,name)&pageSize=100');
-        if(r0.ok){var d0=await r0.json();level1=d0.files||[];}
-      }catch(e){}
-      if(level1.length){
-        var l2r=await Promise.all(level1.map(async function(sf){
-          try{
-            var q2=encodeURIComponent("'"+sf.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");
-            var r2=await fetch('https://www.googleapis.com/drive/v3/files?q='+q2+'&key='+KEY+'&fields=files(id,name)&pageSize=100');
-            if(!r2.ok)return[];var d2=await r2.json();return d2.files||[];
-          }catch(e){return[];}
-        }));
-        l2r.forEach(function(arr){level2=level2.concat(arr);});
-      }
-      var toSearch=level0.concat(level1).concat(level2);
-      await Promise.all(toSearch.map(async function(folder){
-        try{
-          var q=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");
-          var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,modifiedTime,createdTime)&orderBy=modifiedTime+desc&pageSize=3');
-          if(!r.ok)return;var d=await r.json();
-          (d.files||[]).forEach(function(f){
-            var ft=new Date(f.createdTime||f.modifiedTime);
-            var bt=best?new Date(best.file.createdTime||best.file.modifiedTime):null;
-            if(!best||ft>bt){best={file:f,tabKey:kk,parentId:folder.id,parentName:folder.name};}
-          });
-        }catch(e){}
-      }));
-    }
-    if(best){
-      latF=best.file;latTabKey=best.tabKey;
-      latParentFolderId=best.parentId;latParentFolderName=cln(best.parentName);
-      var nm=cln(latF.name);
-      document.getElementById('lname').innerHTML=fmN(nm);
-      document.getElementById('latname').innerHTML=fmN(nm);
-      var uploadDate=new Date(latF.createdTime||latF.modifiedTime);
-      var parsha=await getParshaForDate(uploadDate);
-      var parshaLabel=parsha?'די שיעור איז פארגעלערנט: <span class="pname">'+parsha+'</span>':'';
-      document.getElementById('ldate').innerHTML=parshaLabel;
-      document.getElementById('latdate').innerHTML=parshaLabel;
-    }else{document.getElementById('lname').textContent='שיעורים נישט דא';}
-  }catch(e){document.getElementById('lname').textContent='פעלער';}
-}
-
-function openLatestModal(){openM('m-lat');}
-function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
-function goToLatestShiur(){
-  if(!latTabKey)return;
-  closeM('m-lat');showTab(latTabKey,null);
-  if(latParentFolderId&&latParentFolderId!==TABS[latTabKey].id){
-    setTimeout(function(){nav.push({id:latParentFolderId,name:latParentFolderName||'...'});rBC();lFld(latParentFolderId);},350);
-  }
-}
-
-async function checkYomTov(){
-  try{
-    var q=encodeURIComponent("'"+YTID+"' in parents and trashed=false and mimeType='application/vnd.google-apps.shortcut'");
-    var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,shortcutDetails)&pageSize=5');
-    var d=await r.json();var files=d.files||[];
-    if(files.length){
-      var sc=files[0];ytFId=sc.shortcutDetails?sc.shortcutDetails.targetId:'';ytNm=cln(sc.name);
-      setTimeout(function(){
-        document.getElementById('ytpt').textContent='🕍 '+ytNm+' Shiurim';
-        document.getElementById('ytps').textContent='Upcoming: '+ytNm;
-        document.getElementById('ytpp').textContent='Shiurim are available for '+ytNm+':';
-        document.getElementById('ytp').classList.add('open');
-      },1600);
-    }
-  }catch(e){}
-}
-function openYomTovBtn(){if(ytFId){document.getElementById('ytpt').textContent='🕍 '+ytNm+' Shiurim';document.getElementById('ytp').classList.add('open');}else{openM('m-nyt');}}
-function goYomTov(){closeYtp();if(ytFId){showTab('moadim',null);setTimeout(function(){nav.push({id:ytFId,name:ytNm});rBC();lFld(ytFId);},300);}}
-function closeYtp(){document.getElementById('ytp').classList.remove('open');}
-
-function sendContact(e){
-  e.preventDefault();
-  var email=document.getElementById('cte').value.trim();
-  var subj=document.getElementById('cts')?document.getElementById('cts').value.trim():'';
-  var msg=document.getElementById('ctm').value.trim();
-  if(!email||!msg)return;
-  fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:email,message:msg,_subject:(subj?subj+' — ':'')+'Message - Shiurei Kelalim'})})
-  .then(function(r){return r.json();})
-  .then(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';})
-  .catch(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';});
-}
-
-function doSub(e){
-  e.preventDefault();
-  var em=document.getElementById('sube').value.trim();
-  if(!em||!em.includes('@'))return;
-  var btn=document.querySelector('#subf .sbtn');
-  if(btn){btn.textContent='⏳...';btn.disabled=true;}
-  _showSubResult('success');
-  fetch(SCRIPT_URL+'?email='+encodeURIComponent(em)+'&t='+Date.now(),{method:'GET',mode:'no-cors',credentials:'omit'}).catch(function(){});
-}
-function _showSubResult(result){
-  document.getElementById('subf').style.display='none';
-  var ok=document.getElementById('subok');
-  if(result==='already_subscribed'){
-    ok.innerHTML='&#9888; איר זענט שוין אינעם סיסטעם!<br><small style="color:#888;font-size:.76rem;display:block;margin-top:5px">You are already subscribed — no action needed.</small>';
-    ok.style.color='#e65100';
-  }else{
-    ok.innerHTML='&#9989; You are now subscribed!<br><span style="color:#555;font-size:.78rem;display:block;margin-top:8px;line-height:1.7">איר וועט יעצט אטעמאטיש באקומן א אריינפיר אימעל.<br>אויב איר זעט עס נישט — טשעקט אין ספּעם.<br>שרייקט: <a href="mailto:info@shiureikelalim.com" style="color:#162d5a;font-weight:700">info@shiureikelalim.com</a></span>';
-    ok.style.color='#2e7d32';
-  }
-  ok.style.display='block';
-}
-
-function selAmt(amt,el){
-  document.querySelectorAll('.dopt').forEach(function(d){d.classList.remove('sel')});
-  el.classList.add('sel');dAmt=amt;
-  document.getElementById('dcw').style.display=amt==='c'?'block':'none';
-  document.getElementById('dsw').style.display=amt>18||amt==='c'?'block':'none';
-}
-function goPay(){
-  if(!dAmt){document.getElementById('d1err').style.display='block';document.getElementById('d1err').textContent='Please select an amount';return;}
-  var amt=dAmt==='c'?(document.getElementById('dca').value||'?')+'':dAmt+'';
-  document.getElementById('damtd').textContent='Donation: $'+amt;
-  document.getElementById('ds1').style.display='none';
-  document.getElementById('ds2').style.display='block';
-}
-function backAmt(){document.getElementById('ds2').style.display='none';document.getElementById('ds1').style.display='block';}
-function dShowReceipt(){document.getElementById('d-receipt-field').style.display='block';}
-function goDonate(){
-  window.open(DON_URL,'_blank');
-  closeM('m-don');
-}
-function closeDonOverlay(){
-  document.getElementById('don-overlay').style.display='none';
-  document.getElementById('don-iframe').src='about:blank';
-}
-function showErr(id,msg){var e=document.getElementById(id);e.textContent=msg;e.style.display='block';}
-function closeDon(){closeM('m-don');setTimeout(function(){document.getElementById('ds1').style.display='block';document.getElementById('ds2').style.display='none';document.getElementById('dok').style.display='none';document.querySelectorAll('.dopt').forEach(function(d){d.classList.remove('sel')});dAmt=18;},400);}
-
-var _pH=[],_pF=[];
-function _sv(){return{ca:document.getElementById('ca').style.display,hero:document.getElementById('hero').style.display,land:document.getElementById('land').style.display,nav:nav.slice(),sbn:document.getElementById('sbn').innerHTML,sbnC:document.getElementById('sbn').className,fl:document.getElementById('fl').innerHTML,bc:document.getElementById('bc').innerHTML,si:document.getElementById('sinfo').textContent,sr:document.getElementById('srch').value};}
-function _rs(s){document.getElementById('ca').style.display=s.ca;document.getElementById('hero').style.display=s.hero;document.getElementById('land').style.display=s.land;nav=s.nav.slice();document.getElementById('sbn').innerHTML=s.sbn;document.getElementById('sbn').className=s.sbnC;document.getElementById('fl').innerHTML=s.fl;document.getElementById('bc').innerHTML=s.bc;document.getElementById('sinfo').textContent=s.si;document.getElementById('srch').value=s.sr;_ua();}
-function _ph(){_pH.push(_sv());_pF=[];_ua();}
-function goBack(){if(!_pH.length)return;_pF.push(_sv());_rs(_pH.pop());}
-function goFwd(){if(!_pF.length)return;_pH.push(_sv());_rs(_pF.pop());}
-function _ua(){var ar=document.getElementById('sarr'),ab=document.getElementById('sab'),af=document.getElementById('saf');if(!ar)return;ar.style.display=(_pH.length||_pF.length)?'flex':'none';if(ab)ab.disabled=!_pH.length;if(af)af.disabled=!_pF.length;}
-function focusSearch(){var s=document.getElementById('srch');document.getElementById('hero').style.display='';document.getElementById('land').style.display='';document.getElementById('ca').style.display='none';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});setTimeout(function(){s.focus();s.scrollIntoView({behavior:'smooth',block:'center'});},150);}
-function togNavSrch(){var si=document.getElementById('nav-si');si.classList.toggle('open');if(si.classList.contains('open'))setTimeout(function(){document.getElementById('nav-si-inp').focus();},370);}
-function triggerSearchNav(){var v=document.getElementById('nav-si-inp').value.trim();if(!v)return;document.getElementById('srch').value=v;document.getElementById('nav-si').classList.remove('open');document.getElementById('nav-si-inp').value='';triggerSearch();}
-function _setHash(h){try{history.pushState(null,'',location.pathname+(h?'#'+h:''));}catch(e){}}
-window.addEventListener('popstate',function(){if(_pH.length){_pF.push(_sv());_rs(_pH.pop());}else{_setHash('');showLanding();}});
-function _readHash(){
-  var h=location.hash.replace('#','');if(!h)return;
-  var p={};h.split('&').forEach(function(x){var a=x.split('=');if(a[1]!==undefined)p[a[0]]=decodeURIComponent(a[1]);});
-  if(p.tab){showTab(p.tab,null);if(p.fid&&p.fn){setTimeout(function(){nav.push({id:p.fid,name:p.fn});rBC();lFld(p.fid);},600);}}
-  else if(p.fid){document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+(p.fn||'')+'</h2>';nav=[{id:p.fid,name:p.fn||'...'}];rBC();lFld(p.fid);}
-  else if(p.sid){setTimeout(function(){opPl(p.sid,p.sn||'');},400);}
-  else if(p.q){document.getElementById('srch').value=p.q;setTimeout(function(){triggerSearch();},400);}
-  else if(p.m){openM(p.m);}
-}
-
-// PWA Service Worker
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(function(){});}
-var _pwaPrompt;
-window.addEventListener('beforeinstallprompt',function(e){
-  e.preventDefault();_pwaPrompt=e;
-  document.getElementById('pwa-install-btn').style.display='block';
-});
-function installPWA(){
-  if(!_pwaPrompt)return;
-  _pwaPrompt.prompt();
-  _pwaPrompt.userChoice.then(function(){_pwaPrompt=null;document.getElementById('pwa-install-btn').style.display='none';});
-}
-window.addEventListener('appinstalled',function(){document.getElementById('pwa-install-btn').style.display='none';});
-
-loadLatest();
-checkYomTov();
-_readHash();
-</script>
-</body>
-</html>
+function hlTxt(txt,q){if(!q||!txt)return txt;var esc=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return txt.replace(new RegExp('('+esc+')','gi'),'<span class="hi">$1</span>');}
+function cln(s){for(var i=1;i<=Math.min(5,s.length-1);i++){var c=s.charCodeAt(i);if(c===45||c===8211||c===8212)return s.slice(i+1).trim();}if(s.length>4){var h=function(x){return x>=0x05D0&&x<=0x05EA};if(h(s.charCodeAt(0))&&!h(s.charCodeAt(1))&&h(s.charCodeAt(2))&&s[3]===' ')return s.slice(4).trim();}return s.trim();}
+function fmN(n){var m=n.match(/^(.+?)\s+mp3\.(\d+)$/i);if(m)return m[1]+' <span class="snum">'+m[2]+'</span>';return n.replace(/\bmp3\b/gi,'').replace(/\.\s
