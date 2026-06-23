@@ -306,25 +306,7 @@ footer{text-align:center;padding:22px 16px;background:linear-gradient(135deg,#08
     </div>
   </div>
 
-  <!-- APP DOWNLOAD SECTION -->
-  <div class="app-dl">
-    <div class="app-dl-inner">
-      <div class="app-btns">
-        <a href="#" onclick="openM('m-ios');return false;" class="app-btn">
-          <span style="font-size:1.2rem">🍎</span><span>iPhone / iPad</span>
-        </a>
-        <a href="#" onclick="installPWA_or_show();return false;" class="app-btn" id="android-btn">
-          <span style="font-size:1.2rem">🤖</span><span>Android App</span>
-        </a>
-        <a href="https://t.me/ShiureiKelalim" target="_blank" class="app-btn app-btn-tg">
-          <span style="font-size:1.2rem">✈️</span><span>Telegram</span>
-        </a>
-        <a href="https://chat.whatsapp.com/REPLACE_WITH_YOUR_LINK" target="_blank" class="app-btn app-btn-wa" id="wa-btn">
-          <span style="font-size:1.2rem">💬</span><span>WhatsApp</span>
-        </a>
-      </div>
-    </div>
-  </div>
+  
 
   <div class="secw">
     <div class="sech">Select Section / בחר נושא</div>
@@ -567,7 +549,15 @@ footer{text-align:center;padding:22px 16px;background:linear-gradient(135deg,#08
     <a href="#" onclick="openM('m-don');return false;" class="ftr-link">💛 Donate</a>
   </div>
   
-<footer><p>© Shiurei Kelalim — All Rights Reserved</p></footer>
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0 6px">
+    <a href="#" onclick="installPWA_or_show();return false;">
+      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play" style="height:42px;border-radius:6px">
+    </a>
+    <a href="#" onclick="openM('m-ios');return false;">
+      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" style="height:42px;border-radius:6px">
+    </a>
+  </div>
+  <p>© Shiurei Kelalim — All Rights Reserved</p>
 </footer>
 
 <script>
