@@ -540,33 +540,11 @@ footer{text-align:center;padding:22px 16px;background:linear-gradient(135deg,#08
 <button id="pwa-install-btn" onclick="installPWA()" style="display:none;position:fixed;bottom:22px;left:14px;z-index:498;background:linear-gradient(135deg,#162d5a,#2a548f);color:#fff;border:none;border-radius:22px;padding:8px 16px;font-size:.78rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;box-shadow:0 4px 14px rgba(8,18,42,.4)">📲 Install App</button>
 
 <footer>
-
-    <div class="app-btns">
-
-<a class="app-btn"
-   href="/dl.html">
-🤖 Android App
-</a>
-
-<button class="app-btn"
-        onclick="openM('m-ios')">
-🍎 iPhone / iPad
-</button>
-
-<a class="app-btn app-btn-tg"
-   href="https://t.me/REPLACE_ME"
-   target="_blank">
-✈️ Telegram
-</a>
-
-<a class="app-btn app-btn-wa"
-   href="https://whatsapp.com/channel/REPLACE_ME"
-   target="_blank">
-💬 WhatsApp
-</a>
-
-</div>
-   
+    <div class="ftr-links">
+     <a href="#" onclick="openM('m-ios');return false;" class="ftr-link"> iPhone</a>
+    <a href="#" onclick="installPWA_or_show();return false;" class="ftr-link"> Android</a>
+    <a href="https://t.me/ShiureiKelalim" target="_blank" class="ftr-link"> Telegram</a>
+    <a href="https://chat.whatsapp.com/REPLACE_WITH_YOUR_LINK" target="_blank" class="ftr-link"> WhatsApp</a>
     <a href="#" onclick="openM('m-sub');return false;" class="ftr-link">📧 Subscribe</a>
     <a href="#" onclick="openM('m-don');return false;" class="ftr-link">💛 Donate</a>
   </div>
