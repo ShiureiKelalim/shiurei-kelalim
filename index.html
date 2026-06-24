@@ -509,7 +509,53 @@ footer{text-align:center;padding:22px 16px;background:linear-gradient(135deg,#08
     <button class="sbtn" onclick="goToLatestShiur()" style="background:linear-gradient(135deg,#2e7d32,#388e3c)">📂 גיי צום שיעור</button>
   </div>
 </div>
+<!-- iOS INSTALL MODAL - NEW -->
+<div class="mov" id="m-ios">
+  <button class="mov-back" onclick="closeM('m-ios')">◀ צוריק</button>
+  <div class="mbx" style="max-width:430px">
+    <button class="mx" onclick="closeM('m-ios')">✕</button>
+    <div class="mi">🍎</div>
+    <div class="mt">הוסף לאייפון / iPad</div>
+    <p style="text-align:center;color:#666;font-size:.84rem;margin-bottom:16px">עפנט דעם סייט אין <b>Safari</b> אויף אייעם Apple גערעטשאפט, דאן:</p>
+    <div class="ios-step">
+      <div class="ios-num">1</div>
+      <div class="ios-text">דריקט אויף דעם <b>שערן קנעפל</b> (□↑) אינטן פון Safari</div>
+    </div>
+    <div class="ios-step">
+      <div class="ios-num">2</div>
+      <div class="ios-text">זוכט <b>"Add to Home Screen"</b> אין דער אויסוואל</div>
+    </div>
+    <div class="ios-step">
+      <div class="ios-num">3</div>
+      <div class="ios-text">דריקט <b>"Add"</b> — א שיעורי כללים icon ווערט צוגעלייגט!</div>
+    </div>
+    <div style="background:#f0f7ff;border-radius:10px;padding:12px;margin-top:14px;text-align:center">
+      <p style="font-size:.77rem;color:#555">💡 עס ווערט אויסזען ווי א ריכטיגע עפּ — פולשטענדיג אן Safari ראמען!</p>
+    </div>
+  </div>
+</div>
 
+<!-- PWA INSTALL BUTTON -->
+<button id="pwa-install-btn" onclick="installPWA()" style="display:none;position:fixed;bottom:22px;left:14px;z-index:498;background:linear-gradient(135deg,#162d5a,#2a548f);color:#fff;border:none;border-radius:22px;padding:8px 16px;font-size:.78rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;box-shadow:0 4px 14px rgba(8,18,42,.4)">📲 Install App</button>
+
+<footer>
+    <div class="ftr-links">
+     <a href="#" onclick="openM('m-ios');return false;" class="ftr-link"> iPhone</a>
+    <a href="#" onclick="installPWA_or_show();return false;" class="ftr-link"> Android</a>
+    <a href="https://t.me/ShiureiKelalim" target="_blank" class="ftr-link"> Telegram</a>
+    <a href="https://chat.whatsapp.com/REPLACE_WITH_YOUR_LINK" target="_blank" class="ftr-link"> WhatsApp</a>
+    <a href="#" onclick="openM('m-sub');return false;" class="ftr-link">📧 Subscribe</a>
+    <a href="#" onclick="openM('m-don');return false;" class="ftr-link">💛 Donate</a>
+  </div>
+  
+  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0 6px">
+    <a href="#" onclick="installPWA_or_show();return false;">
+      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play" style="height:42px;border-radius:6px">
+    </a>
+    <a href="#" onclick="openM('m-ios');return false;">
+      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" style="height:42px;border-radius:6px">
+    </a>
+  </div>
 
   <p>© Shiurei Kelalim — All Rights Reserved</p>
 </footer>
