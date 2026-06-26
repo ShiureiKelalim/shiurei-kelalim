@@ -416,9 +416,9 @@ footer{text-align:center;padding:22px 16px;background:linear-gradient(135deg,#08
     <button class="mx" onclick="closeM('m-hl')">✕</button>
     <div class="mi">📞</div>
     <div class="mt">Hotline Numbers</div>
-    <div class="hlr"><span class="hlc">🇺🇸 USA</span><a class="hln" href="tel:+16054777451">1-605-477-7451</a></div>
-    <div class="hlr"><span class="hlc">🇮🇱 Israel</span><a class="hln" href="tel:+97277336801">077-336-8013</a></div>
-    <div class="hlr"><span class="hlc">🇬🇧 London</span><a class="hln" href="tel:+443306131016">0330-613-1016</a></div>
+    <div class="hlr"><span class="hlc">🇺🇸 USA</span><a class="hln" href="tel:+16054777451" onclick="gaEv('hotline_click',{country:'USA'});">1-605-477-7451</a></div>
+    <div class="hlr"><span class="hlc">🇮🇱 Israel</span><a class="hln" href="tel:+97277336801" onclick="gaEv('hotline_click',{country:'Israel'});">077-336-8013</a></div>
+    <div class="hlr"><span class="hlc">🇬🇧 London</span><a class="hln" href="tel:+443306131016" onclick="gaEv('hotline_click',{country:'London'});">0330-613-1016</a></div>
     <p style="text-align:center;color:#bbb;font-size:.73rem;margin-top:10px">Tap a number to call</p>
   </div>
 </div>
@@ -597,7 +597,7 @@ var nav=[],stmr=null,ytFId='',ytNm='',pwOk=false,pend=null,dAmt=18,latF=null;
   }catch(e){}
 }
 
-var curShiur = {id:'', name:'', marks:{}};
+var curShiur = {id:'', name:'', marks:{}, lastBeat:0};
 
 function setupAudioTracking(){
   var a = document.getElementById('au');
@@ -605,7 +605,10 @@ function setupAudioTracking(){
   a.dataset.gaReady = '1';
 
   a.addEventListener('play', function(){
-    gaEv('shiur_play', {shiur_id:curShiur.id, shiur_name:curShiur.name});
+    gaEv('shiur_play', {
+      shiur_id:curShiur.id,
+      shiur_name:curShiur.name
+    });
   });
 
   a.addEventListener('pause', function(){
@@ -620,7 +623,19 @@ function setupAudioTracking(){
 
   a.addEventListener('timeupdate', function(){
     if(!a.duration || !isFinite(a.duration)) return;
+
+    var nowSec = Math.floor(a.currentTime || 0);
     var pct = Math.floor((a.currentTime / a.duration) * 100);
+
+    if(nowSec >= curShiur.lastBeat + 10){
+      curShiur.lastBeat = nowSec;
+      gaEv('shiur_heartbeat', {
+        shiur_id:curShiur.id,
+        shiur_name:curShiur.name,
+        listen_seconds:nowSec,
+        listen_percent:pct
+      });
+    }
 
     [25,50,75].forEach(function(m){
       if(pct >= m && !curShiur.marks[m]){
@@ -628,7 +643,7 @@ function setupAudioTracking(){
         gaEv('shiur_'+m+'_percent', {
           shiur_id:curShiur.id,
           shiur_name:curShiur.name,
-          listen_seconds:Math.floor(a.currentTime || 0)
+          listen_seconds:nowSec
         });
       }
     });
@@ -682,7 +697,7 @@ if(allBroader.length){if(all.length)html+='<div style="height:8px"></div>';html+
 el.innerHTML=html;setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},150);}
 function opFldr(id,name){_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+name+'</h2>';var el=document.getElementById('fl'),si=document.getElementById('sinfo');el.innerHTML='<div class="loading">⏳ לאדט...</div>';fetch('https://www.googleapis.com/drive/v3/files?q='+encodeURIComponent("'"+id+"' in parents and trashed=false")+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=100').then(function(r){return r.json();}).then(function(d){var files=d.files||[];if(!files.length){el.innerHTML='<p style="text-align:center;padding:20px">נישט געפונן</p>';return;}el.innerHTML=files.map(function(f){var nm=cln(f.name);if(f.mimeType==='application/vnd.google-apps.folder'){return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+fmN(nm)+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+fmN(nm)+'</span><span class="bdg ba">▶ Shiur</span></div>';}).join('');si.textContent='';}).catch(function(){el.innerHTML='<p>פעלער</p>';});}
 function opPl(fId,nm){
-  curShiur = {id:fId, name:nm, marks:{}, lastBeat:0};
+  curShiur = {id:fId, name:nm, marks:{}, lastBeat:0}; 
   gaEv('shiur_open', {shiur_id:fId, shiur_name:nm});
   setupAudioTracking();
 
