@@ -542,8 +542,8 @@ footer{text-align:center;padding:22px 16px;background:linear-gradient(135deg,#08
     <div class="ftr-links">
      <a href="#" onclick="openM('m-ios');return false;" class="ftr-link"> iPhone</a>
     <a href="#" onclick="installPWA_or_show();return false;" class="ftr-link"> Android</a>
-    <a href="https://t.me/ShiureiKelalim" target="_blank" class="ftr-link"> Telegram</a>
-    <a href="https://chat.whatsapp.com/REPLACE_WITH_YOUR_LINK" target="_blank" class="ftr-link"> WhatsApp</a>
+    <a href="https://t.me/ShiureiKelalim" target="_blank" class="ftr-link" onclick="gaEv('telegram_click',{location:'footer'});"> Telegram</a>
+    <a href="https://chat.whatsapp.com/REPLACE_WITH_YOUR_LINK" target="_blank" class="ftr-link" onclick="gaEv('whatsapp_click',{location:'footer'});"> WhatsApp</a>
     <a href="#" onclick="openM('m-sub');return false;" class="ftr-link">📧 Subscribe</a>
     <a href="#" onclick="openM('m-don');return false;" class="ftr-link">💛 Donate</a>
   </div>
@@ -770,7 +770,7 @@ function sendContact(e){
 function doSub(e){
   gaEv('subscribe_submit');e.preventDefault();var em=document.getElementById('sube').value.trim();if(!em||!em.includes('@'))return;var btn=document.querySelector('#subf .sbtn');if(btn){btn.textContent='⏳...';btn.disabled=true;}_showSubResult('success');fetch(SCRIPT_URL+'?email='+encodeURIComponent(em)+'&t='+Date.now(),{method:'GET',mode:'no-cors',credentials:'omit'}).catch(function(){});}
 function _showSubResult(result){document.getElementById('subf').style.display='none';var ok=document.getElementById('subok');if(result==='already_subscribed'){ok.innerHTML='&#9888; איר זענט שוין אינעם סיסטעם!<br><small style="color:#888;font-size:.76rem;display:block;margin-top:5px">You are already subscribed — no action needed.</small>';ok.style.color='#e65100';}else{ok.innerHTML='&#9989; You are now subscribed!<br><span style="color:#555;font-size:.78rem;display:block;margin-top:8px;line-height:1.7">איר וועט יעצט אטעמאטיש באקומן א אריינפיר אימעל.<br>אויב איר זעט עס נישט — טשעקט אין ספּעם.<br>שרייקט: <a href="mailto:info@shiureikelalim.com" style="color:#162d5a;font-weight:700">info@shiureikelalim.com</a></span>';ok.style.color='#2e7d32';}ok.style.display='block';}
-function trackDon(event){try{fetch(SCRIPT_URL+'?action=don_click&t='+Date.now(),{method:'GET',mode:'no-cors'}).catch(function(){});}catch(e){}}
+function trackDon(event){   gaEv('donate_click',{location:'donate_modal'});   try{     fetch(SCRIPT_URL+'?action=don_click&t='+Date.now(),{method:'GET',mode:'no-cors'}).catch(function(){});   }catch(e){} }
 function goDonate(){ gaEv('donate_click',{   amount:dAmt||18 });var soul=document.getElementById('dsoul')?document.getElementById('dsoul').value.trim():'';if(soul){try{fetch(SCRIPT_URL+'?action=donation_zchus&soul='+encodeURIComponent(soul)+'&t='+Date.now(),{method:'GET',mode:'no-cors'}).catch(function(){});}catch(e){}}window.open(DON_URL,'_blank');closeM('m-don');}
 function showErr(id,msg){var e=document.getElementById(id);e.textContent=msg;e.style.display='block';}
 var _pH=[],_pF=[];
