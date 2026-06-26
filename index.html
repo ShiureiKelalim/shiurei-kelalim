@@ -785,8 +785,8 @@ window.addEventListener('popstate',function(){if(_pH.length){_pF.push(_sv());_rs
 function _readHash(){var h=location.hash.replace('#','');if(!h)return;var p={};h.split('&').forEach(function(x){var a=x.split('=');if(a[1]!==undefined)p[a[0]]=decodeURIComponent(a[1]);});if(p.tab){showTab(p.tab,null);if(p.fid&&p.fn){setTimeout(function(){nav.push({id:p.fid,name:p.fn});rBC();lFld(p.fid);},600);}}else if(p.fid){document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+(p.fn||'')+'</h2>';nav=[{id:p.fid,name:p.fn||'...'}];rBC();lFld(p.fid);}else if(p.sid){setTimeout(function(){opPl(p.sid,p.sn||'');},400);}else if(p.q){document.getElementById('srch').value=p.q;setTimeout(function(){triggerSearch();},400);}else if(p.m){openM(p.m);}}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(function(){});}
 var _pwaPrompt;
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_pwaPrompt=e;document.getElementById('pwa-install-btn').style.display='block';});
-function installPWA(){if(!_pwaPrompt)return;_pwaPrompt.prompt();_pwaPrompt.userChoice.then(function(){_pwaPrompt=null;document.getElementById('pwa-install-btn').style.display='none';});}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_pwaPrompt=e;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='block';});
+function installPWA(){if(!_pwaPrompt)return;_pwaPrompt.prompt();_pwaPrompt.userChoice.then(function(){_pwaPrompt=null;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='none';});}
 function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אינסטאלירן: עפנט דעם סייט אין Chrome, דריקט ⋮ → "Add to Home Screen"');}}
 window.addEventListener('appinstalled',function(){document.getElementById('pwa-install-btn').style.display='none';});
 loadLatest();
