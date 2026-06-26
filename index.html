@@ -685,7 +685,12 @@ function opPl(fId,nm){
 curShiur = {id:fId, name:nm, marks:{}};
 gaEv('shiur_open', {shiur_id:fId, shiur_name:nm});
 setupAudioTracking();{try{_setHash((location.hash.replace('#','').split('&').filter(function(x){return x.indexOf('sid=')<0&&x.indexOf('sn=')<0;}).join('&')+'&sid='+encodeURIComponent(fId)+'&sn='+encodeURIComponent(nm)).replace(/^&/,''));}catch(e){}document.getElementById('plti').innerHTML=fmN(nm);document.getElementById('au').src='https://www.googleapis.com/drive/v3/files/'+fId+'?alt=media&key='+KEY;document.getElementById('dotm').classList.remove('open');var l=dlL();var dlNm=nm.replace(/'/g,"\\'").replace(/"/g,'&quot;');document.getElementById('dlsec').innerHTML=l>0?'<button class="dlbtn" onclick="doDl(\''+fId+'\',\''+dlNm+'\')">⬇️ Download ('+l+' left today)</button>':'<div class="dllim">⛔ Download limit reached (5/day)</div>';document.getElementById('plov').classList.add('open');}
-function gaEv('shiur_download', {shiur_id:fId, shiur_name:nm}); doDl(fId,nm){cDl();fetch('https://www.googleapis.com/drive/v3/files/'+fId+'?alt=media&key='+KEY).then(function(r){return r.blob();}).then(function(blob){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(nm||'shiur')+'.mp3';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href);},2000);}).catch(function(){var fr=document.createElement('iframe');fr.style.display='none';fr.src='https://drive.google.com/uc?export=download&id='+fId;document.body.appendChild(fr);setTimeout(function(){document.body.removeChild(fr);},8000);});}
+function doDl(fId,nm){
+  gaEv('shiur_download',{
+    shiur_id:fId,
+    shiur_name:nm
+  });
+  cDl();fetch('https://www.googleapis.com/drive/v3/files/'+fId+'?alt=media&key='+KEY).then(function(r){return r.blob();}).then(function(blob){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(nm||'shiur')+'.mp3';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href);},2000);}).catch(function(){var fr=document.createElement('iframe');fr.style.display='none';fr.src='https://drive.google.com/uc?export=download&id='+fId;document.body.appendChild(fr);setTimeout(function(){document.body.removeChild(fr);},8000);});}
 function closePl(){var a=document.getElementById('au');a.pause();a.src='';document.getElementById('plov').classList.remove('open');}
 function togDots(){document.getElementById('dotm').classList.toggle('open');}
 document.getElementById('plov').addEventListener('click',function(e){if(e.target===this)closePl();});
