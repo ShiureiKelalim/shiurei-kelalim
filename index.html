@@ -20,7 +20,7 @@ gtag('js',new Date());gtag('config','G-Z1GLNQLRH1');
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;700;900&family=Heebo:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2c1810}
+body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2c1810;min-height:100vh}
 
 /* TOP NAV */
 .tnav{background:#0a1628;display:flex;align-items:center;padding:0 10px;min-height:50px;position:sticky;top:0;z-index:300;width:100%;box-sizing:border-box}
@@ -102,7 +102,7 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .scs{font-size:.85rem;color:rgba(255,255,255,.65)!important;line-height:1.6}
 
 /* CONTENT */
-#ca{display:none;padding:35px 12px 120px;max-width:840px;margin:0 auto;min-height:calc(100vh - 120px)}
+#ca{display:none;padding:35px 12px 140px;max-width:840px;margin:0 auto;min-height:calc(100vh - 110px)}
 .sbn{border-radius:12px;padding:18px;margin-bottom:14px;color:#fff;text-align:center}
 .sbn h2{font-size:1.5rem;font-weight:900}
 .bno{background:linear-gradient(135deg,#08122a,#162d5a,#2a548f)}
@@ -116,18 +116,19 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .bcs{color:#ccc}.bcc{color:#666;font-size:.87rem}
 
 /* FILE LIST */
-.fl{background:transparent!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;display:flex!important;flex-direction:column!important;gap:7px!important}
-.fi{background:linear-gradient(135deg,#2c5282 0%,#3d7ab5 60%,#4a90d9 100%)!important;color:#fff!important;border-radius:12px!important;border-bottom:none!important;box-shadow:0 2px 10px rgba(30,60,120,.25)!important;padding:10px 14px!important;transition:all .22s!important;display:flex!important;align-items:center!important;gap:10px!important;cursor:pointer!important}
-.fi:hover{background:linear-gradient(135deg,#3d7ab5,#5a9fd0)!important;transform:translateY(-2px)!important;box-shadow:0 6px 18px rgba(30,60,120,.35)!important}
-.fi.fi-fld{background:linear-gradient(135deg,#2a3f6b,#3a5a9a,#4a6fb5)!important}
-.fi.fi-fld:hover{background:linear-gradient(135deg,#3a5a9a,#5070c0)!important}
-.fii{font-size:1.4rem!important;width:48px!important;min-width:48px!important;height:48px!important;border-radius:10px!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;background:linear-gradient(145deg,rgba(255,255,255,.25),rgba(255,255,255,.08))!important;border:1px solid rgba(255,255,255,.2)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.3)!important}
-.fi.fi-fld .fii{background:linear-gradient(145deg,rgba(212,175,55,.35),rgba(212,175,55,.1))!important;border:1px solid rgba(212,175,55,.35)!important;box-shadow:inset 0 1px 0 rgba(255,220,100,.3)!important}
-.fii img{display:none!important}
-.fin{color:#fff!important;font-size:.88rem!important;font-weight:600!important;flex:1!important;line-height:1.35!important}
-.bdg{font-size:.67rem;padding:2px 8px;border-radius:13px;font-weight:700;white-space:nowrap}
-.bdg.bf{background:rgba(255,220,80,.2);color:#ffe87a;border:1px solid rgba(255,220,80,.4)}
-.bdg.ba{background:rgba(80,220,120,.18);color:#80ffaa;border:1px solid rgba(80,220,120,.3)}
+.fl{background:transparent!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;display:flex!important;flex-direction:column!important;gap:10px!important}
+.fi{background:linear-gradient(135deg,#102044,#173a72)!important;color:#fff!important;border-radius:14px!important;border:1px solid rgba(212,175,55,.22)!important;box-shadow:0 6px 18px rgba(8,18,42,.18)!important;padding:12px 16px!important;transition:all .22s!important;display:flex!important;align-items:center!important;gap:14px!important;cursor:pointer!important;min-height:70px!important}
+.fi:hover{transform:translateY(-2px)!important;box-shadow:0 10px 24px rgba(8,18,42,.28)!important;border-color:rgba(212,175,55,.55)!important;filter:brightness(1.05)}
+.fi.fi-fld{background:linear-gradient(135deg,#0b1731,#173a72)!important}
+.fi.fi-audio{background:linear-gradient(135deg,#10223c,#22537e)!important}
+.fii{font-size:1rem!important;width:52px!important;min-width:52px!important;height:52px!important;border-radius:12px!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;background:rgba(255,255,255,.07)!important;border:1px solid rgba(212,175,55,.35)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)!important;color:#d4af37!important;overflow:hidden!important}
+.fii svg{width:31px;height:31px;display:block;stroke:#d4af37;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.fii .fillgold{fill:#d4af37;stroke:none}
+.fii .restrictedIcon{font-size:.56rem;letter-spacing:.6px;color:#d4af37;font-family:Arial,sans-serif;font-weight:800;line-height:1.05;text-align:center}
+.fin{color:#fff!important;font-size:1rem!important;font-weight:800!important;flex:1!important;line-height:1.45!important;letter-spacing:.1px!important}
+.bdg{font-size:.64rem;padding:3px 9px;border-radius:13px;font-weight:800;white-space:nowrap;letter-spacing:.2px}
+.bdg.bf,.bdg.baf{background:rgba(212,175,55,.15);color:#f3d575;border:1px solid rgba(212,175,55,.35)}
+.bdg.ba{background:rgba(255,255,255,.10);color:#dff0ff;border:1px solid rgba(255,255,255,.22)}
 .hi{background:#ffd700;color:#1a1000;border-radius:2px;padding:0 2px;font-weight:700}
 .bdg.baf{background:rgba(255,200,50,.2);color:#ffd060;border:1px solid rgba(255,200,50,.35)}
 .bdg.bpf{background:rgba(255,183,77,.2);color:#ffcc77}
@@ -139,7 +140,7 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .plov.open{display:flex}
 .plbx{background:#fff;border-radius:20px;max-width:370px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.4);overflow:hidden;position:relative}
 .plvis{width:100%;height:120px;background:linear-gradient(135deg,#162d5a,#2a548f);display:flex;align-items:center;justify-content:center;font-size:3.2rem}
-.plcl{position:absolute;top:8px;left:10px;background:rgba(0,0,0,.4);color:#fff;border:none;border-radius:50%;width:27px;height:27px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:11;font-size:.85rem}
+.plcl{position:absolute;top:8px;left:10px;background:rgba(0,0,0,.48);color:#fff;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:11;font-size:1rem;font-weight:900}
 .plcl:hover{background:rgba(0,0,0,.7)}
 .plbd{padding:15px 20px;text-align:center}
 .plti{font-size:.92rem;font-weight:700;color:#162d5a;margin-bottom:10px;line-height:1.35}
@@ -210,13 +211,13 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .errb{text-align:center;padding:22px;color:#c62828;background:#ffebee;border-radius:9px;line-height:1.75}
 .empb{text-align:center;padding:34px;color:#bbb}
 
-footer{padding:34px 16px 22px;background:linear-gradient(135deg,#08122a,#162d5a);color:rgba(255,255,255,.65);font-size:.85rem;margin-top:70px}
-.ftr-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;text-align:center}
-.ftr-col{border:1px solid rgba(212,175,55,.22);border-radius:14px;padding:18px 14px;background:rgba(255,255,255,.035)}
-.ftr-col h4{color:#d4af37;font-size:.95rem;margin-bottom:12px}
-.ftr-col a{display:block;color:rgba(255,255,255,.78);text-decoration:none;padding:5px 0;font-size:.84rem}
+footer{padding:38px 16px 24px;background:linear-gradient(135deg,#08122a,#162d5a);color:rgba(255,255,255,.70);font-size:.86rem;margin-top:90px;border-top:1px solid rgba(212,175,55,.25)}
+.ftr-grid{max-width:950px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;text-align:center}
+.ftr-col{border:1px solid rgba(212,175,55,.24);border-radius:16px;padding:18px 14px;background:rgba(255,255,255,.035);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.ftr-col h4{color:#d4af37;font-size:1rem;margin-bottom:12px;font-weight:900}
+.ftr-col a{display:block;color:rgba(255,255,255,.82);text-decoration:none;padding:5px 0;font-size:.86rem;transition:color .2s}
 .ftr-col a:hover{color:#d4af37;text-decoration:underline}
-.ftr-copy{text-align:center;margin-top:22px;color:rgba(255,255,255,.45);font-size:.75rem}
+.ftr-copy{text-align:center;margin-top:24px;color:rgba(255,255,255,.48);font-size:.76rem}
 @media(max-width:700px){.ftr-grid{grid-template-columns:1fr}}
 
 #srch::placeholder{color:rgba(22,45,90,0.38)}
@@ -292,7 +293,7 @@ footer{padding:34px 16px 22px;background:linear-gradient(135deg,#08122a,#162d5a)
 </div>
 
 <!-- LANDING -->
-<div id="land">
+<div id="land" style="min-height:760px">
   <div style="max-width:480px;margin:18px auto 0;padding:0 16px;position:relative">
     <input type="text" id="srch" placeholder="זיכט פאר שיעורים..." oninput="clearIfEmpty(this.value)" onkeyup="if(event.key==='Enter')triggerSearch()" dir="rtl" style="width:100%;padding:11px 42px 11px 16px;border-radius:25px;border:2px solid rgba(0,0,0,.15);background:#fff;color:#162d5a;font-size:1rem;font-family:'Frank Ruhl Libre',serif;outline:none;text-align:right;box-sizing:border-box">
     <span onclick="triggerSearch()" style="position:absolute;left:28px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1.1rem">🔍</span>
@@ -539,73 +540,31 @@ footer{padding:34px 16px 22px;background:linear-gradient(135deg,#08122a,#162d5a)
   </div>
 </div>
 
-<!-- PWA INSTALL BUTTON -->
-<button id="pwa-install-btn" onclick="installPWA()" style="display:none;position:fixed;bottom:22px;left:14px;z-index:498;background:linear-gradient(135deg,#162d5a,#2a548f);color:#fff;border:none;border-radius:22px;padding:8px 16px;font-size:.78rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;box-shadow:0 4px 14px rgba(8,18,42,.4)">📲 Install App</button>
 
-  <!-- PRIVACY POLICY -->
+<!-- PRIVACY POLICY -->
 <div class="mov" id="m-privacy">
   <button class="mov-back" onclick="closeM('m-privacy')">◀ צוריק</button>
-  <div class="mbx" style="max-width:620px">
+  <div class="mbx" style="max-width:680px">
     <button class="mx" onclick="closeM('m-privacy')">✕</button>
     <div class="mi">🔐</div>
     <div class="mt">Privacy Policy</div>
-   <p style="color:#555;line-height:1.9;font-size:.86rem">
-
-<strong>Effective Date:</strong> June 2026
-
-<br><br>
-
-Shiurei Kelalim ("we," "our," or "us") respects your privacy and is committed to protecting any personal information you choose to provide while using this website.
-
-<br><br>
-
-<strong>Information We Collect</strong><br>
-We may collect your email address when you voluntarily subscribe to receive notifications about newly published shiurim. We also collect limited technical information, such as browser type and anonymous usage statistics, to improve the performance and reliability of this website.
-
-<br><br>
-
-<strong>How We Use Your Information</strong><br>
-Your information is used solely to:
-<ul style="margin:8px 25px;">
-<li>Send notifications about new shiurim (only if you subscribed).</li>
-<li>Respond to messages submitted through our contact form.</li>
-<li>Improve the website and user experience.</li>
-</ul>
-
-<strong>Information Sharing</strong><br>
-We do not sell, rent, trade, or otherwise share your personal information with third parties, except when required by applicable law.
-
-<br><br>
-
-<strong>Cookies & Analytics</strong><br>
-This website may use cookies and analytics services to understand general website usage and improve functionality. These tools do not identify you personally.
-
-<br><br>
-
-<strong>Third-Party Services</strong><br>
-Certain features of this website may use trusted third-party services, including Google Drive, Google Analytics, Google Apps Script, and FormSubmit. These services are governed by their own privacy policies.
-
-<br><br>
-
-<strong>Data Security</strong><br>
-We take reasonable measures to protect the information submitted through this website. However, no method of electronic transmission or online storage is completely secure.
-
-<br><br>
-
-<strong>Changes to This Policy</strong><br>
-This Privacy Policy may be updated from time to time without prior notice. Any changes will be posted on this page.
-
-<br><br>
-
-<strong>Contact</strong><br>
-If you have any questions regarding this Privacy Policy, please contact us through the Contact Us page.
-
-</p>
+    <div style="color:#555;line-height:1.9;font-size:.86rem;text-align:left;direction:ltr;font-family:Heebo,Arial,sans-serif">
+      <p><strong>Effective Date:</strong> June 2026</p>
+      <p>Shiurei Kelalim ("we," "our," or "us") respects your privacy and is committed to protecting any personal information you choose to provide while using this website.</p>
+      <p><strong>Information We Collect</strong><br>We may collect your email address when you voluntarily subscribe to receive notifications about newly published shiurim. We may also collect limited technical information, such as browser type and anonymous usage statistics, to improve the performance and reliability of this website.</p>
+      <p><strong>How We Use Your Information</strong><br>Your information is used only to send notifications about new shiurim, respond to messages submitted through the contact form, and improve the website experience.</p>
+      <p><strong>Information Sharing</strong><br>We do not sell, rent, trade, or otherwise share your personal information with third parties, except when required by applicable law.</p>
+      <p><strong>Cookies & Analytics</strong><br>This website may use cookies and analytics services to understand general website usage and improve functionality. These tools are used for site improvement and do not identify you personally.</p>
+      <p><strong>Third-Party Services</strong><br>Certain features may use trusted third-party services, including Google Drive, Google Analytics, Google Apps Script, and FormSubmit. These services are governed by their own privacy policies.</p>
+      <p><strong>Data Security</strong><br>We take reasonable measures to protect information submitted through this website. However, no method of electronic transmission or online storage is completely secure.</p>
+      <p><strong>Changes to This Policy</strong><br>This Privacy Policy may be updated from time to time. Any changes will be posted on this page.</p>
+      <p><strong>Contact</strong><br>If you have any questions about this Privacy Policy, please contact us through the Contact Us page.</p>
+    </div>
   </div>
 </div>
+
 <footer>
   <div class="ftr-grid">
-
     <div class="ftr-col">
       <h4>הויפט קאטעגאריעס</h4>
       <a href="#" onclick="showTab('orach',null);return false;">אורח חיים</a>
@@ -614,13 +573,11 @@ If you have any questions regarding this Privacy Policy, please contact us throu
       <a href="#" onclick="showTab('choshen',null);return false;">חושן משפט</a>
       <a href="#" onclick="showTab('moadim',null);return false;">מועדים וזמנים</a>
     </div>
-
     <div class="ftr-col">
       <h4>Special Shiurim</h4>
-      <a href="#" onclick="openLatestModal();return false;">נייעסטע שיעור</a>
-      <a href="#" onclick="openYomTovBtn();return false;">שיעורים על היו"ט הבעל"ט</a>
+      <a href="#" onclick="openLatestModal();return false;">די נייעסטע שיעור</a>
+      <a href="#" onclick="openYomTovBtn();return false;">שיעורים על היו״ט הבעל״ט</a>
     </div>
-
     <div class="ftr-col">
       <h4>אינפארמאציע</h4>
       <a href="#" onclick="openM('m-hl');return false;">האטליין</a>
@@ -629,12 +586,10 @@ If you have any questions regarding this Privacy Policy, please contact us throu
       <a href="#" onclick="openM('m-don');return false;">Donate</a>
       <a href="#" onclick="openM('m-privacy');return false;">Privacy Policy</a>
     </div>
-
   </div>
-
   <p class="ftr-copy">© Shiurei Kelalim — All Rights Reserved</p>
 </footer>
-  
+
 <script>
 (function(){
   try{
@@ -738,10 +693,59 @@ function cln(s){for(var i=1;i<=Math.min(5,s.length-1);i++){var c=s.charCodeAt(i)
 function fmN(n){var m=n.match(/^(.+?)\s+mp3\.(\d+)$/i);if(m)return m[1]+' <span class="snum">'+m[2]+'</span>';return n.replace(/\bmp3\b/gi,'').replace(/\.\s*$/,'').trim();}
 function isA(m){return m&&m.includes('audio')}
 function gIco(m){if(!m)return'📎';if(m.includes('audio'))return'🎵';if(m.includes('video'))return'🎬';if(m.includes('pdf'))return'📄';return'📎';}
-var FOLDER_ICONS={'ציצית':'🧣','ציצת':'🧣','שבת':'🕯️','שבתות':'🕯️','בשר':'🥩','בשרי':'🥩','חלב':'🥛','חלבי':'🥛','כשר':'✡️','כשרות':'✡️','תפילה':'📿','תפלה':'📿','ברכה':'🍇','ברכות':'🍇','נטל':'💧','נטילה':'💧','נטילת':'💧','יום טוב':'🎊','יו"ט':'🎊','ראש השנה':'🍎','ר"ה':'🍎','יום כיפור':'📖','כיפור':'📖','סוכות':'🌿','סוכה':'🌿','חנוכה':'🕎','פורים':'🎭','פסח':'🍷','פסחים':'🍷','שבועות':'🌸','תשעה':'😔','תשעה באב':'😔','אבל':'🪦','אבלות':'🪦','רפואה':'💊','חולה':'💊','ממון':'💰','הלוואה':'💰','שכירות':'🏠','שכר':'🏠','שותפות':'🤝','עסק':'🤝','מקוה':'💧','טהרה':'🌊','נשואין':'💍','נשואים':'💍','חתונה':'💍','גט':'📄','עדות':'⚖️','ניקור':'🔪','בישול':'🍲','בישולי':'🍲','תערובת':'🫙','כלים':'🥄','אורח':'📖','יורה':'🍷','אבן':'💍','חושן':'⚖️','מועד':'🕯️','מועדים':'🕯️'};
-function getFolderEmoji(name){var n=name||'';for(var k in FOLDER_ICONS){if(n.includes(k))return FOLDER_ICONS[k];}return'📁';}
-var FOLDER_COLORS={'ציצית':'linear-gradient(135deg,#1a4a1a,#2e7d32)','שבת':'linear-gradient(135deg,#3d2a00,#b8860b)','בשר':'linear-gradient(135deg,#5c1a00,#b71c1c)','חלב':'linear-gradient(135deg,#003366,#1565c0)','תפילה':'linear-gradient(135deg,#1a0045,#6a1b9a)','ברכות':'linear-gradient(135deg,#004d00,#2e7d32)','נטילת':'linear-gradient(135deg,#003d4d,#0277bd)','נטילה':'linear-gradient(135deg,#003d4d,#0277bd)','חנוכה':'linear-gradient(135deg,#002060,#1565c0)','פסח':'linear-gradient(135deg,#3d0000,#b71c1c)','סוכות':'linear-gradient(135deg,#1a3d00,#388e3c)','יום טוב':'linear-gradient(135deg,#2a2000,#b8860b)','ממון':'linear-gradient(135deg,#002a1a,#00695c)','רפואה':'linear-gradient(135deg,#1a0030,#7b1fa2)'};
-function getFolderColor(name){var n=name||'';for(var k in FOLDER_COLORS){if(n.includes(k))return FOLDER_COLORS[k];}return null;}
+function _svgIcon(type){
+  var icons={
+    folder:'<svg viewBox="0 0 48 48"><path class="fillgold" d="M6 15.5c0-2.5 2-4.5 4.5-4.5h10l4 5h13c2.5 0 4.5 2 4.5 4.5v14c0 2.5-2 4.5-4.5 4.5h-27C8 39 6 37 6 34.5z" opacity=".92"/></svg>',
+    audio:'<svg viewBox="0 0 48 48"><path d="M18 31H9a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h9l13-9v32z"/><path d="M36 18a9 9 0 0 1 0 12"/><path d="M40 13a16 16 0 0 1 0 22"/></svg>',
+    shabbos:'<svg viewBox="0 0 48 48"><path d="M17 20h14"/><path d="M18 39h12"/><path d="M21 20v19M27 20v19"/><path d="M21 11c3 3 3 6 0 9M27 11c3 3 3 6 0 9"/></svg>',
+    tefillin:'<svg viewBox="0 0 48 48"><rect x="13" y="11" width="16" height="16" rx="2"/><path d="M29 19h8v18H11V27"/><path d="M19 15h4M21 13v4"/></svg>',
+    tzitzis:'<svg viewBox="0 0 48 48"><path d="M16 8h16l4 10-6 5v18H18V23l-6-5z"/><path d="M18 25h12M20 30h8M20 35h8"/></svg>',
+    siddur:'<svg viewBox="0 0 48 48"><path d="M12 8h18a6 6 0 0 1 6 6v26H16a4 4 0 0 1-4-4z"/><path d="M16 13h14M16 20h14M16 27h10"/></svg>',
+    cup:'<svg viewBox="0 0 48 48"><path d="M16 11h16v10a8 8 0 0 1-8 8 8 8 0 0 1-8-8z"/><path d="M32 16h4a4 4 0 0 1 0 8h-4"/><path d="M24 29v8M17 37h14"/></svg>',
+    kosher:'<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="M17 31V17M17 24h12M31 17l-9 8 10 6"/></svg>',
+    yomtov:'<svg viewBox="0 0 48 48"><path d="M24 6v10M24 32v10M6 24h10M32 24h10"/><path d="M12 12l7 7M29 29l7 7M36 12l-7 7M19 29l-7 7"/><circle cx="24" cy="24" r="5"/></svg>',
+    menora:'<svg viewBox="0 0 48 48"><path d="M24 9v27M14 14v10a10 10 0 0 0 20 0V14"/><path d="M8 17v8a16 16 0 0 0 32 0v-8"/><path d="M16 39h16"/></svg>',
+    megillah:'<svg viewBox="0 0 48 48"><path d="M14 10h22v28H14z"/><path d="M10 10h4M36 10h4M10 38h4M36 38h4"/><path d="M19 18h10M19 24h10M19 30h7"/></svg>',
+    matzah:'<svg viewBox="0 0 48 48"><rect x="10" y="10" width="28" height="28" rx="4"/><path d="M18 18h.1M25 18h.1M31 19h.1M18 26h.1M25 26h.1M32 27h.1M21 33h.1M29 33h.1"/></svg>',
+    sukkah:'<svg viewBox="0 0 48 48"><path d="M8 21l16-11 16 11"/><path d="M12 21v18h24V21"/><path d="M16 15l5 5M23 11l5 7M30 15l-5 5"/></svg>',
+    shofar:'<svg viewBox="0 0 48 48"><path d="M35 12c-2 11-10 13-20 15-5 1-7 6-3 9 6 4 15-1 18-8"/><path d="M34 12c5 2 7 7 5 11-1 3-4 5-9 5"/></svg>',
+    money:'<svg viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="20" rx="3"/><circle cx="24" cy="24" r="5"/><path d="M13 19h4M31 29h4"/></svg>',
+    scale:'<svg viewBox="0 0 48 48"><path d="M24 8v30M14 38h20M12 16h24"/><path d="M15 16l-7 13h14zM33 16l-7 13h14z"/></svg>',
+    lock:'<span class="restrictedIcon">PRIVATE</span>'
+  };
+  return icons[type]||icons.folder;
+}
+function getFolderEmoji(name){
+  var n=name||'';
+  if(n.includes('טהרה'))return _svgIcon('lock');
+  if(n.includes('שבת'))return _svgIcon('shabbos');
+  if(n.includes('תפילין'))return _svgIcon('tefillin');
+  if(n.includes('ציצית')||n.includes('ציצת'))return _svgIcon('tzitzis');
+  if(n.includes('תפילה')||n.includes('תפלה'))return _svgIcon('siddur');
+  if(n.includes('ברכות')||n.includes('ברכה')||n.includes('קידוש'))return _svgIcon('cup');
+  if(n.includes('כשרות')||n.includes('כשר')||n.includes('בשר')||n.includes('חלב')||n.includes('כלים')||n.includes('תערובת'))return _svgIcon('kosher');
+  if(n.includes('חנוכה'))return _svgIcon('menora');
+  if(n.includes('פורים')||n.includes('מגילה'))return _svgIcon('megillah');
+  if(n.includes('פסח')||n.includes('מצה'))return _svgIcon('matzah');
+  if(n.includes('סוכות')||n.includes('סוכה'))return _svgIcon('sukkah');
+  if(n.includes('שופר')||n.includes('ראש השנה'))return _svgIcon('shofar');
+  if(n.includes('ממון')||n.includes('הלוואה')||n.includes('שכירות')||n.includes('שכר')||n.includes('עסק'))return _svgIcon('money');
+  if(n.includes('דין')||n.includes('עדות')||n.includes('חושן'))return _svgIcon('scale');
+  if(n.includes('יום טוב')||n.includes('יו\"ט')||n.includes('מועד'))return _svgIcon('yomtov');
+  return _svgIcon('folder');
+}
+function getAudioIcon(){return _svgIcon('audio');}
+function getFolderColor(name){
+  var root=nav&&nav.length?nav[0].name:'';
+  var map={
+    'אורח חיים':'linear-gradient(135deg,#0b1731,#173a72)',
+    'יורה דעה':'linear-gradient(135deg,#0b2d25,#19624f)',
+    'אבן העזר':'linear-gradient(135deg,#3c0d1b,#7b1f38)',
+    'חושן משפט':'linear-gradient(135deg,#3a2a0b,#8b6a20)',
+    'מועדים וזמנים':'linear-gradient(135deg,#4a3507,#b18424)'
+  };
+  return map[root]||null;
+}
 function isPr(nm){return PROT.some(function(k){return nm.includes(k)})}
 function gDl(){var t=new Date().toDateString();var d=JSON.parse(localStorage.getItem('dlx')||'{"d":"","c":0}');if(d.d!==t){d.d=t;d.c=0;}return d;}
 function dlL(){return Math.max(0,5-gDl().c)}
@@ -756,7 +760,7 @@ function showTab(key,btn){_ph();document.getElementById('hero').style.display='n
 function checkPwd(){var v=document.getElementById('pwi').value.trim();if(!v)return;var p=[57,53,50,53].map(function(c){return String.fromCharCode(c);}).join('');if(v===p){pwOk=true;document.getElementById('pwe').style.display='none';document.getElementById('pwi').value='';closeM('m-pwd');if(pend){nav.push(pend);rBC();lFld(pend.id);pend=null;}}else{document.getElementById('pwe').style.display='block';}}
 function rBC(){document.getElementById('bc').innerHTML=nav.map(function(item,i){if(i===nav.length-1)return'<span class="bcc">'+item.name+'</span>';return'<span class="bcl" onclick="goLv('+i+')">'+item.name+'</span><span class="bcs">›</span>';}).join('');}
 function goLv(i){_ph();nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
-async function lFld(fId){var el=document.getElementById('fl');el.innerHTML='<div class="loading">⏳ Loading...</div>';try{var _tk=Object.keys(TABS).find(function(k){return nav.length&&TABS[k].id===nav[0].id;})||'';var _cn=nav.length?nav[nav.length-1]:null;if(_cn){if(nav.length===1&&_tk)_setHash('tab='+_tk);else _setHash((_tk?'tab='+_tk+'&':'')+'fid='+encodeURIComponent(_cn.id)+'&fn='+encodeURIComponent(_cn.name));}}catch(e){}try{var q=encodeURIComponent("'"+fId+"' in parents and trashed=false");var url='https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType,shortcutDetails)&orderBy=name&pageSize=500';var res=await fetch(url);if(!res.ok)throw new Error('Status '+res.status);var data=await res.json();var files=data.files||[];if(!files.length){el.innerHTML='<div class="empb">📭 No shiurim found</div>';return;}var fols=files.filter(function(f){return f.mimeType==='application/vnd.google-apps.folder'});var oth=files.filter(function(f){return f.mimeType!=='application/vnd.google-apps.folder'});fols.sort(function(a,b){var na=cln(a.name),nb=cln(b.name);var ia=MO.indexOf(na),ib=MO.indexOf(nb);if(ia>=0&&ib>=0)return ia-ib;return a.name.localeCompare(b.name,'he');});el.innerHTML=fols.concat(oth).map(function(f){var isSh=f.mimeType==='application/vnd.google-apps.shortcut';var tM=isSh?(f.shortcutDetails&&f.shortcutDetails.targetMimeType||''):'';var tI=isSh?(f.shortcutDetails&&f.shortcutDetails.targetId||''):'';var isF=f.mimeType==='application/vnd.google-apps.folder'||(isSh&&tM==='application/vnd.google-apps.folder');var nm=cln(f.name);var ico=isF?'📁':gIco(f.mimeType);var badge=isF?'<span class="bdg bf">Folder ›</span>':isA(f.mimeType)?'<span class="bdg ba">▶ Shiur</span>':'<span class="bdg bpf">File</span>';var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');var fiCls=isF?'fi fi-fld':'fi';var folderEmoji=isF?getFolderEmoji(nm):'';var folderColor=isF?getFolderColor(nm):'';var folderStyle=isF&&folderColor?'style="background:'+folderColor+'!important"':'';return'<div class="'+fiCls+'" '+(folderStyle||'')+' onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+f.mimeType.replace(/'/g,"\\'")+'\',\''+tI.replace(/'/g,"\\'")+'\',\''+tM.replace(/'/g,"\\'")+'\')"><span class="fii">'+(isF?folderEmoji:ico)+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';}).join('');}catch(e){el.innerHTML='<div class="errb">❌ Error: '+e.message+'</div>';}}
+async function lFld(fId){var el=document.getElementById('fl');el.innerHTML='<div class="loading">⏳ Loading...</div>';try{var _tk=Object.keys(TABS).find(function(k){return nav.length&&TABS[k].id===nav[0].id;})||'';var _cn=nav.length?nav[nav.length-1]:null;if(_cn){if(nav.length===1&&_tk)_setHash('tab='+_tk);else _setHash((_tk?'tab='+_tk+'&':'')+'fid='+encodeURIComponent(_cn.id)+'&fn='+encodeURIComponent(_cn.name));}}catch(e){}try{var q=encodeURIComponent("'"+fId+"' in parents and trashed=false");var url='https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType,shortcutDetails)&orderBy=name&pageSize=500';var res=await fetch(url);if(!res.ok)throw new Error('Status '+res.status);var data=await res.json();var files=data.files||[];if(!files.length){el.innerHTML='<div class="empb">📭 No shiurim found</div>';return;}var fols=files.filter(function(f){return f.mimeType==='application/vnd.google-apps.folder'});var oth=files.filter(function(f){return f.mimeType!=='application/vnd.google-apps.folder'});fols.sort(function(a,b){var na=cln(a.name),nb=cln(b.name);var ia=MO.indexOf(na),ib=MO.indexOf(nb);if(ia>=0&&ib>=0)return ia-ib;return a.name.localeCompare(b.name,'he');});el.innerHTML=fols.concat(oth).map(function(f){var isSh=f.mimeType==='application/vnd.google-apps.shortcut';var tM=isSh?(f.shortcutDetails&&f.shortcutDetails.targetMimeType||''):'';var tI=isSh?(f.shortcutDetails&&f.shortcutDetails.targetId||''):'';var isF=f.mimeType==='application/vnd.google-apps.folder'||(isSh&&tM==='application/vnd.google-apps.folder');var nm=cln(f.name);var ico=isF?'':getAudioIcon();var badge=isF?'<span class="bdg bf">Folder</span>':isA(f.mimeType)?'<span class="bdg ba">Shiur</span>':'<span class="bdg bpf">File</span>';var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');var fiCls=isF?'fi fi-fld':'fi fi-audio';var folderEmoji=isF?getFolderEmoji(nm):'';var folderColor=isF?getFolderColor(nm):'';var folderStyle=isF&&folderColor?'style="background:'+folderColor+'!important"':'';return'<div class="'+fiCls+'" '+(folderStyle||'')+' onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+f.mimeType.replace(/'/g,"\\'")+'\',\''+tI.replace(/'/g,"\\'")+'\',\''+tM.replace(/'/g,"\\'")+'\')"><span class="fii">'+(isF?folderEmoji:ico)+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';}).join('');}catch(e){el.innerHTML='<div class="errb">❌ Error: '+e.message+'</div>';}}
 function hCl(id,nm,isF,mime,tId,tMime){if(mime==='application/vnd.google-apps.shortcut'){if(tMime==='application/vnd.google-apps.folder'){if(isPr(nm)&&!pwOk){pend={id:tId,name:nm};openM('m-pwd');return;}_ph();nav.push({id:tId,name:nm});rBC();lFld(tId);}else if(isA(tMime))opPl(tId,nm);return;}if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();nav.push({id:id,name:nm});rBC();lFld(id);}else if(isA(mime))opPl(id,nm);else window.open('https://drive.google.com/file/d/'+id+'/view','_blank');}
 function clearIfEmpty(val){if(!val.trim()){document.getElementById('sinfo').textContent='';if(nav.length>0&&document.getElementById('ca').style.display!=='none')lFld(nav[nav.length-1].id);}}
 function triggerSearch(){var val=document.getElementById('srch').value.trim(); if(!val)return; gaEv('site_search',{search_term:val});_setHash('q='+encodeURIComponent(val));document.getElementById('sinfo').textContent='🔍 זוכט...';var p=doSrch(val);if(p&&p.then){p.then(function(){setTimeout(function(){var ca=document.getElementById('ca');if(ca){ca.style.display='block';ca.scrollIntoView({behavior:'smooth',block:'start'});}},300);});}else{setTimeout(function(){var ca=document.getElementById('ca');if(ca){ca.style.display='block';ca.scrollIntoView({behavior:'smooth',block:'start'});}},800);}}
@@ -764,13 +768,13 @@ function handleSearch(val){clearTimeout(stmr);}
 async function doSrch(term){_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';var tEsc=term.replace(/&/g,'&amp;').replace(/"/g,'&quot;');document.getElementById('sbn').innerHTML='<h2>🔍 זוך רעזולטאטן</h2><div style="margin:10px auto 0;max-width:460px;padding:0 16px;position:relative"><input id="ca-srch" value="'+tEsc+'" style="width:100%;padding:9px 38px 9px 14px;border-radius:20px;border:2px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;font-size:.88rem;font-family:\'Frank Ruhl Libre\',serif;outline:none;text-align:right;box-sizing:border-box;direction:rtl" placeholder="זיך פאר שיעורים..." onkeyup="if(event.key===\'Enter\'){var v=this.value.trim();if(v){document.getElementById(\'srch\').value=v;triggerSearch();}}"><span onclick="var v=document.getElementById(\'ca-srch\').value.trim();if(v){document.getElementById(\'srch\').value=v;triggerSearch();}" style="position:absolute;left:28px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1rem;color:rgba(255,255,255,.7)">🔍</span></div>';document.getElementById('bc').innerHTML='';var el=document.getElementById('fl'),si=document.getElementById('sinfo');el.innerHTML='<div class="loading">🔍 ביטע ווארט א מינוט...</div>';var ids=await _getFIds();var all=[],allBroader=[],seen={};var safe=term.replace(/'/g,"\\'");var _hPfx=/^[\u05d1\u05d3\u05d4\u05d5\u05d6\u05db\u05dc\u05de\u05e9]+/;var root=term.replace(_hPfx,'');var safeRoot=(root.length>=2&&root!==term)?root.replace(/'/g,"\\'"):null;await Promise.all(ids.map(async function(fId){try{var q=encodeURIComponent("'"+fId+"' in parents and name contains '"+safe+"' and mimeType contains 'audio' and trashed=false");var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=50');if(!r.ok)return;var d=await r.json();if(d.files)d.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});}catch(e){}try{var fq=encodeURIComponent("'"+fId+"' in parents and name contains '"+safe+"' and mimeType='application/vnd.google-apps.folder' and trashed=false");var fr=await fetch('https://www.googleapis.com/drive/v3/files?q='+fq+'&key='+KEY+'&fields=files(id,name)&pageSize=20');if(!fr.ok)return;var fd=await fr.json();var folders=fd.files||[];await Promise.all(folders.map(async function(folder){if(!seen['fd_'+folder.id]){seen['fd_'+folder.id]=1;all.push({id:folder.id,name:folder.name,_type:'folder'});}try{var aq=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");var ar=await fetch('https://www.googleapis.com/drive/v3/files?q='+aq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');if(!ar.ok)return;var ad=await ar.json();if(ad.files)ad.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});}catch(e){}try{var sfq=encodeURIComponent("'"+folder.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");var sfr=await fetch('https://www.googleapis.com/drive/v3/files?q='+sfq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');if(!sfr.ok)return;var sfd=await sfr.json();await Promise.all((sfd.files||[]).map(async function(sf){try{var saq=encodeURIComponent("'"+sf.id+"' in parents and mimeType contains 'audio' and trashed=false");var sar=await fetch('https://www.googleapis.com/drive/v3/files?q='+saq+'&key='+KEY+'&fields=files(id,name)&pageSize=50');if(!sar.ok)return;var sad=await sar.json();if(sad.files)sad.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;all.push(f);}});}catch(e){}}));}catch(e){}}));}catch(e){}}));if(safeRoot){await Promise.all(ids.map(async function(fId){try{var qr=encodeURIComponent("'"+fId+"' in parents and name contains '"+safeRoot+"' and mimeType contains 'audio' and trashed=false");var rr=await fetch('https://www.googleapis.com/drive/v3/files?q='+qr+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=50');if(!rr.ok)return;var dr=await rr.json();if(dr.files)dr.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;allBroader.push(f);}});}catch(e){}try{var fqr=encodeURIComponent("'"+fId+"' in parents and name contains '"+safeRoot+"' and mimeType='application/vnd.google-apps.folder' and trashed=false");var frr=await fetch('https://www.googleapis.com/drive/v3/files?q='+fqr+'&key='+KEY+'&fields=files(id,name)&pageSize=20');if(!frr.ok)return;var fdr=await frr.json();await Promise.all((fdr.files||[]).map(async function(folder){if(!seen['fd_'+folder.id]){seen['fd_'+folder.id]=1;allBroader.push({id:folder.id,name:folder.name,_type:'folder'});}try{var aqr=encodeURIComponent("'"+folder.id+"' in parents and mimeType contains 'audio' and trashed=false");var arr=await fetch('https://www.googleapis.com/drive/v3/files?q='+aqr+'&key='+KEY+'&fields=files(id,name)&pageSize=50');if(!arr.ok)return;var adr=await arr.json();if(adr.files)adr.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;allBroader.push(f);}});}catch(e){}try{var sfqr=encodeURIComponent("'"+folder.id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");var sfrr=await fetch('https://www.googleapis.com/drive/v3/files?q='+sfqr+'&key='+KEY+'&fields=files(id,name)&pageSize=50');if(!sfrr.ok)return;var sfdr=await sfrr.json();await Promise.all((sfdr.files||[]).map(async function(sf){try{var saqr=encodeURIComponent("'"+sf.id+"' in parents and mimeType contains 'audio' and trashed=false");var sarr=await fetch('https://www.googleapis.com/drive/v3/files?q='+saqr+'&key='+KEY+'&fields=files(id,name)&pageSize=50');if(!sarr.ok)return;var sadr=await sarr.json();if(sadr.files)sadr.files.forEach(function(f){if(!seen[f.id]){seen[f.id]=1;allBroader.push(f);}});}catch(e){}}));}catch(e){}}));}catch(e){}}));}
 if(!all.length&&!allBroader.length){si.textContent='🔍 נישט קיין רעזולטאטן פאר "'+term+'"';el.innerHTML='<div class="empb">🔍 נישט געטראפען קיין רעזולטאטן פאר "'+term+'"</div>';return;}
 var _sq=document.getElementById('srch').value.trim();si.textContent=(all.length+allBroader.length)+' רעזולטאטן פאר "'+term+'"';
-function _rItem(f,q){var nm=cln(f.name);var hl=hlTxt(fmN(nm),q);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+hl+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+hl+'</span><span class="bdg ba">▶ Shiur</span></div>';}
+function _rItem(f,q){var nm=cln(f.name);var hl=hlTxt(fmN(nm),q);if(f._type==='folder'){var fn=nm.replace(/'/g,"\\'");return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+fn+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+hl+'</span><span class="bdg baf">Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+hl+'</span><span class="bdg ba">Shiur</span></div>';}
 var allAudio=all.filter(function(f){return!f._type;});var allFoldsEx=all.filter(function(f){return f._type==='folder';});var html='';
 if(allAudio.length){html+='<div class="sr-hdr">✅ ספעציפישע שיעורים — "'+term+'" — '+allAudio.length+'</div>';html+=allAudio.map(function(f){return _rItem(f,_sq);}).join('');}
 if(allFoldsEx.length){if(allAudio.length)html+='<div style="height:8px"></div>';html+='<div class="sr-hdr">📁 ספעציפישע פאלדערס — "'+term+'" — '+allFoldsEx.length+'</div>';html+=allFoldsEx.map(function(f){return _rItem(f,_sq);}).join('');}
 if(allBroader.length){if(all.length)html+='<div style="height:8px"></div>';html+='<div class="sr-hdr">🔍 ברייטערע רעזולטאטן — "'+root+'" — '+allBroader.length+'</div>';html+=allBroader.map(function(f){return _rItem(f,root);}).join('');}
 el.innerHTML=html;setTimeout(function(){el.scrollIntoView({behavior:'smooth',block:'start'});},150);}
-function opFldr(id,name){_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+name+'</h2>';var el=document.getElementById('fl'),si=document.getElementById('sinfo');el.innerHTML='<div class="loading">⏳ לאדט...</div>';fetch('https://www.googleapis.com/drive/v3/files?q='+encodeURIComponent("'"+id+"' in parents and trashed=false")+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=100').then(function(r){return r.json();}).then(function(d){var files=d.files||[];if(!files.length){el.innerHTML='<p style="text-align:center;padding:20px">נישט געפונן</p>';return;}el.innerHTML=files.map(function(f){var nm=cln(f.name);if(f.mimeType==='application/vnd.google-apps.folder'){return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+fmN(nm)+'</span><span class="bdg baf">📂 Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">🎵</span><span class="fin">'+fmN(nm)+'</span><span class="bdg ba">▶ Shiur</span></div>';}).join('');si.textContent='';}).catch(function(){el.innerHTML='<p>פעלער</p>';});}
+function opFldr(id,name){_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+name+'</h2>';var el=document.getElementById('fl'),si=document.getElementById('sinfo');el.innerHTML='<div class="loading">⏳ לאדט...</div>';fetch('https://www.googleapis.com/drive/v3/files?q='+encodeURIComponent("'"+id+"' in parents and trashed=false")+'&key='+KEY+'&fields=files(id,name,mimeType)&orderBy=name&pageSize=100').then(function(r){return r.json();}).then(function(d){var files=d.files||[];if(!files.length){el.innerHTML='<p style="text-align:center;padding:20px">נישט געפונן</p>';return;}el.innerHTML=files.map(function(f){var nm=cln(f.name);if(f.mimeType==='application/vnd.google-apps.folder'){return'<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+fmN(nm)+'</span><span class="bdg baf">Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return'<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+fmN(nm)+'</span><span class="bdg ba">Shiur</span></div>';}).join('');si.textContent='';}).catch(function(){el.innerHTML='<p>פעלער</p>';});}
 function opPl(fId,nm){
   var cleanNm = fmN(nm);
 
@@ -829,25 +833,15 @@ function doDl(fId,nm){
 }
 function closePl(){
   var a=document.getElementById('au');
-  if(a){
-    a.pause();
-    a.removeAttribute('src');
-    a.load();
-  }
+  if(a){a.pause();a.removeAttribute('src');a.load();}
   var p=document.getElementById('plov');
-  if(p) p.classList.remove('open');
-  try{
-    history.pushState(null,'',location.pathname);
-  }catch(e){}
+  if(p)p.classList.remove('open');
+  var d=document.getElementById('dotm');
+  if(d)d.classList.remove('open');
+  try{history.pushState(null,'',location.pathname);}catch(e){}
 }
-
-function togDots(){
-  document.getElementById('dotm').classList.toggle('open');
-}
-
-document.getElementById('plov').addEventListener('click',function(e){
-  if(e.target===this)closePl();
-});
+function togDots(){var d=document.getElementById('dotm');if(d)d.classList.toggle('open');}
+document.getElementById('plov').addEventListener('click',function(e){if(e.target===this)closePl();});
 var _fIds=null;
 async function _getFIds(){if(_fIds)return _fIds;var main=Object.keys(TABS).map(function(k){return TABS[k].id;});var all=main.slice(),l1=[];var r1=await Promise.all(main.map(async function(id){try{var q=encodeURIComponent("'"+id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id)&pageSize=100');if(!r.ok)return[];var d=await r.json();return(d.files||[]).map(function(f){return f.id;});}catch(e){return[];}}));r1.forEach(function(ids){l1=l1.concat(ids);});all=all.concat(l1);if(l1.length){var r2=await Promise.all(l1.map(async function(id){try{var q=encodeURIComponent("'"+id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id)&pageSize=100');if(!r.ok)return[];var d=await r.json();return(d.files||[]).map(function(f){return f.id;});}catch(e){return[];}}));r2.forEach(function(ids){all=all.concat(ids);});}  _fIds=all;return all;}
 function hebrewYear(num){var n=num%1000;var vals=[400,300,200,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1];var lets=['ת','ש','ר','ק','צ','פ','ע','ס','נ','מ','ל','כ','י','ט','ח','ז','ו','ה','ד','ג','ב','א'];var result='',rem=n;for(var i=0;i<vals.length;i++){while(rem>=vals[i]){result+=lets[i];rem-=vals[i];}}result=result.replace('יה','טו').replace('יו','טז');if(result.length===1)return result+'׳';return result.slice(0,-1)+'״'+result.slice(-1);}
@@ -884,7 +878,7 @@ var _pwaPrompt;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_pwaPrompt=e;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='block';});
 function installPWA(){if(!_pwaPrompt)return;_pwaPrompt.prompt();_pwaPrompt.userChoice.then(function(){_pwaPrompt=null;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='none';});}
 function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אינסטאלירן: עפנט דעם סייט אין Chrome, דריקט ⋮ → "Add to Home Screen"');}}
-window.addEventListener('appinstalled',function(){document.getElementById('pwa-install-btn').style.display='none';});
+window.addEventListener('appinstalled',function(){var btn=document.getElementById('pwa-install-btn');if(btn)btn.style.display='none';});
 loadLatest();
 checkYomTov();
 _readHash();
