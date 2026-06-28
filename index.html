@@ -102,7 +102,7 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .scs{font-size:.85rem;color:rgba(255,255,255,.65)!important;line-height:1.6}
 
 /* CONTENT */
-#ca{display:none;padding:15px 12px 40px;max-width:840px;margin:0 auto}
+#ca{display:none;padding:35px 12px 120px;max-width:840px;margin:0 auto;min-height:calc(100vh - 120px)}
 .sbn{border-radius:12px;padding:18px;margin-bottom:14px;color:#fff;text-align:center}
 .sbn h2{font-size:1.5rem;font-weight:900}
 .bno{background:linear-gradient(135deg,#08122a,#162d5a,#2a548f)}
@@ -210,10 +210,14 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .errb{text-align:center;padding:22px;color:#c62828;background:#ffebee;border-radius:9px;line-height:1.75}
 .empb{text-align:center;padding:34px;color:#bbb}
 
-footer{text-align:center;padding:22px 16px;background:linear-gradient(135deg,#08122a,#162d5a);color:rgba(255,255,255,.45);font-size:.8rem;margin-top:44px}
-.ftr-links{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-bottom:12px}
-.ftr-link{color:rgba(212,175,55,.65);text-decoration:none;font-size:.78rem;transition:color .2s}
-.ftr-link:hover{color:#d4af37}
+footer{padding:34px 16px 22px;background:linear-gradient(135deg,#08122a,#162d5a);color:rgba(255,255,255,.65);font-size:.85rem;margin-top:70px}
+.ftr-grid{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;text-align:center}
+.ftr-col{border:1px solid rgba(212,175,55,.22);border-radius:14px;padding:18px 14px;background:rgba(255,255,255,.035)}
+.ftr-col h4{color:#d4af37;font-size:.95rem;margin-bottom:12px}
+.ftr-col a{display:block;color:rgba(255,255,255,.78);text-decoration:none;padding:5px 0;font-size:.84rem}
+.ftr-col a:hover{color:#d4af37;text-decoration:underline}
+.ftr-copy{text-align:center;margin-top:22px;color:rgba(255,255,255,.45);font-size:.75rem}
+@media(max-width:700px){.ftr-grid{grid-template-columns:1fr}}
 
 #srch::placeholder{color:rgba(22,45,90,0.38)}
 
@@ -538,28 +542,99 @@ footer{text-align:center;padding:22px 16px;background:linear-gradient(135deg,#08
 <!-- PWA INSTALL BUTTON -->
 <button id="pwa-install-btn" onclick="installPWA()" style="display:none;position:fixed;bottom:22px;left:14px;z-index:498;background:linear-gradient(135deg,#162d5a,#2a548f);color:#fff;border:none;border-radius:22px;padding:8px 16px;font-size:.78rem;font-weight:700;font-family:'Frank Ruhl Libre',serif;cursor:pointer;box-shadow:0 4px 14px rgba(8,18,42,.4)">📲 Install App</button>
 
+  <!-- PRIVACY POLICY -->
+<div class="mov" id="m-privacy">
+  <button class="mov-back" onclick="closeM('m-privacy')">◀ צוריק</button>
+  <div class="mbx" style="max-width:620px">
+    <button class="mx" onclick="closeM('m-privacy')">✕</button>
+    <div class="mi">🔐</div>
+    <div class="mt">Privacy Policy</div>
+   <p style="color:#555;line-height:1.9;font-size:.86rem">
+
+<strong>Effective Date:</strong> June 2026
+
+<br><br>
+
+Shiurei Kelalim ("we," "our," or "us") respects your privacy and is committed to protecting any personal information you choose to provide while using this website.
+
+<br><br>
+
+<strong>Information We Collect</strong><br>
+We may collect your email address when you voluntarily subscribe to receive notifications about newly published shiurim. We also collect limited technical information, such as browser type and anonymous usage statistics, to improve the performance and reliability of this website.
+
+<br><br>
+
+<strong>How We Use Your Information</strong><br>
+Your information is used solely to:
+<ul style="margin:8px 25px;">
+<li>Send notifications about new shiurim (only if you subscribed).</li>
+<li>Respond to messages submitted through our contact form.</li>
+<li>Improve the website and user experience.</li>
+</ul>
+
+<strong>Information Sharing</strong><br>
+We do not sell, rent, trade, or otherwise share your personal information with third parties, except when required by applicable law.
+
+<br><br>
+
+<strong>Cookies & Analytics</strong><br>
+This website may use cookies and analytics services to understand general website usage and improve functionality. These tools do not identify you personally.
+
+<br><br>
+
+<strong>Third-Party Services</strong><br>
+Certain features of this website may use trusted third-party services, including Google Drive, Google Analytics, Google Apps Script, and FormSubmit. These services are governed by their own privacy policies.
+
+<br><br>
+
+<strong>Data Security</strong><br>
+We take reasonable measures to protect the information submitted through this website. However, no method of electronic transmission or online storage is completely secure.
+
+<br><br>
+
+<strong>Changes to This Policy</strong><br>
+This Privacy Policy may be updated from time to time without prior notice. Any changes will be posted on this page.
+
+<br><br>
+
+<strong>Contact</strong><br>
+If you have any questions regarding this Privacy Policy, please contact us through the Contact Us page.
+
+</p>
+  </div>
+</div>
 <footer>
-    <div class="ftr-links">
-     <a href="#" onclick="openM('m-ios');return false;" class="ftr-link"> iPhone</a>
-    <a href="#" onclick="installPWA_or_show();return false;" class="ftr-link"> Android</a>
-    <a href="https://t.me/ShiureiKelalim" target="_blank" class="ftr-link" onclick="gaEv('telegram_click',{location:'footer'});"> Telegram</a>
-    <a href="https://chat.whatsapp.com/REPLACE_WITH_YOUR_LINK" target="_blank" class="ftr-link" onclick="gaEv('whatsapp_click',{location:'footer'});"> WhatsApp</a>
-    <a href="#" onclick="openM('m-sub');return false;" class="ftr-link">📧 Subscribe</a>
-    <a href="#" onclick="openM('m-don');return false;" class="ftr-link">💛 Donate</a>
-  </div>
-  
-  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0 6px">
-    <a href="#" onclick="installPWA_or_show();return false;">
-      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Google Play" style="height:42px;border-radius:6px">
-    </a>
-    <a href="#" onclick="openM('m-ios');return false;">
-      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" style="height:42px;border-radius:6px">
-    </a>
+  <div class="ftr-grid">
+
+    <div class="ftr-col">
+      <h4>הויפט קאטעגאריעס</h4>
+      <a href="#" onclick="showTab('orach',null);return false;">אורח חיים</a>
+      <a href="#" onclick="showTab('yoreh',null);return false;">יורה דעה</a>
+      <a href="#" onclick="showTab('even',null);return false;">אבן העזר</a>
+      <a href="#" onclick="showTab('choshen',null);return false;">חושן משפט</a>
+      <a href="#" onclick="showTab('moadim',null);return false;">מועדים וזמנים</a>
+    </div>
+
+    <div class="ftr-col">
+      <h4>Special Shiurim</h4>
+      <a href="#" onclick="openLatestModal();return false;">נייעסטע שיעור</a>
+      <a href="#" onclick="openYomTovBtn();return false;">שיעורים על היו"ט הבעל"ט</a>
+    </div>
+
+    <div class="ftr-col">
+      <h4>אינפארמאציע</h4>
+      <a href="#" onclick="openM('m-hl');return false;">האטליין</a>
+      <a href="#" onclick="openM('m-sub');return false;">סובסקרייב</a>
+      <a href="#" onclick="openM('m-ct');return false;">Contact Us</a>
+      <a href="#" onclick="openM('m-don');return false;">Donate</a>
+      <a href="#" onclick="openM('m-privacy');return false;">Privacy Policy</a>
+    </div>
+
   </div>
 
-  <p>© Shiurei Kelalim — All Rights Reserved</p>
+  <p class="ftr-copy">© Shiurei Kelalim — All Rights Reserved</p>
 </footer>
-
+  
 <script>
 (function(){
   try{
