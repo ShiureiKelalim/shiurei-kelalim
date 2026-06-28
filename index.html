@@ -752,8 +752,27 @@ function doDl(fId,nm){
       setTimeout(function(){document.body.removeChild(fr);},8000);
     });
 }
-function togDots(){document.getElementById('dotm').classList.toggle('open');}
-document.getElementById('plov').addEventListener('click',function(e){if(e.target===this)closePl();});
+function closePl(){
+  var a=document.getElementById('au');
+  if(a){
+    a.pause();
+    a.removeAttribute('src');
+    a.load();
+  }
+  var p=document.getElementById('plov');
+  if(p) p.classList.remove('open');
+  try{
+    history.pushState(null,'',location.pathname);
+  }catch(e){}
+}
+
+function togDots(){
+  document.getElementById('dotm').classList.toggle('open');
+}
+
+document.getElementById('plov').addEventListener('click',function(e){
+  if(e.target===this)closePl();
+});
 var _fIds=null;
 async function _getFIds(){if(_fIds)return _fIds;var main=Object.keys(TABS).map(function(k){return TABS[k].id;});var all=main.slice(),l1=[];var r1=await Promise.all(main.map(async function(id){try{var q=encodeURIComponent("'"+id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id)&pageSize=100');if(!r.ok)return[];var d=await r.json();return(d.files||[]).map(function(f){return f.id;});}catch(e){return[];}}));r1.forEach(function(ids){l1=l1.concat(ids);});all=all.concat(l1);if(l1.length){var r2=await Promise.all(l1.map(async function(id){try{var q=encodeURIComponent("'"+id+"' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false");var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&key='+KEY+'&fields=files(id)&pageSize=100');if(!r.ok)return[];var d=await r.json();return(d.files||[]).map(function(f){return f.id;});}catch(e){return[];}}));r2.forEach(function(ids){all=all.concat(ids);});}  _fIds=all;return all;}
 function hebrewYear(num){var n=num%1000;var vals=[400,300,200,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1];var lets=['ת','ש','ר','ק','צ','פ','ע','ס','נ','מ','ל','כ','י','ט','ח','ז','ו','ה','ד','ג','ב','א'];var result='',rem=n;for(var i=0;i<vals.length;i++){while(rem>=vals[i]){result+=lets[i];rem-=vals[i];}}result=result.replace('יה','טו').replace('יו','טז');if(result.length===1)return result+'׳';return result.slice(0,-1)+'״'+result.slice(-1);}
