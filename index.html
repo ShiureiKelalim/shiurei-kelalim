@@ -403,36 +403,139 @@ footer{
     padding:5px 7px;
   }
 }
+  /* PREMIUM TOP NAV */
+.premium-nav{
+  min-height:64px;
+  padding:0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  background:#08162f;
+  border-bottom:1px solid rgba(212,175,55,.25);
+  box-shadow:0 3px 16px rgba(0,0,0,.22);
+}
+
+.nav-main{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  flex:2;
+}
+
+.nav-side{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex:1;
+}
+
+.nav-side-left{
+  justify-content:flex-start;
+}
+
+.nav-side-right{
+  justify-content:flex-end;
+}
+
+.nav-main .ntb{
+  flex:0 0 auto;
+  min-width:92px;
+  padding:10px 13px;
+  border:none;
+  border-radius:9px;
+  font-size:.84rem;
+  color:rgba(255,255,255,.82);
+  background:rgba(255,255,255,.035);
+}
+
+.nav-main .ntb:hover{
+  color:#08162f;
+  background:#d4af37;
+}
+
+.nav-main .ntb.active,
+.nav-main .ntb-home{
+  color:#08162f!important;
+  background:#d4af37!important;
+  border-bottom:none!important;
+}
+
+.nav-side .nb{
+  border:none;
+  padding:7px 9px;
+  font-size:.74rem;
+  color:rgba(255,255,255,.68);
+  background:transparent;
+}
+
+.nav-side .nb:hover{
+  color:#d4af37;
+  background:rgba(212,175,55,.08);
+  border-radius:8px;
+}
+
+.nbrand{
+  padding:0 6px;
+  font-size:1rem;
+}
+
+@media(max-width:900px){
+  .premium-nav{
+    flex-wrap:wrap;
+    padding:8px;
+    height:auto;
+  }
+  .nav-main{
+    order:1;
+    width:100%;
+    flex-wrap:wrap;
+  }
+  .nav-side-left{
+    order:2;
+    justify-content:center;
+    width:100%;
+  }
+  .nav-side-right{
+    order:0;
+    justify-content:center;
+    width:100%;
+  }
+}
 </style>
 </head>
 <body>
 
 <!-- TOP NAV -->
-<nav class="tnav">
-  <button class="nav-srch-btn" onclick="togNavSrch()" title="זיך שיעורים">🔍</button>
-  <div class="nav-si" id="nav-si"><input id="nav-si-inp" placeholder="זיכט פאר שיעורים..." onkeyup="if(event.key==='Enter')triggerSearchNav();if(event.key==='Escape')togNavSrch()"></div>
-  <div style="width:1px;height:22px;background:rgba(255,255,255,0.3);flex-shrink:0;align-self:center;margin:0 40px 0 28px;"></div>
-  <div class="nbrand" onclick="showLanding()">🎙️ <span>Shiurei</span> Kelalim</div>
-  <div class="ntabs">
+<nav class="tnav premium-nav">
+
+  <div class="nav-side nav-side-left">
+    <button class="nb" onclick="openM('m-don')">Donate</button>
+    <button class="nb" onclick="openM('m-ct')">Contact Us</button>
+    <button class="nb" onclick="openM('m-sub')">סובסקרייב</button>
+    <button class="nb" onclick="openM('m-hl')">האטליין</button>
+  </div>
+
+  <div class="nav-main">
     <button class="ntb ntb-home" onclick="showLanding()">הויפט בלאט</button>
     <button class="ntb" id="tb-or" onclick="showTab('orach',this)">אורח חיים</button>
     <button class="ntb" id="tb-yo" onclick="showTab('yoreh',this)">יורה דעה</button>
     <button class="ntb" id="tb-ev" onclick="showTab('even',this)">אבן העזר</button>
     <button class="ntb" id="tb-ch" onclick="showTab('choshen',this)">חושן משפט</button>
-    <div style="width:1px;height:22px;background:rgba(255,255,255,0.45);flex-shrink:0;align-self:center;"></div>
     <button class="ntb" id="tb-mo" onclick="showTab('moadim',this)">מועדים וזמנים</button>
   </div>
-  <div class="nbtns">
-    <button class="nb nr" onclick="openLatestModal()">נייעסטע שיעור</button>
-    <button class="nb np" onclick="openYomTovBtn()">שיעורים על היו"ט הבעל"ט</button>
-    <button class="nb nt" onclick="openM('m-hl')">האטליין</button>
-    <button class="nb ngr" onclick="openM('m-sub')">סובסקרייב</button>
-    <button class="nb nbl" onclick="openM('m-ct')">Contact Us</button>
-    <div style="width:1px;height:22px;background:rgba(255,255,255,0.3);flex-shrink:0;align-self:center;margin:0 4px;"></div>
-    <button class="nb ng" onclick="openM('m-don')">Donate</button>
-  </div>
-</nav>
 
+  <div class="nav-side nav-side-right">
+    <button class="nav-srch-btn" onclick="togNavSrch()" title="זיך שיעורים">🔍</button>
+    <div class="nav-si" id="nav-si">
+      <input id="nav-si-inp" placeholder="זיכט פאר שיעורים..." onkeyup="if(event.key==='Enter')triggerSearchNav();if(event.key==='Escape')togNavSrch()">
+    </div>
+    <div class="nbrand" onclick="showLanding()"><span>Shiurei</span> Kelalim 🎙️</div>
+  </div>
+
+</nav>
+  
 <!-- TABS (hidden) -->
 <div class="tbar">
   <button class="tb" onclick="showTab('orach',this)">אורח חיים</button>
