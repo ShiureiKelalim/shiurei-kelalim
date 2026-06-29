@@ -50,26 +50,89 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .sinfo{text-align:center;color:#222;font-size:1.05rem;font-weight:700;min-height:30px;padding:6px 0;background:#f0ece4;letter-spacing:.2px}
 
 /* HERO */
-.hero{background:linear-gradient(160deg,#08122a 0%,#162d5a 55%,#2a548f 100%);color:#fff;padding:40px 16px 55px;text-align:center;position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:140%;height:50px;background:#f0ece4;border-radius:50% 50% 0 0}
-.hrin{position:relative;z-index:1}
+.hero{
+  background:
+    radial-gradient(circle at top center, rgba(212,175,55,.16), transparent 28%),
+    linear-gradient(180deg,#061126 0%,#10295a 58%,#1f4b86 100%);
+  color:#fff;
+  padding:72px 16px 92px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:-18px;
+  left:50%;
+  transform:translateX(-50%);
+  width:150%;
+  height:72px;
+  background:#f0ece4;
+  border-radius:50% 50% 0 0;
+}
+.hrin{
+  position:relative;
+  z-index:1;
+}
 .hmic{
-  margin-bottom:10px;
+  margin-bottom:24px;
 }
 .hero-logo{
-  width:220px;
+  width:265px;
   max-width:90%;
   height:auto;
   display:block;
-  margin:0 auto 12px;
+  margin:0 auto 18px;
+  filter:drop-shadow(0 10px 22px rgba(212,175,55,.22));
 }
- 
-.hero h1{font-size:2.4rem;font-weight:900;letter-spacing:1px}
-.gln{width:85px;height:2px;margin:10px auto;background:linear-gradient(90deg,transparent,#d4af37,transparent)}
-.hs1{color:#d4af37;font-size:.95rem;margin-bottom:4px}
-.hs2{color:rgba(255,255,255,.68);font-size:.82rem;line-height:1.85}
-.hs2 b{color:#d4af37}
+.hero h1{
+  font-size:2.75rem;
+  font-weight:900;
+  letter-spacing:1.2px;
+  text-shadow:0 3px 12px rgba(0,0,0,.35);
+}
+.gln{
+  width:110px;
+  height:2px;
+  margin:15px auto 13px;
+  background:linear-gradient(90deg,transparent,#d4af37,transparent);
+}
+.hs1{
+  color:#d4af37;
+  font-size:1.08rem;
+  margin-bottom:7px;
+  font-weight:700;
+  line-height:1.8;
+}
+.hs2{
+  color:rgba(255,255,255,.78);
+  font-size:.93rem;
+  line-height:2.05;
+}
+.hs2 b{
+  color:#f1cf63;
+}
 
+@media(max-width:600px){
+  .hero{
+    padding:48px 14px 78px;
+  }
+  .hero-logo{
+    width:210px;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:2rem;
+  }
+  .hs1{
+    font-size:.95rem;
+  }
+  .hs2{
+    font-size:.82rem;
+  }
+}
+  
 /* LANDING */
 .latw{max-width:780px;margin:50px auto 35px;padding:0 12px}
 .latc{display:flex;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#162d5a,#2a548f);border-radius:14px;padding:20px 22px;color:#fff;cursor:pointer;transition:all .24s;text-align:center}
@@ -252,6 +315,94 @@ footer{padding:38px 16px 24px;background:linear-gradient(135deg,#08122a,#162d5a)
 .sc-ev{background:linear-gradient(135deg,rgba(255,80,80,.15),rgba(180,20,20,.08))}
 .sc-ch{background:linear-gradient(135deg,rgba(50,220,180,.15),rgba(0,120,100,.08))}
 .sc-mo{background:linear-gradient(135deg,rgba(255,215,0,.18),rgba(180,130,0,.08))}
+  /* PREMIUM POLISH */
+
+/* 1. Top navigation */
+.tnav{
+  min-height:56px;
+  padding:0 14px;
+  box-shadow:0 2px 14px rgba(0,0,0,.18);
+}
+.ntb,.nb{
+  font-size:.78rem;
+  padding:7px 12px;
+}
+.ntb.active,.ntb-home{
+  color:#d4af37!important;
+  background:rgba(212,175,55,.08)!important;
+  border-bottom:2px solid #d4af37!important;
+}
+
+/* 2. Remove cheap emoji feel from section cards */
+.sc-ic{
+  font-size:2.15rem;
+  opacity:.92;
+  filter:drop-shadow(0 3px 8px rgba(0,0,0,.35));
+}
+.sc-img-wrap{
+  height:62px;
+  background:rgba(255,255,255,.08)!important;
+  border:1px solid rgba(212,175,55,.18);
+}
+
+/* 3. Section cards premium */
+.sc{
+  border:1px solid rgba(212,175,55,.25)!important;
+  box-shadow:0 8px 26px rgba(8,18,42,.28)!important;
+}
+.sct{
+  font-size:1.45rem;
+}
+.scs{
+  font-size:.9rem;
+  color:rgba(255,255,255,.78)!important;
+}
+
+/* 4. Latest shiur card */
+.latc{
+  max-width:620px;
+  margin:0 auto;
+  border:1px solid rgba(212,175,55,.35);
+  background:linear-gradient(135deg,#0b1731,#173a72 55%,#244f8d);
+  box-shadow:0 10px 30px rgba(8,18,42,.28);
+}
+.li h3{
+  color:#d4af37;
+  font-size:1rem;
+}
+.li p{
+  font-size:.84rem;
+}
+
+/* 5. Footer premium */
+footer{
+  margin-top:80px;
+  background:
+    radial-gradient(circle at top center,rgba(212,175,55,.12),transparent 35%),
+    linear-gradient(135deg,#061126,#10295a);
+}
+.ftr-col{
+  border-color:rgba(212,175,55,.32);
+  background:rgba(255,255,255,.045);
+}
+.ftr-col h4{
+  font-size:1.08rem;
+}
+
+/* Mobile cleanup */
+@media(max-width:700px){
+  .tnav{
+    padding:6px;
+  }
+  .ntabs,.nbtns{
+    width:100%;
+    justify-content:center;
+  }
+  .ntb,.nb{
+    font-size:.68rem;
+    padding:5px 7px;
+  }
+}
 </style>
 </head>
 <body>
