@@ -520,6 +520,42 @@ footer{
 .nav-main .ntb{
   direction:rtl;
 }
+  /* NAV FINAL FIX */
+.nav-main .ntb-home:not(.active){
+  color:rgba(255,255,255,.82)!important;
+  background:rgba(255,255,255,.035)!important;
+  border-bottom:none!important;
+}
+
+.nav-main{
+  flex:2.4;
+  gap:10px;
+}
+
+.nav-main .ntb{
+  font-size:.9rem!important;
+  font-weight:900!important;
+  min-width:105px;
+  padding:12px 16px!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.18);
+}
+
+.nav-side{
+  flex:1.25;
+}
+
+.nav-side-left{
+  margin-right:auto;
+}
+
+.nav-side-right{
+  margin-left:auto;
+}
+
+.nav-side .nb{
+  font-size:.78rem!important;
+  opacity:.9;
+}
 </style>
 </head>
 <body>
@@ -1037,7 +1073,12 @@ function dlL(){return Math.max(0,5-gDl().c)}
 function cDl(){var d=gDl();if(d.c<5){d.c++;localStorage.setItem('dlx',JSON.stringify(d));}setTimeout(rfDl,150);}
 function rfDl(){var l=dlL(),s=document.getElementById('dlsec');if(!s)return;if(l<=0)s.innerHTML='<div class="dllim">⛔ Download limit reached (5/day)</div>';else{var b=s.querySelector('button');if(b)b.textContent='⬇️ Download ('+l+' left today)';}}
 function openM(id){try{_setHash('m='+id);}catch(e){}document.getElementById(id).classList.add('open')}
-function closeM(id){document.getElementById(id).classList.remove('open');try{if(location.hash.includes('m='+id)){history.pushState(null,'',location.pathname);}}catch(e){}}
+function closeM(id){
+  document.getElementById(id).classList.remove('open');
+  if (history.replaceState) {
+  history.replaceState({}, '', location.pathname);
+}
+                    try{if(location.hash.includes('m='+id)){history.pushState(null,'',location.pathname);}}catch(e){}}
 document.querySelectorAll('.mov').forEach(function(o){o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')});});
 document.getElementById('ytp').addEventListener('click',function(e){if(e.target===this)closeYtp()});
 function showLanding(){_ph();try{history.pushState(null,'',location.pathname);}catch(e){}document.getElementById('hero').style.display='';document.getElementById('land').style.display='';document.getElementById('ca').style.display='none';document.getElementById('sinfo').textContent='';document.getElementById('srch').value='';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});}
@@ -1081,8 +1122,12 @@ async function loadLatest(){try{var best=null;latTabKey=null;latParentFolderId=n
 function openLatestModal(){openM('m-lat');}
 function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
 function goToLatestShiur(){if(!latTabKey)return;closeM('m-lat');showTab(latTabKey,null);if(latParentFolderId&&latParentFolderId!==TABS[latTabKey].id){setTimeout(function(){nav.push({id:latParentFolderId,name:latParentFolderName||'...'});rBC();lFld(latParentFolderId);},350);}}
-async function checkYomTov(){try{var r=await fetch(API_BASE+'/list?folder=yomtov');var d=await r.json();var files=d.files||[];if(files.length){var sc=files[0];ytFId=sc.shortcutDetails&&sc.shortcutDetails.targetId?sc.shortcutDetails.targetId:sc.id;ytNm=cln(sc.name);setTimeout(function(){var ytName=ytNm.replace(/^הלכות\s+/,'');document.getElementById('ytpt').textContent='🕍 עס קומען די טעג פון '+ytName;document.getElementById('ytps').textContent='';document.getElementById('ytpp').textContent='עס זענען דא שיעורים פאר '+ytName+':';document.getElementById('ytp').classList.add('open');},1600);}}catch(e){}}
-function openYomTovBtn(){if(ytFId){var ytName=ytNm.replace(/^הלכות\s+/,'');document.getElementById('ytpt').textContent='🕍 עס קומען די טעג פין '+ytName;document.getElementById('ytp').classList.add('open');}else{openM('m-nyt');}}
+async function checkYomTov(){
+
+  if (location.search || location.hash) return; try{var r=await fetch(API_BASE+'/list?folder=yomtov');var d=await r.json();var files=d.files||[];if(files.length){var sc=files[0];ytFId=sc.shortcutDetails&&sc.shortcutDetails.targetId?sc.shortcutDetails.targetId:sc.id;ytNm=cln(sc.name);setTimeout(function(){var ytName=ytNm.replace(/^הלכות\s+/,'');document.getElemen
+    
+                                                                                                                                                                                                                                                                                                                  tById('ytpt').textContent=''עס קומען די טעג פון '+ytName;document.getElementById('ytps').textContent='';document.getElementById('ytpp').textContent='עס זענען דא שיעורים פאר '+ytName+':';document.getElementById('ytp').classList.add('open');},1600);}}catch(e){}}
+function openYomTovBtn(){if(ytFId){var ytName=ytNm.replace(/^הלכות\s+/,'');document.getElementById('ytpt').textContent=''עס קומען די טעג פין '+ytName;document.getElementById('ytp').classList.add('open');}else{openM('m-nyt');}}
 function goYomTov(){closeYtp();if(ytFId){showTab('moadim',null);setTimeout(function(){nav.push({id:ytFId,name:ytNm});rBC();lFld(ytFId);},300);}}
 function closeYtp(){document.getElementById('ytp').classList.remove('open');}
 function sendContact(e){
@@ -1116,8 +1161,18 @@ function installPWA(){if(!_pwaPrompt)return;_pwaPrompt.prompt();_pwaPrompt.userC
 function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אינסטאלירן: עפנט דעם סייט אין Chrome, דריקט ⋮ → "Add to Home Screen"');}}
 window.addEventListener('appinstalled',function(){var btn=document.getElementById('pwa-install-btn');if(btn)btn.style.display='none';});
 loadLatest();
-checkYomTov();
-_readHash();
+
+const p = new URLSearchParams(location.search);
+const modal = p.get('m');
+
+if (modal) {
+  setTimeout(function(){
+    openM(modal);
+  }, 300);
+} else {
+  checkYomTov();
+  _readHash();
+}
 </script>
 </body>
 </html>
