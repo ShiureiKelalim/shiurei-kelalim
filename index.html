@@ -1124,11 +1124,37 @@ function openLatestModal(){openM('m-lat');}
 function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
 function goToLatestShiur(){if(!latTabKey)return;closeM('m-lat');showTab(latTabKey,null);if(latParentFolderId&&latParentFolderId!==TABS[latTabKey].id){setTimeout(function(){nav.push({id:latParentFolderId,name:latParentFolderName||'...'});rBC();lFld(latParentFolderId);},350);}}
 async function checkYomTov(){
+  if (location.search || location.hash) return;
+  try{
+    var r=await fetch(API_BASE+'/list?folder=yomtov');
+    var d=await r.json();
+    var files=d.files||[];
+    if(files.length){
+      var sc=files[0];
+      ytFId=sc.shortcutDetails&&sc.shortcutDetails.targetId?sc.shortcutDetails.targetId:sc.id;
+      ytNm=cln(sc.name);
+      setTimeout(function(){
+        var ytName=ytNm.replace(/^הלכות\s+/,'');
+        document.getElementById('ytpt').textContent='עס קומען די טעג פון '+ytName;
+        document.getElementById('ytps').textContent='';
+        document.getElementById('ytpp').textContent='עס זענען דא שיעורים פאר '+ytName+':';
+        document.getElementById('ytp').classList.add('open');
+      },1600);
+    }
+  }catch(e){}
+}
 
-  if (location.search || location.hash) return; try{var r=await fetch(API_BASE+'/list?folder=yomtov');var d=await r.json();var files=d.files||[];if(files.length){var sc=files[0];ytFId=sc.shortcutDetails&&sc.shortcutDetails.targetId?sc.shortcutDetails.targetId:sc.id;ytNm=cln(sc.name);setTimeout(function(){var ytName=ytNm.replace(/^הלכות\s+/,'');document.getElemen
-    
-                                                                                                                                                                                                                                                                                                                  tById('ytpt').textContent=''עס קומען די טעג פון '+ytName;document.getElementById('ytps').textContent='';document.getElementById('ytpp').textContent='עס זענען דא שיעורים פאר '+ytName+':';document.getElementById('ytp').classList.add('open');},1600);}}catch(e){}}
-function openYomTovBtn(){if(ytFId){var ytName=ytNm.replace(/^הלכות\s+/,'');document.getElementById('ytpt').textContent=''עס קומען די טעג פין '+ytName;document.getElementById('ytp').classList.add('open');}else{openM('m-nyt');}}
+function openYomTovBtn(){
+  if(ytFId){
+    var ytName=ytNm.replace(/^הלכות\s+/,'');
+    document.getElementById('ytpt').textContent='עס קומען די טעג פון '+ytName;
+    document.getElementById('ytps').textContent='';
+    document.getElementById('ytpp').textContent='עס זענען דא שיעורים פאר '+ytName+':';
+    document.getElementById('ytp').classList.add('open');
+  }else{
+    openM('m-nyt');
+  }
+}
 function goYomTov(){closeYtp();if(ytFId){showTab('moadim',null);setTimeout(function(){nav.push({id:ytFId,name:ytNm});rBC();lFld(ytFId);},300);}}
 function closeYtp(){document.getElementById('ytp').classList.remove('open');}
 function sendContact(e){
