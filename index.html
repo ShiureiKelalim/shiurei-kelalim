@@ -559,27 +559,36 @@ footer{
   opacity:.9;
 }
 
-/* ===== FINAL FIXES 2026-06-30 ===== */
-.premium-nav{position:sticky;top:0;z-index:1200;direction:ltr;min-height:64px;padding:0 30px!important;gap:18px}
-.nav-main{flex:2.8!important;gap:12px!important;direction:rtl}
-.nav-main .ntb{min-width:112px!important;padding:13px 18px!important;font-size:.92rem!important;font-weight:900!important;border-radius:11px!important;background:rgba(255,255,255,.045)!important;color:rgba(255,255,255,.84)!important;box-shadow:0 5px 16px rgba(0,0,0,.22)!important;border:1px solid rgba(255,255,255,.06)!important}
+/* ===== FINAL FIXES 2026-07-01 ===== */
+.premium-nav{position:sticky;top:0;z-index:2000;direction:ltr;min-height:64px;padding:0 44px!important;gap:26px;flex-wrap:nowrap!important;overflow-x:auto;overflow-y:hidden}
+.nav-main{flex:0 0 auto!important;gap:12px!important;direction:rtl}
+.nav-main .ntb{flex:0 0 auto!important;min-width:116px!important;padding:13px 18px!important;font-size:.92rem!important;font-weight:900!important;border-radius:12px!important;background:rgba(255,255,255,.055)!important;color:rgba(255,255,255,.86)!important;box-shadow:0 5px 16px rgba(0,0,0,.22)!important;border:1px solid rgba(255,255,255,.07)!important}
 .nav-main .ntb:hover{background:rgba(212,175,55,.18)!important;color:#f7d96b!important}
 .nav-main .ntb.active{background:#d4af37!important;color:#08162f!important;border-color:#d4af37!important}
-.nav-main .ntb-home:not(.active){background:rgba(255,255,255,.045)!important;color:rgba(255,255,255,.84)!important;border-bottom:none!important}
-.nav-side{flex:1.45!important}
+.nav-main .ntb-home:not(.active){background:rgba(255,255,255,.055)!important;color:rgba(255,255,255,.86)!important;border-bottom:none!important}
+.nav-side{flex:1 0 230px!important}
 .nav-side-left{justify-content:flex-start!important;margin-right:auto!important}
 .nav-side-right{justify-content:flex-end!important;margin-left:auto!important}
-.nav-side .nb{font-size:.8rem!important;padding:8px 11px!important;opacity:.92!important}
+.nav-side .nb{font-size:.8rem!important;padding:8px 12px!important;opacity:.92!important}
 body.modal-open{overflow:hidden}
-.mov{top:64px!important;bottom:0!important;left:0!important;right:0!important;inset:auto 0 0 0!important;z-index:950!important;overflow-y:auto!important}
+.mov{display:none;position:fixed!important;top:64px!important;bottom:0!important;left:0!important;right:0!important;inset:auto 0 0 0!important;z-index:1500!important;overflow-y:auto!important;padding:22px 16px 90px!important;-webkit-overflow-scrolling:touch!important}
 .mov.open{display:block!important}
-#ytp{top:64px!important;bottom:0!important;left:0!important;right:0!important;inset:auto 0 0 0!important;z-index:980!important}
+.mov .mbx{margin:0 auto 70px!important}
+.mov-back{margin-top:0!important}
+#ytp{display:none;position:fixed!important;top:64px!important;bottom:0!important;left:0!important;right:0!important;inset:auto 0 0 0!important;z-index:1600!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;padding:18px!important}
 #ytp.open{display:flex!important}
-#plov{z-index:1300!important}
-.restricted-note{display:block;margin-top:4px;color:#ffd76a;font-size:.95rem;font-weight:900;letter-spacing:.2px}
+#plov{z-index:2200!important}
+.restricted-note{display:block;margin-top:6px;color:#ffd76a;font-size:1.05rem;font-weight:900;letter-spacing:.2px}
 .latest-badge{display:inline-block;margin-right:8px;padding:4px 10px;border-radius:18px;background:linear-gradient(135deg,#d4af37,#f3d575);color:#08162f;font-size:.72rem;font-weight:900;box-shadow:0 2px 9px rgba(212,175,55,.35)}
-@media(max-width:900px){.premium-nav{padding:8px!important}.nav-main .ntb{min-width:auto!important;font-size:.76rem!important;padding:9px 10px!important}.mov{top:110px!important}#ytp{top:110px!important}}
-
+.ftr-grid{grid-template-columns:repeat(4,1fr)!important}
+@media(max-width:900px){
+  .premium-nav{height:64px!important;padding:0 14px!important;flex-wrap:nowrap!important}
+  .nav-main{flex-wrap:nowrap!important}
+  .nav-main .ntb{min-width:96px!important;font-size:.78rem!important;padding:10px 12px!important}
+  .nav-side{flex:0 0 auto!important}
+}
+@media(max-width:700px){.ftr-grid{grid-template-columns:1fr!important}}
+  
 </style>
 </head>
 <body>
@@ -1091,13 +1100,79 @@ function cDl(){var d=gDl();if(d.c<5){d.c++;localStorage.setItem('dlx',JSON.strin
 function rfDl(){var l=dlL(),s=document.getElementById('dlsec');if(!s)return;if(l<=0)s.innerHTML='<div class="dllim">⛔ Download limit reached (5/day)</div>';else{var b=s.querySelector('button');if(b)b.textContent='⬇️ Download ('+l+' left today)';}}
 function smoothTop(){try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}}
 function setActiveHome(on){var hb=document.querySelector('.ntb-home');if(hb)hb.classList.toggle('active',!!on);}
-function openM(id){var m=document.getElementById(id);if(!m)return;document.body.classList.add('modal-open');m.classList.add('open');smoothTop();}
-function closeM(id){var m=document.getElementById(id);if(m)m.classList.remove('open');if(!document.querySelector('.mov.open')&&!document.getElementById('ytp').classList.contains('open'))document.body.classList.remove('modal-open');}
-document.querySelectorAll('.mov').forEach(function(o){o.addEventListener('click',function(e){if(e.target===this)closeM(this.id);});});
-document.getElementById('ytp').addEventListener('click',function(e){if(e.target===this)closeYtp();});
-function showLanding(){_ph();try{history.pushState(null,'',location.pathname);}catch(e){}document.getElementById('hero').style.display='';document.getElementById('land').style.display='';document.getElementById('ca').style.display='none';document.getElementById('sinfo').textContent='';document.getElementById('srch').value='';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});setActiveHome(true);smoothTop();}
-function showTab(key,btn){_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});var ab=btn||(key==='orach'?document.getElementById('tb-or'):key==='yoreh'?document.getElementById('tb-yo'):key==='even'?document.getElementById('tb-ev'):key==='choshen'?document.getElementById('tb-ch'):document.getElementById('tb-mo'));if(ab&&ab.classList)ab.classList.add('active');var t=TABS[key];var bn=document.getElementById('sbn');bn.className='sbn '+t.bn;bn.innerHTML='<h2>'+t.ic+' '+t.name+'</h2>';document.getElementById('srch').value='';document.getElementById('sinfo').textContent='';nav=[{id:t.id,name:t.name}];rBC();smoothTop();lFld(t.id);}
-async function checkPwd(){
+function closeAllPopups(keepPwd){
+  document.querySelectorAll('.mov.open').forEach(function(m){
+    if(keepPwd && m.id==='m-pwd')return;
+    m.classList.remove('open');
+  });
+  var y=document.getElementById('ytp');
+  if(y)y.classList.remove('open');
+  if(!document.querySelector('.mov.open'))document.body.classList.remove('modal-open');
+}
+
+function openM(id,keepPwd){
+  var m=document.getElementById(id);
+  if(!m)return;
+  var keep=!!keepPwd || (id==='m-hl' && document.getElementById('m-pwd') && document.getElementById('m-pwd').classList.contains('open'));
+  closeAllPopups(keep);
+  document.body.classList.add('modal-open');
+  m.classList.add('open');
+  m.scrollTop=0;
+}
+
+function closeM(id){
+  var m=document.getElementById(id);
+  if(m)m.classList.remove('open');
+  if(!document.querySelector('.mov.open') && !document.getElementById('ytp').classList.contains('open')){
+    document.body.classList.remove('modal-open');
+  }
+}
+
+document.querySelectorAll('.mov').forEach(function(o){
+  o.addEventListener('click',function(e){
+    if(e.target===this)closeM(this.id);
+  });
+});
+
+document.getElementById('ytp').addEventListener('click',function(e){
+  if(e.target===this)closeYtp();
+});
+
+function showLanding(){
+  closeAllPopups(false);
+  _ph();
+  try{history.pushState(null,'',location.pathname);}catch(e){}
+  document.getElementById('hero').style.display='';
+  document.getElementById('land').style.display='';
+  document.getElementById('ca').style.display='none';
+  document.getElementById('sinfo').textContent='';
+  document.getElementById('srch').value='';
+  document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});
+  setActiveHome(true);
+  smoothTop();
+}
+
+function showTab(key,btn){
+  closeAllPopups(false);
+  _ph();
+  document.getElementById('hero').style.display='none';
+  document.getElementById('land').style.display='none';
+  document.getElementById('ca').style.display='block';
+  document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});
+  var ab=btn||(key==='orach'?document.getElementById('tb-or'):key==='yoreh'?document.getElementById('tb-yo'):key==='even'?document.getElementById('tb-ev'):key==='choshen'?document.getElementById('tb-ch'):document.getElementById('tb-mo'));
+  if(ab&&ab.classList)ab.classList.add('active');
+  var t=TABS[key];
+  var bn=document.getElementById('sbn');
+  bn.className='sbn '+t.bn;
+  bn.innerHTML='<h2>'+t.ic+' '+t.name+'</h2>';
+  document.getElementById('srch').value='';
+  document.getElementById('sinfo').textContent='';
+  nav=[{id:t.id,name:t.name}];
+  rBC();
+  smoothTop();
+  lFld(t.id);
+}
+  async function checkPwd(){
   var v=document.getElementById('pwi').value.trim();
   if(!v)return;
   try{
@@ -1382,17 +1457,11 @@ var _pwaPrompt;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_pwaPrompt=e;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='block';});
 function installPWA(){if(!_pwaPrompt)return;_pwaPrompt.prompt();_pwaPrompt.userChoice.then(function(){_pwaPrompt=null;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='none';});}
 function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אינסטאלירן: עפנט דעם סייט אין Chrome, דריקט ⋮ → "Add to Home Screen"');}}
-window.addEventListener('appinstalled',function(){var btn=document.getElementById('pwa-install-btn');if(btn)btn.style.display='none';});
 loadLatest();
-
-const p = new URLSearchParams(location.search);
-const modal = p.get('m');
-
-if (modal) {
-  setTimeout(function(){
-    openM(modal);
-  }, 300);
-} else {
+if(location.hash.indexOf('m=')>=0 || location.search.indexOf('m=')>=0){
+  try{history.replaceState(null,'',location.pathname);}catch(e){}
+  showLanding();
+}else{
   checkYomTov();
   _readHash();
 }
