@@ -607,6 +607,15 @@ body.modal-open #m-privacy.open .mbx{
   max-height:calc(100vh - 135px)!important;
   padding-bottom:55px!important;
 }
+  .nb.activeModal{
+  color:#08162f!important;
+  background:#d4af37!important;
+  border-radius:9px!important;
+  opacity:1!important;
+}
+#m-pwd.open{z-index:1800!important}
+#m-hl.open{z-index:1900!important}
+  
 </style>
 </head>
 <body>
@@ -1136,25 +1145,62 @@ function closeAllPopups(){
   document.documentElement.classList.remove('modal-open');
   document.documentElement.classList.remove('modal-open');
 }
-function openM(id){
-  closeAllPopups();
-  var m=document.getElementById(id); if(!m)return;
+function clearNavActive(){
+  document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('activeModal')});
+}
+
+function setModalActive(id){
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('activeModal')});
+  var b=document.querySelector(".nb[onclick*=\"openM('"+id+"'\"]");
+  if(b)b.classList.add('activeModal');
+}
+
+function openM(id,keepPwd){
+  var keep=!!keepPwd;
+  document.querySelectorAll('.mov.open').forEach(function(m){
+    if(keep && m.id==='m-pwd')return;
+    m.classList.remove('open');
+  });
+
+  clearNavActive();
+  setModalActive(id);
+
+  var m=document.getElementById(id);
+  if(!m)return;
   document.body.classList.add('modal-open');
   document.documentElement.classList.add('modal-open');
   m.classList.add('open');
   m.scrollTop=0;
 }
+
 function closeM(id){
-  var m=document.getElementById(id); if(m)m.classList.remove('open');
-  if(!document.querySelector('.mov.open'))document.body.classList.remove('modal-open');
-  document.documentElement.classList.remove('modal-open');
-  document.documentElement.classList.remove('modal-open');
+  var m=document.getElementById(id);
+  if(m)m.classList.remove('open');
+
+  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('activeModal')});
+
+  if(!document.querySelector('.mov.open')){
+    document.body.classList.remove('modal-open');
+    document.documentElement.classList.remove('modal-open');
+  }
 }
-document.querySelectorAll('.mov').forEach(function(o){o.addEventListener('click',function(e){if(e.target===this)closeM(this.id);});});
-document.getElementById('ytp').addEventListener('click',function(e){if(e.target===this)closeYtp();});
+
+document.querySelectorAll('.mov').forEach(function(o){
+  o.addEventListener('click',function(e){
+    if(e.target===this)closeM(this.id);
+  });
+});
+
+document.getElementById('ytp').addEventListener('click',function(e){
+  if(e.target===this)closeYtp();
+});
 
 function showLanding(){
-  closeAllPopups();
+  document.querySelectorAll('.mov.open').forEach(function(m){m.classList.remove('open')});
+  document.body.classList.remove('modal-open');
+  document.documentElement.classList.remove('modal-open');
+  clearNavActive();
   _ph();
   try{history.pushState(null,'',location.pathname);}catch(e){}
   document.getElementById('hero').style.display='';
@@ -1162,20 +1208,27 @@ function showLanding(){
   document.getElementById('ca').style.display='none';
   document.getElementById('sinfo').textContent='';
   document.getElementById('srch').value='';
-  document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});
-  setActiveHome(true);
+  var hb=document.querySelector('.ntb-home');
+  if(hb)hb.classList.add('active');
   smoothTop();
 }
+
 function showTab(key,btn){
-  closeAllPopups();
+  document.querySelectorAll('.mov.open').forEach(function(m){m.classList.remove('open')});
+  document.body.classList.remove('modal-open');
+  document.documentElement.classList.remove('modal-open');
+  clearNavActive();
   _ph();
+
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
-  document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});
+
   var ab=btn||(key==='orach'?document.getElementById('tb-or'):key==='yoreh'?document.getElementById('tb-yo'):key==='even'?document.getElementById('tb-ev'):key==='choshen'?document.getElementById('tb-ch'):document.getElementById('tb-mo'));
   if(ab)ab.classList.add('active');
-  var t=TABS[key],bn=document.getElementById('sbn');
+
+  var t=TABS[key];
+  var bn=document.getElementById('sbn');
   bn.className='sbn '+t.bn;
   bn.innerHTML='<h2>'+t.ic+' '+t.name+'</h2>';
   document.getElementById('srch').value='';
@@ -1184,6 +1237,7 @@ function showTab(key,btn){
   rBC();
   smoothTop();
   lFld(t.id);
+}
 }
   async function checkPwd(){
   var v=document.getElementById('pwi').value.trim();
@@ -1426,7 +1480,7 @@ async function loadLatest(){
     document.getElementById('lname').innerHTML=fmN(nm);
     document.getElementById('latname').innerHTML=fmN(nm);
 
-    var uploadDate=new Date(latF.modifiedTime||Date.now());
+    var uploadDate=new Date(latF.createdTime || latF.modifiedTime || Date.now());
 var parsha=await getParshaForDate(uploadDate);
 var parshaLabel=parsha?'די שיעור איז פארגעלערנט: <span class="pname">'+parsha+'</span>':'';
 
