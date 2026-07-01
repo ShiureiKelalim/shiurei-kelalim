@@ -577,7 +577,26 @@ footer{
   .nav-main .ntb{min-width:96px!important;font-size:.78rem!important;padding:10px 12px!important}
   .nav-side{flex:0 0 auto!important}
 }
-  
+  /* LOCK PAGE SCROLL WHEN MODAL IS OPEN */
+body.modal-open,
+html.modal-open{
+  overflow:hidden!important;
+  height:100%!important;
+}
+
+body.modal-open .mov.open{
+  overflow-y:hidden!important;
+}
+
+body.modal-open .mov.open .mbx{
+  max-height:calc(100vh - 105px)!important;
+  overflow-y:auto!important;
+}
+
+body.modal-open #m-don.open .mbx,
+body.modal-open #m-privacy.open .mbx{
+  overflow-y:auto!important;
+}
 </style>
 </head>
 <body>
@@ -1097,23 +1116,29 @@ function closeAllPopups(keepPwd){
   var y=document.getElementById('ytp');
   if(y)y.classList.remove('open');
   if(!document.querySelector('.mov.open'))document.body.classList.remove('modal-open');
+  document.documentElement.classList.remove('modal-open');
 }
 
 function closeAllPopups(){
   document.querySelectorAll('.mov.open').forEach(function(m){m.classList.remove('open');});
   var y=document.getElementById('ytp'); if(y)y.classList.remove('open');
   document.body.classList.remove('modal-open');
+  document.documentElement.classList.remove('modal-open');
+  document.documentElement.classList.remove('modal-open');
 }
 function openM(id){
   closeAllPopups();
   var m=document.getElementById(id); if(!m)return;
   document.body.classList.add('modal-open');
+  document.documentElement.classList.add('modal-open');
   m.classList.add('open');
   m.scrollTop=0;
 }
 function closeM(id){
   var m=document.getElementById(id); if(m)m.classList.remove('open');
   if(!document.querySelector('.mov.open'))document.body.classList.remove('modal-open');
+  document.documentElement.classList.remove('modal-open');
+  document.documentElement.classList.remove('modal-open');
 }
 document.querySelectorAll('.mov').forEach(function(o){o.addEventListener('click',function(e){if(e.target===this)closeM(this.id);});});
 document.getElementById('ytp').addEventListener('click',function(e){if(e.target===this)closeYtp();});
@@ -1436,6 +1461,7 @@ function openYomTovBtn(){
 }
 function goYomTov(){closeYtp();if(ytFId){showTab('moadim',null);setTimeout(function(){nav.push({id:ytFId,name:ytNm});rBC();lFld(ytFId);},300);}}
 function closeYtp(){document.getElementById('ytp').classList.remove('open');if(!document.querySelector('.mov.open'))document.body.classList.remove('modal-open');}
+   document.documentElement.classList.remove('modal-open');
 function sendContact(e){
   gaEv('contact_submit');e.preventDefault();var email=document.getElementById('cte').value.trim();var subj=document.getElementById('cts')?document.getElementById('cts').value.trim():'';var msg=document.getElementById('ctm').value.trim();if(!email||!msg)return;fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:email,message:msg,_subject:(subj?subj+' — ':'')+'Message - Shiurei Kelalim'})}).then(function(r){return r.json();}).then(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';}).catch(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';});}
 function doSub(e){gaEv('subscribe_submit');e.preventDefault();var em=document.getElementById('sube').value.trim();if(!em||!em.includes('@'))return;var btn=document.querySelector('#subf .sbtn');if(btn){btn.textContent='⏳...';btn.disabled=true;}_showSubResult('success');fetch(API_BASE+'/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})}).catch(function(){});}
