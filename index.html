@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -287,7 +288,7 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .empb{text-align:center;padding:34px;color:#bbb}
 
 footer{padding:38px 16px 24px;background:linear-gradient(135deg,#08122a,#162d5a);color:rgba(255,255,255,.70);font-size:.86rem;margin-top:90px;border-top:1px solid rgba(212,175,55,.25)}
-.ftr-grid{max-width:950px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;text-align:center}
+.ftr-grid{max-width:950px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;text-align:center}
 .ftr-col{border:1px solid rgba(212,175,55,.24);border-radius:16px;padding:18px 14px;background:rgba(255,255,255,.035);box-shadow:0 8px 20px rgba(0,0,0,.12)}
 .ftr-col h4{color:#d4af37;font-size:1rem;margin-bottom:12px;font-weight:900}
 .ftr-col a{display:block;color:rgba(255,255,255,.82);text-decoration:none;padding:5px 0;font-size:.86rem;transition:color .2s}
@@ -557,6 +558,28 @@ footer{
   font-size:.78rem!important;
   opacity:.9;
 }
+
+/* ===== FINAL FIXES 2026-06-30 ===== */
+.premium-nav{position:sticky;top:0;z-index:1200;direction:ltr;min-height:64px;padding:0 30px!important;gap:18px}
+.nav-main{flex:2.8!important;gap:12px!important;direction:rtl}
+.nav-main .ntb{min-width:112px!important;padding:13px 18px!important;font-size:.92rem!important;font-weight:900!important;border-radius:11px!important;background:rgba(255,255,255,.045)!important;color:rgba(255,255,255,.84)!important;box-shadow:0 5px 16px rgba(0,0,0,.22)!important;border:1px solid rgba(255,255,255,.06)!important}
+.nav-main .ntb:hover{background:rgba(212,175,55,.18)!important;color:#f7d96b!important}
+.nav-main .ntb.active{background:#d4af37!important;color:#08162f!important;border-color:#d4af37!important}
+.nav-main .ntb-home:not(.active){background:rgba(255,255,255,.045)!important;color:rgba(255,255,255,.84)!important;border-bottom:none!important}
+.nav-side{flex:1.45!important}
+.nav-side-left{justify-content:flex-start!important;margin-right:auto!important}
+.nav-side-right{justify-content:flex-end!important;margin-left:auto!important}
+.nav-side .nb{font-size:.8rem!important;padding:8px 11px!important;opacity:.92!important}
+body.modal-open{overflow:hidden}
+.mov{top:64px!important;bottom:0!important;left:0!important;right:0!important;inset:auto 0 0 0!important;z-index:950!important;overflow-y:auto!important}
+.mov.open{display:block!important}
+#ytp{top:64px!important;bottom:0!important;left:0!important;right:0!important;inset:auto 0 0 0!important;z-index:980!important}
+#ytp.open{display:flex!important}
+#plov{z-index:1300!important}
+.restricted-note{display:block;margin-top:4px;color:#ffd76a;font-size:.95rem;font-weight:900;letter-spacing:.2px}
+.latest-badge{display:inline-block;margin-right:8px;padding:4px 10px;border-radius:18px;background:linear-gradient(135deg,#d4af37,#f3d575);color:#08162f;font-size:.72rem;font-weight:900;box-shadow:0 2px 9px rgba(212,175,55,.35)}
+@media(max-width:900px){.premium-nav{padding:8px!important}.nav-main .ntb{min-width:auto!important;font-size:.76rem!important;padding:9px 10px!important}.mov{top:110px!important}#ytp{top:110px!important}}
+
 </style>
 </head>
 <body>
@@ -713,7 +736,7 @@ footer{
     <div class="mt">Restricted Section</div>
     <p style="color:#777;margin-bottom:16px;line-height:1.9;font-size:.84rem">
       צו קריגן צוגאנג, ביטע רופט דעם
-      <a href="#" onclick="closeM('m-pwd');openM('m-hl');return false;" style="color:#162d5a;font-weight:700;text-decoration:underline">האטליין</a><br>
+      <a href="#" onclick="openM('m-hl');return false;" style="color:#162d5a;font-weight:700;text-decoration:underline">האטליין</a><br>
       <small style="color:#bbb">Press #91 · Leave your name & phone number</small><br>
       <b style="color:#444;font-size:.82rem">We will call you back with the password</b>
     </p>
@@ -879,7 +902,7 @@ footer{
       <p><strong>Third-Party Services</strong><br>Certain features may use trusted third-party services, including Google Drive, Google Analytics, Google Apps Script, and FormSubmit. These services are governed by their own privacy policies.</p>
       <p><strong>Data Security</strong><br>We take reasonable measures to protect information submitted through this website. However, no method of electronic transmission or online storage is completely secure.</p>
       <p><strong>Changes to This Policy</strong><br>This Privacy Policy may be updated from time to time. Any changes will be posted on this page.</p>
-      <p><strong>Contact</strong><br>If you have any questions about this Privacy Policy, please contact us through the Contact Us page.</p>
+      <p><strong>Contact</strong><br>If you have any questions about this Privacy Policy, please contact us through the Contact Us page, or email us at <a href="mailto:info@shiureikelalim.com" style="color:#162d5a;font-weight:700">info@shiureikelalim.com</a>.</p>
     </div>
   </div>
 </div>
@@ -903,27 +926,20 @@ footer{
       <h4>אינפארמאציע</h4>
       <a href="#" onclick="openM('m-hl');return false;">האטליין</a>
       <a href="#" onclick="openM('m-sub');return false;">סובסקרייב</a>
-      <a href="#" onclick="openM('m-ct');return false;">Contact Us</a>
       <a href="#" onclick="openM('m-don');return false;">Donate</a>
       <a href="#" onclick="openM('m-privacy');return false;">Privacy Policy</a>
+    </div>
+    <div class="ftr-col">
+      <h4>קאנטאקט אונז</h4>
+      <a href="#" onclick="openM('m-ct');return false;">Contact Us</a>
+      <a href="mailto:info@shiureikelalim.com">info@shiureikelalim.com</a>
     </div>
   </div>
   <p class="ftr-copy">© Shiurei Kelalim — All Rights Reserved</p>
 </footer>
 
 <script>
-(function(){
-  try{
-    var _h=location.hash.replace('#',''),_p={};
-    _h.split('&').forEach(function(x){var a=x.split('=');if(a[1]!==undefined)_p[a[0]]=decodeURIComponent(a[1]);});
-    if(_p.m){
-      var _hero=document.getElementById('hero');
-      var _land=document.getElementById('land');
-      if(_hero)_hero.style.display='none';
-      if(_land)_land.style.display='none';
-    }
-  }catch(ex){}
-})();
+(function(){try{if(location.hash.indexOf('m=')>=0){history.replaceState({},'',location.pathname);}}catch(ex){}})();
 
 var API_BASE='/api';
 var KEY=''; // Google API key is now hidden in Cloudflare Worker
@@ -1073,17 +1089,14 @@ function gDl(){var t=new Date().toDateString();var d=JSON.parse(localStorage.get
 function dlL(){return Math.max(0,5-gDl().c)}
 function cDl(){var d=gDl();if(d.c<5){d.c++;localStorage.setItem('dlx',JSON.stringify(d));}setTimeout(rfDl,150);}
 function rfDl(){var l=dlL(),s=document.getElementById('dlsec');if(!s)return;if(l<=0)s.innerHTML='<div class="dllim">⛔ Download limit reached (5/day)</div>';else{var b=s.querySelector('button');if(b)b.textContent='⬇️ Download ('+l+' left today)';}}
-function openM(id){try{_setHash('m='+id);}catch(e){}document.getElementById(id).classList.add('open')}
-function closeM(id){
-  document.getElementById(id).classList.remove('open');
-  if (history.replaceState) {
-  history.replaceState({}, '', location.pathname);
-}
-                    try{if(location.hash.includes('m='+id)){history.pushState(null,'',location.pathname);}}catch(e){}}
-document.querySelectorAll('.mov').forEach(function(o){o.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open')});});
-document.getElementById('ytp').addEventListener('click',function(e){if(e.target===this)closeYtp()});
-function showLanding(){_ph();try{history.pushState(null,'',location.pathname);}catch(e){}document.getElementById('hero').style.display='';document.getElementById('land').style.display='';document.getElementById('ca').style.display='none';document.getElementById('sinfo').textContent='';document.getElementById('srch').value='';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});}
-function showTab(key,btn){_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});var ab=btn||(key==='orach'?document.getElementById('tb-or'):key==='yoreh'?document.getElementById('tb-yo'):key==='even'?document.getElementById('tb-ev'):key==='choshen'?document.getElementById('tb-ch'):document.getElementById('tb-mo'));if(ab&&ab.classList)ab.classList.add('active');var t=TABS[key];var bn=document.getElementById('sbn');bn.className='sbn '+t.bn;bn.innerHTML='<h2>'+t.ic+' '+t.name+'</h2>';document.getElementById('srch').value='';document.getElementById('sinfo').textContent='';nav=[{id:t.id,name:t.name}];rBC();lFld(t.id);}
+function smoothTop(){try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}}
+function setActiveHome(on){var hb=document.querySelector('.ntb-home');if(hb)hb.classList.toggle('active',!!on);}
+function openM(id){var m=document.getElementById(id);if(!m)return;document.body.classList.add('modal-open');m.classList.add('open');smoothTop();}
+function closeM(id){var m=document.getElementById(id);if(m)m.classList.remove('open');if(!document.querySelector('.mov.open')&&!document.getElementById('ytp').classList.contains('open'))document.body.classList.remove('modal-open');}
+document.querySelectorAll('.mov').forEach(function(o){o.addEventListener('click',function(e){if(e.target===this)closeM(this.id);});});
+document.getElementById('ytp').addEventListener('click',function(e){if(e.target===this)closeYtp();});
+function showLanding(){_ph();try{history.pushState(null,'',location.pathname);}catch(e){}document.getElementById('hero').style.display='';document.getElementById('land').style.display='';document.getElementById('ca').style.display='none';document.getElementById('sinfo').textContent='';document.getElementById('srch').value='';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});setActiveHome(true);smoothTop();}
+function showTab(key,btn){_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});var ab=btn||(key==='orach'?document.getElementById('tb-or'):key==='yoreh'?document.getElementById('tb-yo'):key==='even'?document.getElementById('tb-ev'):key==='choshen'?document.getElementById('tb-ch'):document.getElementById('tb-mo'));if(ab&&ab.classList)ab.classList.add('active');var t=TABS[key];var bn=document.getElementById('sbn');bn.className='sbn '+t.bn;bn.innerHTML='<h2>'+t.ic+' '+t.name+'</h2>';document.getElementById('srch').value='';document.getElementById('sinfo').textContent='';nav=[{id:t.id,name:t.name}];rBC();smoothTop();lFld(t.id);}
 async function checkPwd(){
   var v=document.getElementById('pwi').value.trim();
   if(!v)return;
@@ -1094,9 +1107,60 @@ async function checkPwd(){
     else{document.getElementById('pwe').style.display='block';}
   }catch(e){document.getElementById('pwe').style.display='block';}
 }
+function prettyFolderName(nm){nm=String(nm||'');return nm.replace(/\(([^)]*נשואים[^)]*)\)|（([^）]*נשואים[^）]*)）/g,function(m,a,b){return '<span class="restricted-note">'+(a||b)+'</span>';});}
+function plainName(nm){return String(nm||'').replace(/<[^>]*>/g,'');}
 function rBC(){document.getElementById('bc').innerHTML=nav.map(function(item,i){if(i===nav.length-1)return'<span class="bcc">'+item.name+'</span>';return'<span class="bcl" onclick="goLv('+i+')">'+item.name+'</span><span class="bcs">›</span>';}).join('');}
 function goLv(i){_ph();nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
-async function lFld(fId){var el=document.getElementById('fl');el.innerHTML='<div class="loading">⏳ Loading...</div>';try{var _tk=Object.keys(TABS).find(function(k){return nav.length&&TABS[k].id===nav[0].id;})||'';var _cn=nav.length?nav[nav.length-1]:null;if(_cn){if(nav.length===1&&_tk)_setHash('tab='+_tk);else _setHash((_tk?'tab='+_tk+'&':'')+'fid='+encodeURIComponent(_cn.id)+'&fn='+encodeURIComponent(_cn.name));}}catch(e){}try{var isRoot=!!TABS[fId];var apiUrl=isRoot?(API_BASE+'/list?folder='+encodeURIComponent(fId)):(API_BASE+'/list?id='+encodeURIComponent(fId));var res=await fetch(apiUrl);if(!res.ok)throw new Error('Status '+res.status);var data=await res.json();if(!data.ok)throw new Error(data.error||'API error');var files=data.files||[];if(!files.length){el.innerHTML='<div class="empb">📭 No shiurim found</div>';return;}var fols=files.filter(function(f){return f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'});var oth=files.filter(function(f){return !(f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder')});fols.sort(function(a,b){var na=cln(a.name),nb=cln(b.name);var ia=MO.indexOf(na),ib=MO.indexOf(nb);if(ia>=0&&ib>=0)return ia-ib;return a.name.localeCompare(b.name,'he');});el.innerHTML=fols.concat(oth).map(function(f){var isSh=f.mimeType==='application/vnd.google-apps.shortcut';var tM=isSh?(f.shortcutDetails&&f.shortcutDetails.targetMimeType||''):'';var tI=isSh?(f.shortcutDetails&&f.shortcutDetails.targetId||''):'';var isF=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'||(isSh&&tM==='application/vnd.google-apps.folder');var nm=cln(f.name);var ico=isF?'':getAudioIcon();var badge=isF?'<span class="bdg bf">Folder</span>':isA(f.mimeType)||f.type==='audio'?'<span class="bdg ba">Shiur</span>':'<span class="bdg bpf">File</span>';var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');var fiCls=isF?'fi fi-fld':'fi fi-audio';var folderEmoji=isF?getFolderEmoji(nm):'';var folderColor=isF?getFolderColor(nm):'';var folderStyle=isF&&folderColor?'style="background:'+folderColor+'!important"':'';return '<div class="'+fiCls+'" '+(folderStyle||'')+' onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+(f.mimeType||'').replace(/'/g,"\\'")+'\',\''+(tI||'').replace(/'/g,"\\'")+'\',\''+(tM||'').replace(/'/g,"\\'")+'\')"><span class="fii">'+(isF?folderEmoji:ico)+'</span><span class="fin">'+(isF?nm:fmN(nm))+'</span>'+badge+'</div>';}).join('');}catch(e){el.innerHTML='<div class="errb">❌ Error: '+e.message+'</div>';}}function hCl(id,nm,isF,mime,tId,tMime){if(mime==='application/vnd.google-apps.shortcut'){if(tMime==='application/vnd.google-apps.folder'){if(isPr(nm)&&!pwOk){pend={id:tId,name:nm};openM('m-pwd');return;}_ph();nav.push({id:tId,name:nm});rBC();lFld(tId);}else if(isA(tMime))opPl(tId,nm);return;}if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();nav.push({id:id,name:nm});rBC();lFld(id);}else if(isA(mime)||mime==='audio/mpeg'){opPl(id,nm);}else{window.open(API_BASE+'/play?id='+encodeURIComponent(id),'_blank');}}
+async function lFld(fId){
+  var el=document.getElementById('fl');
+  el.innerHTML='<div class="loading">⏳ Loading...</div>';
+  try{
+    var _tk=Object.keys(TABS).find(function(k){return nav.length&&TABS[k].id===nav[0].id;})||'';
+    var _cn=nav.length?nav[nav.length-1]:null;
+    if(_cn){
+      if(nav.length===1&&_tk)_setHash('tab='+_tk);
+      else _setHash((_tk?'tab='+_tk+'&':'')+'fid='+encodeURIComponent(_cn.id)+'&fn='+encodeURIComponent(_cn.name));
+    }
+  }catch(e){}
+  try{
+    var isRoot=!!TABS[fId];
+    var apiUrl=isRoot?(API_BASE+'/list?folder='+encodeURIComponent(fId)):(API_BASE+'/list?id='+encodeURIComponent(fId));
+    var res=await fetch(apiUrl);
+    if(!res.ok)throw new Error('Status '+res.status);
+    var data=await res.json();
+    if(!data.ok)throw new Error(data.error||'API error');
+    var files=data.files||[];
+    if(!files.length){el.innerHTML='<div class="empb">📭 No shiurim found</div>';return;}
+    var fols=files.filter(function(f){return f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'});
+    var oth=files.filter(function(f){return !(f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder')});
+    fols.sort(function(a,b){
+      var na=cln(a.name),nb=cln(b.name),ia=MO.indexOf(na),ib=MO.indexOf(nb);
+      if(ia>=0&&ib>=0)return ia-ib;
+      return a.name.localeCompare(b.name,'he');
+    });
+    el.innerHTML=fols.concat(oth).map(function(f){
+      var isSh=f.mimeType==='application/vnd.google-apps.shortcut';
+      var tM=isSh?(f.shortcutDetails&&f.shortcutDetails.targetMimeType||''):'';
+      var tI=isSh?(f.shortcutDetails&&f.shortcutDetails.targetId||''):'';
+      var isF=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'||(isSh&&tM==='application/vnd.google-apps.folder');
+      var nm=cln(f.name);
+      var isLatest=latF&&(f.id===latF.id||tI===latF.id);
+      var badge=isF?'<span class="bdg bf">Folder</span>':isA(f.mimeType)||f.type==='audio'?'<span class="bdg ba">Shiur</span>':'<span class="bdg bpf">File</span>';
+      if(isLatest)badge='<span class="latest-badge">נייעסטע שיעור</span>'+badge;
+      var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+      var mt=(f.mimeType||'').replace(/'/g,"\\'");
+      var ti=(tI||'').replace(/'/g,"\\'");
+      var tm=(tM||'').replace(/'/g,"\\'");
+      var fiCls=isF?'fi fi-fld':'fi fi-audio';
+      var folderStyle='';
+      if(isF){var folderColor=getFolderColor(nm); if(folderColor)folderStyle='style="background:'+folderColor+'!important"';}
+      return '<div class="'+fiCls+'" '+folderStyle+' onclick="hCl(\''+f.id+'\',\''+sn+'\','+isF+',\''+mt+'\',\''+ti+'\',\''+tm+'\')"><span class="fii">'+(isF?getFolderEmoji(nm):getAudioIcon())+'</span><span class="fin">'+(isF?prettyFolderName(nm):fmN(nm))+'</span>'+badge+'</div>';
+    }).join('');
+  }catch(e){
+    el.innerHTML='<div class="errb">❌ Error: '+e.message+'</div>';
+  }
+}
+function hCl(id,nm,isF,mime,tId,tMime){if(mime==='application/vnd.google-apps.shortcut'){if(tMime==='application/vnd.google-apps.folder'){if(isPr(nm)&&!pwOk){pend={id:tId,name:nm};openM('m-pwd');return;}_ph();nav.push({id:tId,name:nm});rBC();smoothTop();lFld(tId);}else if(isA(tMime))opPl(tId,nm);return;}if(isF){if(isPr(nm)&&!pwOk){pend={id:id,name:nm};openM('m-pwd');return;}_ph();nav.push({id:id,name:nm});rBC();smoothTop();lFld(id);}else if(isA(mime)||mime==='audio/mpeg'){opPl(id,nm);}else{window.open(API_BASE+'/play?id='+encodeURIComponent(id),'_blank');}}
 function clearIfEmpty(val){if(!val.trim()){document.getElementById('sinfo').textContent='';if(nav.length>0&&document.getElementById('ca').style.display!=='none')lFld(nav[nav.length-1].id);}}
 function triggerSearch(){var val=document.getElementById('srch').value.trim(); if(!val)return; gaEv('site_search',{search_term:val});_setHash('q='+encodeURIComponent(val));document.getElementById('sinfo').textContent='🔍 זוכט...';var p=doSrch(val);if(p&&p.then){p.then(function(){setTimeout(function(){var ca=document.getElementById('ca');if(ca){ca.style.display='block';ca.scrollIntoView({behavior:'smooth',block:'start'});}},300);});}else{setTimeout(function(){var ca=document.getElementById('ca');if(ca){ca.style.display='block';ca.scrollIntoView({behavior:'smooth',block:'start'});}},800);}}
 function handleSearch(val){clearTimeout(stmr);}
@@ -1192,7 +1256,7 @@ function renderGroup(title,arr,term){
 
     if(f.type==='audio'){
       var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-      return '<div class="fi fi-audio" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span><span class="bdg ba">Shiur</span></div>';
+      var lb=(latF&&f.id===latF.id)?'<span class="latest-badge">נייעסטע שיעור</span>':'';return '<div class="fi fi-audio" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span>'+lb+'<span class="bdg ba">Shiur</span></div>';
     }
 
     return '<div class="fi"><span class="fii">📄</span><span class="fin">'+show+path+'</span><span class="bdg ba">File</span></div>';
@@ -1205,7 +1269,34 @@ function escHtml(s){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
   });
 }
-  function opFldr(id,name){_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+name+'</h2>';var el=document.getElementById('fl'),si=document.getElementById('sinfo');el.innerHTML='<div class="loading">⏳ לאדט...</div>';fetch(API_BASE+'/list?id='+encodeURIComponent(id)).then(function(r){return r.json();}).then(function(d){var files=d.files||[];if(!files.length){el.innerHTML='<p style="text-align:center;padding:20px">נישט געפונן</p>';return;}el.innerHTML=files.map(function(f){var nm=cln(f.name);if(f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'){return '<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+fmN(nm)+'</span><span class="bdg baf">Folder</span></div>';}var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');return '<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+fmN(nm)+'</span><span class="bdg ba">Shiur</span></div>';}).join('');si.textContent='';}).catch(function(){el.innerHTML='<p>פעלער</p>';});}function opPl(fId,nm){var cleanNm=fmN(nm);curShiur={id:fId,name:cleanNm,marks:{},lastBeat:0};gaEv('shiur_open',{shiur_id:fId,shiur_name:cleanNm});setupAudioTracking();try{_setHash((location.hash.replace('#','').split('&').filter(function(x){return x.indexOf('sid=')<0&&x.indexOf('sn=')<0;}).join('&')+'&sid='+encodeURIComponent(fId)+'&sn='+encodeURIComponent(nm)).replace(/^&/,''));}catch(e){}document.getElementById('plti').innerHTML=cleanNm;document.getElementById('au').src=API_BASE+'/play?id='+encodeURIComponent(fId);document.getElementById('dotm').classList.remove('open');var l=dlL();var dlNm=cleanNm.replace(/'/g,"\\'").replace(/"/g,'&quot;');document.getElementById('dlsec').innerHTML=l>0?'<button class="dlbtn" onclick="doDl(\''+fId+'\',\''+dlNm+'\')">⬇️ Download ('+l+' left today)</button>':'<div class="dllim">⛔ Download limit reached (5/day)</div>';document.getElementById('plov').classList.add('open');}
+  function opFldr(id,name){
+  _ph();
+  document.getElementById('hero').style.display='none';
+  document.getElementById('land').style.display='none';
+  document.getElementById('ca').style.display='block';
+  document.getElementById('sbn').className='sbn bno';
+  document.getElementById('sbn').innerHTML='<h2>📁 '+prettyFolderName(name)+'</h2>';
+  smoothTop();
+  var el=document.getElementById('fl'),si=document.getElementById('sinfo');
+  el.innerHTML='<div class="loading">⏳ לאדט...</div>';
+  fetch(API_BASE+'/list?id='+encodeURIComponent(id)).then(function(r){return r.json();}).then(function(d){
+    var files=d.files||[];
+    if(!files.length){el.innerHTML='<p style="text-align:center;padding:20px">נישט געפונן</p>';return;}
+    el.innerHTML=files.map(function(f){
+      var nm=cln(f.name);
+      if(f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'){
+        var sn=nm.replace(/'/g,"\\'");
+        return '<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+prettyFolderName(nm)+'</span><span class="bdg baf">Folder</span></div>';
+      }
+      var sn2=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+      var badge='<span class="bdg ba">Shiur</span>';
+      if(latF&&f.id===latF.id)badge='<span class="latest-badge">נייעסטע שיעור</span>'+badge;
+      return '<div class="fi" onclick="opPl(\''+f.id+'\',\''+sn2+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+fmN(nm)+'</span>'+badge+'</div>';
+    }).join('');
+    si.textContent='';
+  }).catch(function(){el.innerHTML='<p>פעלער</p>';});
+}
+function opPl(fId,nm){var cleanNm=fmN(nm);curShiur={id:fId,name:cleanNm,marks:{},lastBeat:0};gaEv('shiur_open',{shiur_id:fId,shiur_name:cleanNm});setupAudioTracking();try{_setHash((location.hash.replace('#','').split('&').filter(function(x){return x.indexOf('sid=')<0&&x.indexOf('sn=')<0;}).join('&')+'&sid='+encodeURIComponent(fId)+'&sn='+encodeURIComponent(nm)).replace(/^&/,''));}catch(e){}document.getElementById('plti').innerHTML=cleanNm;document.getElementById('au').src=API_BASE+'/play?id='+encodeURIComponent(fId);document.getElementById('dotm').classList.remove('open');var l=dlL();var dlNm=cleanNm.replace(/'/g,"\\'").replace(/"/g,'&quot;');document.getElementById('dlsec').innerHTML=l>0?'<button class="dlbtn" onclick="doDl(\''+fId+'\',\''+dlNm+'\')">⬇️ Download ('+l+' left today)</button>':'<div class="dllim">⛔ Download limit reached (5/day)</div>';document.getElementById('plov').classList.add('open');}
 
 function doDl(fId,nm){gaEv('shiur_download',{shiur_id:fId,shiur_name:nm});cDl();fetch(API_BASE+'/play?id='+encodeURIComponent(fId)).then(function(r){return r.blob();}).then(function(blob){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(nm||'shiur')+'.mp3';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href);},2000);}).catch(function(){window.open(API_BASE+'/play?id='+encodeURIComponent(fId),'_blank');});}
 function closePl(){
@@ -1223,11 +1314,11 @@ var _fIds=null;
 async function _getFIds(){if(_fIds)return _fIds;var all=[];async function walk(id,depth){if(depth>2)return;all.push(id);try{var u=TABS[id]?(API_BASE+'/list?folder='+encodeURIComponent(id)):(API_BASE+'/list?id='+encodeURIComponent(id));var r=await fetch(u);var d=await r.json();var files=d.files||[];for(var i=0;i<files.length;i++){var f=files[i];if(f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder')await walk(f.id,depth+1);}}catch(e){}}var roots=Object.keys(TABS);for(var i=0;i<roots.length;i++){await walk(roots[i],0);} _fIds=all;return all;}
 function hebrewYear(num){var n=num%1000;var vals=[400,300,200,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1];var lets=['ת','ש','ר','ק','צ','פ','ע','ס','נ','מ','ל','כ','י','ט','ח','ז','ו','ה','ד','ג','ב','א'];var result='',rem=n;for(var i=0;i<vals.length;i++){while(rem>=vals[i]){result+=lets[i];rem-=vals[i];}}result=result.replace('יה','טו').replace('יו','טז');if(result.length===1)return result+'׳';return result.slice(0,-1)+'״'+result.slice(-1);}
 async function getParshaForDate(dateObj){try{var now=dateObj||new Date();var yr=now.getFullYear(),mo=now.getMonth()+1,dy=now.getDate();var cr=await fetch('https://www.hebcal.com/converter?cfg=json&gy='+yr+'&gm='+mo+'&gd='+dy+'&g2h=1');var cd=await cr.json();var hebrY=hebrewYear(cd.hy);var r=await fetch('https://www.hebcal.com/shabbat?cfg=json&geo=none&M=on&a=on&lg=he&gy='+yr+'&gm='+mo+'&gd='+dy);var d=await r.json();var p=d.items&&d.items.find(function(x){return x.category==='parashat';});if(p){var name=(p.hebrew||p.title||'').replace(/^פרש[הת]\s*/,'').replace(/^Parashat\s*/i,'');return 'פרשת '+name+' — '+hebrY;}}catch(e){}return null;}
-var latTabKey=null,latParentFolderId=null,latParentFolderName=null;
-async function loadLatest(){try{var best=null;latTabKey=null;latParentFolderId=null;latParentFolderName=null;async function scan(folderId,tabKey,parentName,depth){if(depth>3)return;try{var u=TABS[folderId]?(API_BASE+'/list?folder='+encodeURIComponent(folderId)):(API_BASE+'/list?id='+encodeURIComponent(folderId));var r=await fetch(u);var d=await r.json();var files=d.files||[];for(var i=0;i<files.length;i++){var f=files[i];var isFolder=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder';if(isFolder){await scan(f.id,tabKey,cln(f.name),depth+1);}else if((f.mimeType||'').includes('audio')||f.type==='audio'){var ft=new Date(f.modifiedTime||0);var bt=best?new Date(best.file.modifiedTime||0):null;if(!best||ft>bt){best={file:f,tabKey:tabKey,parentId:folderId,parentName:parentName};}}}}catch(e){}}for(var k in TABS){await scan(k,k,TABS[k].name,0);}if(best){latF=best.file;latTabKey=best.tabKey;latParentFolderId=best.parentId;latParentFolderName=cln(best.parentName);var nm=cln(latF.name);document.getElementById('lname').innerHTML=fmN(nm);document.getElementById('latname').innerHTML=fmN(nm);var uploadDate=new Date(latF.modifiedTime||Date.now());var parsha=await getParshaForDate(uploadDate);var parshaLabel=parsha?'די שיעור איז פארגעלערנט: <span class="pname">'+parsha+'</span>':'';document.getElementById('ldate').innerHTML=parshaLabel;document.getElementById('latdate').innerHTML=parshaLabel;}else{document.getElementById('lname').textContent='שיעורים נישט דא';}}catch(e){document.getElementById('lname').textContent='פעלער';}}
+var latTabKey=null,latParentFolderId=null,latParentFolderName=null,latParentPath=[];
+async function loadLatest(){try{var best=null;latTabKey=null;latParentFolderId=null;latParentFolderName=null;latParentPath=[];async function scan(folderId,tabKey,path,depth){if(depth>3)return;try{var u=TABS[folderId]?(API_BASE+'/list?folder='+encodeURIComponent(folderId)):(API_BASE+'/list?id='+encodeURIComponent(folderId));var r=await fetch(u);var d=await r.json();var files=d.files||[];for(var i=0;i<files.length;i++){var f=files[i];var isFolder=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder';if(isFolder){var nextPath=path.concat([{id:f.id,name:cln(f.name)}]);await scan(f.id,tabKey,nextPath,depth+1);}else if((f.mimeType||'').includes('audio')||f.type==='audio'){var ft=new Date(f.modifiedTime||0);var bt=best?new Date(best.file.modifiedTime||0):null;if(!best||ft>bt){best={file:f,tabKey:tabKey,path:path.slice()};}}}}catch(e){}}for(var k in TABS){await scan(k,k,[{id:TABS[k].id,name:TABS[k].name}],0);}if(best){latF=best.file;latTabKey=best.tabKey;latParentPath=best.path||[];var last=latParentPath[latParentPath.length-1]||null;latParentFolderId=last?last.id:null;latParentFolderName=last?last.name:null;var nm=cln(latF.name);document.getElementById('lname').innerHTML=fmN(nm);document.getElementById('latname').innerHTML=fmN(nm);var uploadDate=new Date(latF.modifiedTime||Date.now());var parsha=await getParshaForDate(uploadDate);var parshaLabel=parsha?'די שיעור איז פארגעלערנט: <span class="pname">'+parsha+'</span>':'';document.getElementById('ldate').innerHTML=parshaLabel;document.getElementById('latdate').innerHTML=parshaLabel;}else{document.getElementById('lname').textContent='שיעורים נישט דא';}}catch(e){document.getElementById('lname').textContent='פעלער';}}
 function openLatestModal(){openM('m-lat');}
 function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
-function goToLatestShiur(){if(!latTabKey)return;closeM('m-lat');showTab(latTabKey,null);if(latParentFolderId&&latParentFolderId!==TABS[latTabKey].id){setTimeout(function(){nav.push({id:latParentFolderId,name:latParentFolderName||'...'});rBC();lFld(latParentFolderId);},350);}}
+function goToLatestShiur(){if(!latTabKey)return;closeM('m-lat');_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});var ab=(latTabKey==='orach'?document.getElementById('tb-or'):latTabKey==='yoreh'?document.getElementById('tb-yo'):latTabKey==='even'?document.getElementById('tb-ev'):latTabKey==='choshen'?document.getElementById('tb-ch'):document.getElementById('tb-mo'));if(ab)ab.classList.add('active');var t=TABS[latTabKey];document.getElementById('sbn').className='sbn '+t.bn;document.getElementById('sbn').innerHTML='<h2>'+t.ic+' '+t.name+'</h2>';nav=(latParentPath&&latParentPath.length)?latParentPath.slice():[{id:t.id,name:t.name}];rBC();smoothTop();lFld(nav[nav.length-1].id);}
 async function checkYomTov(){
   if (location.search || location.hash) return;
   try{
@@ -1261,7 +1352,7 @@ function openYomTovBtn(){
   }
 }
 function goYomTov(){closeYtp();if(ytFId){showTab('moadim',null);setTimeout(function(){nav.push({id:ytFId,name:ytNm});rBC();lFld(ytFId);},300);}}
-function closeYtp(){document.getElementById('ytp').classList.remove('open');}
+function closeYtp(){document.getElementById('ytp').classList.remove('open');if(!document.querySelector('.mov.open'))document.body.classList.remove('modal-open');}
 function sendContact(e){
   gaEv('contact_submit');e.preventDefault();var email=document.getElementById('cte').value.trim();var subj=document.getElementById('cts')?document.getElementById('cts').value.trim():'';var msg=document.getElementById('ctm').value.trim();if(!email||!msg)return;fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:email,message:msg,_subject:(subj?subj+' — ':'')+'Message - Shiurei Kelalim'})}).then(function(r){return r.json();}).then(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';}).catch(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';});}
 function doSub(e){gaEv('subscribe_submit');e.preventDefault();var em=document.getElementById('sube').value.trim();if(!em||!em.includes('@'))return;var btn=document.querySelector('#subf .sbtn');if(btn){btn.textContent='⏳...';btn.disabled=true;}_showSubResult('success');fetch(API_BASE+'/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})}).catch(function(){});}
@@ -1285,7 +1376,7 @@ function triggerSearchNav(){
 }
 function _setHash(h){try{history.pushState(null,'',location.pathname+(h?'#'+h:''));}catch(e){}}
 window.addEventListener('popstate',function(){if(_pH.length){_pF.push(_sv());_rs(_pH.pop());}else{_setHash('');showLanding();}});
-function _readHash(){var h=location.hash.replace('#','');if(!h)return;var p={};h.split('&').forEach(function(x){var a=x.split('=');if(a[1]!==undefined)p[a[0]]=decodeURIComponent(a[1]);});if(p.tab){showTab(p.tab,null);if(p.fid&&p.fn){setTimeout(function(){nav.push({id:p.fid,name:p.fn});rBC();lFld(p.fid);},600);}}else if(p.fid){document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+(p.fn||'')+'</h2>';nav=[{id:p.fid,name:p.fn||'...'}];rBC();lFld(p.fid);}else if(p.sid){setTimeout(function(){opPl(p.sid,p.sn||'');},400);}else if(p.q){document.getElementById('srch').value=p.q;setTimeout(function(){triggerSearch();},400);}else if(p.m){openM(p.m);}}
+function _readHash(){var h=location.hash.replace('#','');if(!h)return;var p={};h.split('&').forEach(function(x){var a=x.split('=');if(a[1]!==undefined)p[a[0]]=decodeURIComponent(a[1]);});if(p.tab){showTab(p.tab,null);if(p.fid&&p.fn){setTimeout(function(){nav.push({id:p.fid,name:p.fn});rBC();lFld(p.fid);},600);}}else if(p.fid){document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.getElementById('sbn').className='sbn bno';document.getElementById('sbn').innerHTML='<h2>📁 '+(p.fn||'')+'</h2>';nav=[{id:p.fid,name:p.fn||'...'}];rBC();lFld(p.fid);}else if(p.sid){setTimeout(function(){opPl(p.sid,p.sn||'');},400);}else if(p.q){document.getElementById('srch').value=p.q;setTimeout(function(){triggerSearch();},400);}}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(function(){});}
 var _pwaPrompt;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_pwaPrompt=e;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='block';});
