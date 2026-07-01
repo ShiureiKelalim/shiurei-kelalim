@@ -1416,9 +1416,12 @@ async function loadLatest(){
     document.getElementById('lname').innerHTML=fmN(nm);
     document.getElementById('latname').innerHTML=fmN(nm);
 
-    var pathTxt=latF.path || '';
-    document.getElementById('ldate').innerHTML=pathTxt ? '<span class="pname">'+pathTxt+'</span>' : '';
-    document.getElementById('latdate').innerHTML=pathTxt ? '<span class="pname">'+pathTxt+'</span>' : '';
+    var uploadDate=new Date(latF.modifiedTime||Date.now());
+var parsha=await getParshaForDate(uploadDate);
+var parshaLabel=parsha?'די שיעור איז פארגעלערנט: <span class="pname">'+parsha+'</span>':'';
+
+document.getElementById('ldate').innerHTML=parshaLabel;
+document.getElementById('latdate').innerHTML=parshaLabel;
 
   }catch(e){
     document.getElementById('lname').textContent='פעלער';
