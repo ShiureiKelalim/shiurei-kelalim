@@ -1390,8 +1390,37 @@ async function _getFIds(){if(_fIds)return _fIds;var all=[];async function walk(i
 function hebrewYear(num){var n=num%1000;var vals=[400,300,200,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1];var lets=['ת','ש','ר','ק','צ','פ','ע','ס','נ','מ','ל','כ','י','ט','ח','ז','ו','ה','ד','ג','ב','א'];var result='',rem=n;for(var i=0;i<vals.length;i++){while(rem>=vals[i]){result+=lets[i];rem-=vals[i];}}result=result.replace('יה','טו').replace('יו','טז');if(result.length===1)return result+'׳';return result.slice(0,-1)+'״'+result.slice(-1);}
 async function getParshaForDate(dateObj){try{var now=dateObj||new Date();var yr=now.getFullYear(),mo=now.getMonth()+1,dy=now.getDate();var cr=await fetch('https://www.hebcal.com/converter?cfg=json&gy='+yr+'&gm='+mo+'&gd='+dy+'&g2h=1');var cd=await cr.json();var hebrY=hebrewYear(cd.hy);var r=await fetch('https://www.hebcal.com/shabbat?cfg=json&geo=none&M=on&a=on&lg=he&gy='+yr+'&gm='+mo+'&gd='+dy);var d=await r.json();var p=d.items&&d.items.find(function(x){return x.category==='parashat';});if(p){var name=(p.hebrew||p.title||'').replace(/^פרש[הת]\s*/,'').replace(/^Parashat\s*/i,'');return 'פרשת '+name+' — '+hebrY;}}catch(e){}return null;}
 var latTabKey=null,latParentFolderId=null,latParentFolderName=null,latParentPath=[];
-async function loadLatest(){try{var best=null;latTabKey=null;latParentFolderId=null;latParentFolderName=null;latParentPath=[];async function scan(folderId,tabKey,path,depth){if(depth>3)return;try{var u=TABS[folderId]?(API_BASE+'/list?folder='+encodeURIComponent(folderId)):(API_BASE+'/list?id='+encodeURIComponent(folderId));var r=await fetch(u);var d=await r.json();var files=d.files||[];for(var i=0;i<files.length;i++){var f=files[i];var isFolder=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder';if(isFolder){var nextPath=path.concat([{id:f.id,name:cln(f.name)}]);await scan(f.id,tabKey,nextPath,depth+1);}else if((f.mimeType||'').includes('audio')||f.type==='audio'){var ft=new Date(f.modifiedTime||0);var bt=best?new Date(best.file.modifiedTime||0):null;if(!best||ft>bt){best={file:f,tabKey:tabKey,path:path.slice()};}}}}catch(e){}}for(var k in TABS){await scan(k,k,[{id:TABS[k].id,name:TABS[k].name}],0);}if(best){latF=best.file;latTabKey=best.tabKey;latParentPath=best.path||[];var last=latParentPath[latParentPath.length-1]||null;latParentFolderId=last?last.id:null;latParentFolderName=last?last.name:null;var nm=cln(latF.name);document.getElementById('lname').innerHTML=fmN(nm);document.getElementById('latname').innerHTML=fmN(nm);var uploadDate=new Date(latF.modifiedTime||Date.now());var parsha=await getParshaForDate(uploadDate);var parshaLabel=parsha?'די שיעור איז פארגעלערנט: <span class="pname">'+parsha+'</span>':'';document.getElementById('ldate').innerHTML=parshaLabel;document.getElementById('latdate').innerHTML=parshaLabel;}else{document.getElementById('lname').textContent='שיעורים נישט דא';}}catch(e){document.getElementById('lname').textContent='פעלער';}}
-function openLatestModal(){openM('m-lat');}
+async function loadLatest(){
+  try{
+    latTabKey=null;
+    latParentFolderId=null;
+    latParentFolderName=null;
+    latParentPath=[];
+
+    var r=await fetch(API_BASE+'/latest');
+    var d=await r.json();
+
+    if(!d.ok || !d.file){
+      document.getElementById('lname').textContent='שיעורים נישט דא';
+      return;
+    }
+
+    latF=d.file;
+    latTabKey=latF.root || 'moadim';
+
+    var nm=cln(latF.name);
+    document.getElementById('lname').innerHTML=fmN(nm);
+    document.getElementById('latname').innerHTML=fmN(nm);
+
+    var pathTxt=latF.path || '';
+    document.getElementById('ldate').innerHTML=pathTxt ? '<span class="pname">'+pathTxt+'</span>' : '';
+    document.getElementById('latdate').innerHTML=pathTxt ? '<span class="pname">'+pathTxt+'</span>' : '';
+
+  }catch(e){
+    document.getElementById('lname').textContent='פעלער';
+  }
+}
+  function openLatestModal(){openM('m-lat');}
 function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
 function goToLatestShiur(){if(!latTabKey)return;closeM('m-lat');_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});var ab=(latTabKey==='orach'?document.getElementById('tb-or'):latTabKey==='yoreh'?document.getElementById('tb-yo'):latTabKey==='even'?document.getElementById('tb-ev'):latTabKey==='choshen'?document.getElementById('tb-ch'):document.getElementById('tb-mo'));if(ab)ab.classList.add('active');var t=TABS[latTabKey];document.getElementById('sbn').className='sbn '+t.bn;document.getElementById('sbn').innerHTML='<h2>'+t.ic+' '+t.name+'</h2>';nav=(latParentPath&&latParentPath.length)?latParentPath.slice():[{id:t.id,name:t.name}];rBC();smoothTop();lFld(nav[nav.length-1].id);}
 async function checkYomTov(){
