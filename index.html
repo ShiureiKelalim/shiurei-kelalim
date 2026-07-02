@@ -270,9 +270,26 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .ytcl{display:block;width:100%;padding:9px;background:#f0f0f0;color:#666;border:none;border-radius:10px;font-size:.85rem;font-family:'Frank Ruhl Libre',serif;cursor:pointer}
 
 /* DONATE */
-.don-zchus{background:linear-gradient(135deg,#fffbf0,#fff8e0);border:1.5px solid #d4af37;border-radius:12px;padding:14px 16px;margin-bottom:14px;text-align:center}
-.don-soul{width:100%;border:2px solid #dde3f0;border-radius:10px;padding:10px 13px;font-family:'Frank Ruhl Libre',serif;font-size:.92rem;text-align:center;outline:none;background:#fafbff;color:#162d5a;direction:rtl;transition:border .2s}
-.don-soul:focus{border-color:#d4af37}
+.don-card{background:linear-gradient(135deg,#fffdf7,#fff8e8);border:1.5px solid rgba(212,175,55,.55);border-radius:16px;padding:18px 16px;margin:16px 0;text-align:center;box-shadow:0 5px 18px rgba(8,18,42,.08)}
+.don-title{text-align:center;color:#162d5a;font-size:1.25rem;font-weight:900;margin-bottom:8px}
+.don-sub{text-align:center;color:#162d5a;font-size:.92rem;font-weight:700;margin-bottom:14px;line-height:1.9}
+.don-processor{text-align:center;color:#777;font-size:.82rem;line-height:1.8;margin-bottom:4px}
+.don-processor b{display:block;color:#162d5a;font-size:1.18rem;margin-top:3px}
+.don-toggle{display:block;width:100%;padding:11px;background:#fff;border:1.5px solid rgba(212,175,55,.65);color:#162d5a;border-radius:12px;font-size:.9rem;font-weight:900;font-family:'Frank Ruhl Libre',serif;cursor:pointer;margin-bottom:10px}
+.don-toggle:hover{background:#fff8dc}
+.don-slide{max-height:0;overflow:hidden;transition:max-height .45s ease,opacity .3s ease;opacity:0}
+.don-slide.open{max-height:520px;opacity:1}
+.don-choice{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0 12px}
+.don-choice label{border:1.5px solid #dde3f0;border-radius:12px;padding:8px 12px;cursor:pointer;font-weight:800;color:#162d5a;background:#fafbff}
+.don-soul,.don-input,.don-text{width:100%;border:2px solid #dde3f0;border-radius:10px;padding:10px 13px;font-family:'Frank Ruhl Libre',serif;font-size:.9rem;outline:none;background:#fafbff;color:#162d5a;direction:rtl;transition:border .2s}
+.don-soul:focus,.don-input:focus,.don-text:focus{border-color:#d4af37;background:#fff}
+.don-text{min-height:92px;resize:vertical}
+.don-note{font-size:.77rem;color:#777;text-align:center;line-height:1.75;margin:10px 0}
+.don-ok{display:none;text-align:center;color:#2e7d32;font-size:.82rem;font-weight:800;margin:8px 0}
+.don-err{display:none;text-align:center;color:#c62828;font-size:.78rem;font-weight:700;margin:8px 0}
+.don-main-btn{background:linear-gradient(135deg,#b8860b,#daa520)!important;color:#201400!important;font-size:1rem!important;padding:13px!important;border-radius:13px!important}
+.don-wait{font-size:.82rem;color:#777;text-align:center;line-height:1.7;margin-top:8px}
+.don-small{font-size:.76rem;color:#888;text-align:center;line-height:1.7;margin-top:12px}
 
 /* iOS STEPS */
 .ios-step{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0ece4}
@@ -843,41 +860,79 @@ body.modal-open #m-privacy.open .mbx{
   </div>
 </div>
 
-<!-- DONATE - COMPLETELY NEW -->
+<!-- DONATE - UPDATED -->
 <div class="mov" id="m-don">
   <button class="mov-back" onclick="closeM('m-don')">◀ צוריק</button>
   <div class="mbx">
     <button class="mx" onclick="closeM('m-don')">✕</button>
-    <div class="mi">💛</div>
-    <div style="text-align:center;color:#162d5a;font-size:1.15rem;font-weight:900;margin-bottom:2px">נעמט א חלק</div>
-    <div style="text-align:center;color:#162d5a;font-size:.88rem;font-weight:700;margin-bottom:16px;line-height:1.9">
-      אין די געוואלדיגע זיכוי הרבים<br>אין הרבצת התורה
+
+    <div class="don-title">נעמט א חלק</div>
+    <div class="don-sub">
+      אין די געוואלדיגע זיכוי הרבים<br>
+      אין הרבצת התורה
     </div>
 
-    <div class="don-zchus">
-      <p style="color:#888;font-size:.78rem;margin-bottom:7px">די נדבות ווערן געפראסעט דורך</p>
-      <a href="https://charity-funds.org/donate/cc/1748" target="_blank" onclick="trackDon(event)" style="color:#162d5a;font-weight:900;font-size:1.05rem;text-decoration:none">✡️ חסדי חיים</a>
+    <div class="don-card">
+      <div class="don-processor">
+        די נדבות ווערן זיכער געפראסעסירט דורך
+        <b>חסדי חיים</b>
+      </div>
     </div>
 
-    <p style="text-align:center;color:#555;font-size:.84rem;margin-bottom:14px;line-height:1.9">
-      איר קענט מנדב זיין:<br>
-      <b style="color:#162d5a">פרנס השבוע — $18</b> &nbsp;|&nbsp; <b style="color:#162d5a">פרנס החודש — $50</b>
-    </p>
-
-    <div style="margin-bottom:10px">
-      <input class="don-soul" type="text" id="dsoul" placeholder='לע"נ .... לזכות'>
+    <div style="text-align:center;color:#162d5a;font-weight:900;margin:12px 0 8px">
+      אויב זענט איר מנדב $18 אדער העכער
     </div>
 
-    <p style="font-size:.76rem;color:#888;text-align:center;line-height:1.75;margin-bottom:16px">
-      שרייבט דא אריין לע"נ אדער לזכות —<br>
-      עס וועט <b style="color:#162d5a">געוויזן ווערן אויפן סייט</b>,<br>
-      און <b style="color:#162d5a">געזאגט ווערן אויפן האטליין</b><br>
-      <span style="color:#d4af37;font-weight:700">✨ תזכו למצות</span>
-    </p>
+    <button class="don-toggle" type="button" onclick="toggleDonDedication()">דריקט דא</button>
 
-    <button class="sbtn" style="background:linear-gradient(135deg,#b8860b,#daa520);color:#2c1810;font-size:1rem;padding:12px" onclick="goDonate()">
-      💰 צו מנדב זיין →
+    <div class="don-slide" id="don-ded-box">
+      <div class="don-choice">
+        <label><input type="radio" name="donAmt" value="פרנס השבוע — $18" checked> פרנס השבוע — $18</label>
+        <label><input type="radio" name="donAmt" value="פרנס החודש — $50"> פרנס החודש — $50</label>
+      </div>
+
+      <div class="don-note">
+        שרייבט דא אריין לע"נ אדער לזכות —<br>
+        עס וועט געוויזן ווערן אויפן סייט,<br>
+        און געזאגט ווערן אויפן האטליין
+      </div>
+
+      <input class="don-soul" type="text" id="donDedText" placeholder='לע"נ .... לזכות'>
+      <div id="donDedErr" class="don-err">ביטע שרייבט אריין די הקדשה.</div>
+      <div id="donDedOk" class="don-ok">✓ אייער הקדשה איז אויפגענומען געווארן.</div>
+
+      <button class="sbtn" style="margin-top:10px" onclick="sendDedication()">שיקט</button>
+    </div>
+
+    <button id="donGoBtn" class="sbtn don-main-btn" onclick="goDonate()">
+      גייט ווייטער צו חסדי חיים
     </button>
+
+    <div id="donWait" class="don-wait" style="display:none">
+      ⏳ ביטע ווארט...<br>
+      מען גרייט צו אייער זיכערע באצאלונג...
+    </div>
+
+    <div class="don-small">
+      איר וועט באקומען א רעסיט גלייך פון חסדי חיים.
+    </div>
+
+    <div style="border-top:1px solid #f0ece4;margin:18px 0 12px"></div>
+
+    <div style="text-align:center;color:#162d5a;font-weight:900;margin-bottom:10px">הארות</div>
+
+    <div class="fld"><label>נאמען (אפשנאל)</label><input class="don-input" type="text" id="donNoteName"></div>
+    <div class="fld"><label>אימעיל אדרעס</label><input class="don-input" type="email" id="donNoteEmail" required></div>
+    <div class="fld"><label>אייער הארה</label><textarea class="don-text" id="donNoteMsg" required></textarea></div>
+
+    <div id="donNoteErr" class="don-err">ביטע לייגט אריין אימעיל און אייער הארה.</div>
+    <div id="donNoteOk" class="don-ok">✓ אייער הארה איז געשיקט געווארן.</div>
+
+    <button class="sbtn" onclick="sendDonNote()">שיקט הארה</button>
+
+    <div style="text-align:center;color:#d4af37;font-size:1rem;font-weight:900;margin-top:18px">
+      תזכו למצות
+    </div>
   </div>
 </div>
 
@@ -1563,8 +1618,126 @@ function sendContact(e){
   gaEv('contact_submit');e.preventDefault();var email=document.getElementById('cte').value.trim();var subj=document.getElementById('cts')?document.getElementById('cts').value.trim():'';var msg=document.getElementById('ctm').value.trim();if(!email||!msg)return;fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email:email,message:msg,_subject:(subj?subj+' — ':'')+'Message - Shiurei Kelalim'})}).then(function(r){return r.json();}).then(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';}).catch(function(){document.getElementById('ctf').style.display='none';document.getElementById('ctok').style.display='block';});}
 function doSub(e){gaEv('subscribe_submit');e.preventDefault();var em=document.getElementById('sube').value.trim();if(!em||!em.includes('@'))return;var btn=document.querySelector('#subf .sbtn');if(btn){btn.textContent='⏳...';btn.disabled=true;}_showSubResult('success');fetch(API_BASE+'/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:em})}).catch(function(){});}
 function _showSubResult(result){document.getElementById('subf').style.display='none';var ok=document.getElementById('subok');if(result==='already_subscribed'){ok.innerHTML='&#9888; איר זענט שוין אינעם סיסטעם!<br><small style="color:#888;font-size:.76rem;display:block;margin-top:5px">You are already subscribed — no action needed.</small>';ok.style.color='#e65100';}else{ok.innerHTML='&#9989; You are now subscribed!<br><span style="color:#555;font-size:.78rem;display:block;margin-top:8px;line-height:1.7">איר וועט יעצט אטעמאטיש באקומן א אריינפיר אימעל.<br>אויב איר זעט עס נישט — טשעקט אין ספּעם.<br>שרייקט: <a href="mailto:info@shiureikelalim.com" style="color:#162d5a;font-weight:700">info@shiureikelalim.com</a></span>';ok.style.color='#2e7d32';}ok.style.display='block';}
-function trackDon(event){   gaEv('donate_click',{location:'donate_modal'});   try{     fetch(SCRIPT_URL+'?action=don_click&t='+Date.now(),{method:'GET',mode:'no-cors'}).catch(function(){});   }catch(e){} }
-function goDonate(){ gaEv('donate_click',{   amount:dAmt||18 });var soul=document.getElementById('dsoul')?document.getElementById('dsoul').value.trim():'';if(soul){try{fetch(SCRIPT_URL+'?action=donation_zchus&soul='+encodeURIComponent(soul)+'&t='+Date.now(),{method:'GET',mode:'no-cors'}).catch(function(){});}catch(e){}}window.open(DON_URL,'_blank');closeM('m-don');}
+var DON_MAIL_TO='info@ShiureiKelalim.com';
+
+function donSendMail(subject,message,replyEmail){
+  try{
+    fetch('https://formsubmit.co/ajax/'+DON_MAIL_TO,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        email: replyEmail || DON_MAIL_TO,
+        message: message,
+        _subject: subject
+      })
+    }).catch(function(){});
+  }catch(e){}
+}
+
+function toggleDonDedication(){
+  var b=document.getElementById('don-ded-box');
+  if(b)b.classList.toggle('open');
+}
+
+function sendDedication(){
+  var txt=document.getElementById('donDedText').value.trim();
+  var amtEl=document.querySelector('input[name="donAmt"]:checked');
+  var amt=amtEl?amtEl.value:'';
+  var err=document.getElementById('donDedErr');
+  var ok=document.getElementById('donDedOk');
+
+  err.style.display='none';
+  ok.style.display='none';
+
+  if(!txt){
+    err.style.display='block';
+    return;
+  }
+
+  donSendMail(
+    'Donation Dedication - Shiurei Kelalim',
+    'New dedication submitted from the donation page\n\nAmount selected: '+amt+'\n\nDedication:\n'+txt+'\n\nTime: '+new Date().toLocaleString(),
+    DON_MAIL_TO
+  );
+
+  ok.style.display='block';
+  gaEv('donation_dedication_submit',{amount:amt});
+}
+
+function sendDonNote(){
+  var name=document.getElementById('donNoteName').value.trim();
+  var email=document.getElementById('donNoteEmail').value.trim();
+  var msg=document.getElementById('donNoteMsg').value.trim();
+  var err=document.getElementById('donNoteErr');
+  var ok=document.getElementById('donNoteOk');
+
+  err.style.display='none';
+  ok.style.display='none';
+
+  if(!email || !email.includes('@') || !msg){
+    err.style.display='block';
+    return;
+  }
+
+  donSendMail(
+    'Donation Page Note - Shiurei Kelalim',
+    'Name: '+(name||'(not provided)')+'\nEmail: '+email+'\n\nMessage:\n'+msg+'\n\nTime: '+new Date().toLocaleString(),
+    email
+  );
+
+  ok.style.display='block';
+  document.getElementById('donNoteName').value='';
+  document.getElementById('donNoteEmail').value='';
+  document.getElementById('donNoteMsg').value='';
+  gaEv('donation_note_submit');
+}
+
+function trackDon(event){
+  gaEv('donate_click',{location:'donate_modal'});
+}
+
+function goDonate(){
+  gaEv('donate_click',{location:'donate_modal_continue'});
+
+  donSendMail(
+    'Donation Link Click - Shiurei Kelalim',
+    'A visitor clicked "גייט ווייטער צו חסדי חיים" on the donation popup.\n\nTime: '+new Date().toLocaleString()+'\nPage: '+location.href,
+    DON_MAIL_TO
+  );
+
+  var btn=document.getElementById('donGoBtn');
+  var wait=document.getElementById('donWait');
+
+  if(btn){
+    btn.disabled=true;
+    btn.innerHTML='⏳ ביטע ווארט...<br><span style="font-size:.78rem">מען גרייט צו אייער זיכערע באצאלונג...</span>';
+  }
+  if(wait)wait.style.display='block';
+
+  var w=window.open('about:blank','_blank');
+  if(w){
+    try{
+      w.document.write('<div style="font-family:Arial;text-align:center;direction:rtl;padding:60px;color:#162d5a"><h2>ביטע ווארט...</h2><p>מען גרייט צו אייער זיכערע באצאלונג.</p></div>');
+    }catch(e){}
+  }
+
+  setTimeout(function(){
+    if(w){
+      w.location.href=DON_URL;
+    }else{
+      location.href=DON_URL;
+    }
+
+    setTimeout(function(){
+      if(btn){
+        btn.disabled=false;
+        btn.innerHTML='גייט ווייטער צו חסדי חיים';
+      }
+      if(wait)wait.style.display='none';
+      closeM('m-don');
+    },300);
+  },1500);
+}
 function showErr(id,msg){var e=document.getElementById(id);e.textContent=msg;e.style.display='block';}
 var _pH=[],_pF=[];
 function _sv(){return{ca:document.getElementById('ca').style.display,hero:document.getElementById('hero').style.display,land:document.getElementById('land').style.display,nav:nav.slice(),sbn:document.getElementById('sbn').innerHTML,sbnC:document.getElementById('sbn').className,fl:document.getElementById('fl').innerHTML,bc:document.getElementById('bc').innerHTML,si:document.getElementById('sinfo').textContent,sr:document.getElementById('srch').value};}
