@@ -1462,37 +1462,64 @@ function hebrewYear(num){var n=num%1000;var vals=[400,300,200,100,90,80,70,60,50
 async function getParshaForDate(dateObj){try{var now=dateObj||new Date();var yr=now.getFullYear(),mo=now.getMonth()+1,dy=now.getDate();var cr=await fetch('https://www.hebcal.com/converter?cfg=json&gy='+yr+'&gm='+mo+'&gd='+dy+'&g2h=1');var cd=await cr.json();var hebrY=hebrewYear(cd.hy);var r=await fetch('https://www.hebcal.com/shabbat?cfg=json&geo=none&M=on&a=on&lg=he&gy='+yr+'&gm='+mo+'&gd='+dy);var d=await r.json();var p=d.items&&d.items.find(function(x){return x.category==='parashat';});if(p){var name=(p.hebrew||p.title||'').replace(/^פרש[הת]\s*/,'').replace(/^Parashat\s*/i,'');return 'פרשת '+name+' — '+hebrY;}}catch(e){}return null;}
 var latTabKey=null,latParentFolderId=null,latParentFolderName=null,latParentPath=[];
 async function loadLatest(){
-  try{
-    latTabKey=null;
-    latParentFolderId=null;
-    latParentFolderName=null;
-    latParentPath=[];
+try{
+var best=null;
+latTabKey=null;latParentFolderId=null;latParentFolderName=null;latParentPath=[];
 
-    var r=await fetch(API_BASE+'/latest?v='+Date.now());
-    var d=await r.json();
+async function scan(folderId,tabKey,path,depth){
+if(depth>3)return;
+try{
+var u=TABS[folderId]?(API_BASE+'/list?folder='+encodeURIComponent(folderId)):(API_BASE+'/list?id='+encodeURIComponent(folderId));
+var r=await fetch(u);
+var d=await r.json();
+var files=d.files||[];
 
-    if(!d.ok || !d.file){
-      document.getElementById('lname').textContent='שיעורים נישט דא';
-      return;
-    }
+for(var i=0;i<files.length;i++){
+var f=files[i];
+var isFolder=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder';
 
-    latF=d.file;
-    latTabKey=latF.root || 'moadim';
+if(isFolder){
+var nextPath=path.concat([{id:f.id,name:cln(f.name)}]);
+await scan(f.id,tabKey,nextPath,depth+1);
+}else if((f.mimeType||'').includes('audio')||f.type==='audio'){
+var ft=new Date(f.modifiedTime||0);
+var bt=best?new Date(best.file.modifiedTime||0):null;
+if(!best||ft>bt){
+best={file:f,tabKey:tabKey,path:path.slice()};
+}
+}
+}
+}catch(e){}
+}
 
-    var nm=cln(latF.name);
-    document.getElementById('lname').innerHTML=fmN(nm);
-    document.getElementById('latname').innerHTML=fmN(nm);
+for(var k in TABS){
+await scan(k,k,[{id:TABS[k].id,name:TABS[k].name}],0);
+}
 
-    var uploadDate=new Date(latF.createdTime || latF.modifiedTime || Date.now());
+if(best){
+latF=best.file;
+latTabKey=best.tabKey;
+latParentPath=best.path||[];
+var last=latParentPath[latParentPath.length-1]||null;
+latParentFolderId=last?last.id:null;
+latParentFolderName=last?last.name:null;
+
+var nm=cln(latF.name);
+document.getElementById('lname').innerHTML=fmN(nm);
+document.getElementById('latname').innerHTML=fmN(nm);
+
+var uploadDate=new Date(latF.modifiedTime||Date.now());
 var parsha=await getParshaForDate(uploadDate);
 var parshaLabel=parsha?'די פרשה וואס איז געווארן פארגעלערנט: <span class="pname">'+parsha+'</span>':'';
 
 document.getElementById('ldate').innerHTML=parshaLabel;
 document.getElementById('latdate').innerHTML=parshaLabel;
-
-  }catch(e){
-    document.getElementById('lname').textContent='פעלער';
-  }
+}else{
+document.getElementById('lname').textContent='שיעורים נישט דא';
+}
+}catch(e){
+document.getElementById('lname').textContent='פעלער';
+}
 }
   function openLatestModal(){openM('m-lat');}
 function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
