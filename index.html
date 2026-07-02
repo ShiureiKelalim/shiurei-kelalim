@@ -1561,11 +1561,13 @@ var _pwaPrompt;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_pwaPrompt=e;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='block';});
 function installPWA(){if(!_pwaPrompt)return;_pwaPrompt.prompt();_pwaPrompt.userChoice.then(function(){_pwaPrompt=null;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='none';});}
 function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אינסטאלירן: עפנט דעם סייט אין Chrome, דריקט ⋮ → "Add to Home Screen"');}}
-loadLatest();
-if(location.hash.indexOf('m=')>=0 || location.search.indexOf('m=')>=0){
-  try{history.replaceState(null,'',location.pathname);}catch(e){}
-  showLanding();
-}else{
+var p = new URLSearchParams(location.search);
+var modal = p.get('m');
+
+if (modal) {
+  openM(modal);
+} else {
+  loadLatest();
   checkYomTov();
   _readHash();
 }
