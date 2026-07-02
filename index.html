@@ -1468,7 +1468,7 @@ async function loadLatest(){
     latParentFolderName=null;
     latParentPath=[];
 
-    var r=await fetch(API_BASE+'/latest');
+    var r=await fetch(API_BASE+'/latest?v='+Date.now());
     var d=await r.json();
 
     if(!d.ok || !d.file){
@@ -1512,6 +1512,7 @@ async function checkYomTov(){
         document.getElementById('ytpt').textContent='עס קומען די טעג פון '+ytName;
         document.getElementById('ytps').textContent='';
         document.getElementById('ytpp').textContent='עס זענען דא שיעורים פאר '+ytName+':';
+        if (location.search || location.hash || document.querySelector('.mov.open')) return;
         document.getElementById('ytp').classList.add('open');
       },1600);
     }
