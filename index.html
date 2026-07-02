@@ -615,6 +615,8 @@ body.modal-open #m-privacy.open .mbx{
 }
 #m-pwd.open{z-index:1800!important}
 #m-hl.open{z-index:1900!important}
+  #m-pwd.open{z-index:1800!important}
+#m-hl.open{z-index:1900!important}
   
 </style>
 </head>
@@ -772,7 +774,7 @@ body.modal-open #m-privacy.open .mbx{
     <div class="mt">Restricted Section</div>
     <p style="color:#777;margin-bottom:16px;line-height:1.9;font-size:.84rem">
       צו קריגן צוגאנג, ביטע רופט דעם
-      <a href="#" onclick="openM('m-hl');return false;" style="color:#162d5a;font-weight:700;text-decoration:underline">האטליין</a><br>
+      <a href="#" onclick="openM('m-hl',true);return false;" style="color:#162d5a;font-weight:700;text-decoration:underline">האטליין</a><br>
       <small style="color:#bbb">Press #91 · Leave your name & phone number</small><br>
       <b style="color:#444;font-size:.82rem">We will call you back with the password</b>
     </p>
@@ -960,7 +962,7 @@ body.modal-open #m-privacy.open .mbx{
     </div>
     <div class="ftr-col">
       <h4>אינפארמאציע</h4>
-      <a href="#" onclick="openM('m-hl');return false;">האטליין</a>
+      <a href="#" onclick="openM('m-hl',true);return false;">האטליין</a>
       <a href="#" onclick="openM('m-sub');return false;">סובסקרייב</a>
       <a href="#" onclick="openM('m-don');return false;">Donate</a>
       <a href="#" onclick="openM('m-privacy');return false;">Privacy Policy</a>
@@ -1158,6 +1160,7 @@ function setModalActive(id){
 
 function openM(id,keepPwd){
   var keep=!!keepPwd;
+
   document.querySelectorAll('.mov.open').forEach(function(m){
     if(keep && m.id==='m-pwd')return;
     m.classList.remove('open');
@@ -1168,6 +1171,7 @@ function openM(id,keepPwd){
 
   var m=document.getElementById(id);
   if(!m)return;
+
   document.body.classList.add('modal-open');
   document.documentElement.classList.add('modal-open');
   m.classList.add('open');
@@ -1481,7 +1485,7 @@ async function loadLatest(){
 
     var uploadDate=new Date(latF.createdTime || latF.modifiedTime || Date.now());
 var parsha=await getParshaForDate(uploadDate);
-var parshaLabel=parsha?'די שיעור איז פארגעלערנט: <span class="pname">'+parsha+'</span>':'';
+var parshaLabel=parsha?'די פרשה וואס איז געווארן פארגעלערנט: <span class="pname">'+parsha+'</span>':'';
 
 document.getElementById('ldate').innerHTML=parshaLabel;
 document.getElementById('latdate').innerHTML=parshaLabel;
