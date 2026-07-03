@@ -1561,7 +1561,7 @@ async function loadLatest(){
     document.getElementById('lname').innerHTML=fmN(nm);
     document.getElementById('latname').innerHTML=fmN(nm);
 
-    var uploadDate=new Date(latF.modifiedTime||Date.now());
+    var uploadDate=new Date(latF.createdTime || latF.modifiedTime || Date.now());
     var parsha=await getParshaForDate(uploadDate);
     var parshaLabel=parsha?'די פרשה וואס איז געווארן פארגעלערנט: <span class="pname">'+parsha+'</span>':'';
 
