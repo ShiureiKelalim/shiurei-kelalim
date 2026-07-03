@@ -1368,7 +1368,7 @@ async function lFld(fId){
       var isF=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'||(isSh&&tM==='application/vnd.google-apps.folder');
       var nm=cln(f.name);
       var isLatest=latF&&(f.id===latF.id||tI===latF.id);
-      var isLatestFolder=latParentPath&&latParentPath.some(function(p){return p.id===f.id});
+      var isLatestFolder=latF && latF.parentId && f.id===latF.parentId;
       var badge=isF?'<span class="bdg bf">Folder</span>':isA(f.mimeType)||f.type==='audio'?'<span class="bdg ba">Shiur</span>':'<span class="bdg bpf">File</span>';
       if(isLatest||isLatestFolder)badge='<span class="latest-badge">נייעסטע שיעור</span>'+badge;
       var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
