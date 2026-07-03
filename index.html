@@ -921,21 +921,25 @@ body.modal-open #m-privacy.open .mbx{
     </div>
 
     <div class="don-small">
-      איר וועט באקומען א רעסיט גלייך פון חסדי חיים, מיט די אינפארמאציע וואס איר וועט אריינגעבן פאר זיי.
+     איר וועט באקומען א רעסיט גלייך פון חסדי חיים,<br>
+מיט די אינפארמאציע וואס איר וועט אריינגעבן פאר זיי.<br>
+און איר דארפט אריינלייגען אייער סכום דארטן.
     </div>
 
     <div style="border-top:1px solid #f0ece4;margin:18px 0 12px"></div>
 
-    <div style="text-align:center;color:#162d5a;font-weight:900;margin-bottom:10px">הארות</div>
+    <button class="don-toggle" type="button" onclick="toggleDonNotes()">הארות</button>
 
-    <div class="fld"><label>נאמען (אפשנאל)</label><input class="don-input" type="text" id="donNoteName"></div>
-    <div class="fld"><label>אימעיל אדרעס</label><input class="don-input" type="email" id="donNoteEmail" required></div>
-    <div class="fld"><label>אייער הארה</label><textarea class="don-text" id="donNoteMsg" required></textarea></div>
+<div class="don-slide" id="don-notes-box">
+  <div class="fld"><label>נאמען (אפשנאל)</label><input class="don-input" type="text" id="donNoteName"></div>
+  <div class="fld"><label>אימעיל אדרעס</label><input class="don-input" type="email" id="donNoteEmail" required></div>
+  <div class="fld"><label>אייער הארה</label><textarea class="don-text" id="donNoteMsg" required></textarea></div>
 
-    <div id="donNoteErr" class="don-err">ביטע לייגט אריין אימעיל און אייער הארה.</div>
-    <div id="donNoteOk" class="don-ok">✓ אייער הארה איז געשיקט געווארן.</div>
+  <div id="donNoteErr" class="don-err">ביטע לייגט אריין אימעיל און אייער הארה.</div>
+  <div id="donNoteOk" class="don-ok">✓ אייער הארה איז געשיקט געווארן.</div>
 
-    <button class="sbtn" onclick="sendDonNote()">שיקט הארה</button>
+  <button class="sbtn" onclick="sendDonNote()">שיקט הארה</button>
+</div>
 
     <div style="text-align:center;color:#d4af37;font-size:1rem;font-weight:900;margin-top:18px">
       תזכו למצות
@@ -1664,6 +1668,10 @@ function sendDedication(){
 
   gaEv('donation_dedication_submit',{amount:amt});
 }
+  function toggleDonNotes(){
+  var b=document.getElementById('don-notes-box');
+  if(b)b.classList.toggle('open');
+}
 
 function sendDonNote(){
   var name=document.getElementById('donNoteName').value.trim();
@@ -1671,6 +1679,7 @@ function sendDonNote(){
   var msg=document.getElementById('donNoteMsg').value.trim();
   var err=document.getElementById('donNoteErr');
   var ok=document.getElementById('donNoteOk');
+  var box=document.getElementById('don-notes-box');
 
   err.style.display='none';
   ok.style.display='none';
@@ -1687,9 +1696,14 @@ function sendDonNote(){
   );
 
   ok.style.display='block';
-  document.getElementById('donNoteName').value='';
-  document.getElementById('donNoteEmail').value='';
-  document.getElementById('donNoteMsg').value='';
+
+  setTimeout(function(){
+    if(box)box.classList.remove('open');
+    document.getElementById('donNoteName').value='';
+    document.getElementById('donNoteEmail').value='';
+    document.getElementById('donNoteMsg').value='';
+  },1200);
+
   gaEv('donation_note_submit');
 }
 
