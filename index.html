@@ -1458,47 +1458,22 @@ async function doSrch(term){
     var d=await r.json();
     var all=d.files||[];
 
-   var folders=[], audio=[], seen={};
-var matchedFolderPaths=[];
+    var folders=[], audio=[], seen={};
 
-  var q=term.toLowerCase();
+    all.forEach(function(f){
+      if(!f || !f.id || seen[f.id]) return;
+      seen[f.id]=true;
 
-all.forEach(function(f){
-  var nm=(f.name||'').toLowerCase();
-  var path=(f.path||'').toLowerCase();
-  var fullPath=(path ? path+' / ' : '') + nm;
-
-  if(f.type==='folder' && (nm.indexOf(q)>=0 || path.indexOf(q)>=0)){
-    matchedFolderPaths.push(fullPath);
-  }
-});
-
-all.forEach(function(f){
-  var nm=(f.name||'').toLowerCase();
-  var path=(f.path||'').toLowerCase();
-  var fullPath=(path ? path+' / ' : '') + nm;
-
-  var underMatchedFolder = matchedFolderPaths.some(function(p){
-    return fullPath === p ||
-           fullPath.indexOf(p + ' /') === 0 ||
-           path === p ||
-           path.indexOf(p + ' /') === 0 ||
-           p.indexOf(path + ' /') === 0;
-  });
-
-  if(seen[f.id])return;
-
-  if(f.type==='folder'){
-    if(nm.indexOf(q)<0 && path.indexOf(q)<0 && !underMatchedFolder)return;
-    seen[f.id]=true;
-    folders.push(f);
-  }
-  else if(f.type==='audio'){
-    if(nm.indexOf(q)<0 && path.indexOf(q)<0 && !underMatchedFolder)return;
-    seen[f.id]=true;
-    audio.push(f);
-  }
-});
+      if(f.type==='folder'){
+        folders.push(f);
+      }
+      else if(
+        f.type==='audio' ||
+        String(f.mimeType||'').indexOf('audio')>=0
+      ){
+        audio.push(f);
+      }
+    });
 
     var total=folders.length+audio.length;
 
