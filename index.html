@@ -1424,27 +1424,43 @@ async function doSrch(term){
     var d=await r.json();
     var all=d.files||[];
 
-    var folders=[], audio=[], seen={};
+   var folders=[], audio=[], seen={};
+var matchedFolderPaths=[];
 
-    all.forEach(function(f){
-      var nm=(f.name||'').toLowerCase();
-      var q=term.toLowerCase();
+    var q=term.toLowerCase();
 
-    var path=(f.path||'').toLowerCase();
+all.forEach(function(f){
+  var nm=(f.name||'').toLowerCase();
+  var path=(f.path||'').toLowerCase();
+  var fullPath=(path ? path+' / ' : '') + nm;
 
-if(seen[f.id])return;
+  if(f.type==='folder' && (nm.indexOf(q)>=0 || path.indexOf(q)>=0)){
+    matchedFolderPaths.push(fullPath);
+  }
+});
 
-if(f.type==='folder'){
-  if(nm.indexOf(q)<0 && path.indexOf(q)<0)return;
-  seen[f.id]=true;
-  folders.push(f);
-}
-else if(f.type==='audio'){
-  if(nm.indexOf(q)<0 && path.indexOf(q)<0)return;
-  seen[f.id]=true;
-  audio.push(f);
-}
-    });
+all.forEach(function(f){
+  var nm=(f.name||'').toLowerCase();
+  var path=(f.path||'').toLowerCase();
+  var fullPath=(path ? path+' / ' : '') + nm;
+
+  var underMatchedFolder = matchedFolderPaths.some(function(p){
+    return fullPath === p || fullPath.indexOf(p + ' /') === 0 || path === p || path.indexOf(p + ' /') === 0;
+  });
+
+  if(seen[f.id])return;
+
+  if(f.type==='folder'){
+    if(nm.indexOf(q)<0 && path.indexOf(q)<0 && !underMatchedFolder)return;
+    seen[f.id]=true;
+    folders.push(f);
+  }
+  else if(f.type==='audio'){
+    if(nm.indexOf(q)<0 && path.indexOf(q)<0 && !underMatchedFolder)return;
+    seen[f.id]=true;
+    audio.push(f);
+  }
+});
 
     var total=folders.length+audio.length;
 
