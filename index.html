@@ -197,7 +197,19 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .fii{font-size:1rem!important;width:52px!important;min-width:52px!important;height:52px!important;border-radius:12px!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;background:rgba(255,255,255,.07)!important;border:1px solid rgba(212,175,55,.35)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)!important;color:#d4af37!important;overflow:hidden!important}
 .fii svg{width:31px;height:31px;display:block;stroke:#d4af37;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .fii .fillgold{fill:#d4af37;stroke:none}
-.fii .restrictedIcon{font-size:.56rem;letter-spacing:.6px;color:#d4af37;font-family:Arial,sans-serif;font-weight:800;line-height:1.05;text-align:center}
+.fii .restrictedIcon{
+  font-size:.72rem;
+  letter-spacing:.4px;
+  color:#ffdf55;
+  background:rgba(255,223,85,.14);
+  border:1px solid rgba(255,223,85,.55);
+  border-radius:8px;
+  padding:4px 5px;
+  font-family:'Frank Ruhl Libre',Arial,sans-serif;
+  font-weight:900;
+  line-height:1.1;
+  text-align:center;
+}
 .fin{color:#fff!important;font-size:1rem!important;font-weight:800!important;flex:1!important;line-height:1.45!important;letter-spacing:.1px!important}
 .bdg{font-size:.64rem;padding:3px 9px;border-radius:13px;font-weight:800;white-space:nowrap;letter-spacing:.2px}
 .bdg.bf,.bdg.baf{background:rgba(212,175,55,.15);color:#f3d575;border:1px solid rgba(212,175,55,.35)}
@@ -1159,7 +1171,7 @@ function _svgIcon(type){
     shofar:'<svg viewBox="0 0 48 48"><path d="M35 12c-2 11-10 13-20 15-5 1-7 6-3 9 6 4 15-1 18-8"/><path d="M34 12c5 2 7 7 5 11-1 3-4 5-9 5"/></svg>',
     money:'<svg viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="20" rx="3"/><circle cx="24" cy="24" r="5"/><path d="M13 19h4M31 29h4"/></svg>',
     scale:'<svg viewBox="0 0 48 48"><path d="M24 8v30M14 38h20M12 16h24"/><path d="M15 16l-7 13h14zM33 16l-7 13h14z"/></svg>',
-    lock:'<span class="restrictedIcon">PRIVATE</span>'
+    lock:'<span class="restrictedIcon">רק<br>לנשואים</span>'
   };
   return icons[type]||icons.folder;
 }
@@ -1371,7 +1383,12 @@ async function lFld(fId){
       var isF=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'||(isSh&&tM==='application/vnd.google-apps.folder');
       var nm=cln(f.name);
       var isLatest=latF&&(f.id===latF.id||tI===latF.id);
-      var isLatestFolder=latF && latF.parentId && f.id===latF.parentId;
+      var latestPath=(latF&&latF.path)?String(latF.path).toLowerCase():'';
+var fNameLower=String(f.name||'').toLowerCase();
+var isLatestFolder=latF && (
+  (latF.parentId && f.id===latF.parentId) ||
+  (latestPath && latestPath.split(' / ').indexOf(fNameLower)>=0)
+);
       var badge=isF?'<span class="bdg bf">Folder</span>':isA(f.mimeType)||f.type==='audio'?'<span class="bdg ba">Shiur</span>':'<span class="bdg bpf">File</span>';
       if(isLatest||isLatestFolder)badge='<span class="latest-badge">נייעסטע שיעור</span>'+badge;
       var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
@@ -1612,7 +1629,7 @@ latParentFolderName='נייעסטע שיעור';
 }
   function openLatestModal(){openM('m-lat');}
 function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
-function goToLatestShiur(){
+async function goToLatestShiur(){
   if(!latF) return;
 
   closeM('m-lat');
@@ -1625,11 +1642,42 @@ function goToLatestShiur(){
     document.getElementById('land').style.display='none';
     document.getElementById('ca').style.display='block';
 
-    nav=[{id:pid,name:'נייעסטע שיעור'}];
+    nav=[{id:pid,name:latParentFolderName || 'נייעסטע שיעור'}];
     rBC();
     smoothTop();
-    lFld(pid);
+    await lFld(pid);
     return;
+  }
+
+  if(latF.path){
+    try{
+      var parts=String(latF.path).split(' / ').filter(Boolean);
+      var lastFolder=parts.length?parts[parts.length-1]:'';
+      if(lastFolder){
+        var r=await fetch(API_BASE+'/search?q='+encodeURIComponent(lastFolder));
+        var d=await r.json();
+        var files=d.files||[];
+
+        var match=files.find(function(x){
+          if(x.type!=='folder')return false;
+          var full=((x.path?x.path+' / ':'')+(x.name||'')).toLowerCase();
+          return full===String(latF.path).toLowerCase();
+        });
+
+        if(match){
+          _ph();
+          document.getElementById('hero').style.display='none';
+          document.getElementById('land').style.display='none';
+          document.getElementById('ca').style.display='block';
+
+          nav=[{id:match.id,name:match.name || lastFolder}];
+          rBC();
+          smoothTop();
+          await lFld(match.id);
+          return;
+        }
+      }
+    }catch(e){}
   }
 
   opPl(latF.id, cln(latF.name));
