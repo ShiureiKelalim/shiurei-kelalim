@@ -1177,7 +1177,7 @@ function _svgIcon(type){
 }
 function getFolderEmoji(name){
   var n=name||'';
-  if(n.includes('טהרה'))return _svgIcon('lock');
+  if(n.includes('טהרה'))return _svgIcon('folder');
   if(n.includes('שבת'))return _svgIcon('shabbos');
   if(n.includes('תפילין'))return _svgIcon('tefillin');
   if(n.includes('ציצית')||n.includes('ציצת'))return _svgIcon('tzitzis');
@@ -1444,7 +1444,7 @@ async function doSrch(term){
    var folders=[], audio=[], seen={};
 var matchedFolderPaths=[];
 
-    var q=term.toLowerCase();
+  var q=term.toLowerCase();
 
 all.forEach(function(f){
   var nm=(f.name||'').toLowerCase();
@@ -1462,7 +1462,11 @@ all.forEach(function(f){
   var fullPath=(path ? path+' / ' : '') + nm;
 
   var underMatchedFolder = matchedFolderPaths.some(function(p){
-    return fullPath === p || fullPath.indexOf(p + ' /') === 0 || path === p || path.indexOf(p + ' /') === 0;
+    return fullPath === p ||
+           fullPath.indexOf(p + ' /') === 0 ||
+           path === p ||
+           path.indexOf(p + ' /') === 0 ||
+           p.indexOf(path + ' /') === 0;
   });
 
   if(seen[f.id])return;
@@ -1634,53 +1638,57 @@ async function goToLatestShiur(){
 
   closeM('m-lat');
 
-  var pid = latF.parentId || latParentFolderId;
+  var folderName = '';
+  try{
+    if(latF.path){
+      var parts = String(latF.path).split(' / ').filter(Boolean);
+      folderName = parts.length ? parts[parts.length-1] : '';
+    }
+  }catch(e){}
 
-  if(pid){
+  if(!folderName && latParentFolderName && latParentFolderName !== 'נייעסטע שיעור'){
+    folderName = latParentFolderName;
+  }
+
+  if(folderName){
+    try{
+      var r = await fetch(API_BASE+'/search?q='+encodeURIComponent(folderName));
+      var d = await r.json();
+      var files = d.files || [];
+      var fullWanted = latF.path ? String(latF.path).toLowerCase() : '';
+
+      var match = files.find(function(x){
+        if(x.type !== 'folder') return false;
+        var full = ((x.path ? x.path+' / ' : '') + (x.name||'')).toLowerCase();
+        return fullWanted ? full === fullWanted : (String(x.name||'').toLowerCase() === folderName.toLowerCase());
+      });
+
+      if(match){
+        _ph();
+        document.getElementById('hero').style.display='none';
+        document.getElementById('land').style.display='none';
+        document.getElementById('ca').style.display='block';
+
+        nav=[{id:match.id,name:match.name || folderName}];
+        rBC();
+        smoothTop();
+        await lFld(match.id);
+        return;
+      }
+    }catch(e){}
+  }
+
+  if(latF.parentId){
     _ph();
     document.getElementById('hero').style.display='none';
     document.getElementById('land').style.display='none';
     document.getElementById('ca').style.display='block';
 
-    nav=[{id:pid,name:latParentFolderName || 'נייעסטע שיעור'}];
+    nav=[{id:latF.parentId,name:folderName || 'פאלדער'}];
     rBC();
     smoothTop();
-    await lFld(pid);
-    return;
+    await lFld(latF.parentId);
   }
-
-  if(latF.path){
-    try{
-      var parts=String(latF.path).split(' / ').filter(Boolean);
-      var lastFolder=parts.length?parts[parts.length-1]:'';
-      if(lastFolder){
-        var r=await fetch(API_BASE+'/search?q='+encodeURIComponent(lastFolder));
-        var d=await r.json();
-        var files=d.files||[];
-
-        var match=files.find(function(x){
-          if(x.type!=='folder')return false;
-          var full=((x.path?x.path+' / ':'')+(x.name||'')).toLowerCase();
-          return full===String(latF.path).toLowerCase();
-        });
-
-        if(match){
-          _ph();
-          document.getElementById('hero').style.display='none';
-          document.getElementById('land').style.display='none';
-          document.getElementById('ca').style.display='block';
-
-          nav=[{id:match.id,name:match.name || lastFolder}];
-          rBC();
-          smoothTop();
-          await lFld(match.id);
-          return;
-        }
-      }
-    }catch(e){}
-  }
-
-  opPl(latF.id, cln(latF.name));
 }
 
 function openYomTovBtn(){
