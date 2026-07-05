@@ -1605,16 +1605,24 @@ async function loadLatest(){
     latParentFolderName=null;
     latParentPath=[];
 
-    var r=await fetch(API_BASE+'/latest');
+    var r=await fetch(API_BASE+'/list?folder=latest');
     var d=await r.json();
+    var files=d.files||[];
 
-    if(!d.ok || !d.file){
+    if(!files.length){
       document.getElementById('lname').textContent='שיעורים נישט דא';
       return;
     }
 
-    latF=d.file;
-    latTabKey=latF.root || null;
+    files.sort(function(a,b){
+      return new Date(b.createdTime || b.modifiedTime || 0) -
+             new Date(a.createdTime || a.modifiedTime || 0);
+    });
+
+    latF=files[0];
+    latTabKey='latest';
+    latParentFolderId=latF.parentId || null;
+    latParentFolderName='נייעסטע שיעור';
 
     var nm=cln(latF.name);
     document.getElementById('lname').innerHTML=fmN(nm);
@@ -1639,25 +1647,34 @@ async function goToLatestShiur(){
   closeM('m-lat');
   closePl();
 
-  var root=latF.root || latTabKey || 'orach';
-  var path=String(latF.path || '').split(' / ').filter(Boolean);
+  var root='orach';
+  var fullPath=String(latF.path || '').split(' / ').filter(Boolean);
+
+  if(fullPath.join(' ').indexOf('יורה')>=0) root='yoreh';
+  if(fullPath.join(' ').indexOf('אבן')>=0) root='even';
+  if(fullPath.join(' ').indexOf('חושן')>=0) root='choshen';
+  if(fullPath.join(' ').indexOf('מועד')>=0 || fullPath.join(' ').indexOf('זמנים')>=0) root='moadim';
+
+  var stopBeforeAudio=Math.max(0, fullPath.length-1);
+  var path=fullPath.slice(0, stopBeforeAudio);
 
   _ph();
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
 
-  var tb=document.getElementById('tb-'+root.slice(0,2));
-  showTab(root,tb);
+  showTab(root, null);
 
   var cur=root;
 
   try{
     for(var i=0;i<path.length;i++){
-      var r=await fetch(API_BASE+(TABS[cur]?'/list?folder=':'/list?id=')+encodeURIComponent(cur));
+      var url=TABS[cur] ? API_BASE+'/list?folder='+encodeURIComponent(cur)
+                        : API_BASE+'/list?id='+encodeURIComponent(cur);
+
+      var r=await fetch(url);
       var d=await r.json();
       var files=d.files||[];
-
       var want=cln(path[i]).toLowerCase();
 
       var folder=files.find(function(x){
