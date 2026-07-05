@@ -1460,21 +1460,21 @@ async function doSrch(term){
 
     var folders=[], audio=[], seen={};
 
-    all.forEach(function(f){
-      if(!f || !f.id || seen[f.id]) return;
-      seen[f.id]=true;
+all.forEach(function(f){
+  if(!f || !f.id || seen[f.id]) return;
+  seen[f.id]=true;
 
-      if(f.type==='folder'){
-        folders.push(f);
-      }
-      else if(
-        f.type==='audio' ||
-        String(f.mimeType||'').indexOf('audio')>=0
-      ){
-        audio.push(f);
-      }
-    });
-
+  if(f.type==='folder'){
+    folders.push(f);
+  }
+  else if(
+    f.type==='audio' ||
+    String(f.mimeType||'').indexOf('audio')>=0 ||
+    f.match==='folder-child'
+  ){
+    audio.push(f);
+  }
+});
     var total=folders.length+audio.length;
 
     if(!total){
@@ -1636,56 +1636,26 @@ async function goToLatestShiur(){
   closeM('m-lat');
   closePl();
 
-  var root='orach';
-  var fullPath=String(latF.path || '').split(' / ').filter(Boolean);
+  var pid = latF.parentId || latParentFolderId;
 
-  var ptxt=fullPath.join(' ');
-  if(ptxt.indexOf('יורה')>=0) root='yoreh';
-  if(ptxt.indexOf('אבן')>=0) root='even';
-  if(ptxt.indexOf('חושן')>=0) root='choshen';
-  if(ptxt.indexOf('מועד')>=0 || ptxt.indexOf('זמנים')>=0) root='moadim';
+  if(!pid){
+    alert('מען קען נישט טרעפן דעם פאלדער פון דעם שיעור.');
+    return;
+  }
 
   _ph();
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
 
-  showTab(root,null);
+  nav=[{
+    id:pid,
+    name:'פאלדער פונעם נייעסטן שיעור'
+  }];
 
-  var cur=root;
-  var lastGood=root;
-
-  try{
-    for(var i=0;i<fullPath.length;i++){
-      var url=TABS[cur]
-        ? API_BASE+'/list?folder='+encodeURIComponent(cur)
-        : API_BASE+'/list?id='+encodeURIComponent(cur);
-
-      var r=await fetch(url);
-      var d=await r.json();
-      var files=d.files||[];
-
-      var want=cln(fullPath[i]).toLowerCase();
-
-      var folder=files.find(function(x){
-        var isFolder=x.type==='folder' || x.mimeType==='application/vnd.google-apps.folder';
-        return isFolder && cln(x.name||'').toLowerCase()===want;
-      });
-
-      if(!folder) break;
-
-      cur=folder.id;
-      lastGood=folder.id;
-      nav.push({id:folder.id,name:folder.name});
-    }
-
-    rBC();
-    smoothTop();
-    await lFld(lastGood);
-
-  }catch(e){
-    await lFld(lastGood);
-  }
+  rBC();
+  smoothTop();
+  await lFld(pid);
 }
 async function checkYomTov(){
   try{
