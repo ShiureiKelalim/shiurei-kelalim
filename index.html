@@ -1435,7 +1435,7 @@ async function doSrch(term){
 if(seen[f.id])return;
 
 if(f.type==='folder'){
-  if(nm.indexOf(q)<0)return;
+  if(nm.indexOf(q)<0 && path.indexOf(q)<0)return;
   seen[f.id]=true;
   folders.push(f);
 }
@@ -1576,6 +1576,8 @@ async function loadLatest(){
 
     latF=files[0];
     latTabKey='latest';
+    latParentFolderId=latF.parentId || null;
+latParentFolderName='נייעסטע שיעור';
 
     var nm=cln(latF.name);
     document.getElementById('lname').innerHTML=fmN(nm);
@@ -1594,35 +1596,27 @@ async function loadLatest(){
 }
   function openLatestModal(){openM('m-lat');}
 function playLatest(){if(latF){closeM('m-lat');opPl(latF.id,cln(latF.name));}}
-function goToLatestShiur(){ 
- if(latTabKey==='latest' && latF && latF.parentId){
+function goToLatestShiur(){
+  if(!latF) return;
+
   closeM('m-lat');
-  nav=[{id:latF.parentId,name:'נייעסטע שיעור'}];
-rBC();
-opFldr(latF.parentId,'נייעסטע שיעור');
-  return;
-}
-  if(!latTabKey)return;closeM('m-lat');_ph();document.getElementById('hero').style.display='none';document.getElementById('land').style.display='none';document.getElementById('ca').style.display='block';document.querySelectorAll('.ntb').forEach(function(b){b.classList.remove('active')});var ab=(latTabKey==='orach'?document.getElementById('tb-or'):latTabKey==='yoreh'?document.getElementById('tb-yo'):latTabKey==='even'?document.getElementById('tb-ev'):latTabKey==='choshen'?document.getElementById('tb-ch'):document.getElementById('tb-mo'));if(ab)ab.classList.add('active');var t=TABS[latTabKey];document.getElementById('sbn').className='sbn '+t.bn;document.getElementById('sbn').innerHTML='<h2>'+t.ic+' '+t.name+'</h2>';nav=(latParentPath&&latParentPath.length)?latParentPath.slice():[{id:t.id,name:t.name}];rBC();smoothTop();lFld(nav[nav.length-1].id);}
-async function checkYomTov(){
-  if (location.search || location.hash) return;
-  try{
-    var r=await fetch(API_BASE+'/list?folder=yomtov');
-    var d=await r.json();
-    var files=d.files||[];
-    if(files.length){
-      var sc=files[0];
-      ytFId=sc.shortcutDetails&&sc.shortcutDetails.targetId?sc.shortcutDetails.targetId:sc.id;
-      ytNm=cln(sc.name);
-      setTimeout(function(){
-        var ytName=ytNm.replace(/^הלכות\s+/,'');
-        document.getElementById('ytpt').textContent='עס קומען די טעג פון '+ytName;
-        document.getElementById('ytps').textContent='';
-        document.getElementById('ytpp').textContent='עס זענען דא שיעורים פאר '+ytName+':';
-        if (location.search || location.hash || document.querySelector('.mov.open')) return;
-        document.getElementById('ytp').classList.add('open');
-      },1600);
-    }
-  }catch(e){}
+
+  var pid = latF.parentId || latParentFolderId;
+
+  if(pid){
+    _ph();
+    document.getElementById('hero').style.display='none';
+    document.getElementById('land').style.display='none';
+    document.getElementById('ca').style.display='block';
+
+    nav=[{id:pid,name:'נייעסטע שיעור'}];
+    rBC();
+    smoothTop();
+    lFld(pid);
+    return;
+  }
+
+  opPl(latF.id, cln(latF.name));
 }
 
 function openYomTovBtn(){
