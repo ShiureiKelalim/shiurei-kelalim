@@ -1628,57 +1628,33 @@ async function goToLatestShiur(){
   closeM('m-lat');
   closePl();
 
-  var root=latF.root || latTabKey || 'orach';
-  var path=String(latF.path || '').split(' / ').filter(Boolean);
+  var pid = latF.parentId;
+  if(!pid){
+    alert('מען קען נישט טרעפן דעם פאלדער פון דעם שיעור.');
+    return;
+  }
+
+  var root = latF.root || 'orach';
+  var fname = 'פאלדער פונעם נייעסטן שיעור';
 
   _ph();
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
 
-  showTab(root,null);
-
-  var cur=root;
+  nav=[{id:pid,name:fname}];
+  rBC();
 
   try{
-    for(var i=0;i<path.length;i++){
-      var url=TABS[cur] ? API_BASE+'/list?folder='+encodeURIComponent(cur)
-                        : API_BASE+'/list?id='+encodeURIComponent(cur);
+    history.replaceState(null,'',
+      '#tab='+encodeURIComponent(root)+
+      '&fid='+encodeURIComponent(pid)+
+      '&fn='+encodeURIComponent(fname)
+    );
+  }catch(e){}
 
-      var r=await fetch(url);
-      var d=await r.json();
-      var files=d.files||[];
-      var want=cln(path[i]).toLowerCase();
-
-      var folder=files.find(function(x){
-        return (x.type==='folder' || x.mimeType==='application/vnd.google-apps.folder') &&
-               cln(x.name||'').toLowerCase()===want;
-      });
-
-      if(!folder) break;
-
-      cur=folder.id;
-      nav.push({id:folder.id,name:folder.name});
-    }
-
-    rBC();
-
-try{
-  history.replaceState(
-    null,
-    "",
-    "#tab="+encodeURIComponent(root)+
-    "&fid="+encodeURIComponent(cur)+
-    "&fn="+encodeURIComponent(nav.length ? nav[nav.length-1].name : "")
-  );
-}catch(e){}
-
-smoothTop();
-await lFld(cur);
-
-  }catch(e){
-    await lFld(root);
-  }
+  smoothTop();
+  await lFld(pid);
 }
 async function checkYomTov(){
   try{
