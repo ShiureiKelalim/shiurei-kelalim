@@ -1690,7 +1690,32 @@ async function goToLatestShiur(){
     await lFld(latF.parentId);
   }
 }
+async function checkYomTov(){
+  try{
+    ytFId = null;
+    ytNm = '';
 
+    var r = await fetch(API_BASE + '/list?folder=' + encodeURIComponent(YTID));
+    var d = await r.json();
+    var files = d.files || [];
+
+    if(!files.length) return;
+
+    var f = files.find(function(x){
+      return x.type === 'folder';
+    }) || files[0];
+
+    ytFId = f.id;
+    ytNm = cln(f.name || 'יו״ט');
+
+    if(location.search || location.hash) return;
+
+    setTimeout(function(){
+      openYomTovBtn();
+    }, 800);
+
+  }catch(e){}
+}
 function openYomTovBtn(){
   if(ytFId){
     var ytName=ytNm.replace(/^הלכות\s+/,'');
