@@ -1431,12 +1431,20 @@ async function doSrch(term){
       var nm=(f.name||'').toLowerCase();
       var q=term.toLowerCase();
 
-      if(nm.indexOf(q)<0)return;
-      if(seen[f.id])return;
-      seen[f.id]=true;
+    var path=(f.path||'').toLowerCase();
 
-      if(f.type==='folder') folders.push(f);
-      else if(f.type==='audio') audio.push(f);
+if(seen[f.id])return;
+
+if(f.type==='folder'){
+  if(nm.indexOf(q)<0)return;
+  seen[f.id]=true;
+  folders.push(f);
+}
+else if(f.type==='audio'){
+  if(nm.indexOf(q)<0 && path.indexOf(q)<0)return;
+  seen[f.id]=true;
+  audio.push(f);
+}
     });
 
     var total=folders.length+audio.length;
