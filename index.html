@@ -1639,32 +1639,33 @@ async function goToLatestShiur(){
   var root='orach';
   var fullPath=String(latF.path || '').split(' / ').filter(Boolean);
 
-  if(fullPath.join(' ').indexOf('יורה')>=0) root='yoreh';
-  if(fullPath.join(' ').indexOf('אבן')>=0) root='even';
-  if(fullPath.join(' ').indexOf('חושן')>=0) root='choshen';
-  if(fullPath.join(' ').indexOf('מועד')>=0 || fullPath.join(' ').indexOf('זמנים')>=0) root='moadim';
-
-  var stopBeforeAudio=Math.max(0, fullPath.length-1);
-  var path=fullPath.slice(0, stopBeforeAudio);
+  var ptxt=fullPath.join(' ');
+  if(ptxt.indexOf('יורה')>=0) root='yoreh';
+  if(ptxt.indexOf('אבן')>=0) root='even';
+  if(ptxt.indexOf('חושן')>=0) root='choshen';
+  if(ptxt.indexOf('מועד')>=0 || ptxt.indexOf('זמנים')>=0) root='moadim';
 
   _ph();
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
 
-  showTab(root, null);
+  showTab(root,null);
 
   var cur=root;
+  var lastGood=root;
 
   try{
-    for(var i=0;i<path.length;i++){
-      var url=TABS[cur] ? API_BASE+'/list?folder='+encodeURIComponent(cur)
-                        : API_BASE+'/list?id='+encodeURIComponent(cur);
+    for(var i=0;i<fullPath.length;i++){
+      var url=TABS[cur]
+        ? API_BASE+'/list?folder='+encodeURIComponent(cur)
+        : API_BASE+'/list?id='+encodeURIComponent(cur);
 
       var r=await fetch(url);
       var d=await r.json();
       var files=d.files||[];
-      var want=cln(path[i]).toLowerCase();
+
+      var want=cln(fullPath[i]).toLowerCase();
 
       var folder=files.find(function(x){
         var isFolder=x.type==='folder' || x.mimeType==='application/vnd.google-apps.folder';
@@ -1674,20 +1675,16 @@ async function goToLatestShiur(){
       if(!folder) break;
 
       cur=folder.id;
+      lastGood=folder.id;
       nav.push({id:folder.id,name:folder.name});
     }
 
     rBC();
     smoothTop();
-
-    if(nav.length){
-      await lFld(nav[nav.length-1].id);
-    }else{
-      await lFld(root);
-    }
+    await lFld(lastGood);
 
   }catch(e){
-    await lFld(root);
+    await lFld(lastGood);
   }
 }
 async function checkYomTov(){
