@@ -1638,57 +1638,36 @@ async function goToLatestShiur(){
 
   closeM('m-lat');
 
-  var folderName = '';
-  try{
-    if(latF.path){
-      var parts = String(latF.path).split(' / ').filter(Boolean);
-      folderName = parts.length ? parts[parts.length-1] : '';
-    }
-  }catch(e){}
-
-  if(!folderName && latParentFolderName && latParentFolderName !== 'נייעסטע שיעור'){
-    folderName = latParentFolderName;
+  if(!latF.parentId){
+    playLatest();
+    return;
   }
 
-  if(folderName){
-    try{
-      var r = await fetch(API_BASE+'/search?q='+encodeURIComponent(folderName));
-      var d = await r.json();
-      var files = d.files || [];
-      var fullWanted = latF.path ? String(latF.path).toLowerCase() : '';
+  _ph();
+  document.getElementById('hero').style.display='none';
+  document.getElementById('land').style.display='none';
+  document.getElementById('ca').style.display='block';
 
-      var match = files.find(function(x){
-        if(x.type !== 'folder') return false;
-        var full = ((x.path ? x.path+' / ' : '') + (x.name||'')).toLowerCase();
-        return fullWanted ? full === fullWanted : (String(x.name||'').toLowerCase() === folderName.toLowerCase());
-      });
+  var nm = cln(latF.name || '');
+  var folderNm = latParentFolderName || 'פאלדער';
 
-      if(match){
-        _ph();
-        document.getElementById('hero').style.display='none';
-        document.getElementById('land').style.display='none';
-        document.getElementById('ca').style.display='block';
+  nav = [{id:latF.parentId, name:folderNm}];
+  rBC();
+  smoothTop();
 
-        nav=[{id:match.id,name:match.name || folderName}];
-        rBC();
-        smoothTop();
-        await lFld(match.id);
-        return;
+  await lFld(latF.parentId);
+
+  setTimeout(function(){
+    var items = document.querySelectorAll('.fi');
+    for(var i=0;i<items.length;i++){
+      if(items[i].textContent.indexOf(nm.replace(/\.mp3$/i,'')) > -1){
+        items[i].scrollIntoView({behavior:'smooth',block:'center'});
+        items[i].style.outline='3px solid #d4af37';
+        items[i].style.boxShadow='0 0 0 6px rgba(212,175,55,.25)';
+        break;
       }
-    }catch(e){}
-  }
-
-  if(latF.parentId){
-    _ph();
-    document.getElementById('hero').style.display='none';
-    document.getElementById('land').style.display='none';
-    document.getElementById('ca').style.display='block';
-
-    nav=[{id:latF.parentId,name:folderName || 'פאלדער'}];
-    rBC();
-    smoothTop();
-    await lFld(latF.parentId);
-  }
+    }
+  },400);
 }
 async function checkYomTov(){
   try{
