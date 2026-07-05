@@ -1662,8 +1662,19 @@ async function goToLatestShiur(){
     }
 
     rBC();
-    smoothTop();
-    await lFld(cur);
+
+try{
+  history.replaceState(
+    null,
+    "",
+    "#tab="+encodeURIComponent(root)+
+    "&fid="+encodeURIComponent(cur)+
+    "&fn="+encodeURIComponent(nav.length ? nav[nav.length-1].name : "")
+  );
+}catch(e){}
+
+smoothTop();
+await lFld(cur);
 
   }catch(e){
     await lFld(root);
