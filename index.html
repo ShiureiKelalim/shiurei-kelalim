@@ -1955,6 +1955,119 @@ function esc(s){
   });
 }
 /* ===== MY ACCOUNT UI END ===== */
+  async function registerAccount(){
+  var err=document.getElementById('accErr');
+  err.style.display='none';
+
+  var body={
+    full_name:document.getElementById('regName').value.trim(),
+    email:document.getElementById('regEmail').value.trim(),
+    password:document.getElementById('regPass').value,
+    password2:document.getElementById('regPass2').value,
+    email_subscribed:document.getElementById('regSub').checked
+  };
+
+  var r=await fetch(API_BASE+'/auth/register',{
+    method:'POST',
+    credentials:'include',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  var d=await r.json();
+
+  if(!d.ok){
+    err.textContent=d.error||'עס איז געשען א טעות';
+    err.style.display='block';
+    return;
+  }
+
+  showVerifyForm(body.email);
+}
+
+function showVerifyForm(email){
+  document.getElementById('accBox').innerHTML=
+    '<div class="okm">א קאוד איז געשיקט געווארן צו:<br><b>'+esc(email)+'</b></div>'+
+    '<div class="fld"><label>וועריפיקאציע קאוד</label><input id="verifyCode" inputmode="numeric"></div>'+
+    '<button class="sbtn" onclick="verifyAccount(\''+esc(email)+'\')">וועריפיי</button>'+
+    '<div class="erm" id="accErr"></div>';
+}
+
+async function verifyAccount(email){
+  var err=document.getElementById('accErr');
+  err.style.display='none';
+
+  var r=await fetch(API_BASE+'/auth/verify',{
+    method:'POST',
+    credentials:'include',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      email:email,
+      code:document.getElementById('verifyCode').value.trim()
+    })
+  });
+  var d=await r.json();
+
+  if(!d.ok){
+    err.textContent=d.error||'קאוד איז נישט ריכטיג';
+    err.style.display='block';
+    return;
+  }
+
+  document.getElementById('accBox').innerHTML=
+    '<div class="okm">אימעל וועריפייד בהצלחה! יעצט קענט איר אריינלאגן.</div>'+
+    '<button class="sbtn" onclick="showLoginForm()">גיי צו Login</button>';
+}
+
+async function loginAccount(){
+  var err=document.getElementById('accErr');
+  err.style.display='none';
+
+  var r=await fetch(API_BASE+'/auth/login',{
+    method:'POST',
+    credentials:'include',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      email:document.getElementById('accEmail').value.trim(),
+      password:document.getElementById('accPass').value
+    })
+  });
+  var d=await r.json();
+
+  if(!d.ok){
+    err.textContent=d.error||'Login איז נישט געלונגען';
+    err.style.display='block';
+    return;
+  }
+
+  loadAccountBox();
+}
+
+async function logoutAccount(){
+  await fetch(API_BASE+'/auth/logout',{credentials:'include'});
+  showLoginForm();
+}
+
+async function loadMyShiurim(){
+  var box=document.getElementById('accBox');
+  box.innerHTML='<div class="loading">לאודינג מיינע שיעורים...</div>';
+
+  var r=await fetch(API_BASE+'/user-data',{credentials:'include'});
+  var d=await r.json();
+
+  if(!d.ok){
+    box.innerHTML='<div class="errb">'+esc(d.error||'מען דארף אריינלאגן')+'</div>';
+    return;
+  }
+
+  box.innerHTML=
+    '<div class="mt">מיינע שיעורים</div>'+
+    '<div style="text-align:center;margin-bottom:10px">'+
+    'Favorites: <b>'+d.favorites.length+'</b> | '+
+    'Bookmarks: <b>'+d.bookmarks.length+'</b> | '+
+    'Playlists: <b>'+d.playlists.length+'</b>'+
+    '</div>'+
+    '<button class="sbtn" onclick="loadAccountBox()">צוריק</button>';
+}
 </script>
 </body>
 </html>
