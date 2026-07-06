@@ -2047,6 +2047,21 @@ async function logoutAccount(){
   showLoginForm();
 }
 
+var ACC_DATA={progress:[],favorites:[],bookmarks:[],playlists:[],playlist_items:[],listen_history:[]};
+var ACC_SAVE_TIMER=null;
+
+async function accApi(action, body){
+  body=body||{};
+  body.action=action;
+  var r=await fetch(API_BASE+'/user-data',{
+    method:'POST',
+    credentials:'include',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  return await r.json();
+}
+
 async function loadMyShiurim(){
   var box=document.getElementById('accBox');
   box.innerHTML='<div class="loading">לאודינג מיינע שיעורים...</div>';
@@ -2059,15 +2074,164 @@ async function loadMyShiurim(){
     return;
   }
 
-  box.innerHTML=
-    '<div class="mt">מיינע שיעורים</div>'+
-    '<div style="text-align:center;margin-bottom:10px">'+
-    'Favorites: <b>'+d.favorites.length+'</b> | '+
-    'Bookmarks: <b>'+d.bookmarks.length+'</b> | '+
-    'Playlists: <b>'+d.playlists.length+'</b>'+
-    '</div>'+
-    '<button class="sbtn" onclick="loadAccountBox()">צוריק</button>';
+  ACC_DATA=d;
+
+  var h='';
+  h+='<div class="mt">מיינע שיעורים</div>';
+
+  h+='<div style="background:#f8f6f0;border-radius:12px;padding:12px;margin-bottom:12px;text-align:center">';
+  h+='❤️ Favorites: <b>'+d.favorites.length+'</b><br>';
+  h+='🔖 Bookmarks: <b>'+d.bookmarks.length+'</b><br>';
+  h+='📂 Playlists: <b>'+d.playlists.length+'</b><br>';
+  h+='▶️ לעצט געהערט: <b>'+d.listen_history.length+'</b>';
+  h+='</div>';
+
+  h+='<h3 style="color:#162d5a;margin:12px 0">▶️ לעצט געהערט</h3>';
+  if(!d.listen_history.length) h+='<div class="empb">נאך נישט דא</div>';
+  d.listen_history.forEach(function(x){
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\', '+Number(x.position||0)+')">'+
+       '<div class="fii">▶️</div><div class="fin">שיעור<br><small>'+formatTime(x.position||0)+'</small></div></div>';
+  });
+
+  h+='<h3 style="color:#162d5a;margin:12px 0">❤️ Favorites</h3>';
+  if(!d.favorites.length) h+='<div class="empb">נאך נישט דא</div>';
+  d.favorites.forEach(function(x){
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0)">'+
+       '<div class="fii">❤️</div><div class="fin">Favorite שיעור</div></div>';
+  });
+
+  h+='<h3 style="color:#162d5a;margin:12px 0">🔖 Bookmarks</h3>';
+  if(!d.bookmarks.length) h+='<div class="empb">נאך נישט דא</div>';
+  d.bookmarks.forEach(function(x){
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\','+Number(x.position||0)+')">'+
+       '<div class="fii">🔖</div><div class="fin">'+esc(x.title||'Bookmark')+
+       '<br><small>'+formatTime(x.position||0)+'</small></div></div>';
+  });
+
+  h+='<h3 style="color:#162d5a;margin:12px 0">📂 Playlists</h3>';
+  h+='<button class="sbtn" onclick="createPlaylistPrompt()">+ נייע Playlist</button><br>';
+  if(!d.playlists.length) h+='<div class="empb">נאך נישט דא</div>';
+  d.playlists.forEach(function(p){
+    h+='<div class="fi"><div class="fii">📂</div><div class="fin">'+esc(p.name)+'</div></div>';
+  });
+
+  h+='<br><button class="sbtn" onclick="loadAccountBox()">צוריק</button>';
+  box.innerHTML=h;
 }
+
+function formatTime(sec){
+  sec=Math.floor(Number(sec||0));
+  var m=Math.floor(sec/60), s=sec%60;
+  return m+':'+(s<10?'0':'')+s;
+}
+
+function accOpenShiur(id,pos){
+  closeMyAccount();
+  opPl(id,'שיעור');
+  setTimeout(function(){
+    var au=document.getElementById('au');
+    if(au && pos) au.currentTime=pos;
+  },900);
+}
+
+function createPlaylistPrompt(){
+  var name=prompt('Playlist נאמען');
+  if(!name)return;
+  accApi('playlist_create',{name:name}).then(loadMyShiurim);
+}
+
+function accIsFav(id){
+  return ACC_DATA.favorites.some(function(x){return x.shiur_id===id;});
+}
+
+function accRenderPlayerTools(){
+  if(!window.curShiur || !curShiur.id)return;
+  var au=document.getElementById('au');
+  if(!au)return;
+
+  var old=document.getElementById('accPlayerTools');
+  if(old)old.remove();
+
+  var div=document.createElement('div');
+  div.id='accPlayerTools';
+  div.style.marginTop='10px';
+  div.innerHTML=
+    '<button class="dlbtn" onclick="accToggleFav()">❤️ Favorite</button> '+
+    '<button class="dlbtn" onclick="accBookmark()">🔖 Bookmark</button> '+
+    '<button class="dlbtn" onclick="accAddToPlaylist()">📂 Playlist</button>';
+  au.parentNode.appendChild(div);
+}
+
+async function accToggleFav(){
+  if(!curShiur||!curShiur.id)return;
+  var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(r=>r.json());
+  if(!d.ok){alert('מען דארף קודם אריינלאגן');return;}
+  ACC_DATA=d;
+  if(accIsFav(curShiur.id)){
+    await accApi('favorite_remove',{shiur_id:curShiur.id});
+    alert('אראפגענומען פון Favorites');
+  }else{
+    await accApi('favorite_add',{shiur_id:curShiur.id});
+    alert('צוגעלייגט צו Favorites');
+  }
+}
+
+async function accBookmark(){
+  if(!curShiur||!curShiur.id)return;
+  var au=document.getElementById('au');
+  var title=prompt('נאמען פאר Bookmark (אפשענאל)','');
+  var d=await accApi('bookmark_add',{
+    shiur_id:curShiur.id,
+    position:au?au.currentTime:0,
+    title:title||''
+  });
+  if(!d.ok){alert(d.error||'נישט געלונגען');return;}
+  alert('Bookmark געראטעוועט');
+}
+
+async function accAddToPlaylist(){
+  if(!curShiur||!curShiur.id)return;
+  var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(r=>r.json());
+  if(!d.ok){alert('מען דארף קודם אריינלאגן');return;}
+  if(!d.playlists.length){alert('מאך קודם א Playlist אין מיין אקאונט');return;}
+
+  var names=d.playlists.map(function(p,i){return (i+1)+') '+p.name;}).join('\n');
+  var n=prompt('וועלכע Playlist?\n'+names);
+  var idx=parseInt(n,10)-1;
+  if(isNaN(idx)||!d.playlists[idx])return;
+
+  var res=await accApi('playlist_add',{
+    playlist_id:d.playlists[idx].id,
+    shiur_id:curShiur.id
+  });
+  if(!res.ok){alert(res.error||'נישט געלונגען');return;}
+  alert('צוגעלייגט צו Playlist');
+}
+
+function accSaveProgressNow(){
+  try{
+    if(!curShiur||!curShiur.id)return;
+    var au=document.getElementById('au');
+    if(!au || !au.currentTime)return;
+    accApi('progress',{shiur_id:curShiur.id,position:au.currentTime});
+  }catch(e){}
+}
+
+(function(){
+  var oldOpPl=window.opPl;
+  if(typeof oldOpPl==='function'){
+    window.opPl=function(fId,nm){
+      oldOpPl(fId,nm);
+      setTimeout(accRenderPlayerTools,500);
+      clearInterval(ACC_SAVE_TIMER);
+      ACC_SAVE_TIMER=setInterval(accSaveProgressNow,45000);
+    };
+  }
+
+  window.addEventListener('beforeunload',function(){
+    accSaveProgressNow();
+  });
+})();
 </script>
 </body>
 </html>
