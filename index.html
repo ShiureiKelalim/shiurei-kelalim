@@ -1628,30 +1628,14 @@ async function goToLatestShiur(){
   closeM('m-lat');
   closePl();
 
-  if(!latF.parentId){
-    alert('מען קען נישט טרעפן דעם פאלדער פון דעם שיעור.');
+  var nm = cln(latF.name || '').replace(/\.mp3$/i,'').trim();
+
+  if(!nm){
+    alert('מען קען נישט טרעפן דעם שיעור.');
     return;
   }
 
-  var root=latF.root || 'orach';
-  var fname=latF.parentName || 'פאלדער פונעם נייעסטן שיעור';
-
-  _ph();
-  document.getElementById('hero').style.display='none';
-  document.getElementById('land').style.display='none';
-  document.getElementById('ca').style.display='block';
-
-  nav=[{id:latF.parentId,name:fname}];
-  rBC();
-
-  history.replaceState(null,'',
-    '#tab='+encodeURIComponent(root)+
-    '&fid='+encodeURIComponent(latF.parentId)+
-    '&fn='+encodeURIComponent(fname)
-  );
-
-  smoothTop();
-  await lFld(latF.parentId);
+  doSrch(nm);
 }
 async function checkYomTov(){
   try{
