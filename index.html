@@ -1628,91 +1628,30 @@ async function goToLatestShiur(){
   closeM('m-lat');
   closePl();
 
-  var pid = latF.parentId || null;
-
-  if(!pid){
-    try{
-      var nm = cln(latF.name || '').replace(/\.mp3$/i,'').trim();
-      var r = await fetch(API_BASE + '/search?q=' + encodeURIComponent(nm));
-      var d = await r.json();
-      var files = d.files || [];
-
-      var match = files.find(function(x){
-        return x.type === 'audio' && cln(x.name || '').replace(/\.mp3$/i,'').trim() === nm;
-      });
-
-      if(match && match.path){
-        var root = match.root || 'orach';
-        var parts = String(match.path).split(' / ').filter(Boolean);
-
-        _ph();
-        document.getElementById('hero').style.display='none';
-        document.getElementById('land').style.display='none';
-        document.getElementById('ca').style.display='block';
-
-        showTab(root,null);
-
-        var cur = root;
-        nav = [];
-
-        for(var i=0;i<parts.length;i++){
-          var url = TABS[cur] ? API_BASE+'/list?folder='+encodeURIComponent(cur)
-                              : API_BASE+'/list?id='+encodeURIComponent(cur);
-
-          var rr = await fetch(url);
-          var dd = await rr.json();
-          var ff = dd.files || [];
-          var want = cln(parts[i]).toLowerCase();
-
-          var folder = ff.find(function(x){
-            return (x.type === 'folder' || x.mimeType === 'application/vnd.google-apps.folder') &&
-                   cln(x.name || '').toLowerCase() === want;
-          });
-
-          if(!folder) break;
-
-          cur = folder.id;
-          nav.push({id:folder.id,name:folder.name});
-        }
-
-        rBC();
-
-        try{
-          history.replaceState(null,'',
-            '#tab='+encodeURIComponent(root)+
-            '&fid='+encodeURIComponent(cur)+
-            '&fn='+encodeURIComponent(nav.length ? nav[nav.length-1].name : '')
-          );
-        }catch(e){}
-
-        smoothTop();
-        await lFld(cur);
-        return;
-      }
-    }catch(e){}
-  }
-
-  if(!pid){
+  if(!latF.parentId){
     alert('מען קען נישט טרעפן דעם פאלדער פון דעם שיעור.');
     return;
   }
+
+  var root=latF.root||'orach';
+  var fname=latF.path ? latF.path.split(' / ').pop() : 'פאלדער פונעם נייעסטן שיעור';
 
   _ph();
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
 
-  nav=[{id:pid,name:'פאלדער פונעם נייעסטן שיעור'}];
+  nav=[{id:latF.parentId,name:fname}];
   rBC();
 
-  try{
-    history.replaceState(null,'',
-      '#tab=orach&fid='+encodeURIComponent(pid)+'&fn='+encodeURIComponent('פאלדער פונעם נייעסטן שיעור')
-    );
-  }catch(e){}
+  history.replaceState(null,'',
+    '#tab='+encodeURIComponent(root)+
+    '&fid='+encodeURIComponent(latF.parentId)+
+    '&fn='+encodeURIComponent(fname)
+  );
 
   smoothTop();
-  await lFld(pid);
+  await lFld(latF.parentId);
 }
 async function checkYomTov(){
   try{
@@ -1929,6 +1868,93 @@ if (modal) {
   checkYomTov();
   _readHash();
 }
+  /* ===== MY ACCOUNT UI START ===== */
+(function(){
+  var navRight=document.querySelector('.nav-side-right');
+  if(navRight && !document.getElementById('myAccountBtn')){
+    var b=document.createElement('button');
+    b.id='myAccountBtn';
+    b.className='nb';
+    b.textContent='מיין אקאונט';
+    b.onclick=function(){openMyAccount();};
+    navRight.insertBefore(b, navRight.firstChild);
+  }
+
+  if(!document.getElementById('m-account')){
+    var d=document.createElement('div');
+    d.id='m-account';
+    d.className='mov';
+    d.innerHTML =
+      '<button class="mov-back" onclick="closeMyAccount()">← צוריק</button>'+
+      '<div class="mbx">'+
+      '<button class="mx" onclick="closeMyAccount()">×</button>'+
+      '<div class="mi">👤</div>'+
+      '<div class="mt">מיין אקאונט</div>'+
+      '<div id="accBox"></div>'+
+      '</div>';
+    document.body.appendChild(d);
+  }
+})();
+
+function openMyAccount(){
+  document.getElementById('m-account').classList.add('open');
+  document.body.classList.add('modal-open');
+  loadAccountBox();
+}
+
+function closeMyAccount(){
+  document.getElementById('m-account').classList.remove('open');
+  document.body.classList.remove('modal-open');
+}
+
+async function loadAccountBox(){
+  var box=document.getElementById('accBox');
+  box.innerHTML='<div class="loading">לאודינג...</div>';
+
+  try{
+    var r=await fetch(API_BASE+'/auth/me',{credentials:'include'});
+    var d=await r.json();
+
+    if(d.ok && d.logged_in){
+      box.innerHTML=
+        '<div class="okm">איר זענט אריינגעלאגט אלס<br><b>'+esc(d.user.full_name||d.user.email)+'</b></div>'+
+        '<button class="sbtn" onclick="loadMyShiurim()">מיינע שיעורים</button>'+
+        '<br><button class="sbtn" onclick="logoutAccount()">ארויסלאגן</button>';
+    }else{
+      showLoginForm();
+    }
+  }catch(e){
+    showLoginForm();
+  }
+}
+
+function showLoginForm(){
+  document.getElementById('accBox').innerHTML=
+    '<div class="fld"><label>אימעל</label><input id="accEmail" type="email"></div>'+
+    '<div class="fld"><label>פעסווארד</label><input id="accPass" type="password"></div>'+
+    '<button class="sbtn" onclick="loginAccount()">אריינלאגן</button>'+
+    '<div class="erm" id="accErr"></div>'+
+    '<br><button class="sbtn" onclick="showRegisterForm()">קרעיט אקאונט</button>';
+}
+
+function showRegisterForm(){
+  document.getElementById('accBox').innerHTML=
+    '<div class="fld"><label>גאנצע נאמען</label><input id="regName"></div>'+
+    '<div class="fld"><label>אימעל</label><input id="regEmail" type="email"></div>'+
+    '<div class="fld"><label>פעסווארד</label><input id="regPass" type="password"></div>'+
+    '<div class="fld"><label>רי-ענטער פעסווארד</label><input id="regPass2" type="password"></div>'+
+    '<label style="display:block;margin:10px 0;color:#444"><input id="regSub" type="checkbox"> איך וויל באקומען נייע שיעורים אויפן אימעל</label>'+
+    '<button class="sbtn" onclick="registerAccount()">מאך אקאונט</button>'+
+    '<div class="erm" id="accErr"></div>'+
+    '<br><button class="sbtn" onclick="showLoginForm()">צוריק צו Login</button>';
+}
+
+function esc(s){
+  return String(s||'').replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+/* ===== MY ACCOUNT UI END ===== */
 </script>
 </body>
 </html>
