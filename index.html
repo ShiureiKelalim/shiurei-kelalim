@@ -1633,8 +1633,8 @@ async function goToLatestShiur(){
     return;
   }
 
-  var root=latF.root||'orach';
-  var fname=latF.path ? latF.path.split(' / ').pop() : 'פאלדער פונעם נייעסטן שיעור';
+  var root=latF.root || 'orach';
+  var fname=latF.parentName || 'פאלדער פונעם נייעסטן שיעור';
 
   _ph();
   document.getElementById('hero').style.display='none';
