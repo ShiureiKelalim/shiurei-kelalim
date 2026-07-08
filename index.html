@@ -1541,8 +1541,8 @@ function renderGroup(title,arr,term){
     .split(' / ')
     .map(function(p){
       return cln(p)
-        .replace(/^[א-ת]{1,3}["׳״']?[-–—\s]+/,'')
-        .replace(/^\d+[-–—\s]+/,'')
+        .replace(/^[א-ת]{1,3}\s*["׳״']?\s*[-–—]?\s*/,'')
+        .replace(/^\d+\s*[-–—]?\s*/,'')
         .trim();
     })
     .filter(Boolean)
