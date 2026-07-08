@@ -1589,56 +1589,39 @@ function triggerSearchBox(){
 
   async function openSearchResult(enc){
   var f={};
-  try{ f=JSON.parse(decodeURIComponent(enc)); }catch(e){ return; }
+  try{ f=JSON.parse(decodeURIComponent(enc)); }catch(e){return;}
 
   var root=f.root||'orach';
-  var typ=f.type||'';
   var name=cln(f.name||'');
-  var path=String(f.path||'').split(' / ').filter(Boolean);
+  var typ=f.type||'';
 
+  closePl();
   _ph();
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
   document.getElementById('ca').style.display='block';
 
-  showTab(root,null);
-
   if(typ==='folder'){
     nav=[{id:f.id,name:name}];
     rBC();
-    history.replaceState(null,'','#tab='+encodeURIComponent(root)+'&fid='+encodeURIComponent(f.id)+'&fn='+encodeURIComponent(name));
+
+    try{
+      history.replaceState(null,'',
+        '#tab='+encodeURIComponent(root)+
+        '&fid='+encodeURIComponent(f.id)+
+        '&fn='+encodeURIComponent(name)
+      );
+    }catch(e){}
+
     smoothTop();
     await lFld(f.id);
     return;
   }
 
-  var cur=root;
-  nav=[];
-
-  for(var i=0;i<path.length;i++){
-    var url=TABS[cur] ? API_BASE+'/list?folder='+encodeURIComponent(cur)
-                      : API_BASE+'/list?id='+encodeURIComponent(cur);
-
-    var r=await fetch(url);
-    var d=await r.json();
-    var files=d.files||[];
-    var want=cln(path[i]).toLowerCase();
-
-    var folder=files.find(function(x){
-      return (x.type==='folder'||x.mimeType==='application/vnd.google-apps.folder') &&
-             cln(x.name||'').toLowerCase()===want;
-    });
-
-    if(!folder) break;
-
-    cur=folder.id;
-    nav.push({id:folder.id,name:folder.name});
+  if(typ==='audio'){
+    opPl(f.id,name);
+    return;
   }
-
-  rBC();
-  history.replaceState(null,'','#tab='+encodeURIComponent(root)+'&fid='+encodeURIComponent(cur)+'&fn='+encodeURIComponent(nav.length?nav[nav.length-1].name:''));
-  smoothTop();
-  await lFld(cur);
 }
   var SEARCH_RESULT_MAP={};
 
