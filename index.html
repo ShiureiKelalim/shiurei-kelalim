@@ -1604,7 +1604,7 @@ function triggerSearchBox(){
   if(typ==='folder'){
   var parts=String(f.path||'').split(' / ').filter(Boolean);
   var cur=root;
-  nav=[{id:root,name:TABS[root]||root}];
+ nav=[{id:root,name:(TABS[root]&&TABS[root].name)?TABS[root].name:'אורח חיים'}];
 
   try{
     for(var i=0;i<parts.length;i++){
@@ -1624,7 +1624,8 @@ function triggerSearchBox(){
       if(!folder) break;
 
       cur=folder.id;
-      nav.push({id:folder.id,name:folder.name});
+      var cleanFolderName=cln(folder.name||'').replace(/^[א-ת]{1,3}\s*["׳״']?\s*[-–—]\s*/,'').trim();
+nav.push({id:folder.id,name:cleanFolderName});
     }
   }catch(e){}
 
