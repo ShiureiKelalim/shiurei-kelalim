@@ -2255,19 +2255,31 @@ async function accBookmark(){
 
 async function accAddToPlaylist(){
   if(!curShiur||!curShiur.id)return;
+
   var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(r=>r.json());
   if(!d.ok){alert('מען דארף קודם אריינלאגן');return;}
-  if(!d.playlists.length){alert('מאך קודם א Playlist אין מיין אקאונט');return;}
 
-  var names=d.playlists.map(function(p,i){return (i+1)+') '+p.name;}).join('\n');
+  if(!d.playlists.length){
+    if(confirm('דו האסט נאך נישט קיין Playlist. ווילסטו יעצט מאכן איינס?')){
+      await createPlaylistPrompt();
+    }
+    return;
+  }
+
+  var names=d.playlists.map(function(p,i){
+    return (i+1)+') '+p.name;
+  }).join('\n');
+
   var n=prompt('וועלכע Playlist?\n'+names);
   var idx=parseInt(n,10)-1;
   if(isNaN(idx)||!d.playlists[idx])return;
 
   var res=await accApi('playlist_add',{
     playlist_id:d.playlists[idx].id,
-    shiur_id:curShiur.id
+    shiur_id:curShiur.id,
+    shiur_name:curShiur.name||'שיעור'
   });
+
   if(!res.ok){alert(res.error||'נישט געלונגען');return;}
   alert('צוגעלייגט צו Playlist');
 }
