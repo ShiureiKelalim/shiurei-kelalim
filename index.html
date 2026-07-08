@@ -1536,13 +1536,18 @@ function renderGroup(title,arr,term){
   return h;
 }
 
-  function cleanPathForDisplay(path){
+ function cleanPathForDisplay(path){
   return String(path||'')
     .split(' / ')
     .map(function(p){
-      return cln(p)
-        .replace(/^[א-ת]{1,3}\s*["׳״']?\s*[-–—]?\s*/,'')
-        .replace(/^\d+\s*[-–—]?\s*/,'')
+      p = cln(p).trim();
+
+      if(/^[א-ת]{1,3}\s*["׳״']?$/.test(p)) return '';
+      if(/^\d+$/.test(p)) return '';
+
+      return p
+        .replace(/^[א-ת]{1,3}\s*["׳״']?\s*[-–—]\s*/,'')
+        .replace(/^\d+\s*[-–—]\s*/,'')
         .trim();
     })
     .filter(Boolean)
@@ -2078,33 +2083,37 @@ async function loadMyShiurim(){
   var h='';
   h+='<div class="mt">מיינע שיעורים</div>';
 
-  h+='<div style="background:#f8f6f0;border-radius:12px;padding:12px;margin-bottom:12px;text-align:center">';
+  h+='<div style="background:#f8f6f0;border-radius:12px;padding:12px;margin-bottom:12px;text-align:center;line-height:1.8">';
   h+='❤️ Favorites: <b>'+d.favorites.length+'</b><br>';
   h+='🔖 Bookmarks: <b>'+d.bookmarks.length+'</b><br>';
   h+='📂 Playlists: <b>'+d.playlists.length+'</b><br>';
   h+='▶️ לעצט געהערט: <b>'+d.listen_history.length+'</b>';
   h+='</div>';
 
-  h+='<h3 style="color:#162d5a;margin:12px 0">▶️ לעצט געהערט</h3>';
+  h+='<h3 style="color:#162d5a;margin:12px 0">▶️ ווייטער הערן / לעצט געהערט</h3>';
   if(!d.listen_history.length) h+='<div class="empb">נאך נישט דא</div>';
   d.listen_history.forEach(function(x){
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\', '+Number(x.position||0)+')">'+
-       '<div class="fii">▶️</div><div class="fin">שיעור<br><small>'+formatTime(x.position||0)+'</small></div></div>';
+    var name=x.shiur_name||'שיעור';
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\', '+Number(x.position||0)+', \''+esc(name)+'\')">'+
+       '<div class="fii">▶️</div><div class="fin">'+esc(name)+
+       '<br><small>ווייטער ביי '+formatTime(x.position||0)+'</small></div></div>';
   });
 
   h+='<h3 style="color:#162d5a;margin:12px 0">❤️ Favorites</h3>';
   if(!d.favorites.length) h+='<div class="empb">נאך נישט דא</div>';
   d.favorites.forEach(function(x){
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0)">'+
-       '<div class="fii">❤️</div><div class="fin">Favorite שיעור</div></div>';
+    var name=x.shiur_name||'Favorite שיעור';
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0,\''+esc(name)+'\')">'+
+       '<div class="fii">❤️</div><div class="fin">'+esc(name)+'</div></div>';
   });
 
   h+='<h3 style="color:#162d5a;margin:12px 0">🔖 Bookmarks</h3>';
   if(!d.bookmarks.length) h+='<div class="empb">נאך נישט דא</div>';
   d.bookmarks.forEach(function(x){
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\','+Number(x.position||0)+')">'+
-       '<div class="fii">🔖</div><div class="fin">'+esc(x.title||'Bookmark')+
-       '<br><small>'+formatTime(x.position||0)+'</small></div></div>';
+    var name=x.shiur_name||'שיעור';
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\','+Number(x.position||0)+',\''+esc(name)+'\')">'+
+       '<div class="fii">🔖</div><div class="fin">'+esc(x.title||name)+
+       '<br><small>'+esc(name)+' — '+formatTime(x.position||0)+'</small></div></div>';
   });
 
   h+='<h3 style="color:#162d5a;margin:12px 0">📂 Playlists</h3>';
