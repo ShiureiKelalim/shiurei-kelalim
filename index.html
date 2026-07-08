@@ -1604,7 +1604,7 @@ function triggerSearchBox(){
   if(typ==='folder'){
   var parts=String(f.path||'').split(' / ').filter(Boolean);
   var cur=root;
-  nav=[];
+  nav=[{id:root,name:TABS[root]||root}];
 
   try{
     for(var i=0;i<parts.length;i++){
