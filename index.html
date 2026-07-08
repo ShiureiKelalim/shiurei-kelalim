@@ -667,7 +667,43 @@ body.modal-open #m-privacy.open .mbx{
   line-height:1.15!important;
   box-shadow:0 3px 10px rgba(0,0,0,.28)!important;
 }
-  
+  .accgrid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+margin-top:18px;
+}
+
+.acccard{
+background:#fff;
+border-radius:16px;
+padding:18px;
+text-align:center;
+cursor:pointer;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+transition:.2s;
+}
+
+.acccard:hover{
+transform:translateY(-2px);
+}
+
+.acci{
+font-size:30px;
+margin-bottom:8px;
+}
+
+.acct{
+font-weight:bold;
+color:#162d5a;
+}
+
+.accc{
+margin-top:6px;
+font-size:18px;
+color:#b08b2c;
+font-weight:bold;
+}
 </style>
 </head>
 <body>
@@ -1569,25 +1605,36 @@ function triggerSearchBox(){
 }
 function renderGroup(title,arr,term){
   if(!arr||!arr.length)return '';
+
   var h='<div class="sr-hdr">'+title+' — '+arr.length+'</div>';
+
   h+=arr.map(function(f){
     var nm=cln(f.name||'');
     var show=hlTxt(fmN(nm),term);
     var path=f.path?'<div style="font-size:.72rem;color:rgba(255,255,255,.55);margin-top:3px">'+escHtml(cleanPathForDisplay(f.path))+'</div>':'';
 
     if(f.type==='folder'){
-      var enc=encodeURIComponent(JSON.stringify({id:f.id,name:nm,type:f.type,root:f.root,path:f.path||''}));
-return '<div class="fi fi-fld" onclick="openSearchResult(\''+enc+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+show+path+'</span><span class="bdg baf">Folder</span></div>';
+      var enc=encodeURIComponent(JSON.stringify({
+        id:f.id,
+        name:nm,
+        type:f.type,
+        root:f.root,
+        path:f.path||''
+      }));
+
+      return '<div class="fi fi-fld" onclick="openSearchResult(\''+enc+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+show+path+'</span><span class="bdg baf">Folder</span></div>';
     }
 
     if(f.type==='audio'){
       var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-      var lb=(latF&&f.id===latF.id)?'<span class="latest-badge">נייעסטע שיעור</span>':'';var enc=encodeURIComponent(JSON.stringify({id:f.id,name:nm,type:f.type,root:f.root,path:f.path||''}));
-return '<div class="fi fi-audio" onclick="openSearchResult(\''+enc+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span>'+lb+'<span class="bdg ba">Shiur</span></div>';
+      var lb=(latF&&f.id===latF.id)?'<span class="latest-badge">נייעסטע שיעור</span>':'';
+
+      return '<div class="fi fi-audio" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span>'+lb+'<span class="bdg ba">Shiur</span></div>';
     }
 
     return '<div class="fi"><span class="fii">📄</span><span class="fin">'+show+path+'</span><span class="bdg ba">File</span></div>';
   }).join('');
+
   return h;
 }
 
@@ -2136,56 +2183,57 @@ async function loadMyShiurim(){
   ACC_DATA=d;
 
   var h='';
-  h+='<div class="mt">מיינע שיעורים</div>';
+ var h='';
 
-  h+='<div style="background:#f8f6f0;border-radius:12px;padding:12px;margin-bottom:12px;text-align:center;line-height:1.8">';
-  h+='❤️ Favorites: <b>'+d.favorites.length+'</b><br>';
-  h+='🔖 Bookmarks: <b>'+d.bookmarks.length+'</b><br>';
-  h+='📂 Playlists: <b>'+d.playlists.length+'</b><br>';
-  h+='▶️ לעצט געהערט: <b>'+d.listen_history.length+'</b>';
-  h+='</div>';
+h+='<div class="mt">מיין אקאונט</div>';
 
-  h+='<h3 style="color:#162d5a;margin:12px 0">▶️ ווייטער הערן / לעצט געהערט</h3>';
-  if(!d.listen_history.length) h+='<div class="empb">נאך נישט דא</div>';
-  d.listen_history.forEach(function(x){
-    var name=x.shiur_name||'שיעור';
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\', '+Number(x.position||0)+', \''+esc(name)+'\')">'+
-       '<div class="fii">▶️</div><div class="fin">'+esc(name)+
-       '<br><small>ווייטער ביי '+formatTime(x.position||0)+'</small></div></div>';
-  });
+h+='<div class="accgrid">';
 
-  h+='<h3 style="color:#162d5a;margin:12px 0">❤️ Favorites</h3>';
-  if(!d.favorites.length) h+='<div class="empb">נאך נישט דא</div>';
-  d.favorites.forEach(function(x){
-    var name=x.shiur_name||'Favorite שיעור';
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0,\''+esc(name)+'\')">'+
-       '<div class="fii">❤️</div><div class="fin">'+esc(name)+'</div></div>';
-  });
+h+=accCard(
+'▶️',
+'ווייטער הערן',
+d.listen_history.length,
+"showHistory()"
+);
 
-  h+='<h3 style="color:#162d5a;margin:12px 0">🔖 Bookmarks</h3>';
-  if(!d.bookmarks.length) h+='<div class="empb">נאך נישט דא</div>';
-  d.bookmarks.forEach(function(x){
-    var name=x.shiur_name||'שיעור';
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\','+Number(x.position||0)+',\''+esc(name)+'\')">'+
-       '<div class="fii">🔖</div><div class="fin">'+esc(x.title||name)+
-       '<br><small>'+esc(name)+' — '+formatTime(x.position||0)+'</small></div></div>';
-  });
+h+=accCard(
+'❤️',
+'Favorites',
+d.favorites.length,
+"showFavorites()"
+);
 
-  h+='<h3 style="color:#162d5a;margin:12px 0">📂 Playlists</h3>';
-  h+='<button class="sbtn" onclick="createPlaylistPrompt()">+ נייע Playlist</button><br>';
-  if(!d.playlists.length) h+='<div class="empb">נאך נישט דא</div>';
-  d.playlists.forEach(function(p){
-    h+='<div class="fi" onclick="openPlaylist(\''+
-esc(p.id)+
-'\',\''+
-esc(p.name)+
-'\')">'+
-'<div class="fii">📂</div>'+
-'<div class="fin">'+esc(p.name)+'</div>'+
-'</div>';
-  });
+h+=accCard(
+'🔖',
+'Bookmarks',
+d.bookmarks.length,
+"showBookmarks()"
+);
 
-  h+='<br><button class="sbtn" onclick="loadAccountBox()">צוריק</button>';
+h+=accCard(
+'📂',
+'Playlists',
+d.playlists.length,
+"showPlaylists()"
+);
+
+h+=accCard(
+'🕘',
+'לעצט געהערט',
+d.listen_history.length,
+"showRecent()"
+);
+
+h+=accCard(
+'📊',
+'מיין פארשריט',
+'',
+"showStats()"
+);
+
+h+='</div>';
+
+box.innerHTML=h;
   box.innerHTML=h;
 }
 
@@ -2253,6 +2301,15 @@ function createPlaylistPrompt(){
   h+='<br><button class="sbtn" onclick="loadMyShiurim()">צוריק</button>';
 
   box.innerHTML=h;
+}
+  function accCard(icon,title,count,click){
+
+return '<div class="acccard" onclick="'+click+'">'+
+'<div class="acci">'+icon+'</div>'+
+'<div class="acct">'+title+'</div>'+
+'<div class="accc">'+count+'</div>'+
+'</div>';
+
 }
   var name=prompt('Playlist נאמען');
   if(!name)return;
