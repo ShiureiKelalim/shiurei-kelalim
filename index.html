@@ -2289,7 +2289,11 @@ function accSaveProgressNow(){
     if(!curShiur||!curShiur.id)return;
     var au=document.getElementById('au');
     if(!au || !au.currentTime)return;
-    accApi('progress',{shiur_id:curShiur.id,position:au.currentTime});
+    accApi('progress',{
+  shiur_id:curShiur.id,
+  shiur_name:curShiur.name||'שיעור',
+  position:au.currentTime
+});
   }catch(e){}
 }
 
