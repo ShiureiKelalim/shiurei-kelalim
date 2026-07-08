@@ -1514,6 +1514,59 @@ function triggerSearchBox(){
   triggerSearch();
 }
 
+  async function openSearchResult(enc){
+  var f={};
+  try{ f=JSON.parse(decodeURIComponent(enc)); }catch(e){ return; }
+
+  var root=f.root||'orach';
+  var typ=f.type||'';
+  var name=cln(f.name||'');
+  var path=String(f.path||'').split(' / ').filter(Boolean);
+
+  _ph();
+  document.getElementById('hero').style.display='none';
+  document.getElementById('land').style.display='none';
+  document.getElementById('ca').style.display='block';
+
+  showTab(root,null);
+
+  if(typ==='folder'){
+    nav=[{id:f.id,name:name}];
+    rBC();
+    history.replaceState(null,'','#tab='+encodeURIComponent(root)+'&fid='+encodeURIComponent(f.id)+'&fn='+encodeURIComponent(name));
+    smoothTop();
+    await lFld(f.id);
+    return;
+  }
+
+  var cur=root;
+  nav=[];
+
+  for(var i=0;i<path.length;i++){
+    var url=TABS[cur] ? API_BASE+'/list?folder='+encodeURIComponent(cur)
+                      : API_BASE+'/list?id='+encodeURIComponent(cur);
+
+    var r=await fetch(url);
+    var d=await r.json();
+    var files=d.files||[];
+    var want=cln(path[i]).toLowerCase();
+
+    var folder=files.find(function(x){
+      return (x.type==='folder'||x.mimeType==='application/vnd.google-apps.folder') &&
+             cln(x.name||'').toLowerCase()===want;
+    });
+
+    if(!folder) break;
+
+    cur=folder.id;
+    nav.push({id:folder.id,name:folder.name});
+  }
+
+  rBC();
+  history.replaceState(null,'','#tab='+encodeURIComponent(root)+'&fid='+encodeURIComponent(cur)+'&fn='+encodeURIComponent(nav.length?nav[nav.length-1].name:''));
+  smoothTop();
+  await lFld(cur);
+}
 function renderGroup(title,arr,term){
   if(!arr||!arr.length)return '';
   var h='<div class="sr-hdr">'+title+' — '+arr.length+'</div>';
@@ -1523,12 +1576,14 @@ function renderGroup(title,arr,term){
     var path=f.path?'<div style="font-size:.72rem;color:rgba(255,255,255,.55);margin-top:3px">'+escHtml(cleanPathForDisplay(f.path))+'</div>':'';
 
     if(f.type==='folder'){
-      return '<div class="fi fi-fld" onclick="opFldr(\''+f.id+'\',\''+nm.replace(/'/g,"\\'")+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+show+path+'</span><span class="bdg baf">Folder</span></div>';
+      var enc=encodeURIComponent(JSON.stringify({id:f.id,name:nm,type:f.type,root:f.root,path:f.path||''}));
+return '<div class="fi fi-fld" onclick="openSearchResult(\''+enc+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+show+path+'</span><span class="bdg baf">Folder</span></div>';
     }
 
     if(f.type==='audio'){
       var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-      var lb=(latF&&f.id===latF.id)?'<span class="latest-badge">נייעסטע שיעור</span>':'';return '<div class="fi fi-audio" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span>'+lb+'<span class="bdg ba">Shiur</span></div>';
+      var lb=(latF&&f.id===latF.id)?'<span class="latest-badge">נייעסטע שיעור</span>':'';var enc=encodeURIComponent(JSON.stringify({id:f.id,name:nm,type:f.type,root:f.root,path:f.path||''}));
+return '<div class="fi fi-audio" onclick="openSearchResult(\''+enc+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span>'+lb+'<span class="bdg ba">Shiur</span></div>';
     }
 
     return '<div class="fi"><span class="fii">📄</span><span class="fin">'+show+path+'</span><span class="bdg ba">File</span></div>';
