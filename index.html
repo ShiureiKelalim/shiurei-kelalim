@@ -1640,26 +1640,28 @@ function triggerSearchBox(){
   smoothTop();
   await lFld(cur);
 }
+  var SEARCH_RESULT_MAP={};
+
+function openSearchResultByKey(k){
+  var f=SEARCH_RESULT_MAP[k];
+  if(!f)return;
+  openSearchResult(encodeURIComponent(JSON.stringify(f)));
+}
 function renderGroup(title,arr,term){
   if(!arr||!arr.length)return '';
 
   var h='<div class="sr-hdr">'+title+' — '+arr.length+'</div>';
 
-  h+=arr.map(function(f){
+  h+=arr.map(function(f,i){
     var nm=cln(f.name||'');
     var show=hlTxt(fmN(nm),term);
     var path=f.path?'<div style="font-size:.72rem;color:rgba(255,255,255,.55);margin-top:3px">'+escHtml(cleanPathForDisplay(f.path))+'</div>':'';
 
     if(f.type==='folder'){
-      var enc=encodeURIComponent(JSON.stringify({
-        id:f.id,
-        name:nm,
-        type:f.type,
-        root:f.root,
-        path:f.path||''
-      }));
+      var key='sr_'+String(f.id||'').replace(/[^a-zA-Z0-9_]/g,'')+'_'+i;
+      SEARCH_RESULT_MAP[key]={id:f.id,name:nm,type:f.type,root:f.root,path:f.path||''};
 
-      return '<div class="fi fi-fld" onclick="openSearchResult(\''+enc+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+show+path+'</span><span class="bdg baf">Folder</span></div>';
+      return '<div class="fi fi-fld" onclick="openSearchResultByKey(\''+key+'\')"><span class="fii">'+getFolderEmoji(nm)+'</span><span class="fin">'+show+path+'</span><span class="bdg baf">Folder</span></div>';
     }
 
     if(f.type==='audio'){
