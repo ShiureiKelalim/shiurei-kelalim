@@ -1602,21 +1602,47 @@ function triggerSearchBox(){
   document.getElementById('ca').style.display='block';
 
   if(typ==='folder'){
-    nav=[{id:f.id,name:name}];
-    rBC();
+  var parts=String(f.path||'').split(' / ').filter(Boolean);
+  var cur=root;
+  nav=[];
 
-    try{
-      history.replaceState(null,'',
-        '#tab='+encodeURIComponent(root)+
-        '&fid='+encodeURIComponent(f.id)+
-        '&fn='+encodeURIComponent(name)
-      );
-    }catch(e){}
+  try{
+    for(var i=0;i<parts.length;i++){
+      var url=TABS[cur] ? API_BASE+'/list?folder='+encodeURIComponent(cur)
+                        : API_BASE+'/list?id='+encodeURIComponent(cur);
 
-    smoothTop();
-    await lFld(f.id);
-    return;
-  }
+      var r=await fetch(url);
+      var d=await r.json();
+      var files=d.files||[];
+      var want=cln(parts[i]).toLowerCase();
+
+      var folder=files.find(function(x){
+        return (x.type==='folder'||x.mimeType==='application/vnd.google-apps.folder') &&
+               cln(x.name||'').toLowerCase()===want;
+      });
+
+      if(!folder) break;
+
+      cur=folder.id;
+      nav.push({id:folder.id,name:folder.name});
+    }
+  }catch(e){}
+
+  nav.push({id:f.id,name:name});
+  rBC();
+
+  try{
+    history.replaceState(null,'',
+      '#tab='+encodeURIComponent(root)+
+      '&fid='+encodeURIComponent(f.id)+
+      '&fn='+encodeURIComponent(name)
+    );
+  }catch(e){}
+
+  smoothTop();
+  await lFld(f.id);
+  return;
+}
 
   if(typ==='audio'){
     opPl(f.id,name);
@@ -2274,8 +2300,7 @@ function accOpenShiur(id,pos){
   },900);
 }
 
-function createPlaylistPrompt(){
-  async function openPlaylist(id,name){
+async function openPlaylist(id,name){
   var r=await fetch(API_BASE+'/user-data',{credentials:'include'});
   var d=await r.json();
 
