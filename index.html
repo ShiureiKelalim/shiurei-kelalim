@@ -2120,7 +2120,14 @@ async function loadMyShiurim(){
   h+='<button class="sbtn" onclick="createPlaylistPrompt()">+ נייע Playlist</button><br>';
   if(!d.playlists.length) h+='<div class="empb">נאך נישט דא</div>';
   d.playlists.forEach(function(p){
-    h+='<div class="fi"><div class="fii">📂</div><div class="fin">'+esc(p.name)+'</div></div>';
+    h+='<div class="fi" onclick="openPlaylist(\''+
+esc(p.id)+
+'\',\''+
+esc(p.name)+
+'\')">'+
+'<div class="fii">📂</div>'+
+'<div class="fin">'+esc(p.name)+'</div>'+
+'</div>';
   });
 
   h+='<br><button class="sbtn" onclick="loadAccountBox()">צוריק</button>';
@@ -2143,6 +2150,55 @@ function accOpenShiur(id,pos){
 }
 
 function createPlaylistPrompt(){
+  async function openPlaylist(id,name){
+  var r=await fetch(API_BASE+'/user-data',{credentials:'include'});
+  var d=await r.json();
+
+  if(!d.ok){
+    alert('מען דארף קודם אריינלאגן');
+    return;
+  }
+
+  var pl=d.playlists.find(function(x){
+    return x.id===id;
+  });
+
+  if(!pl){
+    alert('Playlist נישט געטראפן');
+    return;
+  }
+
+  var box=document.getElementById('accBox');
+
+  var h='';
+  h+='<div class="mt">📂 '+esc(name)+'</div>';
+
+  if(!pl.items || !pl.items.length){
+    h+='<div class="empb">נאך נישט דא קיין שיעורים</div>';
+  }else{
+
+    pl.items.forEach(function(x){
+
+      var nm=esc(x.shiur_name||'שיעור');
+
+      h+='<div class="fi" onclick="accOpenShiur(\''+
+          esc(x.shiur_id)+
+          '\',0,\''+
+          nm+
+          '\')">'+
+
+          '<div class="fii">▶️</div>'+
+          '<div class="fin">'+nm+'</div>'+
+      '</div>';
+
+    });
+
+  }
+
+  h+='<br><button class="sbtn" onclick="loadMyShiurim()">צוריק</button>';
+
+  box.innerHTML=h;
+}
   var name=prompt('Playlist נאמען');
   if(!name)return;
   accApi('playlist_create',{name:name}).then(loadMyShiurim);
