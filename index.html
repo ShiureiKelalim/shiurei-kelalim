@@ -2333,9 +2333,78 @@ return '<div class="acccard" onclick="'+click+'">'+
 '</div>';
 
 }
+  function createPlaylistPrompt(){
   var name=prompt('Playlist נאמען');
   if(!name)return;
   accApi('playlist_create',{name:name}).then(loadMyShiurim);
+}
+  function accBackBtn(){
+  return '<br><button class="sbtn" onclick="loadMyShiurim()">← צוריק צו מיין אקאונט</button>';
+}
+
+function showHistory(){
+  var d=ACC_DATA;
+  var h='<div class="mt">▶️ ווייטער הערן</div>';
+  if(!d.listen_history.length) h+='<div class="empb">נאך נישט דא</div>';
+  d.listen_history.forEach(function(x){
+    var name=x.shiur_name||'שיעור';
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\','+Number(x.position||0)+',\''+esc(name)+'\')"><div class="fii">▶️</div><div class="fin">'+esc(name)+'<br><small>ווייטער ביי '+formatTime(x.position||0)+'</small></div></div>';
+  });
+  document.getElementById('accBox').innerHTML=h+accBackBtn();
+}
+
+function showFavorites(){
+  var d=ACC_DATA;
+  var h='<div class="mt">❤️ Favorites</div>';
+  if(!d.favorites.length) h+='<div class="empb">נאך נישט דא</div>';
+  d.favorites.forEach(function(x){
+    var name=x.shiur_name||'Favorite שיעור';
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0,\''+esc(name)+'\')"><div class="fii">❤️</div><div class="fin">'+esc(name)+'</div></div>';
+  });
+  document.getElementById('accBox').innerHTML=h+accBackBtn();
+}
+
+function showBookmarks(){
+  var d=ACC_DATA;
+  var h='<div class="mt">🔖 Bookmarks</div>';
+  if(!d.bookmarks.length) h+='<div class="empb">נאך נישט דא</div>';
+  d.bookmarks.forEach(function(x){
+    var name=x.shiur_name||'שיעור';
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\','+Number(x.position||0)+',\''+esc(name)+'\')"><div class="fii">🔖</div><div class="fin">'+esc(x.title||name)+'<br><small>'+esc(name)+' — '+formatTime(x.position||0)+'</small></div></div>';
+  });
+  document.getElementById('accBox').innerHTML=h+accBackBtn();
+}
+
+function showPlaylists(){
+  var d=ACC_DATA;
+  var h='<div class="mt">📂 Playlists</div>';
+  h+='<button class="sbtn" onclick="createPlaylistPrompt()">+ נייע Playlist</button><br>';
+  if(!d.playlists.length) h+='<div class="empb">נאך נישט דא</div>';
+  d.playlists.forEach(function(p){
+    h+='<div class="fi" onclick="openPlaylist(\''+esc(p.id)+'\',\''+esc(p.name)+'\')"><div class="fii">📂</div><div class="fin">'+esc(p.name)+'</div></div>';
+  });
+  document.getElementById('accBox').innerHTML=h+accBackBtn();
+}
+
+function showRecent(){
+  showHistory();
+}
+
+function showStats(){
+  var d=ACC_DATA;
+  var mins=0;
+  d.listen_history.forEach(function(x){ mins+=Number(x.position||0)/60; });
+
+  var h='<div class="mt">📊 מיין פארשריט</div>';
+  h+='<div style="background:#f8f6f0;border-radius:12px;padding:14px;line-height:2;text-align:center">';
+  h+='▶️ לעצט געהערט: <b>'+d.listen_history.length+'</b><br>';
+  h+='❤️ Favorites: <b>'+d.favorites.length+'</b><br>';
+  h+='🔖 Bookmarks: <b>'+d.bookmarks.length+'</b><br>';
+  h+='📂 Playlists: <b>'+d.playlists.length+'</b><br>';
+  h+='🕒 געהערט בערך: <b>'+Math.round(mins)+'</b> מינוט';
+  h+='</div>';
+
+  document.getElementById('accBox').innerHTML=h+accBackBtn();
 }
 
 function accIsFav(id){
