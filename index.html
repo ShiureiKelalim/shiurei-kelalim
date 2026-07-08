@@ -2049,6 +2049,9 @@ var ACC_SAVE_TIMER=null;
 async function accApi(action, body){
   body=body||{};
   body.action=action;
+  if(window.curShiur && curShiur.name && !body.shiur_name){
+  body.shiur_name=curShiur.name;
+}
   var r=await fetch(API_BASE+'/user-data',{
     method:'POST',
     credentials:'include',
