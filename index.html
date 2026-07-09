@@ -2309,9 +2309,7 @@ async function openPlaylist(id,name){
     return;
   }
 
-  var pl=d.playlists.find(function(x){
-    return x.id===id;
-  });
+  var pl=d.playlists.find(function(x){ return x.id===id; });
 
   if(!pl){
     alert('Playlist נישט געטראפן');
@@ -2319,33 +2317,31 @@ async function openPlaylist(id,name){
   }
 
   var box=document.getElementById('accBox');
-
   var h='';
+
   h+='<div class="mt">📂 '+esc(name)+'</div>';
 
   if(!pl.items || !pl.items.length){
     h+='<div class="empb">נאך נישט דא קיין שיעורים</div>';
   }else{
-
     pl.items.forEach(function(x){
-
       var nm=esc(x.shiur_name||'שיעור');
 
-      h+='<div class="fi" onclick="accOpenShiur(\''+
-          esc(x.shiur_id)+
-          '\',0,\''+
+      h+='<div class="fi" style="align-items:flex-start">'+
+        '<div class="fii">▶️</div>'+
+        '<div class="fin" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0,\''+nm+'\')" style="cursor:pointer">'+
           nm+
-          '\')">'+
-
-          '<div class="fii">▶️</div>'+
-          '<div class="fin">'+nm+'</div>'+
+          '<br><small>דריק דא צו הערן</small>'+
+        '</div>'+
+        '<button class="dlbtn" style="background:#b71c1c;margin-top:5px" onclick="removePlaylistItem(\''+
+          esc(id)+'\',\''+
+          esc(x.shiur_id)+
+        '\')">🗑</button>'+
       '</div>';
-
     });
-
   }
 
-  h+='<br><button class="sbtn" onclick="loadMyShiurim()">צוריק</button>';
+  h+='<br><button class="sbtn" onclick="showPlaylists()">← צוריק צו Playlists</button>';
 
   box.innerHTML=h;
 }
