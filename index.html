@@ -2488,28 +2488,60 @@ async function accAddToPlaylist(){
   if(!d.ok){alert('מען דארף קודם אריינלאגן');return;}
 
   if(!d.playlists.length){
-    if(confirm('דו האסט נאך נישט קיין Playlist. ווילסטו יעצט מאכן איינס?')){
-      await createPlaylistPrompt();
-    }
+    closeM('plov');
+    openMyAccount();
+    showPlaylists();
+    alert('מאך קודם א Playlist');
     return;
   }
 
-  var names=d.playlists.map(function(p,i){
-    return (i+1)+') '+p.name;
-  }).join('\n');
+  var box=document.createElement('div');
+  box.className='mov open';
+  box.id='m-playlist-pick';
+  box.innerHTML=
+    '<div class="mbx">'+
+    '<button class="mx" onclick="document.getElementById(\'m-playlist-pick\').remove()">×</button>'+
+    '<div class="mi">📂</div>'+
+    '<div class="mt">לייג צו Playlist</div>'+
+    '<div id="plPickList"></div>'+
+    '</div>';
 
-  var n=prompt('וועלכע Playlist?\n'+names);
-  var idx=parseInt(n,10)-1;
-  if(isNaN(idx)||!d.playlists[idx])return;
+  document.body.appendChild(box);
+
+  var list=document.getElementById('plPickList');
+  var h='';
+
+  d.playlists.forEach(function(p){
+    h+='<div class="fi" onclick="accPickPlaylist(\''+
+      esc(p.id)+'\',\''+
+      esc(p.name)+
+      '\')">'+
+      '<div class="fii">📂</div>'+
+      '<div class="fin">'+esc(p.name)+'</div>'+
+      '</div>';
+  });
+
+  h+='<br><button class="sbtn" onclick="document.getElementById(\'m-playlist-pick\').remove();openMyAccount();showPlaylists()">+ נייע Playlist</button>';
+  list.innerHTML=h;
+}
+  async function accPickPlaylist(playlistId,name){
+  if(!curShiur||!curShiur.id)return;
 
   var res=await accApi('playlist_add',{
-    playlist_id:d.playlists[idx].id,
+    playlist_id:playlistId,
     shiur_id:curShiur.id,
     shiur_name:curShiur.name||'שיעור'
   });
 
-  if(!res.ok){alert(res.error||'נישט געלונגען');return;}
-  alert('צוגעלייגט צו Playlist');
+  var m=document.getElementById('m-playlist-pick');
+  if(m)m.remove();
+
+  if(!res.ok){
+    alert(res.error||'נישט געלונגען');
+    return;
+  }
+
+  alert('צוגעלייגט צו '+name);
 }
 
 function accSaveProgressNow(){
