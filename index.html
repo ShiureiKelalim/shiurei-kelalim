@@ -1746,8 +1746,7 @@ function closePl(){
   if(p)p.classList.remove('open');
   var d=document.getElementById('dotm');
   if(d)d.classList.remove('open');
-  try{history.pushState(null,'',location.pathname);}catch(e){}
-}
+  }
 function togDots(){var d=document.getElementById('dotm');if(d)d.classList.toggle('open');}
 document.getElementById('plov').addEventListener('click',function(e){if(e.target===this)closePl();});
 var _fIds=null;
