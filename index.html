@@ -741,6 +741,20 @@ font-weight:bold;
   color:#b08b2c;
   font-weight:bold;
 }
+  #accPlayerTools{
+  display:flex;
+  gap:6px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:8px!important;
+}
+
+#accPlayerTools button{
+  padding:6px 9px!important;
+  font-size:.72rem!important;
+  border-radius:10px!important;
+  min-width:auto!important;
+}
 </style>
 </head>
 <body>
@@ -2458,14 +2472,30 @@ function accRenderPlayerTools(){
 
   var div=document.createElement('div');
   div.id='accPlayerTools';
-  div.style.marginTop='10px';
   div.innerHTML=
-    '<button class="dlbtn" onclick="accToggleFav()">❤️ Favorite</button> '+
-    '<button class="dlbtn" onclick="accBookmark()">🔖 Bookmark</button> '+
-    '<button class="dlbtn" onclick="accAddToPlaylist()">📂 Playlist</button>';
+    '<button class="dlbtn" onclick="accJump(-15)">⏪ 15</button>'+
+    '<button class="dlbtn" onclick="accJump(30)">30 ⏩</button>'+
+    '<button class="dlbtn" onclick="accToggleFav()">❤️</button>'+
+    '<button class="dlbtn" onclick="accBookmark()">🔖</button>'+
+    '<button class="dlbtn" onclick="accAddToPlaylist()">📂</button>'+
+    '<button class="dlbtn" onclick="accSpeed()">Speed</button>';
   au.parentNode.appendChild(div);
 }
+function accJump(sec){
+  var au=document.getElementById('au');
+  if(!au)return;
+  au.currentTime=Math.max(0, au.currentTime+sec);
+}
 
+function accSpeed(){
+  var au=document.getElementById('au');
+  if(!au)return;
+  var speeds=[1,1.25,1.5,2];
+  var cur=au.playbackRate||1;
+  var i=speeds.indexOf(cur);
+  au.playbackRate=speeds[(i+1)%speeds.length];
+  alert('Speed: '+au.playbackRate+'x');
+}
 async function accToggleFav(){
   if(!curShiur||!curShiur.id)return;
   var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(r=>r.json());
