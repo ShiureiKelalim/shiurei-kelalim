@@ -2345,6 +2345,22 @@ async function openPlaylist(id,name){
 
   box.innerHTML=h;
 }
+  async function removePlaylistItem(playlistId,shiurId){
+  if(!confirm('אויסמעקן דעם שיעור פון דער Playlist?')) return;
+
+  var res=await accApi('playlist_remove',{
+    playlist_id:playlistId,
+    shiur_id:shiurId
+  });
+
+  if(!res.ok){
+    alert(res.error||'נישט געלונגען');
+    return;
+  }
+
+  alert('אויסגעמעקט');
+  showPlaylists();
+}
   function accCard(icon,title,count,click){
 
 return '<div class="acccard" onclick="'+click+'">'+
