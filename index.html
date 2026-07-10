@@ -2064,7 +2064,10 @@ if (modal) {
 })();
 
 function openMyAccount(){
-  try{history.pushState(null,'','/account');}catch(e){}
+  try{
+    history.pushState(null,'',location.pathname+'#account');
+  }catch(e){}
+
   document.getElementById('m-account').classList.add('open');
   document.body.classList.add('modal-open');
   loadAccountBox();
@@ -2073,6 +2076,10 @@ function openMyAccount(){
 function closeMyAccount(){
   document.getElementById('m-account').classList.remove('open');
   document.body.classList.remove('modal-open');
+
+  try{
+    history.pushState(null,'',location.pathname);
+  }catch(e){}
 }
 
 async function loadAccountBox(){
