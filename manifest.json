@@ -12,7 +12,7 @@
   {
     "src": "img/logo.png",
     "sizes": "1024x1024",
-    "type": "img/icon-512.png", 
+    "type": "image/png", 
     "purpose": "any maskable"
   }
 ]
