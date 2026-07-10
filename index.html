@@ -13,6 +13,103 @@
 <link rel="icon" type="image/png" href="img/icon-512.png">
 <link rel="shortcut icon" href="img/icon-512.png">
 <title>Shiurei Kelalim</title>
+  <script>
+(function(){
+  try{
+    var p = new URLSearchParams(location.search);
+    if(p.get('m')){
+      document.documentElement.classList.add('direct-modal-loading');
+    }
+  }catch(e){}
+})();
+</script>
+
+<style>
+html.direct-modal-loading body{
+  visibility:hidden;
+}
+  /* ===== RESPONSIVE TOP NAV — NO HORIZONTAL SCROLL ===== */
+@media (max-width:1100px){
+
+  .premium-nav{
+    width:100%!important;
+    min-height:52px!important;
+    height:auto!important;
+    padding:5px 7px!important;
+    gap:4px!important;
+    flex-wrap:nowrap!important;
+    overflow-x:hidden!important;
+    overflow-y:hidden!important;
+  }
+
+  .nav-side{
+    flex:1 1 20%!important;
+    min-width:0!important;
+    gap:1px!important;
+  }
+
+  .nav-main{
+    flex:1 1 60%!important;
+    min-width:0!important;
+    gap:4px!important;
+    flex-wrap:nowrap!important;
+  }
+
+  .nav-main .ntb{
+    flex:1 1 0!important;
+    min-width:0!important;
+    width:auto!important;
+    padding:7px 4px!important;
+    font-size:clamp(.54rem,1.15vw,.78rem)!important;
+    border-radius:8px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+    box-shadow:none!important;
+  }
+
+  .nav-side .nb{
+    flex:1 1 auto!important;
+    min-width:0!important;
+    padding:5px 2px!important;
+    font-size:clamp(.48rem,.9vw,.68rem)!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+  }
+
+  .nbrand{
+    min-width:0!important;
+    padding:0 2px!important;
+    font-size:clamp(.55rem,1vw,.78rem)!important;
+    overflow:hidden!important;
+    white-space:nowrap!important;
+  }
+}
+
+@media (max-width:700px){
+
+  .premium-nav{
+    padding:4px 3px!important;
+    gap:2px!important;
+  }
+
+  .nav-main{
+    gap:2px!important;
+  }
+
+  .nav-main .ntb{
+    padding:6px 2px!important;
+    font-size:clamp(.48rem,1.8vw,.66rem)!important;
+    border-radius:6px!important;
+  }
+
+  .nav-side .nb{
+    padding:4px 1px!important;
+    font-size:clamp(.43rem,1.45vw,.58rem)!important;
+  }
+}
+</style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z1GLNQLRH1"></script>
 <script>
 window.dataLayer=window.dataLayer||[];
@@ -2054,7 +2151,13 @@ var modal = p.get('m');
 
 if (modal) {
   openM(modal);
+
+  requestAnimationFrame(function(){
+    document.documentElement.classList.remove('direct-modal-loading');
+    document.body.style.visibility = 'visible';
+  });
 } else {
+  document.documentElement.classList.remove('direct-modal-loading');
   loadLatest();
   checkYomTov();
   _readHash();
