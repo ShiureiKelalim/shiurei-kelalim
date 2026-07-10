@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -758,6 +757,30 @@ font-weight:bold;
   border-radius:10px!important;
   min-width:auto!important;
 }
+
+/* ===== COMPACT ACCOUNT + PLAYER 2026-07-10 ===== */
+#m-account .mbx{max-width:560px!important;padding:18px!important}
+#m-account .mi{font-size:1.55rem;margin-bottom:2px}
+#m-account .mt{font-size:1.05rem;margin-bottom:9px}
+.accgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.acccard{background:linear-gradient(180deg,#fff,#f8f7f2);border:1px solid #e4dfd3;border-radius:12px;padding:11px 6px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(8,18,42,.07);transition:.18s;min-height:84px;display:flex;flex-direction:column;justify-content:center}
+.acccard:hover{transform:translateY(-2px);border-color:#d4af37;box-shadow:0 5px 14px rgba(8,18,42,.12)}
+.acci{font-size:1.35rem;margin-bottom:3px}.acct{font-size:.78rem;font-weight:900;color:#162d5a;line-height:1.2}.accc{margin-top:3px;font-size:.88rem;color:#a47700;font-weight:900}
+.acc-list{display:flex;flex-direction:column;gap:7px}
+.acc-row{display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,#102044,#173a72);color:#fff;border:1px solid rgba(212,175,55,.25);border-radius:11px;padding:8px 10px;min-height:52px}
+.acc-row-main{flex:1;min-width:0;cursor:pointer}.acc-row-name{font-size:.86rem;font-weight:800;line-height:1.35;overflow-wrap:anywhere}.acc-row-meta{font-size:.68rem;color:rgba(255,255,255,.68);margin-top:2px}
+.acc-row-icon{width:34px;height:34px;min-width:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);color:#f3d575}
+.acc-mini-btn{border:0;border-radius:8px;padding:6px 8px;cursor:pointer;font:700 .7rem 'Frank Ruhl Libre',serif;background:rgba(255,255,255,.12);color:#fff}.acc-mini-btn.danger{background:#8f2424}.acc-mini-btn:hover{filter:brightness(1.15)}
+.acc-section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}.acc-section-head .mt{margin:0}.acc-back{width:auto!important;padding:7px 11px!important;font-size:.75rem!important}
+.acc-empty{text-align:center;padding:22px 8px;color:#999;font-size:.82rem}
+.acc-picker{position:fixed;inset:0;background:rgba(0,0,0,.58);z-index:5200;display:flex;align-items:center;justify-content:center;padding:12px}.acc-picker-box{background:#fff;border-radius:16px;width:min(390px,96vw);max-height:76vh;overflow:auto;padding:15px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.acc-picker-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.acc-picker-title{font-size:1rem;font-weight:900;color:#162d5a}.acc-picker-close{border:0;background:#eee;width:28px;height:28px;border-radius:50%;cursor:pointer;font-weight:900}
+.acc-field{width:100%;padding:9px 11px;border:2px solid #dde3f0;border-radius:9px;font:inherit;outline:none}.acc-field:focus{border-color:#162d5a}
+.acc-actions{display:flex;gap:7px;justify-content:center;margin-top:9px}.acc-actions .sbtn{padding:8px!important;font-size:.78rem!important}
+.plbx{max-width:390px!important;border-radius:16px!important}.plvis{height:66px!important;font-size:1.8rem!important}.plbd{padding:10px 13px 11px!important}.plti{font-size:.86rem!important;margin-bottom:7px!important;max-height:2.7em;overflow:auto}.plbd audio{height:38px!important}.dotsb{font-size:1.15rem!important;margin-top:1px!important;padding:1px 7px!important}.plcp{margin-top:4px!important;font-size:.58rem!important}
+#accPlayerTools{display:grid!important;grid-template-columns:repeat(6,1fr);gap:5px!important;margin-top:7px!important}#accPlayerTools button{margin:0!important;padding:6px 3px!important;min-width:0!important;border-radius:8px!important;font-size:.68rem!important;background:#162d5a!important;color:#fff!important}#accPlayerTools button.is-fav{background:#a51622!important;color:#fff!important}#accPlayerTools button:hover{filter:brightness(1.13)}
+@media(max-width:480px){.accgrid{grid-template-columns:repeat(2,1fr)}#m-account .mbx{padding:14px!important}.plbx{max-width:360px!important}}
+
 </style>
 </head>
 <body>
@@ -2037,609 +2060,198 @@ if (modal) {
   _readHash();
 }
   /* ===== MY ACCOUNT UI START ===== */
+var ACC_DATA={progress:[],favorites:[],bookmarks:[],playlists:[],playlist_items:[],listen_history:[]};
+var ACC_SAVE_TIMER=null;
+var ACC_RETURN_HASH='';
+var ACC_OPEN_PLAYLIST=null;
+
 (function(){
   var navRight=document.querySelector('.nav-side-right');
   if(navRight && !document.getElementById('myAccountBtn')){
     var b=document.createElement('button');
-    b.id='myAccountBtn';
-    b.className='nb';
-    b.textContent='מיין אקאונט';
-    b.onclick=function(){openMyAccount();};
-    navRight.insertBefore(b, navRight.firstChild);
+    b.id='myAccountBtn'; b.className='nb'; b.textContent='מיין אקאונט';
+    b.onclick=openMyAccount;
+    navRight.insertBefore(b,navRight.firstChild);
   }
-
   if(!document.getElementById('m-account')){
     var d=document.createElement('div');
-    d.id='m-account';
-    d.className='mov';
-    d.innerHTML =
-      '<button class="mov-back" onclick="closeMyAccount()">← צוריק</button>'+
-      '<div class="mbx">'+
-      '<button class="mx" onclick="closeMyAccount()">×</button>'+
-      '<div class="mi">👤</div>'+
-      '<div class="mt">מיין אקאונט</div>'+
-      '<div id="accBox"></div>'+
-      '</div>';
+    d.id='m-account'; d.className='mov';
+    d.innerHTML='<button class="mov-back" onclick="closeMyAccount()">← צוריק</button>'+ 
+      '<div class="mbx"><button class="mx" onclick="closeMyAccount()">×</button>'+ 
+      '<div class="mi">👤</div><div class="mt" id="accModalTitle">מיין אקאונט</div><div id="accBox"></div></div>';
     document.body.appendChild(d);
   }
+  setTimeout(function(){
+    if(location.hash==='#account'||location.hash.indexOf('#account-')===0) openMyAccount(true);
+  },100);
 })();
 
-function openMyAccount(){
-  try{
-    history.pushState(null,'',location.pathname+'#account');
-  }catch(e){}
-
+function accSetRoute(route,title,replace){
+  document.title=title+' - שיעורי כללים';
+  try{history[replace?'replaceState':'pushState'](null,'',location.pathname+'#'+route);}catch(e){}
+}
+function openMyAccount(fromHash){
+  if(!fromHash && location.hash.indexOf('#account')!==0) ACC_RETURN_HASH=location.hash||'';
   document.getElementById('m-account').classList.add('open');
   document.body.classList.add('modal-open');
+  accSetRoute('account','מיין אקאונט',!!fromHash);
   loadAccountBox();
 }
-
 function closeMyAccount(){
   document.title='שיעורי כללים';
   document.getElementById('m-account').classList.remove('open');
   document.body.classList.remove('modal-open');
-
-  try{
-    history.pushState(null,'',location.pathname);
-  }catch(e){}
+  accClosePicker();
+  try{history.replaceState(null,'',location.pathname+(ACC_RETURN_HASH||''));}catch(e){}
 }
+function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function jsq(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,' ');}
 
 async function loadAccountBox(){
-  var box=document.getElementById('accBox');
-  box.innerHTML='<div class="loading">לאודינג...</div>';
-
+  var box=document.getElementById('accBox'); box.innerHTML='<div class="loading">לאודינג...</div>';
   try{
-    var r=await fetch(API_BASE+'/auth/me',{credentials:'include'});
-    var d=await r.json();
-
-    if(d.ok && d.logged_in){
-      box.innerHTML=
-        '<div class="okm">איר זענט אריינגעלאגט אלס<br><b>'+esc(d.user.full_name||d.user.email)+'</b></div>'+
-        '<button class="sbtn" onclick="loadMyShiurim()">מיינע שיעורים</button>'+
-        '<br><button class="sbtn" onclick="logoutAccount()">ארויסלאגן</button>';
-    }else{
-      showLoginForm();
-    }
-  }catch(e){
-    showLoginForm();
-  }
+    var r=await fetch(API_BASE+'/auth/me',{credentials:'include'}),d=await r.json();
+    if(d.ok&&d.logged_in){
+      document.getElementById('accModalTitle').textContent='מיין אקאונט';
+      box.innerHTML='<div class="okm" style="padding:6px 0 10px">איר זענט אריינגעלאגט אלס <b>'+esc(d.user.full_name||d.user.email)+'</b></div>'+ 
+        '<button class="sbtn" onclick="loadMyShiurim()">מיינע שיעורים</button>'+ 
+        '<button class="sbtn" style="margin-top:7px;background:#777" onclick="logoutAccount()">ארויסלאגן</button>';
+    }else showLoginForm();
+  }catch(e){showLoginForm();}
 }
-
 function showLoginForm(){
-  document.getElementById('accBox').innerHTML=
-    '<div class="fld"><label>אימעל</label><input id="accEmail" type="email"></div>'+
-    '<div class="fld"><label>פעסווארד</label><input id="accPass" type="password"></div>'+
-    '<button class="sbtn" onclick="loginAccount()">אריינלאגן</button>'+
-    '<div class="erm" id="accErr"></div>'+
-    '<br><button class="sbtn" onclick="showRegisterForm()">קרעיט אקאונט</button>';
+  document.getElementById('accModalTitle').textContent='מיין אקאונט';
+  document.getElementById('accBox').innerHTML='<div class="fld"><label>אימעל</label><input id="accEmail" type="email"></div>'+ 
+    '<div class="fld"><label>פעסווארד</label><input id="accPass" type="password" onkeyup="if(event.key===\'Enter\')loginAccount()"></div>'+ 
+    '<button class="sbtn" onclick="loginAccount()">אריינלאגן</button><div class="erm" id="accErr"></div>'+ 
+    '<button class="sbtn" style="margin-top:7px;background:#777" onclick="showRegisterForm()">קרעיט אקאונט</button>';
 }
-
 function showRegisterForm(){
-  document.getElementById('accBox').innerHTML=
-    '<div class="fld"><label>גאנצע נאמען</label><input id="regName"></div>'+
-    '<div class="fld"><label>אימעל</label><input id="regEmail" type="email"></div>'+
-    '<div class="fld"><label>פעסווארד</label><input id="regPass" type="password"></div>'+
-    '<div class="fld"><label>רי-ענטער פעסווארד</label><input id="regPass2" type="password"></div>'+
-    '<label style="display:block;margin:10px 0;color:#444"><input id="regSub" type="checkbox"> איך וויל באקומען נייע שיעורים אויפן אימעל</label>'+
-    '<button class="sbtn" onclick="registerAccount()">מאך אקאונט</button>'+
-    '<div class="erm" id="accErr"></div>'+
-    '<br><button class="sbtn" onclick="showLoginForm()">צוריק צו Login</button>';
+  document.getElementById('accBox').innerHTML='<div class="fld"><label>גאנצע נאמען</label><input id="regName"></div>'+ 
+    '<div class="fld"><label>אימעל</label><input id="regEmail" type="email"></div>'+ 
+    '<div class="fld"><label>פעסווארד</label><input id="regPass" type="password"></div>'+ 
+    '<div class="fld"><label>רי-ענטער פעסווארד</label><input id="regPass2" type="password"></div>'+ 
+    '<label style="display:block;margin:8px 0;color:#444;font-size:.82rem"><input id="regSub" type="checkbox"> באקומען נייע שיעורים אויפן אימעל</label>'+ 
+    '<button class="sbtn" onclick="registerAccount()">מאך אקאונט</button><div class="erm" id="accErr"></div>'+ 
+    '<button class="sbtn" style="margin-top:7px;background:#777" onclick="showLoginForm()">צוריק צו Login</button>';
 }
-
-function esc(s){
-  return String(s||'').replace(/[&<>"']/g,function(c){
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-  });
+async function registerAccount(){
+  var err=document.getElementById('accErr');err.style.display='none';
+  var body={full_name:regName.value.trim(),email:regEmail.value.trim(),password:regPass.value,password2:regPass2.value,email_subscribed:regSub.checked};
+  var r=await fetch(API_BASE+'/auth/register',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}),d=await r.json();
+  if(!d.ok){err.textContent=d.error||'עס איז געשען א טעות';err.style.display='block';return;} showVerifyForm(body.email);
 }
-/* ===== MY ACCOUNT UI END ===== */
-  async function registerAccount(){
-  var err=document.getElementById('accErr');
-  err.style.display='none';
-
-  var body={
-    full_name:document.getElementById('regName').value.trim(),
-    email:document.getElementById('regEmail').value.trim(),
-    password:document.getElementById('regPass').value,
-    password2:document.getElementById('regPass2').value,
-    email_subscribed:document.getElementById('regSub').checked
-  };
-
-  var r=await fetch(API_BASE+'/auth/register',{
-    method:'POST',
-    credentials:'include',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(body)
-  });
-  var d=await r.json();
-
-  if(!d.ok){
-    err.textContent=d.error||'עס איז געשען א טעות';
-    err.style.display='block';
-    return;
-  }
-
-  showVerifyForm(body.email);
-}
-
-function showVerifyForm(email){
-  document.getElementById('accBox').innerHTML=
-    '<div class="okm">א קאוד איז געשיקט געווארן צו:<br><b>'+esc(email)+'</b></div>'+
-    '<div class="fld"><label>וועריפיקאציע קאוד</label><input id="verifyCode" inputmode="numeric"></div>'+
-    '<button class="sbtn" onclick="verifyAccount(\''+esc(email)+'\')">וועריפיי</button>'+
-    '<div class="erm" id="accErr"></div>';
-}
-
+function showVerifyForm(email){document.getElementById('accBox').innerHTML='<div class="okm">א קאוד איז געשיקט געווארן צו:<br><b>'+esc(email)+'</b></div><div class="fld"><label>וועריפיקאציע קאוד</label><input id="verifyCode" inputmode="numeric"></div><button class="sbtn" onclick="verifyAccount(\''+jsq(email)+'\')">וועריפיי</button><div class="erm" id="accErr"></div>';}
 async function verifyAccount(email){
-  var err=document.getElementById('accErr');
-  err.style.display='none';
-
-  var r=await fetch(API_BASE+'/auth/verify',{
-    method:'POST',
-    credentials:'include',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      email:email,
-      code:document.getElementById('verifyCode').value.trim()
-    })
-  });
-  var d=await r.json();
-
-  if(!d.ok){
-    err.textContent=d.error||'קאוד איז נישט ריכטיג';
-    err.style.display='block';
-    return;
-  }
-
-  document.getElementById('accBox').innerHTML=
-    '<div class="okm">אימעל וועריפייד בהצלחה! יעצט קענט איר אריינלאגן.</div>'+
-    '<button class="sbtn" onclick="showLoginForm()">גיי צו Login</button>';
+  var err=document.getElementById('accErr');err.style.display='none';
+  var r=await fetch(API_BASE+'/auth/verify',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,code:verifyCode.value.trim()})}),d=await r.json();
+  if(!d.ok){err.textContent=d.error||'קאוד איז נישט ריכטיג';err.style.display='block';return;}
+  document.getElementById('accBox').innerHTML='<div class="okm">אימעל וועריפייד בהצלחה!</div><button class="sbtn" onclick="showLoginForm()">גיי צו Login</button>';
 }
-
 async function loginAccount(){
-  var err=document.getElementById('accErr');
-  err.style.display='none';
-
-  var r=await fetch(API_BASE+'/auth/login',{
-    method:'POST',
-    credentials:'include',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      email:document.getElementById('accEmail').value.trim(),
-      password:document.getElementById('accPass').value
-    })
-  });
-  var d=await r.json();
-
-  if(!d.ok){
-    err.textContent=d.error||'Login איז נישט געלונגען';
-    err.style.display='block';
-    return;
-  }
-
-  loadAccountBox();
+  var err=document.getElementById('accErr');err.style.display='none';
+  var r=await fetch(API_BASE+'/auth/login',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:accEmail.value.trim(),password:accPass.value})}),d=await r.json();
+  if(!d.ok){err.textContent=d.error||'Login איז נישט געלונגען';err.style.display='block';return;} loadMyShiurim();
 }
+async function logoutAccount(){await fetch(API_BASE+'/auth/logout',{credentials:'include'});showLoginForm();}
+async function accApi(action,body){body=body||{};body.action=action;if(window.curShiur&&curShiur.name&&!body.shiur_name)body.shiur_name=curShiur.name;var r=await fetch(API_BASE+'/user-data',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return await r.json();}
 
-async function logoutAccount(){
-  await fetch(API_BASE+'/auth/logout',{credentials:'include'});
-  showLoginForm();
-}
-
-var ACC_DATA={progress:[],favorites:[],bookmarks:[],playlists:[],playlist_items:[],listen_history:[]};
-var ACC_SAVE_TIMER=null;
-
-async function accApi(action, body){
-  body=body||{};
-  body.action=action;
-  if(window.curShiur && curShiur.name && !body.shiur_name){
-  body.shiur_name=curShiur.name;
-}
-  var r=await fetch(API_BASE+'/user-data',{
-    method:'POST',
-    credentials:'include',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(body)
-  });
-  return await r.json();
-}
+function accCard(icon,title,count,click){return '<div class="acccard" onclick="'+click+'"><div class="acci">'+icon+'</div><div class="acct">'+title+'</div><div class="accc">'+(count===''?'&nbsp;':count)+'</div></div>';}
+function accHead(title){return '<div class="acc-section-head"><button class="sbtn acc-back" onclick="loadMyShiurim()">← צוריק</button><div class="mt">'+title+'</div><span style="width:58px"></span></div>';}
+function formatTime(sec){sec=Math.max(0,Math.floor(Number(sec||0)));var h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;return (h?h+':':'')+(h&&m<10?'0':'')+m+':'+(s<10?'0':'')+s;}
+function accDate(v){if(!v)return '';try{return new Date(v).toLocaleDateString();}catch(e){return '';}}
 
 async function loadMyShiurim(){
-  var box=document.getElementById('accBox');
-  box.innerHTML='<div class="loading">לאודינג מיינע שיעורים...</div>';
-
-  var r=await fetch(API_BASE+'/user-data',{credentials:'include'});
-  var d=await r.json();
-
-  if(!d.ok){
-    box.innerHTML='<div class="errb">'+esc(d.error||'מען דארף אריינלאגן')+'</div>';
-    return;
-  }
-
-  ACC_DATA=d;
-
-  var h='';
- var h='';
-
-h+='<div class="mt">מיין אקאונט</div>';
-
-h+='<div class="accgrid">';
-
-h+=accCard(
-'▶️',
-'ווייטער הערן',
-d.listen_history.length,
-"showHistory()"
-);
-
-h+=accCard(
-'❤️',
-'Favorites',
-d.favorites.length,
-"showFavorites()"
-);
-
-h+=accCard(
-'🔖',
-'Bookmarks',
-d.bookmarks.length,
-"showBookmarks()"
-);
-
-h+=accCard(
-'📂',
-'Playlists',
-d.playlists.length,
-"showPlaylists()"
-);
-
-h+=accCard(
-'🕘',
-'לעצט געהערט',
-d.listen_history.length,
-"showRecent()"
-);
-
-h+=accCard(
-'📊',
-'מיין פארשריט',
-'',
-"showStats()"
-);
-
-h+='</div>';
-
-box.innerHTML=h;
-  box.innerHTML=h;
+  var box=document.getElementById('accBox');box.innerHTML='<div class="loading">לאודינג...</div>';
+  var r=await fetch(API_BASE+'/user-data',{credentials:'include'}),d=await r.json();
+  if(!d.ok){box.innerHTML='<div class="errb">'+esc(d.error||'מען דארף אריינלאגן')+'</div>';return;}
+  ACC_DATA=d;ACC_DATA.listen_history=dedupeHistory(d.listen_history||[]);
+  document.getElementById('accModalTitle').textContent='מיין אקאונט';accSetRoute('account','מיין אקאונט',true);
+  box.innerHTML='<div class="accgrid">'+
+    accCard('▶️','ווייטער הערן',ACC_DATA.listen_history.length,'showHistory()')+
+    accCard('❤️','Favorites',d.favorites.length,'showFavorites()')+
+    accCard('🔖','Bookmarks',d.bookmarks.length,'showBookmarks()')+
+    accCard('📂','Playlists',d.playlists.length,'showPlaylists()')+
+    accCard('🕘','לעצט געהערט',ACC_DATA.listen_history.length,'showRecent()')+
+    accCard('📊','מיין פארשריט','', 'showStats()')+'</div>';
 }
-
-function formatTime(sec){
-  sec=Math.floor(Number(sec||0));
-  var m=Math.floor(sec/60), s=sec%60;
-  return m+':'+(s<10?'0':'')+s;
+function dedupeHistory(arr){var seen={},out=[];(arr||[]).forEach(function(x){if(!seen[x.shiur_id]){seen[x.shiur_id]=1;out.push(x);}});return out.slice(0,5);}
+function accOpenShiur(id,pos,name){closeMyAccount();opPl(id,name||'שיעור');setTimeout(function(){var au=document.getElementById('au');if(au&&pos){try{au.currentTime=Number(pos)||0;}catch(e){}}},700);}
+function accRow(icon,name,meta,click,actions){return '<div class="acc-row"><div class="acc-row-icon">'+icon+'</div><div class="acc-row-main" onclick="'+click+'"><div class="acc-row-name">'+esc(name)+'</div>'+(meta?'<div class="acc-row-meta">'+meta+'</div>':'')+'</div>'+(actions||'')+'</div>';}
+function showHistory(){
+  accSetRoute('account-history','ווייטער הערן');var d=ACC_DATA,h=accHead('▶️ ווייטער הערן')+'<div class="acc-list">';
+  if(!d.listen_history.length)h+='<div class="acc-empty">נאך נישט דא</div>';
+  d.listen_history.forEach(function(x){var n=x.shiur_name||'שיעור';h+=accRow('▶️',n,'ווייטער ביי '+formatTime(x.position||0),"accOpenShiur('"+jsq(x.shiur_id)+"',"+Number(x.position||0)+",'"+jsq(n)+"')");});
+  document.getElementById('accBox').innerHTML=h+'</div>';
 }
-
-function accOpenShiur(id,pos){
-  closeMyAccount();
-  opPl(id,'שיעור');
-  setTimeout(function(){
-    var au=document.getElementById('au');
-    if(au && pos) au.currentTime=pos;
-  },900);
+function showRecent(){accSetRoute('account-recent','לעצט געהערט');showHistory();accSetRoute('account-recent','לעצט געהערט',true);document.querySelector('#accBox .mt').textContent='🕘 לעצט געהערט';}
+function showFavorites(){
+  accSetRoute('account-favorites','Favorites');var d=ACC_DATA,h=accHead('❤️ Favorites')+'<div class="acc-list">';
+  if(!d.favorites.length)h+='<div class="acc-empty">נאך נישט דא</div>';
+  d.favorites.forEach(function(x){var n=x.shiur_name||'שיעור';h+=accRow('❤️',n,accDate(x.added_at),"accOpenShiur('"+jsq(x.shiur_id)+"',0,'"+jsq(n)+"')",'<button class="acc-mini-btn danger" onclick="event.stopPropagation();accRemoveFavorite(\''+jsq(x.shiur_id)+'\')">🗑</button>');});
+  document.getElementById('accBox').innerHTML=h+'</div>';
+}
+async function accRemoveFavorite(id){var r=await accApi('favorite_remove',{shiur_id:id});if(!r.ok){alert(r.error||'נישט געלונגען');return;}await loadMyShiurim();showFavorites();}
+function showBookmarks(){
+  accSetRoute('account-bookmarks','Bookmarks');var d=ACC_DATA,h=accHead('🔖 Bookmarks')+'<div class="acc-list">';
+  if(!d.bookmarks.length)h+='<div class="acc-empty">נאך נישט דא</div>';
+  d.bookmarks.forEach(function(x){var n=x.shiur_name||'שיעור',t=x.title||n;h+=accRow('🔖',t,esc(n)+' — '+formatTime(x.position||0),"accOpenShiur('"+jsq(x.shiur_id)+"',"+Number(x.position||0)+",'"+jsq(n)+"')",'<button class="acc-mini-btn danger" onclick="event.stopPropagation();accRemoveBookmark(\''+jsq(x.id)+'\')">🗑</button>');});
+  document.getElementById('accBox').innerHTML=h+'</div>';
+}
+async function accRemoveBookmark(id){var r=await accApi('bookmark_remove',{id:id});if(!r.ok){alert(r.error||'נישט געלונגען');return;}await loadMyShiurim();showBookmarks();}
+function showPlaylists(){
+  accSetRoute('account-playlists','Playlists');var d=ACC_DATA,h=accHead('📂 Playlists')+'<button class="sbtn" style="padding:8px;margin-bottom:9px" onclick="createPlaylistPrompt()">+ נייע Playlist</button><div class="acc-list">';
+  if(!d.playlists.length)h+='<div class="acc-empty">נאך נישט דא</div>';
+  d.playlists.forEach(function(p){var count=(p.items||[]).length;h+=accRow('📂',p.name,count+' שיעורים',"openPlaylist('"+jsq(p.id)+"','"+jsq(p.name)+"')");});
+  document.getElementById('accBox').innerHTML=h+'</div>';
+}
+function showStats(){
+  accSetRoute('account-stats','מיין פארשריט');var d=ACC_DATA,total=0;(d.progress||[]).forEach(function(x){total+=Number(x.position||0);});
+  var hrs=Math.floor(total/3600),mins=Math.round((total%3600)/60),heard=(d.progress||[]).length;
+  document.getElementById('accBox').innerHTML=accHead('📊 מיין פארשריט')+'<div class="accgrid">'+accCard('🎧','שיעורים',heard,'void(0)')+accCard('🕒','הער־צייט',hrs+'ש '+mins+'מ','void(0)')+accCard('❤️','Favorites',d.favorites.length,'void(0)')+accCard('🔖','Bookmarks',d.bookmarks.length,'void(0)')+accCard('📂','Playlists',d.playlists.length,'void(0)')+'</div>';
 }
 
 async function openPlaylist(id,name){
-  var r=await fetch(API_BASE+'/user-data',{credentials:'include'});
-  var d=await r.json();
-
-  if(!d.ok){
-    alert('מען דארף קודם אריינלאגן');
-    return;
-  }
-
-  var pl=d.playlists.find(function(x){ return x.id===id; });
-
-  if(!pl){
-    alert('Playlist נישט געטראפן');
-    return;
-  }
-
-  var box=document.getElementById('accBox');
-  var h='';
-
-  h+='<div class="mt">📂 '+esc(name)+'</div>';
-
-  if(!pl.items || !pl.items.length){
-    h+='<div class="empb">נאך נישט דא קיין שיעורים</div>';
-  }else{
-    pl.items.forEach(function(x){
-      var nm=esc(x.shiur_name||'שיעור');
-
-      h+='<div class="fi" style="align-items:flex-start">'+
-        '<div class="fii">▶️</div>'+
-        '<div class="fin" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0,\''+nm+'\')" style="cursor:pointer">'+
-          nm+
-          '<br><small>דריק דא צו הערן</small>'+
-        '</div>'+
-        '<button class="dlbtn" style="background:#b71c1c;margin-top:5px" onclick="removePlaylistItem(\''+
-          esc(id)+'\',\''+
-          esc(x.shiur_id)+
-        '\')">🗑</button>'+
-      '</div>';
-    });
-  }
-
-  h+='<br><button class="sbtn" onclick="showPlaylists()">← צוריק צו Playlists</button>';
-
-  box.innerHTML=h;
+  ACC_OPEN_PLAYLIST={id:id,name:name};accSetRoute('account-playlist-'+encodeURIComponent(id),name);
+  var r=await fetch(API_BASE+'/user-data',{credentials:'include'}),d=await r.json();if(!d.ok){alert('מען דארף קודם אריינלאגן');return;}
+  ACC_DATA=d;var pl=d.playlists.find(function(x){return x.id===id;}),box=document.getElementById('accBox');if(!pl){alert('Playlist נישט געטראפן');return;}
+  var h='<div class="acc-section-head"><button class="sbtn acc-back" onclick="showPlaylists()">← צוריק</button><div class="mt">📂 '+esc(name)+'</div><span style="width:58px"></span></div><div class="acc-list">';
+  if(!pl.items||!pl.items.length)h+='<div class="acc-empty">נאך נישט דא קיין שיעורים</div>';
+  (pl.items||[]).forEach(function(x){var n=x.shiur_name||'שיעור';h+=accRow('▶️',n,'דריק צו הערן',"accOpenShiur('"+jsq(x.shiur_id)+"',0,'"+jsq(n)+"')",'<button class="acc-mini-btn danger" onclick="event.stopPropagation();removePlaylistItem(\''+jsq(id)+'\',\''+jsq(x.shiur_id)+'\')">🗑</button>');});
+  box.innerHTML=h+'</div>';
 }
-  async function removePlaylistItem(playlistId,shiurId){
-  if(!confirm('אויסמעקן דעם שיעור פון דער Playlist?')) return;
+async function removePlaylistItem(playlistId,shiurId){if(!confirm('אויסמעקן דעם שיעור פון דער Playlist?'))return;var r=await accApi('playlist_remove',{playlist_id:playlistId,shiur_id:shiurId});if(!r.ok){alert(r.error||'נישט געלונגען');return;}openPlaylist(ACC_OPEN_PLAYLIST.id,ACC_OPEN_PLAYLIST.name);}
 
-  var res=await accApi('playlist_remove',{
-    playlist_id:playlistId,
-    shiur_id:shiurId
-  });
+function accPicker(title,html){accClosePicker();var d=document.createElement('div');d.id='accPicker';d.className='acc-picker';d.innerHTML='<div class="acc-picker-box"><div class="acc-picker-top"><div class="acc-picker-title">'+title+'</div><button class="acc-picker-close" onclick="accClosePicker()">×</button></div>'+html+'</div>';document.body.appendChild(d);}
+function accClosePicker(){var x=document.getElementById('accPicker');if(x)x.remove();}
+function createPlaylistPrompt(){accPicker('נייע Playlist','<input class="acc-field" id="accNewPlaylist" placeholder="Playlist נאמען"><div class="acc-actions"><button class="sbtn" onclick="accCreatePlaylistNow()">שאפן</button><button class="sbtn" style="background:#777" onclick="accClosePicker()">פארמאכן</button></div>');setTimeout(function(){var i=document.getElementById('accNewPlaylist');if(i)i.focus();},50);}
+async function accCreatePlaylistNow(){var i=document.getElementById('accNewPlaylist'),name=(i?i.value:'').trim();if(!name)return;var r=await accApi('playlist_create',{name:name});if(!r.ok){alert(r.error||'נישט געלונגען');return;}accClosePicker();await loadMyShiurim();showPlaylists();}
 
-  if(!res.ok){
-    alert(res.error||'נישט געלונגען');
-    return;
-  }
-
-  alert('אויסגעמעקט');
-  showPlaylists();
+function accIsFav(id){return (ACC_DATA.favorites||[]).some(function(x){return x.shiur_id===id;});}
+async function accRenderPlayerTools(){
+  if(!window.curShiur||!curShiur.id)return;var au=document.getElementById('au');if(!au)return;var old=document.getElementById('accPlayerTools');if(old)old.remove();
+  var fav=false;try{var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});if(d.ok){ACC_DATA=d;fav=accIsFav(curShiur.id);}}catch(e){}
+  var div=document.createElement('div');div.id='accPlayerTools';div.innerHTML='<button onclick="accJump(-15)" title="15 סעקונדעס צוריק">−15</button><button onclick="accJump(30)" title="30 סעקונדעס פארויס">+30</button><button id="accFavBtn" class="'+(fav?'is-fav':'')+'" onclick="accToggleFav()" title="Favorite">♥</button><button onclick="accBookmark()" title="Bookmark">🔖</button><button onclick="accAddToPlaylist()" title="Playlist">📂</button><button id="accSpeedBtn" onclick="accSpeed()" title="Speed">1×</button>';au.parentNode.appendChild(div);
 }
-  function accCard(icon,title,count,click){
-
-return '<div class="acccard" onclick="'+click+'">'+
-'<div class="acci">'+icon+'</div>'+
-'<div class="acct">'+title+'</div>'+
-'<div class="accc">'+count+'</div>'+
-'</div>';
-
-}
-  function createPlaylistPrompt(){
-  var name=prompt('Playlist נאמען');
-  if(!name)return;
-  accApi('playlist_create',{name:name}).then(loadMyShiurim);
-}
-  function accBackBtn(){
-  return '<br><button class="sbtn" onclick="loadMyShiurim()">← צוריק צו מיין אקאונט</button>';
-}
-
-function showHistory(){
-  document.title='▶️ ווייטער הערן - שיעורי כללים';
-  var d=ACC_DATA;
-  var h='<div class="mt">▶️ ווייטער הערן</div>';
-  if(!d.listen_history.length) h+='<div class="empb">נאך נישט דא</div>';
-  d.listen_history.forEach(function(x){
-    var name=x.shiur_name||'שיעור';
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\','+Number(x.position||0)+',\''+esc(name)+'\')"><div class="fii">▶️</div><div class="fin">'+esc(name)+'<br><small>ווייטער ביי '+formatTime(x.position||0)+'</small></div></div>';
-  });
-  document.getElementById('accBox').innerHTML=h+accBackBtn();
-}
-
-function showFavorites(){
-  document.title='❤️ Favorites - שיעורי כללים';
-
-  var d=ACC_DATA;
-  var h='<div class="mt">❤️ Favorites</div>';
-
-  if(!d.favorites.length){
-    h+='<div class="empb">נאך נישט דא</div>';
-  }
-
-  d.favorites.forEach(function(x){
-    var name=x.shiur_name||'Favorite שיעור';
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0,\''+esc(name)+'\')">'+
-      '<div class="fii">❤️</div>'+
-      '<div class="fin">'+esc(name)+'</div>'+
-    '</div>';
-  });
-
-  document.getElementById('accBox').innerHTML=h+accBackBtn();
-}
-
-function showBookmarks(){
-  document.title='🔖 Bookmarks - שיעורי כללים';
-  var d=ACC_DATA;
-  var h='<div class="mt">🔖 Bookmarks</div>';
-  if(!d.bookmarks.length) h+='<div class="empb">נאך נישט דא</div>';
-  d.bookmarks.forEach(function(x){
-    var name=x.shiur_name||'שיעור';
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\','+Number(x.position||0)+',\''+esc(name)+'\')"><div class="fii">🔖</div><div class="fin">'+esc(x.title||name)+'<br><small>'+esc(name)+' — '+formatTime(x.position||0)+'</small></div></div>';
-  });
-  document.getElementById('accBox').innerHTML=h+accBackBtn();
-}
-
-function showPlaylists(){
-  document.title='📂 Playlists - שיעורי כללים';
-  var d=ACC_DATA;
-  var h='<div class="mt">📂 Playlists</div>';
-  h+='<button class="sbtn" onclick="createPlaylistPrompt()">+ נייע Playlist</button><br>';
-  if(!d.playlists.length) h+='<div class="empb">נאך נישט דא</div>';
-  d.playlists.forEach(function(p){
-    h+='<div class="fi" onclick="openPlaylist(\''+esc(p.id)+'\',\''+esc(p.name)+'\')"><div class="fii">📂</div><div class="fin">'+esc(p.name)+'</div></div>';
-  });
-  document.getElementById('accBox').innerHTML=h+accBackBtn();
-}
-
-function showRecent(){
-  showHistory();
-}
-
-function showStats(){
-  document.title='📊 מיין פארשריט - שיעורי כללים';
-  var d=ACC_DATA;
-  var mins=0;
-  d.listen_history.forEach(function(x){ mins+=Number(x.position||0)/60; });
-
-  var h='<div class="mt">📊 מיין פארשריט</div>';
-  h+='<div style="background:#f8f6f0;border-radius:12px;padding:14px;line-height:2;text-align:center">';
-  h+='▶️ לעצט געהערט: <b>'+d.listen_history.length+'</b><br>';
-  h+='❤️ Favorites: <b>'+d.favorites.length+'</b><br>';
-  h+='🔖 Bookmarks: <b>'+d.bookmarks.length+'</b><br>';
-  h+='📂 Playlists: <b>'+d.playlists.length+'</b><br>';
-  h+='🕒 געהערט בערך: <b>'+Math.round(mins)+'</b> מינוט';
-  h+='</div>';
-
-  document.getElementById('accBox').innerHTML=h+accBackBtn();
-}
-
-function accIsFav(id){
-  return ACC_DATA.favorites.some(function(x){return x.shiur_id===id;});
-}
-
-function accRenderPlayerTools(){
-  if(!window.curShiur || !curShiur.id)return;
-  var au=document.getElementById('au');
-  if(!au)return;
-
-  var old=document.getElementById('accPlayerTools');
-  if(old)old.remove();
-
-  var div=document.createElement('div');
-  div.id='accPlayerTools';
-  div.innerHTML=
-    '<button class="dlbtn" onclick="accJump(-15)">⏪ 15</button>'+
-    '<button class="dlbtn" onclick="accJump(30)">30 ⏩</button>'+
-    '<button class="dlbtn" onclick="accToggleFav()">❤️</button>'+
-    '<button class="dlbtn" onclick="accBookmark()">🔖</button>'+
-    '<button class="dlbtn" onclick="accAddToPlaylist()">📂</button>'+
-    '<button class="dlbtn" onclick="accSpeed()">Speed</button>';
-  au.parentNode.appendChild(div);
-}
-function accJump(sec){
-  var au=document.getElementById('au');
-  if(!au)return;
-  au.currentTime=Math.max(0, au.currentTime+sec);
-}
-
-function accSpeed(){
-  var au=document.getElementById('au');
-  if(!au)return;
-  var speeds=[1,1.25,1.5,2];
-  var cur=au.playbackRate||1;
-  var i=speeds.indexOf(cur);
-  au.playbackRate=speeds[(i+1)%speeds.length];
-  alert('Speed: '+au.playbackRate+'x');
-}
+function accJump(sec){var au=document.getElementById('au');if(au)au.currentTime=Math.max(0,au.currentTime+sec);}
+function accSpeed(){var au=document.getElementById('au');if(!au)return;var a=[1,1.25,1.5,2],i=a.indexOf(au.playbackRate||1);au.playbackRate=a[(i+1)%a.length];var b=document.getElementById('accSpeedBtn');if(b)b.textContent=au.playbackRate+'×';}
 async function accToggleFav(){
-  if(!curShiur||!curShiur.id)return;
-  var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(r=>r.json());
-  if(!d.ok){alert('מען דארף קודם אריינלאגן');return;}
-  ACC_DATA=d;
-  if(accIsFav(curShiur.id)){
-    await accApi('favorite_remove',{shiur_id:curShiur.id});
-    alert('אראפגענומען פון Favorites');
-  }else{
-    await accApi('favorite_add',{shiur_id:curShiur.id});
-    alert('צוגעלייגט צו Favorites');
-  }
+  if(!curShiur||!curShiur.id)return;var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});if(!d.ok){openMyAccount();return;}ACC_DATA=d;var add=!accIsFav(curShiur.id),r=await accApi(add?'favorite_add':'favorite_remove',{shiur_id:curShiur.id,shiur_name:curShiur.name||'שיעור'});if(!r.ok){alert(r.error||'נישט געלונגען');return;}var b=document.getElementById('accFavBtn');if(b)b.classList.toggle('is-fav',add);
 }
-
-async function accBookmark(){
-  if(!curShiur||!curShiur.id)return;
-  var au=document.getElementById('au');
-  var title=prompt('נאמען פאר Bookmark (אפשענאל)','');
-  var d=await accApi('bookmark_add',{
-    shiur_id:curShiur.id,
-    position:au?au.currentTime:0,
-    title:title||''
-  });
-  if(!d.ok){alert(d.error||'נישט געלונגען');return;}
-  alert('Bookmark געראטעוועט');
+function accBookmark(){
+  if(!curShiur||!curShiur.id)return;var au=document.getElementById('au'),pos=au?au.currentTime:0;
+  accPicker('🔖 Bookmark','<div style="font-size:.78rem;color:#666;margin-bottom:7px">'+esc(curShiur.name||'שיעור')+' — '+formatTime(pos)+'</div><input class="acc-field" id="accBookmarkName" placeholder="נאמען (אפשענאל)"><div class="acc-actions"><button class="sbtn" onclick="accSaveBookmark('+Number(pos)+')">היטן</button><button class="sbtn" style="background:#777" onclick="accClosePicker()">פארמאכן</button></div>');
 }
-
+async function accSaveBookmark(pos){var i=document.getElementById('accBookmarkName'),r=await accApi('bookmark_add',{shiur_id:curShiur.id,shiur_name:curShiur.name||'שיעור',position:pos,title:(i?i.value:'').trim()});if(!r.ok){alert(r.error||'נישט געלונגען');return;}accClosePicker();}
 async function accAddToPlaylist(){
-  if(!curShiur||!curShiur.id)return;
-
-  var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(r=>r.json());
-  if(!d.ok){alert('מען דארף קודם אריינלאגן');return;}
-
-  if(!d.playlists.length){
-    closeM('plov');
-    openMyAccount();
-    showPlaylists();
-    alert('מאך קודם א Playlist');
-    return;
-  }
-
-  var box=document.createElement('div');
-  box.className='mov open';
-  box.id='m-playlist-pick';
-  box.innerHTML=
-    '<div class="mbx">'+
-    '<button class="mx" onclick="document.getElementById(\'m-playlist-pick\').remove()">×</button>'+
-    '<div class="mi">📂</div>'+
-    '<div class="mt">לייג צו Playlist</div>'+
-    '<div id="plPickList"></div>'+
-    '</div>';
-
-  document.body.appendChild(box);
-
-  var list=document.getElementById('plPickList');
-  var h='';
-
-  d.playlists.forEach(function(p){
-    h+='<div class="fi" onclick="accPickPlaylist(\''+
-      esc(p.id)+'\',\''+
-      esc(p.name)+
-      '\')">'+
-      '<div class="fii">📂</div>'+
-      '<div class="fin">'+esc(p.name)+'</div>'+
-      '</div>';
-  });
-
-  h+='<br><button class="sbtn" onclick="document.getElementById(\'m-playlist-pick\').remove();openMyAccount();showPlaylists()">+ נייע Playlist</button>';
-  list.innerHTML=h;
+  if(!curShiur||!curShiur.id)return;var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});if(!d.ok){openMyAccount();return;}
+  if(!d.playlists.length){createPlaylistPrompt();return;}
+  var h='<div class="acc-list">';d.playlists.forEach(function(p){h+=accRow('📂',p.name,(p.items||[]).length+' שיעורים',"accPickPlaylist('"+jsq(p.id)+"','"+jsq(p.name)+"')");});h+='</div><button class="sbtn" style="margin-top:9px;padding:8px" onclick="accClosePicker();createPlaylistPrompt()">+ נייע Playlist</button>';accPicker('לייג צו Playlist',h);
 }
-  async function accPickPlaylist(playlistId,name){
-  if(!curShiur||!curShiur.id)return;
+async function accPickPlaylist(id,name){var r=await accApi('playlist_add',{playlist_id:id,shiur_id:curShiur.id,shiur_name:curShiur.name||'שיעור'});if(!r.ok){alert(r.error||'נישט געלונגען');return;}accClosePicker();}
+function accSaveProgressNow(){try{if(!curShiur||!curShiur.id)return;var au=document.getElementById('au');if(!au||!au.currentTime)return;accApi('progress',{shiur_id:curShiur.id,shiur_name:curShiur.name||'שיעור',position:au.currentTime});}catch(e){}}
+(function(){var oldOpPl=window.opPl;if(typeof oldOpPl==='function'){window.opPl=function(fId,nm){oldOpPl(fId,nm);setTimeout(accRenderPlayerTools,250);clearInterval(ACC_SAVE_TIMER);ACC_SAVE_TIMER=setInterval(accSaveProgressNow,45000);};}window.addEventListener('beforeunload',accSaveProgressNow);})();
 
-  var res=await accApi('playlist_add',{
-    playlist_id:playlistId,
-    shiur_id:curShiur.id,
-    shiur_name:curShiur.name||'שיעור'
-  });
-
-  var m=document.getElementById('m-playlist-pick');
-  if(m)m.remove();
-
-  if(!res.ok){
-    alert(res.error||'נישט געלונגען');
-    return;
-  }
-
-  alert('צוגעלייגט צו '+name);
-}
-
-function accSaveProgressNow(){
-  try{
-    if(!curShiur||!curShiur.id)return;
-    var au=document.getElementById('au');
-    if(!au || !au.currentTime)return;
-    accApi('progress',{
-  shiur_id:curShiur.id,
-  shiur_name:curShiur.name||'שיעור',
-  position:au.currentTime
-});
-  }catch(e){}
-}
-
-(function(){
-  var oldOpPl=window.opPl;
-  if(typeof oldOpPl==='function'){
-    window.opPl=function(fId,nm){
-      oldOpPl(fId,nm);
-      setTimeout(accRenderPlayerTools,500);
-      clearInterval(ACC_SAVE_TIMER);
-      ACC_SAVE_TIMER=setInterval(accSaveProgressNow,45000);
-    };
-  }
-
-  window.addEventListener('beforeunload',function(){
-    accSaveProgressNow();
-  });
-})();
 </script>
 </body>
 </html>
