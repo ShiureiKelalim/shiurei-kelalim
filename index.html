@@ -2064,6 +2064,7 @@ if (modal) {
 })();
 
 function openMyAccount(){
+  try{history.pushState(null,'','/account');}catch(e){}
   document.getElementById('m-account').classList.add('open');
   document.body.classList.add('modal-open');
   loadAccountBox();
