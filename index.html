@@ -2074,6 +2074,7 @@ function openMyAccount(){
 }
 
 function closeMyAccount(){
+  document.title='שיעורי כללים';
   document.getElementById('m-account').classList.remove('open');
   document.body.classList.remove('modal-open');
 
@@ -2404,6 +2405,7 @@ return '<div class="acccard" onclick="'+click+'">'+
 }
 
 function showHistory(){
+  document.title='▶️ ווייטער הערן - שיעורי כללים';
   var d=ACC_DATA;
   var h='<div class="mt">▶️ ווייטער הערן</div>';
   if(!d.listen_history.length) h+='<div class="empb">נאך נישט דא</div>';
@@ -2415,17 +2417,28 @@ function showHistory(){
 }
 
 function showFavorites(){
+  document.title='❤️ Favorites - שיעורי כללים';
+
   var d=ACC_DATA;
   var h='<div class="mt">❤️ Favorites</div>';
-  if(!d.favorites.length) h+='<div class="empb">נאך נישט דא</div>';
+
+  if(!d.favorites.length){
+    h+='<div class="empb">נאך נישט דא</div>';
+  }
+
   d.favorites.forEach(function(x){
     var name=x.shiur_name||'Favorite שיעור';
-    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0,\''+esc(name)+'\')"><div class="fii">❤️</div><div class="fin">'+esc(name)+'</div></div>';
+    h+='<div class="fi" onclick="accOpenShiur(\''+esc(x.shiur_id)+'\',0,\''+esc(name)+'\')">'+
+      '<div class="fii">❤️</div>'+
+      '<div class="fin">'+esc(name)+'</div>'+
+    '</div>';
   });
+
   document.getElementById('accBox').innerHTML=h+accBackBtn();
 }
 
 function showBookmarks(){
+  document.title='🔖 Bookmarks - שיעורי כללים';
   var d=ACC_DATA;
   var h='<div class="mt">🔖 Bookmarks</div>';
   if(!d.bookmarks.length) h+='<div class="empb">נאך נישט דא</div>';
@@ -2437,6 +2450,7 @@ function showBookmarks(){
 }
 
 function showPlaylists(){
+  document.title='📂 Playlists - שיעורי כללים';
   var d=ACC_DATA;
   var h='<div class="mt">📂 Playlists</div>';
   h+='<button class="sbtn" onclick="createPlaylistPrompt()">+ נייע Playlist</button><br>';
@@ -2452,6 +2466,7 @@ function showRecent(){
 }
 
 function showStats(){
+  document.title='📊 מיין פארשריט - שיעורי כללים';
   var d=ACC_DATA;
   var mins=0;
   d.listen_history.forEach(function(x){ mins+=Number(x.position||0)/60; });
