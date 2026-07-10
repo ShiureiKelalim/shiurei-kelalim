@@ -1571,45 +1571,66 @@ async function doSrch(term){
     var d=await r.json();
     var all=d.files||[];
 
-    var folders=[], audio=[], seen={};
-
-all.forEach(function(f){
-  if(!f || !f.id || seen[f.id]) return;
-  seen[f.id]=true;
-
-  if(f.type==='folder'){
-    folders.push(f);
-  }
-  else if(
-    f.type==='audio' ||
-    String(f.mimeType||'').indexOf('audio')>=0 ||
-    f.match==='folder-child'
-  ){
-    audio.push(f);
-  }
-});
-    var total=folders.length+audio.length;
-
-    if(!total){
+    if(!all.length){
       si.textContent='🔍 נישט קיין רעזולטאטן פאר "'+term+'"';
       el.innerHTML='<div class="empb">נישט געטראפן קיין שיעורים פאר "'+escHtml(term)+'"</div>';
       return;
     }
 
-    si.textContent=total+' רעזולטאטן פאר "'+term+'"';
+    si.textContent=all.length+' רעזולטאטן פאר "'+term+'"';
 
-    folders.sort(function(a,b){return (a.name||'').localeCompare(b.name||'');});
-    audio.sort(function(a,b){return (a.name||'').localeCompare(b.name||'');});
+    var exact=[];
+    var folders=[];
+    var audio=[];
+    var folderMatch=[];
+    var partial=[];
+    var files=[];
+
+    all.forEach(function(f){
+      var nm=(f.name||'').toLowerCase();
+      var path=(f.path||'').toLowerCase();
+      var q=term.toLowerCase();
+
+      if(nm===q){
+        exact.push(f);
+      }
+      else if(path.indexOf(q)>=0 && nm.indexOf(q)<0){
+        folderMatch.push(f);
+      }
+      else if(f.type==='folder'){
+        folders.push(f);
+      }
+      else if(
+        f.type==='audio' ||
+        String(f.mimeType||'').indexOf('audio')>=0
+      ){
+        audio.push(f);
+      }
+      else{
+        files.push(f);
+      }
+
+      if(nm.indexOf(q)>=0 && nm!==q){
+        partial.push(f);
+      }
+    });
 
     var html='';
-    html+=renderGroup('📁 פאלדערס', folders, term);
-    html+=renderGroup('🎧 שיעורים', audio, term);
+    html+=renderGroup('⭐ גאנצע ווארט',exact,term);
+    html+=renderGroup('📁 פאלדערס',folders,term);
+    html+=renderGroup('🎧 שיעורים',audio,term);
+    html+=renderGroup('📂 שיעורים אין פאלדער וואס מעטשט',folderMatch,term);
+    html+=renderGroup('🔎 חלק ווארט',partial,term);
+    html+=renderGroup('📄 אנדערע פיילס',files,term);
 
-    el.innerHTML=html;
+    el.innerHTML=html||'<div class="empb">נישט געטראפן</div>';
 
     setTimeout(function(){
       var inp=document.getElementById('search-live-box');
-      if(inp){inp.focus();inp.selectionStart=inp.selectionEnd=inp.value.length;}
+      if(inp){
+        inp.focus();
+        inp.selectionStart=inp.selectionEnd=inp.value.length;
+      }
     },100);
 
   }catch(e){
