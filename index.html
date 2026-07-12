@@ -1970,18 +1970,33 @@ async function shareCurrentShiur(){
   }
 
   var shiurName=curShiur.name || 'שיעור';
+  var longHash=location.hash || '';
 
-  /*
-    נעמט דעם גאנצן יעצטיגן Hash:
-    tab + path + fid + fn + sid + sn
-
-    דערפאר בלייבט אינעם לינק:
-    חלק א׳, דער פאלדער, און דער גענויער שיעור.
-  */
   var shareUrl=
     location.origin+
     location.pathname+
-    location.hash;
+    longHash;
+
+  try{
+    var r=await fetch(API_BASE+'/share',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        hash:longHash
+      })
+    });
+
+    var d=await r.json();
+
+    if(d.ok && d.code){
+      shareUrl=
+        location.origin+
+        location.pathname+
+        '?s='+encodeURIComponent(d.code);
+    }
+  }catch(e){}
 
   var shareData={
     title:'שיעורי כללים — '+shiurName,
@@ -2411,22 +2426,45 @@ var _pwaPrompt;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();_pwaPrompt=e;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='block';});
 function installPWA(){if(!_pwaPrompt)return;_pwaPrompt.prompt();_pwaPrompt.userChoice.then(function(){_pwaPrompt=null;var btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='none';});}
 function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אינסטאלירן: עפנט דעם סייט אין Chrome, דריקט ⋮ → "Add to Home Screen"');}}
-var p = new URLSearchParams(location.search);
-var modal = p.get('m');
+(async function(){
+  var p=new URLSearchParams(location.search);
+  var shortCode=p.get('s');
+  var modal=p.get('m');
 
-if (modal) {
-  openM(modal);
+  if(shortCode){
+    try{
+      var r=await fetch(
+        API_BASE+'/share?id='+encodeURIComponent(shortCode)
+      );
 
-  requestAnimationFrame(function(){
-    document.documentElement.classList.remove('direct-modal-loading');
-    document.body.style.visibility = 'visible';
-  });
-} else {
-  document.documentElement.classList.remove('direct-modal-loading');
-  loadLatest();
-  checkYomTov();
-  _readHash();
-}
+      var d=await r.json();
+
+      if(d.ok && d.hash){
+        history.replaceState(
+          null,
+          '',
+          location.pathname+d.hash
+        );
+
+        await loadLatest();
+        await _readHash();
+        return;
+      }
+    }catch(e){}
+
+    alert('דער שיעור־לינק איז נישט געפונען געווארן.');
+    loadLatest();
+    return;
+  }
+
+  if(modal){
+    openM(modal);
+  }else{
+    loadLatest();
+    checkYomTov();
+    _readHash();
+  }
+})();
   /* ===== MY ACCOUNT UI START ===== */
 var ACC_DATA={progress:[],favorites:[],bookmarks:[],playlists:[],playlist_items:[],listen_history:[]};
 var ACC_SAVE_TIMER=null;
