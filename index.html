@@ -327,6 +327,54 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .plvis{width:100%;height:120px;background:linear-gradient(135deg,#162d5a,#2a548f);display:flex;align-items:center;justify-content:center;font-size:3.2rem}
 .plcl{position:absolute;top:8px;left:10px;background:rgba(0,0,0,.48);color:#fff;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:11;font-size:1rem;font-weight:900}
 .plcl:hover{background:rgba(0,0,0,.7)}
+  /* SHARE BUTTON — RIGHT SIDE */
+.plshare{
+  position:absolute;
+  top:8px;
+  right:10px;
+  background:rgba(255,255,255,.90);
+  color:#162d5a;
+  border:1px solid rgba(212,175,55,.70);
+  border-radius:9px;
+  width:34px;
+  height:34px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:11;
+  font-size:1.35rem;
+  font-weight:900;
+  line-height:1;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+
+.plshare:hover{
+  background:#fff;
+  color:#b8860b;
+  transform:translateY(-1px);
+}
+
+.share-msg{
+  display:none;
+  position:absolute;
+  top:48px;
+  right:10px;
+  z-index:12;
+  background:#162d5a;
+  color:#fff;
+  border:1px solid rgba(212,175,55,.70);
+  border-radius:8px;
+  padding:6px 10px;
+  font-size:.73rem;
+  font-weight:800;
+  white-space:nowrap;
+  box-shadow:0 4px 14px rgba(0,0,0,.25);
+}
+
+.share-msg.show{
+  display:block;
+}
 .plbd{padding:15px 20px;text-align:center}
 .plti{font-size:.92rem;font-weight:700;color:#162d5a;margin-bottom:10px;line-height:1.35}
 .plbd audio{width:100%;border-radius:8px}
@@ -997,7 +1045,18 @@ font-weight:bold;
 <!-- AUDIO PLAYER -->
 <div class="plov" id="plov">
   <div class="plbx">
+
+    <button
+      class="plshare"
+      onclick="shareCurrentShiur()"
+      title="שעיר דעם שיעור"
+      aria-label="שעיר דעם שיעור"
+    >↥</button>
+
     <button class="plcl" onclick="closePl()">✕</button>
+
+    <div class="share-msg" id="shareMsg">✓ לינק קאפירט</div>
+
     <div class="plvis">🎵</div>
     <div class="plbd">
       <div class="plti" id="plti"></div>
@@ -1889,7 +1948,103 @@ function escHtml(s){
   }).catch(function(){el.innerHTML='<p>פעלער</p>';});
 }
 function opPl(fId,nm){var cleanNm=fmN(nm);curShiur={id:fId,name:cleanNm,marks:{},lastBeat:0};gaEv('shiur_open',{shiur_id:fId,shiur_name:cleanNm});setupAudioTracking();try{_setHash((location.hash.replace('#','').split('&').filter(function(x){return x.indexOf('sid=')<0&&x.indexOf('sn=')<0;}).join('&')+'&sid='+encodeURIComponent(fId)+'&sn='+encodeURIComponent(nm)).replace(/^&/,''));}catch(e){}document.getElementById('plti').innerHTML=cleanNm;document.getElementById('au').src=API_BASE+'/play?id='+encodeURIComponent(fId);document.getElementById('dotm').classList.remove('open');var l=dlL();var dlNm=cleanNm.replace(/'/g,"\\'").replace(/"/g,'&quot;');document.getElementById('dlsec').innerHTML=l>0?'<button class="dlbtn" onclick="doDl(\''+fId+'\',\''+dlNm+'\')">⬇️ Download ('+l+' left today)</button>':'<div class="dllim">⛔ Download limit reached (5/day)</div>';document.getElementById('plov').classList.add('open');}
+async function shareCurrentShiur(){
+  if(!curShiur || !curShiur.id){
+    alert('קיין שיעור איז נישט אפן');
+    return;
+  }
 
+  var shiurName=curShiur.name || 'שיעור';
+
+  /*
+    נעמט דעם גאנצן יעצטיגן Hash:
+    tab + path + fid + fn + sid + sn
+
+    דערפאר בלייבט אינעם לינק:
+    חלק א׳, דער פאלדער, און דער גענויער שיעור.
+  */
+  var shareUrl=
+    location.origin+
+    location.pathname+
+    location.hash;
+
+  var shareData={
+    title:'שיעורי כללים — '+shiurName,
+    text:'הערט דעם שיעור אויף שיעורי כללים:\n'+shiurName,
+    url:shareUrl
+  };
+
+  try{
+    if(navigator.share){
+      await navigator.share(shareData);
+
+      gaEv('shiur_share',{
+        shiur_id:curShiur.id,
+        shiur_name:shiurName,
+        share_method:'native'
+      });
+
+      return;
+    }
+
+    await copyShiurLink(shareUrl);
+
+  }catch(err){
+    if(err && err.name==='AbortError'){
+      return;
+    }
+
+    try{
+      await copyShiurLink(shareUrl);
+    }catch(e){
+      prompt('קאפירט דעם לינק:',shareUrl);
+    }
+  }
+}
+
+async function copyShiurLink(url){
+  if(navigator.clipboard && window.isSecureContext){
+    await navigator.clipboard.writeText(url);
+  }else{
+    var box=document.createElement('textarea');
+    box.value=url;
+    box.style.position='fixed';
+    box.style.opacity='0';
+    box.style.pointerEvents='none';
+
+    document.body.appendChild(box);
+    box.focus();
+    box.select();
+
+    var copied=document.execCommand('copy');
+    document.body.removeChild(box);
+
+    if(!copied){
+      throw new Error('Copy failed');
+    }
+  }
+
+  gaEv('shiur_share',{
+    shiur_id:curShiur ? curShiur.id : '',
+    shiur_name:curShiur ? curShiur.name : '',
+    share_method:'copy'
+  });
+
+  showShareMessage();
+}
+
+function showShareMessage(){
+  var msg=document.getElementById('shareMsg');
+  if(!msg)return;
+
+  msg.classList.add('show');
+
+  clearTimeout(window.shareMsgTimer);
+
+  window.shareMsgTimer=setTimeout(function(){
+    msg.classList.remove('show');
+  },2200);
+}
 function doDl(fId,nm){gaEv('shiur_download',{shiur_id:fId,shiur_name:nm});cDl();fetch(API_BASE+'/play?id='+encodeURIComponent(fId)).then(function(r){return r.blob();}).then(function(blob){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(nm||'shiur')+'.mp3';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href);},2000);}).catch(function(){window.open(API_BASE+'/play?id='+encodeURIComponent(fId),'_blank');});}
 function closePl(){
   var a=document.getElementById('au');
