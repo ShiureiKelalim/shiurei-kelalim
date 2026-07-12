@@ -1581,9 +1581,24 @@ async function lFld(fId){
     var _tk=Object.keys(TABS).find(function(k){return nav.length&&TABS[k].id===nav[0].id;})||'';
     var _cn=nav.length?nav[nav.length-1]:null;
     if(_cn){
-      if(nav.length===1&&_tk)_setHash('tab='+_tk);
-      else _setHash((_tk?'tab='+_tk+'&':'')+'fid='+encodeURIComponent(_cn.id)+'&fn='+encodeURIComponent(_cn.name));
-    }
+  if(nav.length===1 && _tk){
+    _setHash('tab='+_tk);
+  }else{
+    var fullPath=nav.slice(1).map(function(item){
+      return {
+        id:item.id,
+        name:item.name
+      };
+    });
+
+    _setHash(
+      (_tk?'tab='+_tk+'&':'')+
+      'path='+encodeURIComponent(JSON.stringify(fullPath))+
+      '&fid='+encodeURIComponent(_cn.id)+
+      '&fn='+encodeURIComponent(_cn.name)
+    );
+  }
+}
   }catch(e){}
   try{
     var isRoot=!!TABS[fId];
@@ -2160,15 +2175,27 @@ async function _readHash(){
   if(p.tab){
     await showTab(p.tab,null);
 
-    if(p.fid && p.fn){
-      nav.push({
-        id:p.fid,
-        name:p.fn
-      });
+    if(p.path){
+  try{
+    var savedPath=JSON.parse(p.path);
 
+    if(Array.isArray(savedPath) && savedPath.length){
+      nav=nav.slice(0,1).concat(savedPath);
       rBC();
-      await lFld(p.fid);
+
+      var lastFolder=nav[nav.length-1];
+      await lFld(lastFolder.id);
     }
+  }catch(e){}
+}else if(p.fid && p.fn){
+  nav.push({
+    id:p.fid,
+    name:p.fn
+  });
+
+  rBC();
+  await lFld(p.fid);
+}
 
     if(p.sid){
       opPl(p.sid,p.sn||'');
