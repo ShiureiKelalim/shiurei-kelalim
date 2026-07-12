@@ -2489,11 +2489,31 @@ async function loadAccountBox(){
 }
 function showLoginForm(){
   document.getElementById('accModalTitle').textContent='מיין אקאונט';
-  document.getElementById('accBox').innerHTML='<div class="fld"><label>אימעל</label><input id="accEmail" type="email"></div>'+ 
-    '<div class="fld"><label>פעסווארד</label><input id="accPass" type="password" onkeyup="if(event.key===\'Enter\')loginAccount()"></div>'+ 
-    '<button class="sbtn" onclick="loginAccount()">אריינלאגן</button><div class="erm" id="accErr"></div>'+ 
-    '<button class="sbtn" style="margin-top:7px;background:#777" onclick="showRegisterForm()">קרעיט אקאונט</button>';
+
+  document.getElementById('accBox').innerHTML=
+    '<div class="fld">'+
+      '<label>אימעיל</label>'+
+      '<input id="accEmail" type="email">'+
+    '</div>'+
+
+    '<div class="fld">'+
+      '<label>פעסווארד</label>'+
+      '<input id="accPass" type="password" onkeyup="if(event.key===\'Enter\')loginAccount()">'+
+    '</div>'+
+
+    '<label style="display:block;margin:9px 0;text-align:right;font-size:.82rem;color:#555;cursor:pointer">'+
+      '<input type="checkbox" id="loginStay" checked> בלייב אריינגעלאגט'+
+    '</label>'+
+
+    '<button class="sbtn" onclick="loginAccount()">אריינלאגן</button>'+
+
+    '<div class="erm" id="accErr"></div>'+
+
+    '<button class="sbtn" style="margin-top:7px;background:#777" onclick="showRegisterForm()">'+
+      'קרעיט אקאונט'+
+    '</button>';
 }
+  
 function showRegisterForm(){
   document.getElementById('accBox').innerHTML='<div class="fld"><label>גאנצע נאמען</label><input id="regName"></div>'+ 
     '<div class="fld"><label>אימעל</label><input id="regEmail" type="email"></div>'+ 
@@ -2517,9 +2537,33 @@ async function verifyAccount(email){
   document.getElementById('accBox').innerHTML='<div class="okm">אימעל וועריפייד בהצלחה!</div><button class="sbtn" onclick="showLoginForm()">גיי צו Login</button>';
 }
 async function loginAccount(){
-  var err=document.getElementById('accErr');err.style.display='none';
-  var r=await fetch(API_BASE+'/auth/login',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:accEmail.value.trim(),password:accPass.value})}),d=await r.json();
-  if(!d.ok){err.textContent=d.error||'Login איז נישט געלונגען';err.style.display='block';return;} loadMyShiurim();
+  var err=document.getElementById('accErr');
+  err.style.display='none';
+
+  var stay=document.getElementById('loginStay');
+
+  var r=await fetch(API_BASE+'/auth/login',{
+    method:'POST',
+    credentials:'include',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({
+      email:accEmail.value.trim(),
+      password:accPass.value,
+      stay_logged_in:stay ? stay.checked : true
+    })
+  });
+
+  var d=await r.json();
+
+  if(!d.ok){
+    err.textContent=d.error||'Login איז נישט געלונגען';
+    err.style.display='block';
+    return;
+  }
+
+  loadMyShiurim();
 }
 async function logoutAccount(){await fetch(API_BASE+'/auth/logout',{credentials:'include'});showLoginForm();}
 async function accApi(action,body){body=body||{};body.action=action;if(window.curShiur&&curShiur.name&&!body.shiur_name)body.shiur_name=curShiur.name;var r=await fetch(API_BASE+'/user-data',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return await r.json();}
