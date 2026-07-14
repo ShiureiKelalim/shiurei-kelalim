@@ -388,26 +388,25 @@ html.direct-modal-loading body{
   .ftr-grid{
     grid-template-columns:1fr!important;
   }
-}
-  /* ===== TOP NAV AUTO-FIT — NO HORIZONTAL SCROLL ===== */
+/* ===== FINAL AUTO-FIT TOP NAV FIX ===== */
 @media (min-width:701px){
 
   .premium-nav{
     width:100%!important;
     max-width:100%!important;
     min-width:0!important;
-    padding-left:clamp(5px,1vw,16px)!important;
-    padding-right:clamp(5px,1vw,16px)!important;
-    gap:clamp(3px,.6vw,10px)!important;
+    padding-left:clamp(6px,1.2vw,18px)!important;
+    padding-right:clamp(6px,1.2vw,18px)!important;
+    gap:clamp(3px,.7vw,10px)!important;
+    flex-wrap:nowrap!important;
     overflow-x:hidden!important;
     overflow-y:hidden!important;
-    flex-wrap:nowrap!important;
   }
 
   .nav-main{
-    flex:1 1 auto!important;
+    flex:2.4 1 0!important;
     min-width:0!important;
-    gap:clamp(2px,.45vw,7px)!important;
+    gap:clamp(3px,.55vw,9px)!important;
     flex-wrap:nowrap!important;
   }
 
@@ -416,53 +415,37 @@ html.direct-modal-loading body{
     width:auto!important;
     min-width:0!important;
     padding:
-      clamp(7px,.7vw,11px)
-      clamp(3px,.55vw,9px)!important;
-    font-size:clamp(.55rem,.7vw,.84rem)!important;
+      clamp(7px,.75vw,12px)
+      clamp(3px,.75vw,13px)!important;
+    font-size:clamp(.62rem,.72vw,.88rem)!important;
     white-space:nowrap!important;
-    overflow:hidden!important;
-    text-overflow:clip!important;
-    box-shadow:none!important;
+    border-radius:clamp(7px,.7vw,11px)!important;
   }
 
   .nav-side{
-    flex:0 1 auto!important;
+    flex:1 1 0!important;
     min-width:0!important;
     gap:clamp(1px,.3vw,5px)!important;
   }
 
-  .nav-side-right{
-    flex:0 1 330px!important;
-  }
-
-  .nav-side-left{
-    flex:0 1 250px!important;
-  }
-
-  .nav-side .nb{
+  .nav-side-right .nb{
     flex:1 1 auto!important;
     min-width:0!important;
     padding:
-      clamp(4px,.5vw,7px)
-      clamp(2px,.45vw,7px)!important;
-    font-size:clamp(.48rem,.6vw,.74rem)!important;
+      clamp(4px,.55vw,7px)
+      clamp(2px,.55vw,8px)!important;
+    font-size:clamp(.54rem,.62vw,.76rem)!important;
     white-space:nowrap!important;
-    overflow:hidden!important;
-    text-overflow:clip!important;
   }
 
-  .nbrand{
-    flex:0 1 auto!important;
+  .nav-side-left{
+    flex:1 1 0!important;
     min-width:0!important;
-    padding:0 clamp(1px,.3vw,5px)!important;
-    font-size:clamp(.58rem,.72vw,.9rem)!important;
-    white-space:nowrap!important;
-    overflow:hidden!important;
   }
 
   .nav-srch-btn{
     flex:0 0 auto!important;
-    padding:3px clamp(3px,.4vw,7px)!important;
+    padding:3px clamp(3px,.45vw,7px)!important;
     font-size:clamp(.85rem,1vw,1.1rem)!important;
   }
 
@@ -472,15 +455,25 @@ html.direct-modal-loading body{
   }
 
   .nav-si.open{
-    max-width:clamp(105px,12vw,185px)!important;
+    max-width:clamp(90px,11vw,180px)!important;
   }
 
   .nav-si input{
-    width:clamp(100px,11vw,175px)!important;
+    width:clamp(85px,10vw,170px)!important;
     min-width:0!important;
-    padding:5px clamp(5px,.6vw,9px)!important;
-    font-size:clamp(.58rem,.68vw,.78rem)!important;
+    padding:5px clamp(5px,.65vw,10px)!important;
+    font-size:clamp(.62rem,.7vw,.8rem)!important;
   }
+
+  .nbrand{
+    flex:0 1 auto!important;
+    min-width:0!important;
+    padding:0 clamp(2px,.4vw,6px)!important;
+    font-size:clamp(.65rem,.75vw,.95rem)!important;
+    white-space:nowrap!important;
+  }
+}
+  
 }
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z1GLNQLRH1"></script>
