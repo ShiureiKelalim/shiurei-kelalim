@@ -1932,7 +1932,15 @@ function openM(id,keepPwd){
   setModalActive(id);
 
   var m=document.getElementById(id);
-  if(!m)return;
+
+  /* מאכט דעם בלאט צוריק זעבאר ביי דירעקטע אימעיל־לינקס */
+  document.documentElement.classList.remove('direct-modal-loading');
+
+  if(!m){
+    document.body.classList.remove('modal-open');
+    document.documentElement.classList.remove('modal-open');
+    return;
+  }
 
   document.body.classList.add('modal-open');
   document.documentElement.classList.add('modal-open');
@@ -1940,7 +1948,11 @@ function openM(id,keepPwd){
   m.scrollTop=0;
 
   try{
-    history.pushState(null,'',location.pathname+'?m='+encodeURIComponent(id));
+    history.replaceState(
+      null,
+      '',
+      location.pathname+'?m='+encodeURIComponent(id)
+    );
   }catch(e){}
 }
 
