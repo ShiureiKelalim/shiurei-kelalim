@@ -3163,7 +3163,9 @@ async function loadMyShiurim(){
     accCard('🔖','Bookmarks',d.bookmarks.length,'showBookmarks()')+
     accCard('📂','Playlists',d.playlists.length,'showPlaylists()')+
     accCard('🕘','לעצט געהערט',ACC_DATA.listen_history.length,'showRecent()')+
-    accCard('📊','מיין פארשריט','', 'showStats()')+'</div>';
+  accCard('📊','מיין פארשריט','', 'showStats()')+
+accCard('⚙️','Settings','', 'showAccountSettings()')
++'</div>';
 }
 function dedupeHistory(arr){var seen={},out=[];(arr||[]).forEach(function(x){if(!seen[x.shiur_id]){seen[x.shiur_id]=1;out.push(x);}});return out.slice(0,5);}
 function accOpenShiur(id,pos,name){closeMyAccount();opPl(id,name||'שיעור');setTimeout(function(){var au=document.getElementById('au');if(au&&pos){try{au.currentTime=Number(pos)||0;}catch(e){}}},700);}
@@ -3200,7 +3202,83 @@ function showStats(){
   var hrs=Math.floor(total/3600),mins=Math.round((total%3600)/60),heard=(d.progress||[]).length;
   document.getElementById('accBox').innerHTML=accHead('📊 מיין פארשריט')+'<div class="accgrid">'+accCard('🎧','שיעורים',heard,'void(0)')+accCard('🕒','הער־צייט',hrs+'ש '+mins+'מ','void(0)')+accCard('❤️','Favorites',d.favorites.length,'void(0)')+accCard('🔖','Bookmarks',d.bookmarks.length,'void(0)')+accCard('📂','Playlists',d.playlists.length,'void(0)')+'</div>';
 }
+function showAccountSettings(){
 
+accSetRoute('account-settings','Settings');
+
+document.getElementById('accBox').innerHTML=
+
+accHead('⚙️ Settings')+
+
+'<div class="acc-list">'+
+
+'<button class="sbtn" style="background:#c88a00;margin-bottom:10px;width:100%" onclick="clearAccountData()">🧹 מעק אויס אלע מיינע זאכן</button>'+
+
+'<button class="sbtn" style="background:#b91c1c;width:100%" onclick="deleteAccount()">🗑 קענסל אקאונט</button>'+
+
+'</div>';
+
+}
+
+async function clearAccountData(){
+
+if(!confirm('זענט איר זיכער אז איר ווילט מעקן אלע Favorites, Bookmarks, Playlists און History?')) return;
+
+var r=await fetch(API_BASE+'/auth/clear-data',{
+method:'POST',
+credentials:'include'
+});
+
+var d=await r.json();
+
+if(!d.ok){
+alert(d.error||'נישט געלונגען');
+return;
+}
+
+alert('אלע דאטן זענען אויסגעמעקט געווארן');
+
+loadMyShiurim();
+
+}
+
+async function deleteAccount(){
+
+var p=prompt('ביטע לייגט אריין אייער יעצטיגער פעסווארד');
+
+if(!p)return;
+
+var r=await fetch(API_BASE+'/auth/delete-account',{
+
+method:'POST',
+
+credentials:'include',
+
+headers:{
+'Content-Type':'application/json'
+},
+
+body:JSON.stringify({
+password:p
+})
+
+});
+
+var d=await r.json();
+
+if(!d.ok){
+
+alert(d.error||'נישט געלונגען');
+
+return;
+
+}
+
+alert('דער אקאונט איז געווארן אויסגעמעקט');
+
+showLoginForm();
+
+}
 async function openPlaylist(id,name){
   ACC_OPEN_PLAYLIST={id:id,name:name};accSetRoute('account-playlist-'+encodeURIComponent(id),name);
   var r=await fetch(API_BASE+'/user-data',{credentials:'include'}),d=await r.json();if(!d.ok){alert('מען דארף קודם אריינלאגן');return;}
