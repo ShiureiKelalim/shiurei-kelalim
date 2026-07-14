@@ -1853,26 +1853,26 @@ function _svgIcon(type){
   };
   return icons[type]||icons.folder;
 }
-function getFolderEmoji(name){
-  var n=name||'';
-  if(n.includes('טהרה'))return _svgIcon('folder');
-  if(n.includes('שבת'))return _svgIcon('shabbos');
-  if(n.includes('תפילין'))return _svgIcon('tefillin');
-  if(n.includes('ציצית')||n.includes('ציצת'))return _svgIcon('tzitzis');
-  if(n.includes('תפילה')||n.includes('תפלה'))return _svgIcon('siddur');
-  if(n.includes('ברכות')||n.includes('ברכה')||n.includes('קידוש'))return _svgIcon('cup');
-  if(n.includes('כשרות')||n.includes('כשר')||n.includes('בשר')||n.includes('חלב')||n.includes('כלים')||n.includes('תערובת'))return _svgIcon('kosher');
-  if(n.includes('חנוכה'))return _svgIcon('menora');
-  if(n.includes('פורים')||n.includes('מגילה'))return _svgIcon('megillah');
-  if(n.includes('פסח')||n.includes('מצה'))return _svgIcon('matzah');
-  if(n.includes('סוכות')||n.includes('סוכה'))return _svgIcon('sukkah');
-  if(n.includes('שופר')||n.includes('ראש השנה'))return _svgIcon('shofar');
-  if(n.includes('ממון')||n.includes('הלוואה')||n.includes('שכירות')||n.includes('שכר')||n.includes('עסק'))return _svgIcon('money');
-  if(n.includes('דין')||n.includes('עדות')||n.includes('חושן'))return _svgIcon('scale');
-  if(n.includes('יום טוב')||n.includes('יו\"ט')||n.includes('מועד'))return _svgIcon('yomtov');
-  return _svgIcon('folder');
+  function getBookIcon(){
+  return ''+
+    '<svg viewBox="0 0 64 64" aria-hidden="true">'+
+      '<path d="M10 14c9-3 17-2 22 3v34c-5-5-13-6-22-3z"></path>'+
+      '<path d="M54 14c-9-3-17-2-22 3v34c5-5 13-6 22-3z"></path>'+
+      '<path d="M32 17v34"></path>'+
+      '<path d="M15 21c5-1 9 0 13 2"></path>'+
+      '<path d="M49 21c-5-1-9 0-13 2"></path>'+
+      '<path d="M15 29c5-1 9 0 13 2"></path>'+
+      '<path d="M49 29c-5-1-9 0-13 2"></path>'+
+      '<path d="M15 37c5-1 9 0 13 2"></path>'+
+      '<path d="M49 37c-5-1-9 0-13 2"></path>'+
+    '</svg>';
 }
-function getAudioIcon(){return _svgIcon('audio');}
+function getFolderEmoji(name){
+  return getBookIcon();
+}
+function getAudioIcon(){
+  return getBookIcon();
+}
 function getFolderColor(name){
   var root=nav&&nav.length?nav[0].name:'';
   var map={
@@ -2910,12 +2910,12 @@ function showLoginForm(){
   document.getElementById('accBox').innerHTML=
     '<div class="fld">'+
       '<label>אימעיל</label>'+
-      '<input id="accEmail" type="email">'+
+      '<input id="accEmail" type="email" autocomplete="email">'+
     '</div>'+
 
     '<div class="fld">'+
       '<label>פעסווארד</label>'+
-      '<input id="accPass" type="password" onkeyup="if(event.key===\'Enter\')loginAccount()">'+
+      '<input id="accPass" type="password" autocomplete="current-password" onkeyup="if(event.key===\'Enter\')loginAccount()">'+
     '</div>'+
 
     '<label style="display:block;margin:9px 0;text-align:right;font-size:.82rem;color:#555;cursor:pointer">'+
@@ -2924,11 +2924,160 @@ function showLoginForm(){
 
     '<button class="sbtn" onclick="loginAccount()">אריינלאגן</button>'+
 
+    '<button type="button" style="display:block;background:none;border:0;color:#285796;text-decoration:underline;margin:10px auto 3px;cursor:pointer;font-family:inherit" onclick="showForgotPasswordForm()">'+
+      'פארגעסן פעסווארד?'+
+    '</button>'+
+
     '<div class="erm" id="accErr"></div>'+
 
     '<button class="sbtn" style="margin-top:7px;background:#777" onclick="showRegisterForm()">'+
       'קרעיט אקאונט'+
     '</button>';
+}
+  function showForgotPasswordForm(){
+  document.getElementById('accModalTitle').textContent='פארגעסן פעסווארד';
+
+  document.getElementById('accBox').innerHTML=
+    '<div class="okm" style="margin-bottom:12px">'+
+      'לייגט אריין אייער אימעיל. מיר וועלן שיקן א 6־ציפערן קאוד.'+
+    '</div>'+
+
+    '<div class="fld">'+
+      '<label>אימעיל</label>'+
+      '<input id="forgotEmail" type="email" autocomplete="email" onkeyup="if(event.key===\'Enter\')sendForgotPassword()">'+
+    '</div>'+
+
+    '<button class="sbtn" onclick="sendForgotPassword()">שיק דעם קאוד</button>'+
+
+    '<div class="erm" id="accErr"></div>'+
+
+    '<button class="sbtn" style="margin-top:7px;background:#777" onclick="showLoginForm()">'+
+      '← צוריק צו Login'+
+    '</button>';
+}
+
+async function sendForgotPassword(){
+  var err=document.getElementById('accErr');
+  err.style.display='none';
+
+  var email=(document.getElementById('forgotEmail').value||'').trim();
+
+  if(!email || !email.includes('@')){
+    err.textContent='ביטע לייגט אריין א ריכטיגן אימעיל';
+    err.style.display='block';
+    return;
+  }
+
+  var r=await fetch(API_BASE+'/auth/forgot-password',{
+    method:'POST',
+    credentials:'include',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({
+      email:email
+    })
+  });
+
+  var d=await r.json();
+
+  if(!d.ok){
+    err.textContent=d.error||'דער קאוד האט זיך נישט געשיקט';
+    err.style.display='block';
+    return;
+  }
+
+  showResetPasswordForm(email);
+}
+
+function showResetPasswordForm(email){
+  document.getElementById('accModalTitle').textContent='נייער פעסווארד';
+
+  document.getElementById('accBox').innerHTML=
+    '<div class="okm" style="margin-bottom:12px">'+
+      'א Reset קאוד איז געשיקט געווארן צו:<br>'+
+      '<b>'+esc(email)+'</b>'+
+    '</div>'+
+
+    '<div class="fld">'+
+      '<label>6־ציפערן קאוד</label>'+
+      '<input id="resetCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code">'+
+    '</div>'+
+
+    '<div class="fld">'+
+      '<label>נייער פעסווארד</label>'+
+      '<input id="resetPass" type="password" autocomplete="new-password">'+
+    '</div>'+
+
+    '<div class="fld">'+
+      '<label>נאכאמאל נייער פעסווארד</label>'+
+      '<input id="resetPass2" type="password" autocomplete="new-password" onkeyup="if(event.key===\'Enter\')resetPasswordNow(\''+jsq(email)+'\')">'+
+    '</div>'+
+
+    '<button class="sbtn" onclick="resetPasswordNow(\''+jsq(email)+'\')">'+
+      'טויש דעם פעסווארד'+
+    '</button>'+
+
+    '<div class="erm" id="accErr"></div>'+
+
+    '<button class="sbtn" style="margin-top:7px;background:#777" onclick="showForgotPasswordForm()">'+
+      'שיק נאכאמאל א קאוד'+
+    '</button>';
+}
+
+async function resetPasswordNow(email){
+  var err=document.getElementById('accErr');
+  err.style.display='none';
+
+  var code=(document.getElementById('resetCode').value||'').trim();
+  var password=document.getElementById('resetPass').value||'';
+  var password2=document.getElementById('resetPass2').value||'';
+
+  if(!/^\d{6}$/.test(code)){
+    err.textContent='דער קאוד דארף האבן 6 ציפערן';
+    err.style.display='block';
+    return;
+  }
+
+  if(password.length<6){
+    err.textContent='דער פעסווארד דארף האבן כאטש 6 אותיות';
+    err.style.display='block';
+    return;
+  }
+
+  if(password!==password2){
+    err.textContent='די צוויי פעסווארדס זענען נישט אייניג';
+    err.style.display='block';
+    return;
+  }
+
+  var r=await fetch(API_BASE+'/auth/reset-password',{
+    method:'POST',
+    credentials:'include',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({
+      email:email,
+      code:code,
+      password:password,
+      password2:password2
+    })
+  });
+
+  var d=await r.json();
+
+  if(!d.ok){
+    err.textContent=d.error||'דער פעסווארד האט זיך נישט געטוישט';
+    err.style.display='block';
+    return;
+  }
+
+  document.getElementById('accBox').innerHTML=
+    '<div class="okm">'+
+      'דער פעסווארד איז געטוישט געווארן בהצלחה!'+
+    '</div>'+
+    '<button class="sbtn" onclick="showLoginForm()">גיי צו Login</button>';
 }
   
 function showRegisterForm(){
