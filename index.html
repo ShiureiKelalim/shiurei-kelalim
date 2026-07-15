@@ -3647,6 +3647,59 @@ function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אי
   }
 })();
   /* ===== MY ACCOUNT UI START ===== */
+  function getShiureiVisitorId(){
+  var key='sk_visitor_id';
+  var id='';
+
+  try{
+    id=localStorage.getItem(key)||'';
+
+    if(!id){
+      id='v_'+
+        Date.now().toString(36)+'_'+
+        Math.random().toString(36).slice(2)+
+        Math.random().toString(36).slice(2);
+
+      localStorage.setItem(key,id);
+    }
+  }catch(e){
+    id='guest_'+Math.random().toString(36).slice(2);
+  }
+
+  return id;
+}
+
+var SHIUREI_VISITOR_ID=getShiureiVisitorId();
+
+function sendListeningEvent(type){
+  try{
+    if(!window.curShiur || !curShiur.id)return;
+
+    var au=document.getElementById('au');
+    if(!au)return;
+
+    fetch(API_BASE+'/listen-event',{
+      method:'POST',
+      credentials:'include',
+      keepalive:true,
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        visitor_id:SHIUREI_VISITOR_ID,
+        shiur_id:curShiur.id,
+        shiur_name:curShiur.name||'שיעור',
+        event_type:type,
+        position:Number(au.currentTime||0),
+        duration:Number(
+          isFinite(au.duration)
+            ? au.duration
+            : 0
+        )
+      })
+    }).catch(function(){});
+  }catch(e){}
+}
 var ACC_DATA={progress:[],favorites:[],bookmarks:[],playlists:[],playlist_items:[],listen_history:[]};
 var ACC_SAVE_TIMER=null;
 var ACC_RETURN_HASH='';
@@ -4108,7 +4161,27 @@ async function accAddToPlaylist(){
 }
 async function accPickPlaylist(id,name){var r=await accApi('playlist_add',{playlist_id:id,shiur_id:curShiur.id,shiur_name:curShiur.name||'שיעור'});if(!r.ok){alert(r.error||'נישט געלונגען');return;}accClosePicker();}
 function accSaveProgressNow(){try{if(!curShiur||!curShiur.id)return;var au=document.getElementById('au');if(!au||!au.currentTime)return;accApi('progress',{shiur_id:curShiur.id,shiur_name:curShiur.name||'שיעור',position:au.currentTime});}catch(e){}}
-(function(){var oldOpPl=window.opPl;if(typeof oldOpPl==='function'){window.opPl=function(fId,nm){oldOpPl(fId,nm);setTimeout(accRenderPlayerTools,250);clearInterval(ACC_SAVE_TIMER);ACC_SAVE_TIMER=setInterval(accSaveProgressNow,45000);};}window.addEventListener('beforeunload',accSaveProgressNow);})();
+(function(){
+  var au=document.getElementById('au');
+  if(!au || au.dataset.dailyListeningBound==='1')return;
+
+  au.dataset.dailyListeningBound='1';
+
+  au.addEventListener('play',function(){
+    sendListeningEvent('play');
+  });
+
+  au.addEventListener('pause',function(){
+    if(!au.ended){
+      sendListeningEvent('pause');
+    }
+  });
+
+  au.addEventListener('ended',function(){
+    sendListeningEvent('ended');
+  });
+})();
+  (function(){var oldOpPl=window.opPl;if(typeof oldOpPl==='function'){window.opPl=function(fId,nm){oldOpPl(fId,nm);setTimeout(accRenderPlayerTools,250);clearInterval(ACC_SAVE_TIMER);ACC_SAVE_TIMER=setInterval(accSaveProgressNow,45000);};}window.addEventListener('beforeunload',accSaveProgressNow);})();
 
 </script>
 </body>
