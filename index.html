@@ -4007,7 +4007,10 @@ async function loadMyShiurim(){
     accCard('📂','Playlists',d.playlists.length,'showPlaylists()')+
     accCard('🕘','לעצט געהערט',ACC_DATA.listen_history.length,'showRecent()')+
   accCard('📊','מיין פארשריט','', 'showStats()')+
-accCard('⚙️','Settings','', 'showAccountSettings()')
+accCard('⚙️','Settings','', 'showAccountSettings()')+
+(Number(d.user && d.user.is_admin)===1
+  ? accCard('👑','אדמין','', 'showAdminDashboard()')
+  : '')
 +'</div>';
 }
 function dedupeHistory(arr){var seen={},out=[];(arr||[]).forEach(function(x){if(!seen[x.shiur_id]){seen[x.shiur_id]=1;out.push(x);}});return out.slice(0,5);}
@@ -4044,6 +4047,48 @@ function showStats(){
   accSetRoute('account-stats','מיין פארשריט');var d=ACC_DATA,total=0;(d.progress||[]).forEach(function(x){total+=Number(x.position||0);});
   var hrs=Math.floor(total/3600),mins=Math.round((total%3600)/60),heard=(d.progress||[]).length;
   document.getElementById('accBox').innerHTML=accHead('📊 מיין פארשריט')+'<div class="accgrid">'+accCard('🎧','שיעורים',heard,'void(0)')+accCard('🕒','הער־צייט',hrs+'ש '+mins+'מ','void(0)')+accCard('❤️','Favorites',d.favorites.length,'void(0)')+accCard('🔖','Bookmarks',d.bookmarks.length,'void(0)')+accCard('📂','Playlists',d.playlists.length,'void(0)')+'</div>';
+}
+  async function showAdminDashboard(){
+  accSetRoute('account-admin','אדמין');
+
+  var box=document.getElementById('accBox');
+
+  box.innerHTML=
+    accHead('👑 אדמין Dashboard')+
+    '<div class="loading">לאודינג...</div>';
+
+  try{
+    var r=await fetch(API_BASE+'/admin/stats',{
+      credentials:'include'
+    });
+
+    var d=await r.json();
+
+    if(!d.ok){
+      box.innerHTML=
+        accHead('👑 אדמין Dashboard')+
+        '<div class="errb">'+esc(d.error||'נישט געלונגען')+'</div>';
+      return;
+    }
+
+    var s=d.stats||{};
+
+    box.innerHTML=
+      accHead('👑 אדמין Dashboard')+
+      '<div class="accgrid">'+
+        accCard('👥','אקאונטס',Number(s.users||0),'void(0)')+
+        accCard('✅','וועריפייד',Number(s.verified||0),'void(0)')+
+        accCard('❤️','Favorites',Number(s.favorites||0),'void(0)')+
+        accCard('🔖','Bookmarks',Number(s.bookmarks||0),'void(0)')+
+        accCard('📂','Playlists',Number(s.playlists||0),'void(0)')+
+        accCard('🎧','געהערטע שיעורים',Number(s.listening||0),'void(0)')+
+      '</div>';
+
+  }catch(e){
+    box.innerHTML=
+      accHead('👑 אדמין Dashboard')+
+      '<div class="errb">דער אדמין Dashboard קען זיך נישט לאדן</div>';
+  }
 }
 function showAccountSettings(){
 
