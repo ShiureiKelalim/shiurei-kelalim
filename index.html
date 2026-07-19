@@ -4090,71 +4090,138 @@ function showStats(){
       '<div class="errb">דער אדמין Dashboard קען זיך נישט לאדן</div>';
   }
 }
-  async function showAdminUsers(){
-  accSetRoute('account-admin-users','אקאונטס');
+  async function showAdminUser(id,name){
+  accSetRoute('account-admin-user-'+encodeURIComponent(id),name);
 
   var box=document.getElementById('accBox');
 
   box.innerHTML=
     '<div class="acc-section-head">'+
-      '<button class="sbtn acc-back" onclick="showAdminDashboard()">← צוריק</button>'+
-      '<div class="mt">👥 אלע אקאונטס</div>'+
+      '<button class="sbtn acc-back" onclick="showAdminUsers()">← צוריק</button>'+
+      '<div class="mt">👤 '+esc(name)+'</div>'+
       '<span style="width:58px"></span>'+
     '</div>'+
     '<div class="loading">לאודינג...</div>';
 
   try{
-    var r=await fetch(API_BASE+'/admin/users',{
-      credentials:'include'
-    });
+    var r=await fetch(
+      API_BASE+'/admin/user?id='+encodeURIComponent(id),
+      {credentials:'include'}
+    );
 
     var d=await r.json();
 
     if(!d.ok){
       box.innerHTML=
-        accHead('👥 אלע אקאונטס')+
+        '<div class="acc-section-head">'+
+          '<button class="sbtn acc-back" onclick="showAdminUsers()">← צוריק</button>'+
+          '<div class="mt">👤 אקאונט</div>'+
+          '<span style="width:58px"></span>'+
+        '</div>'+
         '<div class="errb">'+esc(d.error||'נישט געלונגען')+'</div>';
       return;
     }
 
-    var users=d.users||[];
+    var u=d.user||{};
     var h=
       '<div class="acc-section-head">'+
-        '<button class="sbtn acc-back" onclick="showAdminDashboard()">← צוריק</button>'+
-        '<div class="mt">👥 אלע אקאונטס — '+users.length+'</div>'+
+        '<button class="sbtn acc-back" onclick="showAdminUsers()">← צוריק</button>'+
+        '<div class="mt">👤 '+esc(u.full_name||u.email||'אקאונט')+'</div>'+
         '<span style="width:58px"></span>'+
-      '</div>'+
-      '<div class="acc-list">';
+      '</div>';
 
-    if(!users.length){
-      h+='<div class="acc-empty">קיין אקאונטס נישט דא</div>';
+    h+=
+      '<div style="background:#fff;border:1px solid #e4dfd3;border-radius:12px;padding:12px;margin-bottom:10px">'+
+        '<div><b>אימעיל:</b> <span dir="ltr">'+esc(u.email||'')+'</span></div>'+
+        '<div><b>וועריפייד:</b> '+(Number(u.verified)===1?'יא':'ניין')+'</div>'+
+        '<div><b>אימעיל־סובסקרייבד:</b> '+(Number(u.email_subscribed)===1?'יא':'ניין')+'</div>'+
+        '<div><b>אקאונט געשאפן:</b> '+esc(accDate(u.created_at))+'</div>'+
+      '</div>';
+
+    h+=
+      '<div class="accgrid">'+
+        accCard('▶️','פארשריט',(d.progress||[]).length,'void(0)')+
+        accCard('❤️','Favorites',(d.favorites||[]).length,'void(0)')+
+        accCard('🔖','Bookmarks',(d.bookmarks||[]).length,'void(0)')+
+        accCard('📂','Playlists',(d.playlists||[]).length,'void(0)')+
+        accCard('🕘','היסטאריע',(d.listen_history||[]).length,'void(0)')+
+        accCard('🎧','טעגליך געהערט',(d.daily_listening||[]).length,'void(0)')+
+      '</div>';
+
+    h+='<div class="acc-list" style="margin-top:12px">';
+
+    h+='<div class="mt">🕘 לעצטע שיעורים</div>';
+
+    if(!(d.listen_history||[]).length){
+      h+='<div class="acc-empty">נאך נישט געהערט קיין שיעורים</div>';
     }
 
-    users.forEach(function(u){
-      var meta=
-        (u.email||'')+
-        ' • '+
-        (Number(u.verified)===1 ? 'וועריפייד' : 'נישט וועריפייד')+
-        (Number(u.is_admin)===1 ? ' • אדמין' : '');
-
+    (d.listen_history||[]).forEach(function(x){
       h+=accRow(
-        Number(u.is_admin)===1 ? '👑' : '👤',
-        u.full_name||'אן נאמען',
-        meta,
+        '▶️',
+        x.shiur_name||'שיעור',
+        'ביי '+formatTime(x.position||0)+' • '+accDate(x.listened_at),
         'void(0)'
       );
     });
 
-    box.innerHTML=h+'</div>';
+    h+='<div class="mt" style="margin-top:14px">❤️ Favorites</div>';
+
+    if(!(d.favorites||[]).length){
+      h+='<div class="acc-empty">קיין Favorites נישט דא</div>';
+    }
+
+    (d.favorites||[]).forEach(function(x){
+      h+=accRow(
+        '❤️',
+        x.shiur_name||'שיעור',
+        accDate(x.added_at),
+        'void(0)'
+      );
+    });
+
+    h+='<div class="mt" style="margin-top:14px">🔖 Bookmarks</div>';
+
+    if(!(d.bookmarks||[]).length){
+      h+='<div class="acc-empty">קיין Bookmarks נישט דא</div>';
+    }
+
+    (d.bookmarks||[]).forEach(function(x){
+      h+=accRow(
+        '🔖',
+        x.title||x.shiur_name||'Bookmark',
+        (x.shiur_name||'שיעור')+' • '+formatTime(x.position||0),
+        'void(0)'
+      );
+    });
+
+    h+='<div class="mt" style="margin-top:14px">📂 Playlists</div>';
+
+    if(!(d.playlists||[]).length){
+      h+='<div class="acc-empty">קיין Playlists נישט דא</div>';
+    }
+
+    (d.playlists||[]).forEach(function(p){
+      h+=accRow(
+        '📂',
+        p.name||'Playlist',
+        (p.items||[]).length+' שיעורים',
+        'void(0)'
+      );
+    });
+
+    h+='</div>';
+
+    box.innerHTML=h;
 
   }catch(e){
     box.innerHTML=
       '<div class="acc-section-head">'+
-        '<button class="sbtn acc-back" onclick="showAdminDashboard()">← צוריק</button>'+
-        '<div class="mt">👥 אלע אקאונטס</div>'+
+        '<button class="sbtn acc-back" onclick="showAdminUsers()">← צוריק</button>'+
+        '<div class="mt">👤 אקאונט</div>'+
         '<span style="width:58px"></span>'+
       '</div>'+
-      '<div class="errb">די אקאונט־ליסטע קען זיך נישט לאדן</div>';
+      '<div class="errb">דער אקאונט קען זיך נישט לאדן</div>';
   }
 }
 function showAccountSettings(){
