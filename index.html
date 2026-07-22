@@ -3175,6 +3175,16 @@ async function doSrch(term){
     var r=await fetch(API_BASE+'/search?q='+encodeURIComponent(term));
     var d=await r.json();
     var all=d.files||[];
+    if(!latF){
+  try{
+    var latestResponse=await fetch(API_BASE+'/latest');
+    var latestData=await latestResponse.json();
+
+    if(latestData && latestData.ok && latestData.file){
+      latF=latestData.file;
+    }
+  }catch(e){}
+}
     /*
   מאכט זיכער אז דער Search ווייסט וועלכער איז דער נייעסטער שיעור,
   אפילו אויב loadLatest() איז נאך נישט פארטיג געווארן.
