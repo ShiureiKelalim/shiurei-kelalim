@@ -1012,6 +1012,16 @@ footer{
   transform:translateY(-1px);
   box-shadow:0 5px 14px rgba(0,0,0,.22);
 }
+  .account-nav-btn.active{
+  background:#d4af37!important;
+  border-color:#d4af37!important;
+  color:#08162f!important;
+  box-shadow:0 5px 14px rgba(0,0,0,.22)!important;
+}
+
+.account-nav-btn.active svg{
+  stroke:#08162f!important;
+}
 
 .account-nav-btn:hover svg{
   stroke:#08162f;
@@ -4090,8 +4100,7 @@ b.innerHTML=
   '<svg viewBox="0 0 24 24" aria-hidden="true">'+
     '<circle cx="12" cy="8" r="3.5"></circle>'+
     '<path d="M5 20c0-4.1 3.1-7 7-7s7 2.9 7 7"></path>'+
-  '</svg>'+
-  '<span>מיין אקאונט</span>';
+  '</svg>';
 
 b.onclick=function(){
   openMyAccount();
@@ -4117,13 +4126,18 @@ function accSetRoute(route,title,replace){
   try{history[replace?'replaceState':'pushState'](null,'',location.pathname+'#'+route);}catch(e){}
 }
 function openMyAccount(fromHash){
+  var accountBtn=document.getElementById('myAccountBtn');
+if(accountBtn)accountBtn.classList.add('active');
   if(!fromHash && location.hash.indexOf('#account')!==0) ACC_RETURN_HASH=location.hash||'';
   document.getElementById('m-account').classList.add('open');
   document.body.classList.add('modal-open');
   accSetRoute('account','מיין אקאונט',!!fromHash);
   loadAccountBox();
 }
+  
 function closeMyAccount(){
+  var accountBtn=document.getElementById('myAccountBtn');
+if(accountBtn)accountBtn.classList.remove('active');
   document.title='שיעורי כללים';
   document.getElementById('m-account').classList.remove('open');
   document.body.classList.remove('modal-open');
