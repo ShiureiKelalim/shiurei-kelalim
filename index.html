@@ -4090,6 +4090,78 @@ function showStats(){
       '<div class="errb">דער אדמין Dashboard קען זיך נישט לאדן</div>';
   }
 }
+  async function showAdminUsers(){
+  accSetRoute('account-admin-users','אקאונטס');
+
+  var box=document.getElementById('accBox');
+
+  box.innerHTML=
+    '<div class="acc-section-head">'+
+      '<button class="sbtn acc-back" onclick="showAdminDashboard()">← צוריק</button>'+
+      '<div class="mt">👥 אלע אקאונטס</div>'+
+      '<span style="width:58px"></span>'+
+    '</div>'+
+    '<div class="loading">לאודינג...</div>';
+
+  try{
+    var r=await fetch(API_BASE+'/admin/users',{
+      credentials:'include'
+    });
+
+    var d=await r.json();
+
+    if(!d.ok){
+      box.innerHTML=
+        '<div class="acc-section-head">'+
+          '<button class="sbtn acc-back" onclick="showAdminDashboard()">← צוריק</button>'+
+          '<div class="mt">👥 אלע אקאונטס</div>'+
+          '<span style="width:58px"></span>'+
+        '</div>'+
+        '<div class="errb">'+esc(d.error||'נישט געלונגען')+'</div>';
+      return;
+    }
+
+    var users=d.users||[];
+
+    var h=
+      '<div class="acc-section-head">'+
+        '<button class="sbtn acc-back" onclick="showAdminDashboard()">← צוריק</button>'+
+        '<div class="mt">👥 אלע אקאונטס — '+users.length+'</div>'+
+        '<span style="width:58px"></span>'+
+      '</div>'+
+      '<div class="acc-list">';
+
+    if(!users.length){
+      h+='<div class="acc-empty">קיין אקאונטס נישט דא</div>';
+    }
+
+    users.forEach(function(u){
+      var meta=
+        (u.email||'')+
+        ' • '+
+        (Number(u.verified)===1 ? 'וועריפייד' : 'נישט וועריפייד')+
+        (Number(u.is_admin)===1 ? ' • אדמין' : '');
+
+      h+=accRow(
+        Number(u.is_admin)===1 ? '👑' : '👤',
+        u.full_name||'אן נאמען',
+        meta,
+        "showAdminUser('"+jsq(u.id)+"','"+jsq(u.full_name||u.email||'אקאונט')+"')"
+      );
+    });
+
+    box.innerHTML=h+'</div>';
+
+  }catch(e){
+    box.innerHTML=
+      '<div class="acc-section-head">'+
+        '<button class="sbtn acc-back" onclick="showAdminDashboard()">← צוריק</button>'+
+        '<div class="mt">👥 אלע אקאונטס</div>'+
+        '<span style="width:58px"></span>'+
+      '</div>'+
+      '<div class="errb">די אקאונט־ליסטע קען זיך נישט לאדן</div>';
+  }
+}
   async function showAdminUser(id,name){
   accSetRoute('account-admin-user-'+encodeURIComponent(id),name);
 
