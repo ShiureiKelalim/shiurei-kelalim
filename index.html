@@ -3125,7 +3125,11 @@ el.innerHTML=fols.concat(oth).map(function(f){
       var tI=isSh?(f.shortcutDetails&&f.shortcutDetails.targetId||''):'';
       var isF=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'||(isSh&&tM==='application/vnd.google-apps.folder');
       var nm=cln(f.name);
-      var isLatest=latF&&(f.id===latF.id||tI===latF.id);
+    var isLatest=latF&&(
+  f.id===latF.id ||
+  tI===latF.id ||
+  cln(f.name||'')===cln(latF.name||'')
+);
 
 var latestPath=(latF&&latF.path)?String(latF.path).toLowerCase():'';
 var fullFolderPath=((f.path?f.path+' / ':'')+(f.name||'')).toLowerCase();
