@@ -2591,7 +2591,36 @@ function setupAudioTracking(){
   });
 }
 
-function hlTxt(txt,q){if(!q||!txt)return txt;var esc=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return txt.replace(new RegExp('('+esc+')','gi'),'<span class="hi">$1</span>');}
+function hlTxt(txt,q){
+  if(!q||!txt)return txt;
+
+  var words=String(q)
+    .replace(/[-–—_/\\]+/g,' ')
+    .split(/\s+/)
+    .map(function(word){
+      return word.replace(/[״"׳']/g,'').trim();
+    })
+    .filter(Boolean)
+    .sort(function(a,b){
+      return b.length-a.length;
+    });
+
+  if(!words.length)return txt;
+
+  var patterns=words.map(function(word){
+    return word
+      .split('')
+      .map(function(ch){
+        return ch.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+      })
+      .join('[״"׳\\\']*');
+  });
+
+  return txt.replace(
+    new RegExp('('+patterns.join('|')+')','gi'),
+    '<span class="hi">$1</span>'
+  );
+}
 function cln(s){for(var i=1;i<=Math.min(5,s.length-1);i++){var c=s.charCodeAt(i);if(c===45||c===8211||c===8212)return s.slice(i+1).trim();}if(s.length>4){var h=function(x){return x>=0x05D0&&x<=0x05EA};if(h(s.charCodeAt(0))&&!h(s.charCodeAt(1))&&h(s.charCodeAt(2))&&s[3]===' ')return s.slice(4).trim();}return s.trim();}
 function fmN(n){var m=n.match(/^(.+?)\s+mp3\.(\d+)$/i);if(m)return m[1]+' <span class="snum">'+m[2]+'</span>';return n.replace(/\bmp3\b/gi,'').replace(/\.\s*$/,'').trim();}
 function isA(m){return m&&m.includes('audio')}
@@ -2918,6 +2947,20 @@ async function doSrch(term){
     var r=await fetch(API_BASE+'/search?q='+encodeURIComponent(term));
     var d=await r.json();
     var all=d.files||[];
+    /*
+  מאכט זיכער אז דער Search ווייסט וועלכער איז דער נייעסטער שיעור,
+  אפילו אויב loadLatest() איז נאך נישט פארטיג געווארן.
+*/
+if(!latF){
+  try{
+    var latestResponse=await fetch(API_BASE+'/latest');
+    var latestData=await latestResponse.json();
+
+    if(latestData && latestData.ok && latestData.file){
+      latF=latestData.file;
+    }
+  }catch(latestError){}
+}
 
     var folders=[], audio=[], seen={};
 
@@ -3064,8 +3107,14 @@ function renderGroup(title,arr,term){
 
     if(f.type==='audio'){
       var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-      var lb=(latF&&f.id===latF.id)?'<span class="latest-badge">נייעסטע שיעור</span>':'';
+      var isLatestSearchResult=latF && (
+  f.id===latF.id ||
+  cln(f.name||'')===cln(latF.name||'')
+);
 
+var lb=isLatestSearchResult
+  ? '<span class="latest-badge">נייעסטע שיעור</span>'
+  : '';
       return '<div class="fi fi-audio" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span>'+lb+'<span class="bdg ba">Shiur</span></div>';
     }
 
