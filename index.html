@@ -2991,41 +2991,63 @@ var data=await res.json();
     if(!data.ok)throw new Error(data.error||'API error');
     var files=data.files||[];
     if(!files.length){el.innerHTML='<div class="empb">📭 No shiurim found</div>';return;}
-    var fols=files.filter(function(f){return f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'});
-    var oth=files.filter(function(f){return !(f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder')});
-    fols.sort(function(a,b){
+    var fols=files.filter(function(f){
+  return f.type==='folder' ||
+    f.mimeType==='application/vnd.google-apps.folder';
+});
+
+var oth=files.filter(function(f){
+  return !(
+    f.type==='folder' ||
+    f.mimeType==='application/vnd.google-apps.folder'
+  );
+});
+
+fols.sort(function(a,b){
   var na=cln(a.name);
   var nb=cln(b.name);
   var ia=MO.indexOf(na);
   var ib=MO.indexOf(nb);
 
-  if(ia>=0&&ib>=0){
+  if(ia>=0 && ib>=0){
     return ia-ib;
   }
 
   return String(a.name||'').localeCompare(
     String(b.name||''),
     'he',
-    {
-      numeric:true,
-      sensitivity:'base'
-    }
+    {numeric:true,sensitivity:'base'}
   );
 });
 
 /*
-  סארטירט שיעורים לויט נומערן:
-  1, 2, 3 ... 10, 11, 12
-  אנשטאט 1, 10, 11 ... 2
+  נעמט דעם ערשטן נומער פונעם שיעור־נאמען.
+  למשל:
+  "הלכות קריאת שמע 2"  → 2
+  "הלכות קריאת שמע 10" → 10
 */
+function getShiurNumber(name){
+  var match=String(name||'').match(/\d+/);
+
+  if(!match){
+    return Number.MAX_SAFE_INTEGER;
+  }
+
+  return parseInt(match[0],10);
+}
+
 oth.sort(function(a,b){
+  var numA=getShiurNumber(a.name);
+  var numB=getShiurNumber(b.name);
+
+  if(numA!==numB){
+    return numA-numB;
+  }
+
   return String(a.name||'').localeCompare(
     String(b.name||''),
     'he',
-    {
-      numeric:true,
-      sensitivity:'base'
-    }
+    {numeric:true,sensitivity:'base'}
   );
 });
 
