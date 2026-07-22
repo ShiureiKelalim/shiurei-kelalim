@@ -2892,6 +2892,17 @@ async function checkPwd(){
         );
         return;
       }
+      /*
+  Download פון א פארשפארטן שיעור:
+  נאכן גוטן פעסווארד פרובירט ער נאכאמאל.
+*/
+if(pendingAction&&pendingAction.download){
+  doDl(
+    pendingAction.id,
+    pendingAction.name
+  );
+  return;
+}
 
       /*
         דירעקטע לינק אדער צוריקקומען צום פארשפארטן פאלדער:
@@ -3230,17 +3241,27 @@ function renderGroup(title,arr,term){
     }
 
     if(f.type==='audio'){
-      var sn=nm.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');
-      var isLatestSearchResult=latF && (
-  f.id===latF.id ||
-  cln(f.name||'')===cln(latF.name||'')
-);
+  var key='sr_audio_'+String(f.id||'').replace(/[^a-zA-Z0-9_]/g,'')+'_'+i;
 
-var lb=isLatestSearchResult
-  ? '<span class="latest-badge">נייעסטע שיעור</span>'
-  : '';
-      return '<div class="fi fi-audio" onclick="opPl(\''+f.id+'\',\''+sn+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span>'+lb+'<span class="bdg ba">Shiur</span></div>';
-    }
+  SEARCH_RESULT_MAP[key]={
+    id:f.id,
+    name:nm,
+    type:f.type,
+    root:f.root,
+    path:f.path||''
+  };
+
+  var isLatestSearchResult=latF && (
+    f.id===latF.id ||
+    cln(f.name||'')===cln(latF.name||'')
+  );
+
+  var lb=isLatestSearchResult
+    ? '<span class="latest-badge">נייעסטע שיעור</span>'
+    : '';
+
+  return '<div class="fi fi-audio" onclick="openSearchResultByKey(\''+key+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span>'+lb+'<span class="bdg ba">Shiur</span></div>';
+}
 
     return '<div class="fi"><span class="fii">📄</span><span class="fin">'+show+path+'</span><span class="bdg ba">File</span></div>';
   }).join('');
@@ -3410,8 +3431,52 @@ function showShareMessage(){
     msg.classList.remove('show');
   },2200);
 }
-function doDl(fId,nm){gaEv('shiur_download',{shiur_id:fId,shiur_name:nm});cDl();fetch(API_BASE+'/play?id='+encodeURIComponent(fId)).then(function(r){return r.blob();}).then(function(blob){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(nm||'shiur')+'.mp3';document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href);},2000);}).catch(function(){window.open(API_BASE+'/play?id='+encodeURIComponent(fId),'_blank');});}
-function closePl(){
+async function doDl(fId,nm){
+  try{
+    var r=await fetch(
+      API_BASE+'/play?id='+encodeURIComponent(fId)
+    );
+
+    if(r.status===401){
+      pend={
+        download:true,
+        id:fId,
+        name:nm
+      };
+
+      openM('m-pwd');
+      return;
+    }
+
+    if(!r.ok){
+      throw new Error('Download failed: '+r.status);
+    }
+
+    var blob=await r.blob();
+
+    gaEv('shiur_download',{
+      shiur_id:fId,
+      shiur_name:nm
+    });
+
+    cDl();
+
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=(nm||'shiur')+'.mp3';
+
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(function(){
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    },2000);
+
+  }catch(e){
+    alert('דער שיעור קען יעצט נישט ווערן דאונלאודעד.');
+  }
+}function closePl(){
   var a=document.getElementById('au');
   if(a){a.pause();a.removeAttribute('src');a.load();}
   var p=document.getElementById('plov');
