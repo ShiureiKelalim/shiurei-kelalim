@@ -3272,12 +3272,14 @@ function renderGroup(title,arr,term){
     }
 
     if(f.type==='audio'){
-  var key='sr_audio_'+String(f.id||'').replace(/[^a-zA-Z0-9_]/g,'')+'_'+i;
+  var key='sr_audio_'+
+    String(f.id||'').replace(/[^a-zA-Z0-9_]/g,'')+
+    '_'+i;
 
   SEARCH_RESULT_MAP[key]={
     id:f.id,
     name:nm,
-    type:f.type,
+    type:'audio',
     root:f.root,
     path:f.path||''
   };
@@ -3291,7 +3293,16 @@ function renderGroup(title,arr,term){
     ? '<span class="latest-badge">נייעסטע שיעור</span>'
     : '';
 
-  return '<div class="fi fi-audio" onclick="openSearchResultByKey(\''+key+'\')"><span class="fii">'+getAudioIcon()+'</span><span class="fin">'+show+path+'</span>'+lb+'<span class="bdg ba">Shiur</span></div>';
+  return '<div class="fi fi-audio" onclick="openSearchResultByKey(\''+
+    key+
+    '\')"><span class="fii">'+
+    getAudioIcon()+
+    '</span><span class="fin">'+
+    show+
+    path+
+    '</span>'+
+    lb+
+    '<span class="bdg ba">Shiur</span></div>';
 }
 
     return '<div class="fi"><span class="fii">📄</span><span class="fin">'+show+path+'</span><span class="bdg ba">File</span></div>';
