@@ -2994,11 +2994,42 @@ var data=await res.json();
     var fols=files.filter(function(f){return f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'});
     var oth=files.filter(function(f){return !(f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder')});
     fols.sort(function(a,b){
-      var na=cln(a.name),nb=cln(b.name),ia=MO.indexOf(na),ib=MO.indexOf(nb);
-      if(ia>=0&&ib>=0)return ia-ib;
-      return a.name.localeCompare(b.name,'he');
-    });
-    el.innerHTML=fols.concat(oth).map(function(f){
+  var na=cln(a.name);
+  var nb=cln(b.name);
+  var ia=MO.indexOf(na);
+  var ib=MO.indexOf(nb);
+
+  if(ia>=0&&ib>=0){
+    return ia-ib;
+  }
+
+  return String(a.name||'').localeCompare(
+    String(b.name||''),
+    'he',
+    {
+      numeric:true,
+      sensitivity:'base'
+    }
+  );
+});
+
+/*
+  סארטירט שיעורים לויט נומערן:
+  1, 2, 3 ... 10, 11, 12
+  אנשטאט 1, 10, 11 ... 2
+*/
+oth.sort(function(a,b){
+  return String(a.name||'').localeCompare(
+    String(b.name||''),
+    'he',
+    {
+      numeric:true,
+      sensitivity:'base'
+    }
+  );
+});
+
+el.innerHTML=fols.concat(oth).map(function(f){
       var isSh=f.mimeType==='application/vnd.google-apps.shortcut';
       var tM=isSh?(f.shortcutDetails&&f.shortcutDetails.targetMimeType||''):'';
       var tI=isSh?(f.shortcutDetails&&f.shortcutDetails.targetId||''):'';
