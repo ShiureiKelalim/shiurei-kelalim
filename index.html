@@ -2821,15 +2821,66 @@ function showTab(key,btn){
   smoothTop();
 return lFld(t.id);
 }
-  async function checkPwd(){
+async function checkPwd(){
   var v=document.getElementById('pwi').value.trim();
   if(!v)return;
+
   try{
-    var r=await fetch(API_BASE+'/password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:v})});
+    var r=await fetch(API_BASE+'/password',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({password:v})
+    });
+
     var d=await r.json();
-    if(d&&d.ok){pwOk=true;document.getElementById('pwe').style.display='none';document.getElementById('pwi').value='';closeM('m-pwd');if(pend){nav.push(pend);rBC();lFld(pend.id);pend=null;}}
-    else{document.getElementById('pwe').style.display='block';}
-  }catch(e){document.getElementById('pwe').style.display='block';}
+
+    if(d&&d.ok){
+      pwOk=true;
+
+      document.getElementById('pwe').style.display='none';
+      document.getElementById('pwi').value='';
+      closeM('m-pwd');
+
+      var pendingAction=pend;
+      pend=null;
+
+      /*
+        Search רעזולטאט:
+        נאכן פעסווארד עפנט ער דעם זעלבן רעזולטאט.
+      */
+      if(pendingAction&&pendingAction.searchResult){
+        openSearchResult(
+          encodeURIComponent(
+            JSON.stringify(pendingAction.searchResult)
+          )
+        );
+        return;
+      }
+
+      /*
+        דירעקטע לינק אדער צוריקקומען צום פארשפארטן פאלדער:
+        מען לייגט נישט נאכאמאל צו צום Breadcrumb.
+      */
+      if(pendingAction&&pendingAction.resumeFolder){
+        lFld(pendingAction.id);
+        return;
+      }
+
+      /*
+        נארמאלער מעניו־פאלדער:
+        פונקט ווי עס האט געארבעט ביז יעצט.
+      */
+      if(pendingAction){
+        nav.push(pendingAction);
+        rBC();
+        lFld(pendingAction.id);
+      }
+    }else{
+      document.getElementById('pwe').style.display='block';
+    }
+  }catch(e){
+    document.getElementById('pwe').style.display='block';
+  }
 }
 function prettyFolderName(nm){nm=String(nm||'');return nm.replace(/\(([^)]*נשואים[^)]*)\)|（([^）]*נשואים[^）]*)）/g,function(m,a,b){return '<span class="restricted-note">'+(a||b)+'</span>';});}
 function plainName(nm){return String(nm||'').replace(/<[^>]*>/g,'');}
@@ -2869,8 +2920,27 @@ async function lFld(fId){
     var isRoot=!!TABS[fId];
     var apiUrl=isRoot?(API_BASE+'/list?folder='+encodeURIComponent(fId)):(API_BASE+'/list?id='+encodeURIComponent(fId));
     var res=await fetch(apiUrl);
-    if(!res.ok)throw new Error('Status '+res.status);
-    var data=await res.json();
+
+/*
+  דער Worker זאגט אז דער פאלדער איז פארשפארט.
+  דאס ארבעט אויך ביי דירעקטע URL־לינקס.
+*/
+if(res.status===401){
+  pwOk=false;
+
+  pend={
+    resumeFolder:true,
+    id:fId,
+    name:_cn&&_cn.name?_cn.name:'פארשפארטע אפטיילונג'
+  };
+
+  openM('m-pwd');
+  return;
+}
+
+if(!res.ok)throw new Error('Status '+res.status);
+
+var data=await res.json();
     if(!data.ok)throw new Error(data.error||'API error');
     var files=data.files||[];
     if(!files.length){el.innerHTML='<div class="empb">📭 No shiurim found</div>';return;}
@@ -3022,11 +3092,29 @@ function triggerSearchBox(){
   var f={};
   try{ f=JSON.parse(decodeURIComponent(enc)); }catch(e){return;}
 
-  var root=f.root||'orach';
-  var name=cln(f.name||'');
-  var typ=f.type||'';
+ var root=f.root||'orach';
+var name=cln(f.name||'');
+var typ=f.type||'';
 
-  closePl();
+/*
+  קאנטראלירט אויך דעם גאנצן Path.
+  ממילא א שיעור אונטער "טהרה" קען אויך נישט ווערן
+  געעפנט דירעקט פונעם Search.
+*/
+var protectedSearchResult=isPr(
+  name+' '+String(f.path||'')
+);
+
+if(protectedSearchResult&&!pwOk){
+  pend={
+    searchResult:f
+  };
+
+  openM('m-pwd');
+  return;
+}
+
+closePl();
   _ph();
   document.getElementById('hero').style.display='none';
   document.getElementById('land').style.display='none';
