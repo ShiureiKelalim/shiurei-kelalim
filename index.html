@@ -607,6 +607,46 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .plvis{width:100%;height:120px;background:linear-gradient(135deg,#162d5a,#2a548f);display:flex;align-items:center;justify-content:center;font-size:3.2rem}
 .plcl{position:absolute;top:8px;left:10px;background:rgba(0,0,0,.48);color:#fff;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:11;font-size:1rem;font-weight:900}
 .plcl:hover{background:rgba(0,0,0,.7)}
+  .player-top-fav{
+  position:absolute;
+  top:8px;
+  left:54px;
+  z-index:12;
+  width:34px;
+  height:34px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:rgba(255,255,255,.82);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .18s,color .18s;
+}
+
+.player-top-fav svg{
+  width:23px;
+  height:23px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linejoin:round;
+}
+
+.player-top-fav:hover{
+  color:#f3d575;
+  transform:scale(1.1);
+}
+
+.player-top-fav.is-fav{
+  color:#f2c230;
+}
+
+.player-top-fav.is-fav svg{
+  fill:#f2c230;
+  stroke:#f2c230;
+}
   /* SHARE BUTTON — RIGHT SIDE */
 .plshare{
   position:absolute;
@@ -1492,7 +1532,7 @@ font-weight:bold;
 .acc-picker-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.acc-picker-title{font-size:1rem;font-weight:900;color:#162d5a}.acc-picker-close{border:0;background:#eee;width:28px;height:28px;border-radius:50%;cursor:pointer;font-weight:900}
 .acc-field{width:100%;padding:9px 11px;border:2px solid #dde3f0;border-radius:9px;font:inherit;outline:none}.acc-field:focus{border-color:#162d5a}
 .acc-actions{display:flex;gap:7px;justify-content:center;margin-top:9px}.acc-actions .sbtn{padding:8px!important;font-size:.78rem!important}
-.plbx{max-width:390px!important;border-radius:16px!important}.plvis{height:66px!important;font-size:1.8rem!important}.plbd{padding:10px 13px 11px!important}.plti{font-size:.86rem!important;margin-bottom:7px!important;max-height:2.7em;overflow:auto}.plbd audio{height:38px!important}.dotsb{font-size:1.15rem!important;margin-top:1px!important;padding:1px 7px!important}.plcp{margin-top:4px!important;font-size:.58rem!important}
+.plbx{max-width:450px!important;border-radius:16px!important}.plvis{height:66px!important;font-size:1.8rem!important}.plbd{padding:10px 13px 11px!important}.plti{font-size:.86rem!important;margin-bottom:7px!important;max-height:2.7em;overflow:auto}.plbd audio{height:38px!important}.dotsb{font-size:1.15rem!important;margin-top:1px!important;padding:1px 7px!important}.plcp{margin-top:4px!important;font-size:.58rem!important}
 #accPlayerTools{
   display:flex!important;
   align-items:center!important;
@@ -1527,7 +1567,10 @@ font-weight:bold;
 #accPlayerTools button.is-fav{
   background:transparent!important;
   color:#c62838!important;
-}@media(max-width:480px){.accgrid{grid-template-columns:repeat(2,1fr)}#m-account .mbx{padding:14px!important}.plbx{max-width:360px!important}}
+}@media(max-width:480px){.accgrid{grid-template-columns:repeat(2,1fr)}#m-account .mbx{padding:14px!important}.plbx{
+  max-width:420px!important;
+  width:calc(100vw - 20px)!important;
+}
 
 /* VERY SMALL MOBILE / BASIC PHONES */
 @media (max-width:360px){
@@ -2527,6 +2570,18 @@ body.nav-search-open .nbrand{
 </button>
 
     <button class="plcl" onclick="closePl()">✕</button>
+    <button
+  type="button"
+  id="playerFavTop"
+  class="player-top-fav"
+  onclick="accToggleFav()"
+  title="Favorite"
+  aria-label="Favorite"
+>
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 2.8l2.8 5.7 6.3.9-4.6 4.4 1.1 6.2-5.6-2.9L6.4 20l1.1-6.2-4.6-4.4 6.3-.9z"></path>
+  </svg>
+</button>
 
     <div class="share-msg" id="shareMsg">✓ לינק קאפירט</div>
 
@@ -4201,8 +4256,12 @@ function triggerSearchNav(){
 }
 function _setHash(h){try{history.pushState(null,'',location.pathname+(h?'#'+h:''));}catch(e){}}
 window.addEventListener('popstate',function(){if(_pH.length){_pF.push(_sv());_rs(_pH.pop());}else{_setHash('');showLanding();}});
-async function _readHash(){
-  var h=location.hash.replace('#','');
+async function _readHash(hashOverride){
+  var h=String(
+    hashOverride !== undefined && hashOverride !== null
+      ? hashOverride
+      : location.hash
+  ).replace(/^#/,'');
   if(!h)return;
 
   var p={};
@@ -4289,31 +4348,92 @@ function installPWA(){if(!_pwaPrompt)return;_pwaPrompt.prompt();_pwaPrompt.userC
 function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אינסטאלירן: עפנט דעם סייט אין Chrome, דריקט ⋮ → "Add to Home Screen"');}}
 (async function(){
   var p=new URLSearchParams(location.search);
+
   var shortCode=p.get('s');
+  var seoCode=p.get('seo');
   var modal=p.get('m');
 
-  if(shortCode){
+  /*
+    SEO לינק פון Google:
+    דער ריינער ?seo= URL בלייבט אינעם Address Bar.
+  */
+  if(seoCode){
     try{
-      var r=await fetch(
-        API_BASE+'/share?id='+encodeURIComponent(shortCode)
+      var seoResponse=await fetch(
+        API_BASE+
+        '/seo?id='+
+        encodeURIComponent(seoCode)
       );
 
-      var d=await r.json();
+      var seoData=await seoResponse.json();
 
-      if(d.ok && d.hash){
-        history.replaceState(
-          null,
-          '',
-          location.pathname+d.hash
-        );
+      if(
+        seoData.ok &&
+        seoData.hash
+      ){
+        if(seoData.name){
+          document.title=
+            seoData.name+
+            ' - שיעורי כללים';
+        }
 
         await loadLatest();
-        await _readHash();
+
+        await _readHash(
+          seoData.hash
+        );
+
         return;
       }
     }catch(e){}
 
-    alert('דער שיעור־לינק איז נישט געפונען געווארן.');
+    /*
+      נישט ווייזן טעכנישע אינפארמאציע
+      אדער אינערליכע IDs ביים פעלער.
+    */
+    alert(
+      'דער שיעור־לינק איז נישט געפונען געווארן.'
+    );
+
+    loadLatest();
+    return;
+  }
+
+  /*
+    עקזיסטירנדע קורצע Share Links.
+  */
+  if(shortCode){
+    try{
+      var r=await fetch(
+        API_BASE+
+        '/share?id='+
+        encodeURIComponent(shortCode)
+      );
+
+      var d=await r.json();
+
+      if(
+        d.ok &&
+        d.hash
+      ){
+        /*
+          האלט דעם קורצן ?s= URL אינעם Address Bar,
+          אנשטאט ארויסצווייזן דעם אינערליכן Hash.
+        */
+        await loadLatest();
+
+        await _readHash(
+          d.hash
+        );
+
+        return;
+      }
+    }catch(e){}
+
+    alert(
+      'דער שיעור־לינק איז נישט געפונען געווארן.'
+    );
+
     loadLatest();
     return;
   }
@@ -5124,6 +5244,11 @@ function accIsFav(id){return (ACC_DATA.favorites||[]).some(function(x){return x.
 async function accRenderPlayerTools(){
   if(!window.curShiur||!curShiur.id)return;var au=document.getElementById('au');if(!au)return;var old=document.getElementById('accPlayerTools');if(old)old.remove();
   var fav=false;try{var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});if(d.ok){ACC_DATA=d;fav=accIsFav(curShiur.id);}}catch(e){}
+ var topFav=document.getElementById('playerFavTop');
+
+if(topFav){
+  topFav.classList.toggle('is-fav',fav);
+}
   var div=document.createElement('div');
 
 div.id='accPlayerTools';
@@ -5235,6 +5360,11 @@ function accJump(sec){var au=document.getElementById('au');if(au)au.currentTime=
 function accSpeed(){var au=document.getElementById('au');if(!au)return;var a=[1,1.25,1.5,2],i=a.indexOf(au.playbackRate||1);au.playbackRate=a[(i+1)%a.length];var b=document.getElementById('accSpeedBtn');if(b)b.textContent=au.playbackRate+'×';}
 async function accToggleFav(){
   if(!curShiur||!curShiur.id)return;var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});if(!d.ok){openMyAccount();return;}ACC_DATA=d;var add=!accIsFav(curShiur.id),r=await accApi(add?'favorite_add':'favorite_remove',{shiur_id:curShiur.id,shiur_name:curShiur.name||'שיעור'});if(!r.ok){alert(r.error||'נישט געלונגען');return;}var b=document.getElementById('accFavBtn');if(b)b.classList.toggle('is-fav',add);
+  var topFav=document.getElementById('playerFavTop');
+
+if(topFav){
+  topFav.classList.toggle('is-fav',add);
+}
 }
 function accBookmark(){
   if(!curShiur||!curShiur.id)return;var au=document.getElementById('au'),pos=au?au.currentTime:0;
