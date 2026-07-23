@@ -2680,7 +2680,45 @@ body.nav-search-open .nbrand{
         <div class="scs">חגים ומועדים</div>
       </div>
     </div>
-  </div>
+   </div>
+
+  <footer>
+    <div class="ftr-grid">
+
+      <div class="ftr-col">
+        <h4>הויפט קאטעגאריעס</h4>
+        <a href="#" onclick="showTab('orach',null);return false;">אורח חיים</a>
+        <a href="#" onclick="showTab('yoreh',null);return false;">יורה דעה</a>
+        <a href="#" onclick="showTab('even',null);return false;">אבן העזר</a>
+        <a href="#" onclick="showTab('choshen',null);return false;">חושן משפט</a>
+        <a href="#" onclick="showTab('moadim',null);return false;">מועדים וזמנים</a>
+      </div>
+
+      <div class="ftr-col">
+        <h4>Special Shiurim</h4>
+        <a href="#" onclick="openLatestModal();return false;">די נייעסטע שיעור</a>
+        <a href="#" onclick="openYomTovBtn();return false;">שיעורים על היו״ט הבעל״ט</a>
+      </div>
+
+      <div class="ftr-col">
+        <h4>אינפארמאציע</h4>
+        <a href="#" onclick="openM('m-hl',true);return false;">האטליין</a>
+        <a href="#" onclick="openM('m-sub');return false;">סובסקרייב</a>
+        <a href="#" onclick="openM('m-don');return false;">Donate</a>
+        <a href="#" onclick="openM('m-privacy');return false;">Privacy Policy</a>
+      </div>
+
+      <div class="ftr-col">
+        <h4>קאנטאקט אונז</h4>
+        <a href="#" onclick="openM('m-ct');return false;">Contact Us</a>
+        <a href="mailto:info@shiureikelalim.com">info@shiureikelalim.com</a>
+      </div>
+
+    </div>
+
+    <p class="ftr-copy">© Shiurei Kelalim — All Rights Reserved</p>
+  </footer>
+
 </div>
 
 <!-- CONTENT -->
@@ -3068,36 +3106,7 @@ body.nav-search-open .nbrand{
   </div>
 </div>
 
-<footer>
-  <div class="ftr-grid">
-    <div class="ftr-col">
-      <h4>הויפט קאטעגאריעס</h4>
-      <a href="#" onclick="showTab('orach',null);return false;">אורח חיים</a>
-      <a href="#" onclick="showTab('yoreh',null);return false;">יורה דעה</a>
-      <a href="#" onclick="showTab('even',null);return false;">אבן העזר</a>
-      <a href="#" onclick="showTab('choshen',null);return false;">חושן משפט</a>
-      <a href="#" onclick="showTab('moadim',null);return false;">מועדים וזמנים</a>
-    </div>
-    <div class="ftr-col">
-      <h4>Special Shiurim</h4>
-      <a href="#" onclick="openLatestModal();return false;">די נייעסטע שיעור</a>
-      <a href="#" onclick="openYomTovBtn();return false;">שיעורים על היו״ט הבעל״ט</a>
-    </div>
-    <div class="ftr-col">
-      <h4>אינפארמאציע</h4>
-      <a href="#" onclick="openM('m-hl',true);return false;">האטליין</a>
-      <a href="#" onclick="openM('m-sub');return false;">סובסקרייב</a>
-      <a href="#" onclick="openM('m-don');return false;">Donate</a>
-      <a href="#" onclick="openM('m-privacy');return false;">Privacy Policy</a>
-    </div>
-    <div class="ftr-col">
-      <h4>קאנטאקט אונז</h4>
-      <a href="#" onclick="openM('m-ct');return false;">Contact Us</a>
-      <a href="mailto:info@shiureikelalim.com">info@shiureikelalim.com</a>
-    </div>
-  </div>
-  <p class="ftr-copy">© Shiurei Kelalim — All Rights Reserved</p>
-</footer>
+
 
 <script>
 (function(){try{if(location.hash.indexOf('m=')>=0){history.replaceState({},'',location.pathname);}}catch(ex){}})();
