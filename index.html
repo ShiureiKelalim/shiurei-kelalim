@@ -1002,9 +1002,28 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 }
 
 .player-dots-btn{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  min-width:0!important;
+  margin:8px auto 5px!important;
+  padding:0 8px!important;
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:#8a909b!important;
   font-family:Arial,sans-serif!important;
-  font-size:1.7rem!important;
-  line-height:.65!important;
+  font-size:1.65rem!important;
+  line-height:.7!important;
+  cursor:pointer!important;
+}
+
+.player-dots-btn:hover{
+  background:transparent!important;
+  color:#162d5a!important;
+  transform:none!important;
 }
   .dlbtn{display:inline-block;margin-top:4px;padding:7px 15px;background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border-radius:14px;font-size:.77rem;font-weight:700;cursor:pointer;border:none;font-family:'Frank Ruhl Libre',serif}
 .dllim{margin-top:4px;padding:5px 12px;background:#fff3e0;color:#e65100;border-radius:7px;font-size:.75rem}
@@ -4628,6 +4647,39 @@ function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אי
 
   var ogUrl=document.getElementById('seo-og-url');
   if(ogUrl) ogUrl.setAttribute('content',canonicalUrl);
+      var oldSchema=document.getElementById('seo-schema');
+
+  if(oldSchema){
+    oldSchema.remove();
+  }
+
+  var schema=document.createElement('script');
+  schema.id='seo-schema';
+  schema.type='application/ld+json';
+
+  var schemaData={
+    '@context':'https://schema.org',
+    '@type':type==='audio' ? 'AudioObject' : 'CollectionPage',
+    name:name,
+    description:description,
+    url:canonicalUrl,
+    inLanguage:'yi',
+    isPartOf:{
+      '@type':'WebSite',
+      name:'שיעורי כללים',
+      url:'https://www.shiureikelalim.com/'
+    },
+    publisher:{
+      '@type':'Organization',
+      name:'שיעורי כללים',
+      url:'https://www.shiureikelalim.com/'
+    }
+  };
+
+ 
+
+  schema.textContent=JSON.stringify(schemaData);
+  document.head.appendChild(schema);
 }
 
   /*
@@ -5549,10 +5601,14 @@ async function accRenderPlayerTools(){
   div.id='accPlayerTools';
 
   div.innerHTML=
-    '<button class="player-dots-btn" onclick="togDots()" title="נאך אפציעס" aria-label="נאך אפציעס">⋮</button>'+
-    '<button onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="Playlist">📂</button>'+
-    '<button onclick="accBookmark()" title="Bookmark" aria-label="Bookmark">🔖</button>';
+  '<button onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="Playlist">📂</button>'+
+  '<button onclick="accBookmark()" title="Bookmark" aria-label="Bookmark">🔖</button>';
 
+var copyright=document.querySelector('.plcp');
+
+if(copyright && copyright.parentNode===au.parentNode){
+  au.parentNode.insertBefore(div,copyright);
+}else{
   au.parentNode.appendChild(div);
 }
   function proFormatTime(sec){
