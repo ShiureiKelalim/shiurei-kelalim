@@ -4590,6 +4590,45 @@ function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אי
   var shortCode=p.get('s');
   var seoCode=p.get('seo');
   var modal=p.get('m');
+  function setSeoMeta(data, seoCode){
+  var name=(data && data.name) ? String(data.name) : 'שיעורי כללים';
+  var path=(data && data.path) ? String(data.path) : '';
+  var type=(data && data.type) ? String(data.type) : '';
+
+  var cleanTitle=name+' - שיעורי כללים';
+
+  var description=
+    type==='folder'
+      ? 'שיעורים בנושא '+name+' באתר שיעורי כללים.'
+      : 'האזינו לשיעור '+name+' באתר שיעורי כללים.';
+
+  if(path){
+    description+=' מתוך '+path+'.';
+  }
+
+  document.title=cleanTitle;
+
+  var desc=document.getElementById('seo-description');
+  if(desc) desc.setAttribute('content',description);
+
+  var canonicalUrl=
+    location.origin+
+    location.pathname+
+    '?seo='+
+    encodeURIComponent(seoCode);
+
+  var canonical=document.getElementById('seo-canonical');
+  if(canonical) canonical.setAttribute('href',canonicalUrl);
+
+  var ogTitle=document.getElementById('seo-og-title');
+  if(ogTitle) ogTitle.setAttribute('content',cleanTitle);
+
+  var ogDescription=document.getElementById('seo-og-description');
+  if(ogDescription) ogDescription.setAttribute('content',description);
+
+  var ogUrl=document.getElementById('seo-og-url');
+  if(ogUrl) ogUrl.setAttribute('content',canonicalUrl);
+}
 
   /*
     SEO לינק פון Google:
@@ -4609,11 +4648,8 @@ function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אי
         seoData.ok &&
         seoData.hash
       ){
-        if(seoData.name){
-          document.title=
-            seoData.name+
-            ' - שיעורי כללים';
-        }
+        setSeoMeta(seoData,seoCode);
+       
 
         await loadLatest();
 
