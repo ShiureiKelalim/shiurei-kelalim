@@ -3103,6 +3103,7 @@ body.nav-search-open .nbrand{
 (function(){try{if(location.hash.indexOf('m=')>=0){history.replaceState({},'',location.pathname);}}catch(ex){}})();
 
 var API_BASE='/api';
+var SEO_ROUTE_LOADING=false;
 var KEY=''; // Google API key is now hidden in Cloudflare Worker
 var MAIL='info@shiureikelalim.com';
 var YTID='yomtov';
@@ -4511,8 +4512,17 @@ function triggerSearchNav(){
   if(cs)cs.value=v;
   triggerSearch();
 }
-function _setHash(h){try{history.pushState(null,'',location.pathname+(h?'#'+h:''));}catch(e){}}
-window.addEventListener('popstate',function(){if(_pH.length){_pF.push(_sv());_rs(_pH.pop());}else{_setHash('');showLanding();}});
+function _setHash(h){
+  if(SEO_ROUTE_LOADING)return;
+
+  try{
+    history.pushState(
+      null,
+      '',
+      location.pathname+(h?'#'+h:'')
+    );
+  }catch(e){}
+}window.addEventListener('popstate',function(){if(_pH.length){_pF.push(_sv());_rs(_pH.pop());}else{_setHash('');showLanding();}});
 async function _readHash(hashOverride){
   var h=String(
     hashOverride !== undefined && hashOverride !== null
@@ -4700,16 +4710,21 @@ function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אי
         seoData.ok &&
         seoData.hash
       ){
-        setSeoMeta(seoData,seoCode);
-       
+       setSeoMeta(seoData,seoCode);
 
-        await loadLatest();
+SEO_ROUTE_LOADING=true;
 
-        await _readHash(
-          seoData.hash
-        );
+try{
+  await loadLatest();
 
-        return;
+  await _readHash(
+    seoData.hash
+  );
+}finally{
+  SEO_ROUTE_LOADING=false;
+}
+
+return;
       }
     }catch(e){}
 
@@ -5611,7 +5626,9 @@ if(copyright && copyright.parentNode===au.parentNode){
 }else{
   au.parentNode.appendChild(div);
 }
-  function proFormatTime(sec){
+}
+
+function proFormatTime(sec){
   sec=Math.max(0,Math.floor(Number(sec||0)));
 
   var h=Math.floor(sec/3600);
