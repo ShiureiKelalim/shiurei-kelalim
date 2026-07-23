@@ -5653,14 +5653,15 @@ function proTogglePlay(){
 }
 
 function proSetSpeed(value){
-  function proChooseSpeed(value){
-  proSetSpeed(value);
-  closePlayerMenus();
-}
   var au=document.getElementById('au');
   if(!au)return;
 
   au.playbackRate=Number(value)||1;
+}
+
+function proChooseSpeed(value){
+  proSetSpeed(value);
+  closePlayerMenus();
 }
 
 function proSeek(value){
