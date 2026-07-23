@@ -2858,9 +2858,10 @@ body.nav-search-open .nbrand{
   <div id="dlsec"></div>
 
 </div>
-      <div class="plcp">© Shiurei Kelalim</div>
+  <div class="plcp">© Shiurei Kelalim</div>
     </div>
   </div>
+</div>
 </div>
 
 <!-- YOM TOV POPUP - UPDATED -->
@@ -3524,8 +3525,19 @@ if(pendingAction&&pendingAction.download){
 }
 function prettyFolderName(nm){nm=String(nm||'');return nm.replace(/\(([^)]*נשואים[^)]*)\)|（([^）]*נשואים[^）]*)）/g,function(m,a,b){return '<span class="restricted-note">'+(a||b)+'</span>';});}
 function plainName(nm){return String(nm||'').replace(/<[^>]*>/g,'');}
-function rBC(){document.getElementById('bc').innerHTML=nav.map(function(item,i){if(i===nav.length-1)return'<span class="bcc">'+item.name+'</span>';return'<span class="bcl" onclick="goLv('+i+')">'+item.name+'</span><span class="bcs">›</span>';}).join('');}
-function goLv(i){_ph();nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
+function rBC(){
+  document.getElementById('bc').innerHTML=nav.map(function(item,i){
+    var cleanName=String(item.name||'')
+      .replace(/^[א-ת0-9]+\s*[-–—.)]\s*/,'')
+      .trim();
+
+    if(i===nav.length-1){
+      return '<span class="bcc">'+cleanName+'</span>';
+    }
+
+    return '<span class="bcl" onclick="goLv('+i+')">'+cleanName+'</span><span class="bcs">›</span>';
+  }).join('');
+}function goLv(i){_ph();nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
 function latestShiurKey(name){
   return String(name||'')
     .toLowerCase()
