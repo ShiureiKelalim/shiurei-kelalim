@@ -4789,15 +4789,11 @@ return;
   }
 
  if(modal){
+  openM(modal);
+
   if(modal==='m-lat'){
     await loadLatest();
   }
-
-  openM(modal);
-
-  document.documentElement.classList.remove(
-    'direct-modal-loading'
-  );
 }else{
   loadLatest();
   checkYomTov();
