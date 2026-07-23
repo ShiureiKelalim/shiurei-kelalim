@@ -3542,9 +3542,9 @@ function prettyFolderName(nm){nm=String(nm||'');return nm.replace(/\(([^)]*נש�
 function plainName(nm){return String(nm||'').replace(/<[^>]*>/g,'');}
 function rBC(){
   document.getElementById('bc').innerHTML=nav.map(function(item,i){
-    var cleanName=String(item.name||'')
-      .replace(/^[א-ת0-9]+\s*[-–—.)]\s*/,'')
-      .trim();
+  var cleanName=plainName(item.name)
+  .replace(/^[\s\dא-ת]{1,8}["׳״']?\s*[-–—.)]?\s*/,'')
+  .trim();
 
     if(i===nav.length-1){
       return '<span class="bcc">'+cleanName+'</span>';
