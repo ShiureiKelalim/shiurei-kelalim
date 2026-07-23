@@ -886,8 +886,77 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 }
 .dotsb{background:none;border:none;cursor:pointer;font-size:1.4rem;color:#ccc;padding:3px 8px;display:block;margin:4px auto 0;border-radius:7px}
 .dotsb:hover{background:#f0f0f0;color:#666}
-.dotm{display:none;margin-top:4px}.dotm.open{display:block}
-.dlbtn{display:inline-block;margin-top:4px;padding:7px 15px;background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border-radius:14px;font-size:.77rem;font-weight:700;cursor:pointer;border:none;font-family:'Frank Ruhl Libre',serif}
+.dotm{
+  display:none;
+  width:min(260px,92%);
+  margin:8px auto 2px;
+  padding:9px 12px;
+  background:#f7f8fb;
+  border:1px solid #e0e4ec;
+  border-radius:12px;
+  box-shadow:0 6px 18px rgba(8,18,42,.12);
+}
+
+.dotm.open{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+}
+
+.player-menu-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#69717f;
+  font:600 .68rem Arial,sans-serif;
+}
+
+.player-menu-row select{
+  border:0;
+  border-bottom:1px solid #cbd1dc;
+  background:transparent;
+  color:#162d5a;
+  padding:3px 4px;
+  outline:none;
+  cursor:pointer;
+  font:700 .7rem Arial,sans-serif;
+}
+
+.dlbtn{
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  margin:0!important;
+  padding:2px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#162d5a!important;
+  font-size:1.35rem!important;
+  cursor:pointer;
+}
+
+.dlbtn:hover{
+  color:#b8860b!important;
+  transform:scale(1.1);
+}
+
+.dlbtn.disabled{
+  color:#aaa!important;
+  cursor:not-allowed;
+  transform:none;
+}
+  #accPlayerTools{
+  direction:ltr!important;
+}
+
+.player-dots-btn{
+  font-family:Arial,sans-serif!important;
+  font-size:1.7rem!important;
+  line-height:.65!important;
+}
+  .dlbtn{display:inline-block;margin-top:4px;padding:7px 15px;background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border-radius:14px;font-size:.77rem;font-weight:700;cursor:pointer;border:none;font-family:'Frank Ruhl Libre',serif}
 .dllim{margin-top:4px;padding:5px 12px;background:#fff3e0;color:#e65100;border-radius:7px;font-size:.75rem}
 .plcp{margin-top:8px;font-size:.68rem;color:#ddd}
 
@@ -2652,9 +2721,15 @@ body.nav-search-open .nbrand{
 
   </div>
 
-  <div class="pro-speed-row">
-    <label for="proSpeed">Playback speed</label>
-    <select id="proSpeed" onchange="proSetSpeed(this.value)">
+ 
+
+</div>   
+      <div class="dotm" id="dotm">
+
+  <div class="player-menu-row">
+    <span>Playback speed</span>
+
+    <select id="proSpeed" onchange="proChooseSpeed(this.value)">
       <option value="0.75">0.75×</option>
       <option value="1" selected>Normal</option>
       <option value="1.25">1.25×</option>
@@ -2664,8 +2739,9 @@ body.nav-search-open .nbrand{
     </select>
   </div>
 
-</div>      <button class="dotsb" onclick="togDots()">⋮</button>
-      <div class="dotm" id="dotm"><div id="dlsec"></div></div>
+  <div id="dlsec"></div>
+
+</div>
       <div class="plcp">© Shiurei Kelalim</div>
     </div>
   </div>
@@ -3132,8 +3208,29 @@ function isPr(nm){return PROT.some(function(k){return nm.includes(k)})}
 function gDl(){var t=new Date().toDateString();var d=JSON.parse(localStorage.getItem('dlx')||'{"d":"","c":0}');if(d.d!==t){d.d=t;d.c=0;}return d;}
 function dlL(){return Math.max(0,5-gDl().c)}
 function cDl(){var d=gDl();if(d.c<5){d.c++;localStorage.setItem('dlx',JSON.stringify(d));}setTimeout(rfDl,150);}
-function rfDl(){var l=dlL(),s=document.getElementById('dlsec');if(!s)return;if(l<=0)s.innerHTML='<div class="dllim">⛔ Download limit reached (5/day)</div>';else{var b=s.querySelector('button');if(b)b.textContent='⬇️ Download ('+l+' left today)';}}
-function smoothTop(){try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}}
+function rfDl(){
+  var l=dlL();
+  var s=document.getElementById('dlsec');
+
+  if(!s)return;
+
+  var b=s.querySelector('button');
+  if(!b)return;
+
+  b.textContent='⬇️';
+
+  if(l<=0){
+    b.disabled=true;
+    b.classList.add('disabled');
+    b.title='Download limit reached — 5 per day';
+    b.setAttribute('aria-label','Download limit reached');
+  }else{
+    b.disabled=false;
+    b.classList.remove('disabled');
+    b.title='Download — '+l+' left today';
+    b.setAttribute('aria-label','Download — '+l+' left today');
+  }
+}function smoothTop(){try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}}
 function setActiveHome(on){var hb=document.querySelector('.ntb-home');if(hb)hb.classList.toggle('active',!!on);}
 function closeAllPopups(keepPwd){
   document.querySelectorAll('.mov.open').forEach(function(m){
@@ -3815,8 +3912,10 @@ function escHtml(s){
     si.textContent='';
   }).catch(function(){el.innerHTML='<p>פעלער</p>';});
 }
-function opPl(fId,nm){var cleanNm=fmN(nm);curShiur={id:fId,name:cleanNm,marks:{},lastBeat:0};gaEv('shiur_open',{shiur_id:fId,shiur_name:cleanNm});setupAudioTracking();try{_setHash((location.hash.replace('#','').split('&').filter(function(x){return x.indexOf('sid=')<0&&x.indexOf('sn=')<0;}).join('&')+'&sid='+encodeURIComponent(fId)+'&sn='+encodeURIComponent(nm)).replace(/^&/,''));}catch(e){}document.getElementById('plti').innerHTML=cleanNm;document.getElementById('au').src=API_BASE+'/play?id='+encodeURIComponent(fId);document.getElementById('dotm').classList.remove('open');var l=dlL();var dlNm=cleanNm.replace(/'/g,"\\'").replace(/"/g,'&quot;');document.getElementById('dlsec').innerHTML=l>0?'<button class="dlbtn" onclick="doDl(\''+fId+'\',\''+dlNm+'\')">⬇️ Download ('+l+' left today)</button>':'<div class="dllim">⛔ Download limit reached (5/day)</div>';document.getElementById('plov').classList.add('open');}
-async function shareCurrentShiur(){
+document.getElementById('dlsec').innerHTML=
+  l>0
+    ? '<button class="dlbtn" onclick="closePlayerMenus();doDl(\''+fId+'\',\''+dlNm+'\')" title="Download — '+l+' left today" aria-label="Download — '+l+' left today">⬇️</button>'
+    : '<button class="dlbtn disabled" disabled title="Download limit reached — 5 per day" aria-label="Download limit reached">⬇️</button>';async function shareCurrentShiur(){
   if(!curShiur || !curShiur.id){
     alert('קיין שיעור איז נישט אפן');
     return;
@@ -3981,8 +4080,34 @@ async function doDl(fId,nm){
   var d=document.getElementById('dotm');
   if(d)d.classList.remove('open');
   }
-function togDots(){var d=document.getElementById('dotm');if(d)d.classList.toggle('open');}
-document.getElementById('plov').addEventListener('click',function(e){if(e.target===this)closePl();});
+var PLAYER_MENU_TIMER=null;
+
+function closePlayerMenus(){
+  var d=document.getElementById('dotm');
+
+  if(d){
+    d.classList.remove('open');
+  }
+
+  clearTimeout(PLAYER_MENU_TIMER);
+}
+
+function togDots(){
+  var d=document.getElementById('dotm');
+  if(!d)return;
+
+  var willOpen=!d.classList.contains('open');
+
+  closePlayerMenus();
+
+  if(willOpen){
+    d.classList.add('open');
+
+    PLAYER_MENU_TIMER=setTimeout(function(){
+      closePlayerMenus();
+    },10000);
+  }
+}document.getElementById('plov').addEventListener('click',function(e){if(e.target===this)closePl();});
 var _fIds=null;
 async function _getFIds(){if(_fIds)return _fIds;var all=[];async function walk(id,depth){if(depth>2)return;all.push(id);try{var u=TABS[id]?(API_BASE+'/list?folder='+encodeURIComponent(id)):(API_BASE+'/list?id='+encodeURIComponent(id));var r=await fetch(u);var d=await r.json();var files=d.files||[];for(var i=0;i<files.length;i++){var f=files[i];if(f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder')await walk(f.id,depth+1);}}catch(e){}}var roots=Object.keys(TABS);for(var i=0;i<roots.length;i++){await walk(roots[i],0);} _fIds=all;return all;}
 function hebrewYear(num){var n=num%1000;var vals=[400,300,200,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1];var lets=['ת','ש','ר','ק','צ','פ','ע','ס','נ','מ','ל','כ','י','ט','ח','ז','ו','ה','ד','ג','ב','א'];var result='',rem=n;for(var i=0;i<vals.length;i++){while(rem>=vals[i]){result+=lets[i];rem-=vals[i];}}result=result.replace('יה','טו').replace('יו','טז');if(result.length===1)return result+'׳';return result.slice(0,-1)+'״'+result.slice(-1);}
@@ -5242,23 +5367,44 @@ async function accCreatePlaylistNow(){var i=document.getElementById('accNewPlayl
 
 function accIsFav(id){return (ACC_DATA.favorites||[]).some(function(x){return x.shiur_id===id;});}
 async function accRenderPlayerTools(){
-  if(!window.curShiur||!curShiur.id)return;var au=document.getElementById('au');if(!au)return;var old=document.getElementById('accPlayerTools');if(old)old.remove();
-  var fav=false;try{var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});if(d.ok){ACC_DATA=d;fav=accIsFav(curShiur.id);}}catch(e){}
- var topFav=document.getElementById('playerFavTop');
+  if(!window.curShiur || !curShiur.id)return;
 
-if(topFav){
-  topFav.classList.toggle('is-fav',fav);
-}
+  var au=document.getElementById('au');
+  if(!au)return;
+
+  var old=document.getElementById('accPlayerTools');
+  if(old)old.remove();
+
+  var fav=false;
+
+  try{
+    var d=await fetch(API_BASE+'/user-data',{
+      credentials:'include'
+    }).then(function(r){
+      return r.json();
+    });
+
+    if(d.ok){
+      ACC_DATA=d;
+      fav=accIsFav(curShiur.id);
+    }
+  }catch(e){}
+
+  var topFav=document.getElementById('playerFavTop');
+
+  if(topFav){
+    topFav.classList.toggle('is-fav',fav);
+  }
+
   var div=document.createElement('div');
+  div.id='accPlayerTools';
 
-div.id='accPlayerTools';
+  div.innerHTML=
+    '<button class="player-dots-btn" onclick="togDots()" title="נאך אפציעס" aria-label="נאך אפציעס">⋮</button>'+
+    '<button onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="Playlist">📂</button>'+
+    '<button onclick="accBookmark()" title="Bookmark" aria-label="Bookmark">🔖</button>';
 
-div.innerHTML=
-  '<button id="accFavBtn" class="'+(fav?'is-fav':'')+'" onclick="accToggleFav()" title="Favorite" aria-label="Favorite">♥</button>'+
-  '<button onclick="accBookmark()" title="Bookmark" aria-label="Bookmark">🔖</button>'+
-  '<button onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="Playlist">📂</button>';
-
-au.parentNode.appendChild(div);
+  au.parentNode.appendChild(div);
 }
   function proFormatTime(sec){
   sec=Math.max(0,Math.floor(Number(sec||0)));
@@ -5285,6 +5431,10 @@ function proTogglePlay(){
 }
 
 function proSetSpeed(value){
+  function proChooseSpeed(value){
+  proSetSpeed(value);
+  closePlayerMenus();
+}
   var au=document.getElementById('au');
   if(!au)return;
 
