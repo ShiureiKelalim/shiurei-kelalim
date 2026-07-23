@@ -667,6 +667,183 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .plbd{padding:15px 20px;text-align:center}
 .plti{font-size:.92rem;font-weight:700;color:#162d5a;margin-bottom:10px;line-height:1.35}
 .plbd audio{width:100%;border-radius:8px}
+  .pro-player{
+  width:100%;
+  padding:7px 2px 4px;
+}
+
+.pro-time-row{
+  direction:ltr;
+  display:grid;
+  grid-template-columns:42px 1fr 42px;
+  align-items:center;
+  gap:9px;
+  color:#6d7480;
+  font-family:Arial,sans-serif;
+  font-size:.72rem;
+  font-weight:600;
+}
+
+.pro-progress{
+  width:100%;
+  height:5px;
+  padding:0;
+  border:0;
+  border-radius:20px;
+  background:linear-gradient(
+    to right,
+    #d4af37 0%,
+    #d4af37 var(--progress,0%),
+    #dfe4ec var(--progress,0%),
+    #dfe4ec 100%
+  );
+  appearance:none;
+  -webkit-appearance:none;
+  cursor:pointer;
+}
+
+.pro-progress::-webkit-slider-runnable-track{
+  height:5px;
+  border-radius:20px;
+  background:transparent;
+}
+
+.pro-progress::-webkit-slider-thumb{
+  appearance:none;
+  -webkit-appearance:none;
+  width:15px;
+  height:15px;
+  margin-top:-5px;
+  border-radius:50%;
+  border:3px solid #fff;
+  background:#162d5a;
+  box-shadow:0 1px 5px rgba(0,0,0,.28);
+}
+
+.pro-progress::-moz-range-track{
+  height:5px;
+  border-radius:20px;
+  background:#dfe4ec;
+}
+
+.pro-progress::-moz-range-progress{
+  height:5px;
+  border-radius:20px;
+  background:#d4af37;
+}
+
+.pro-progress::-moz-range-thumb{
+  width:11px;
+  height:11px;
+  border:3px solid #fff;
+  border-radius:50%;
+  background:#162d5a;
+  box-shadow:0 1px 5px rgba(0,0,0,.28);
+}
+
+.pro-main-controls{
+  direction:ltr;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:31px;
+  margin:13px 0 7px;
+}
+
+.pro-icon-btn,
+.pro-play-btn{
+  border:0;
+  padding:0;
+  margin:0;
+  background:transparent;
+  color:#162d5a;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform .16s,color .16s;
+}
+
+.pro-icon-btn:hover,
+.pro-play-btn:hover{
+  transform:scale(1.08);
+  color:#b8860b;
+}
+
+.pro-icon-btn svg{
+  width:39px;
+  height:39px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.pro-icon-btn text{
+  fill:currentColor;
+  stroke:none;
+  font-family:Arial,sans-serif;
+  font-size:9px;
+  font-weight:800;
+  text-anchor:middle;
+}
+
+.pro-play-btn{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:linear-gradient(145deg,#18396f,#0b1d40);
+  color:#fff;
+  box-shadow:0 7px 20px rgba(10,28,64,.28);
+}
+
+.pro-play-btn:hover{
+  color:#fff;
+  background:linear-gradient(145deg,#b8860b,#d4af37);
+}
+
+.pro-play-btn svg{
+  width:29px;
+  height:29px;
+  fill:currentColor;
+  stroke:currentColor;
+  stroke-width:1.4;
+}
+
+.pro-speed-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-top:5px;
+  color:#777;
+  font-family:Arial,sans-serif;
+  font-size:.7rem;
+}
+
+.pro-speed-row select{
+  border:0;
+  border-bottom:1px solid #ccd2dc;
+  border-radius:0;
+  padding:3px 18px 3px 4px;
+  background:transparent;
+  color:#162d5a;
+  font:700 .72rem Arial,sans-serif;
+  outline:none;
+  cursor:pointer;
+}
+
+@media(max-width:480px){
+  .pro-main-controls{
+    gap:27px;
+  }
+
+  .pro-play-btn{
+    width:55px;
+    height:55px;
+  }
+}
 .dotsb{background:none;border:none;cursor:pointer;font-size:1.4rem;color:#ccc;padding:3px 8px;display:block;margin:4px auto 0;border-radius:7px}
 .dotsb:hover{background:#f0f0f0;color:#666}
 .dotm{display:none;margin-top:4px}.dotm.open{display:block}
@@ -1316,8 +1493,41 @@ font-weight:bold;
 .acc-field{width:100%;padding:9px 11px;border:2px solid #dde3f0;border-radius:9px;font:inherit;outline:none}.acc-field:focus{border-color:#162d5a}
 .acc-actions{display:flex;gap:7px;justify-content:center;margin-top:9px}.acc-actions .sbtn{padding:8px!important;font-size:.78rem!important}
 .plbx{max-width:390px!important;border-radius:16px!important}.plvis{height:66px!important;font-size:1.8rem!important}.plbd{padding:10px 13px 11px!important}.plti{font-size:.86rem!important;margin-bottom:7px!important;max-height:2.7em;overflow:auto}.plbd audio{height:38px!important}.dotsb{font-size:1.15rem!important;margin-top:1px!important;padding:1px 7px!important}.plcp{margin-top:4px!important;font-size:.58rem!important}
-#accPlayerTools{display:grid!important;grid-template-columns:repeat(6,1fr);gap:5px!important;margin-top:7px!important}#accPlayerTools button{margin:0!important;padding:6px 3px!important;min-width:0!important;border-radius:8px!important;font-size:.68rem!important;background:#162d5a!important;color:#fff!important}#accPlayerTools button.is-fav{background:#a51622!important;color:#fff!important}#accPlayerTools button:hover{filter:brightness(1.13)}
-@media(max-width:480px){.accgrid{grid-template-columns:repeat(2,1fr)}#m-account .mbx{padding:14px!important}.plbx{max-width:360px!important}}
+#accPlayerTools{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:25px!important;
+  margin-top:10px!important;
+}
+
+#accPlayerTools button{
+  width:auto!important;
+  min-width:0!important;
+  height:auto!important;
+  margin:0!important;
+  padding:2px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#7d8490!important;
+  font-size:1.32rem!important;
+  line-height:1!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+  transition:transform .16s,color .16s!important;
+}
+
+#accPlayerTools button:hover{
+  transform:scale(1.12)!important;
+  color:#b8860b!important;
+  filter:none!important;
+}
+
+#accPlayerTools button.is-fav{
+  background:transparent!important;
+  color:#c62838!important;
+}@media(max-width:480px){.accgrid{grid-template-columns:repeat(2,1fr)}#m-account .mbx{padding:14px!important}.plbx{max-width:360px!important}}
 
 /* VERY SMALL MOBILE / BASIC PHONES */
 @media (max-width:360px){
@@ -2323,8 +2533,83 @@ body.nav-search-open .nbrand{
     <div class="plvis">🎵</div>
     <div class="plbd">
       <div class="plti" id="plti"></div>
-      <audio id="au" controls autoplay controlsList="nodownload" oncontextmenu="return false;"></audio>
-      <button class="dotsb" onclick="togDots()">⋮</button>
+<audio id="au" autoplay controlsList="nodownload" oncontextmenu="return false;"></audio>
+
+<div class="pro-player">
+
+  <div class="pro-time-row">
+    <span id="proCurrent">0:00</span>
+    <input
+      id="proProgress"
+      class="pro-progress"
+      type="range"
+      min="0"
+      max="100"
+      value="0"
+      step="0.1"
+      oninput="proSeek(this.value)"
+    >
+    <span id="proDuration">0:00</span>
+  </div>
+
+  <div class="pro-main-controls">
+
+    <button
+      type="button"
+      class="pro-icon-btn pro-skip"
+      onclick="accJump(-30)"
+      title="30 סעקונדעס צוריק"
+      aria-label="30 סעקונדעס צוריק"
+    >
+      <svg viewBox="0 0 32 32">
+        <path d="M9 8H4v-5"></path>
+        <path d="M4.5 8.5A12 12 0 1 1 4 19"></path>
+        <text x="16" y="21">30</text>
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      id="proPlayBtn"
+      class="pro-play-btn"
+      onclick="proTogglePlay()"
+      title="Play"
+      aria-label="Play"
+    >
+      <svg id="proPlayIcon" viewBox="0 0 32 32">
+        <path d="M11 7l14 9-14 9z"></path>
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      class="pro-icon-btn pro-skip"
+      onclick="accJump(30)"
+      title="30 סעקונדעס פארויס"
+      aria-label="30 סעקונדעס פארויס"
+    >
+      <svg viewBox="0 0 32 32">
+        <path d="M23 8h5v-5"></path>
+        <path d="M27.5 8.5A12 12 0 1 0 28 19"></path>
+        <text x="16" y="21">30</text>
+      </svg>
+    </button>
+
+  </div>
+
+  <div class="pro-speed-row">
+    <label for="proSpeed">Playback speed</label>
+    <select id="proSpeed" onchange="proSetSpeed(this.value)">
+      <option value="0.75">0.75×</option>
+      <option value="1" selected>Normal</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="1.75">1.75×</option>
+      <option value="2">2×</option>
+    </select>
+  </div>
+
+</div>      <button class="dotsb" onclick="togDots()">⋮</button>
       <div class="dotm" id="dotm"><div id="dlsec"></div></div>
       <div class="plcp">© Shiurei Kelalim</div>
     </div>
@@ -3216,20 +3501,7 @@ async function doSrch(term){
     }
   }catch(e){}
 }
-    /*
-  מאכט זיכער אז דער Search ווייסט וועלכער איז דער נייעסטער שיעור,
-  אפילו אויב loadLatest() איז נאך נישט פארטיג געווארן.
-*/
-if(!latF){
-  try{
-    var latestResponse=await fetch(API_BASE+'/latest');
-    var latestData=await latestResponse.json();
-
-    if(latestData && latestData.ok && latestData.file){
-      latF=latestData.file;
-    }
-  }catch(latestError){}
-}
+    
 
     var folders=[], audio=[], seen={};
 
@@ -3405,10 +3677,17 @@ function renderGroup(title,arr,term){
     path:f.path||''
   };
 
-  var isLatestSearchResult=latF && (
+ var isLatestSearchResult=!!(
+  latF && (
     f.id===latF.id ||
-    cln(f.name||'')===cln(latF.name||'')
-  );
+    latestShiurKey(f.name)===latestShiurKey(latF.name) ||
+    (
+      f.createdTime &&
+      latF.createdTime &&
+      String(f.createdTime)===String(latF.createdTime)
+    )
+  )
+);
 
   var lb=isLatestSearchResult
     ? '<span class="latest-badge">נייעסטע שיעור</span>'
@@ -4845,8 +5124,113 @@ function accIsFav(id){return (ACC_DATA.favorites||[]).some(function(x){return x.
 async function accRenderPlayerTools(){
   if(!window.curShiur||!curShiur.id)return;var au=document.getElementById('au');if(!au)return;var old=document.getElementById('accPlayerTools');if(old)old.remove();
   var fav=false;try{var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});if(d.ok){ACC_DATA=d;fav=accIsFav(curShiur.id);}}catch(e){}
-  var div=document.createElement('div');div.id='accPlayerTools';div.innerHTML='<button onclick="accJump(-15)" title="15 סעקונדעס צוריק">−15</button><button onclick="accJump(30)" title="30 סעקונדעס פארויס">+30</button><button id="accFavBtn" class="'+(fav?'is-fav':'')+'" onclick="accToggleFav()" title="Favorite">♥</button><button onclick="accBookmark()" title="Bookmark">🔖</button><button onclick="accAddToPlaylist()" title="Playlist">📂</button><button id="accSpeedBtn" onclick="accSpeed()" title="Speed">1×</button>';au.parentNode.appendChild(div);
+  var div=document.createElement('div');
+
+div.id='accPlayerTools';
+
+div.innerHTML=
+  '<button id="accFavBtn" class="'+(fav?'is-fav':'')+'" onclick="accToggleFav()" title="Favorite" aria-label="Favorite">♥</button>'+
+  '<button onclick="accBookmark()" title="Bookmark" aria-label="Bookmark">🔖</button>'+
+  '<button onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="Playlist">📂</button>';
+
+au.parentNode.appendChild(div);
 }
+  function proFormatTime(sec){
+  sec=Math.max(0,Math.floor(Number(sec||0)));
+
+  var h=Math.floor(sec/3600);
+  var m=Math.floor((sec%3600)/60);
+  var s=sec%60;
+
+  return (h ? h+':' : '')+
+    (h && m<10 ? '0' : '')+
+    m+':'+
+    (s<10 ? '0' : '')+s;
+}
+
+function proTogglePlay(){
+  var au=document.getElementById('au');
+  if(!au)return;
+
+  if(au.paused){
+    au.play().catch(function(){});
+  }else{
+    au.pause();
+  }
+}
+
+function proSetSpeed(value){
+  var au=document.getElementById('au');
+  if(!au)return;
+
+  au.playbackRate=Number(value)||1;
+}
+
+function proSeek(value){
+  var au=document.getElementById('au');
+  if(!au || !isFinite(au.duration) || !au.duration)return;
+
+  au.currentTime=(Number(value)/100)*au.duration;
+}
+
+function proUpdatePlayer(){
+  var au=document.getElementById('au');
+  var progress=document.getElementById('proProgress');
+  var current=document.getElementById('proCurrent');
+  var duration=document.getElementById('proDuration');
+  var icon=document.getElementById('proPlayIcon');
+
+  if(!au)return;
+
+  if(current){
+    current.textContent=proFormatTime(au.currentTime);
+  }
+
+  if(duration){
+    duration.textContent=
+      isFinite(au.duration)
+        ? proFormatTime(au.duration)
+        : '0:00';
+  }
+
+  var percent=
+    au.duration && isFinite(au.duration)
+      ? (au.currentTime/au.duration)*100
+      : 0;
+
+  if(progress){
+    progress.value=percent;
+    progress.style.setProperty('--progress',percent+'%');
+  }
+
+  if(icon){
+    if(au.paused){
+      icon.innerHTML='<path d="M11 7l14 9-14 9z"></path>';
+    }else{
+      icon.innerHTML=
+        '<rect x="9" y="7" width="5" height="18" rx="1"></rect>'+
+        '<rect x="18" y="7" width="5" height="18" rx="1"></rect>';
+    }
+  }
+}
+
+(function(){
+  var au=document.getElementById('au');
+  if(!au)return;
+
+  [
+    'timeupdate',
+    'loadedmetadata',
+    'durationchange',
+    'play',
+    'pause',
+    'ended'
+  ].forEach(function(eventName){
+    au.addEventListener(eventName,proUpdatePlayer);
+  });
+
+  proUpdatePlayer();
+})();
 function accJump(sec){var au=document.getElementById('au');if(au)au.currentTime=Math.max(0,au.currentTime+sec);}
 function accSpeed(){var au=document.getElementById('au');if(!au)return;var a=[1,1.25,1.5,2],i=a.indexOf(au.playbackRate||1);au.playbackRate=a[(i+1)%a.length];var b=document.getElementById('accSpeedBtn');if(b)b.textContent=au.playbackRate+'×';}
 async function accToggleFav(){
