@@ -1142,8 +1142,25 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
 .empb{text-align:center;padding:34px;color:#bbb}
 
 footer{padding:38px 16px 24px;background:linear-gradient(135deg,#08122a,#162d5a);color:rgba(255,255,255,.70);font-size:.86rem;margin-top:90px;border-top:1px solid rgba(212,175,55,.25)}
-.ftr-grid{max-width:950px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;text-align:center}
-.ftr-col{border:1px solid rgba(212,175,55,.24);border-radius:16px;padding:18px 14px;background:rgba(255,255,255,.035);box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.ftr-grid{
+  width:100%;
+  max-width:950px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+  align-items:stretch;
+  text-align:center;
+}
+
+.ftr-col{
+  min-width:0;
+}
+
+.ftr-col a{
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}.ftr-col{border:1px solid rgba(212,175,55,.24);border-radius:16px;padding:18px 14px;background:rgba(255,255,255,.035);box-shadow:0 8px 20px rgba(0,0,0,.12)}
 .ftr-col h4{color:#d4af37;font-size:1rem;margin-bottom:12px;font-weight:900}
 .ftr-col a{display:block;color:rgba(255,255,255,.82);text-decoration:none;padding:5px 0;font-size:.86rem;transition:color .2s}
 .ftr-col a:hover{color:#d4af37;text-decoration:underline}
