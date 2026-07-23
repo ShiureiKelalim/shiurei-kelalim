@@ -3542,9 +3542,14 @@ function prettyFolderName(nm){nm=String(nm||'');return nm.replace(/\(([^)]*נש�
 function plainName(nm){return String(nm||'').replace(/<[^>]*>/g,'');}
 function rBC(){
   document.getElementById('bc').innerHTML=nav.map(function(item,i){
-  var cleanName=plainName(item.name)
-  .replace(/^[\s\dא-ת]{1,8}["׳״']?\s*[-–—.)]?\s*/,'')
-  .trim();
+    var cleanName=plainName(item.name).trim();
+
+    cleanName=cleanName
+      .replace(
+        /^\s*(?:\d+|[א-ת][א-ת״׳"']{0,5})\s*[-–—.)]\s*/,
+        ''
+      )
+      .trim();
 
     if(i===nav.length-1){
       return '<span class="bcc">'+cleanName+'</span>';
@@ -3552,7 +3557,8 @@ function rBC(){
 
     return '<span class="bcl" onclick="goLv('+i+')">'+cleanName+'</span><span class="bcs">›</span>';
   }).join('');
-}function goLv(i){_ph();nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
+}
+  function goLv(i){_ph();nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
 function latestShiurKey(name){
   return String(name||'')
     .toLowerCase()
