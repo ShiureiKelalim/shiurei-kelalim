@@ -3001,6 +3001,16 @@ function prettyFolderName(nm){nm=String(nm||'');return nm.replace(/\(([^)]*נש�
 function plainName(nm){return String(nm||'').replace(/<[^>]*>/g,'');}
 function rBC(){document.getElementById('bc').innerHTML=nav.map(function(item,i){if(i===nav.length-1)return'<span class="bcc">'+item.name+'</span>';return'<span class="bcl" onclick="goLv('+i+')">'+item.name+'</span><span class="bcs">›</span>';}).join('');}
 function goLv(i){_ph();nav=nav.slice(0,i+1);rBC();lFld(nav[nav.length-1].id)}
+function latestShiurKey(name){
+  return String(name||'')
+    .toLowerCase()
+    .replace(/\.[a-z0-9]{2,5}$/i,'')
+    .replace(/^[\s\dא-ת]{1,8}["׳״']?\s*[-–—.)]?\s*/,'')
+    .replace(/[״"׳']/g,'')
+    .replace(/[-–—_/\\]+/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
 async function lFld(fId){
     if(!latF){
     try{ await loadLatest(); }catch(e){}
@@ -3125,10 +3135,17 @@ el.innerHTML=fols.concat(oth).map(function(f){
       var tI=isSh?(f.shortcutDetails&&f.shortcutDetails.targetId||''):'';
       var isF=f.type==='folder'||f.mimeType==='application/vnd.google-apps.folder'||(isSh&&tM==='application/vnd.google-apps.folder');
       var nm=cln(f.name);
-    var isLatest=latF&&(
-  f.id===latF.id ||
-  tI===latF.id ||
-  cln(f.name||'')===cln(latF.name||'')
+  var isLatest=!!(
+  latF && !isF && (
+    f.id===latF.id ||
+    tI===latF.id ||
+    latestShiurKey(f.name)===latestShiurKey(latF.name) ||
+    (
+      f.createdTime &&
+      latF.createdTime &&
+      String(f.createdTime)===String(latF.createdTime)
+    )
+  )
 );
 
 var latestPath=(latF&&latF.path)?String(latF.path).toLowerCase():'';
