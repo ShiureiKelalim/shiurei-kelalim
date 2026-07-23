@@ -4788,13 +4788,21 @@ return;
     return;
   }
 
-  if(modal){
-    openM(modal);
-  }else{
-    loadLatest();
-    checkYomTov();
-    _readHash();
+ if(modal){
+  if(modal==='m-lat'){
+    await loadLatest();
   }
+
+  openM(modal);
+
+  document.documentElement.classList.remove(
+    'direct-modal-loading'
+  );
+}else{
+  loadLatest();
+  checkYomTov();
+  _readHash();
+}
 })();
   /* ===== MY ACCOUNT UI START ===== */
   function getShiureiVisitorId(){
