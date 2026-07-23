@@ -3912,10 +3912,66 @@ function escHtml(s){
     si.textContent='';
   }).catch(function(){el.innerHTML='<p>פעלער</p>';});
 }
-document.getElementById('dlsec').innerHTML=
-  l>0
-    ? '<button class="dlbtn" onclick="closePlayerMenus();doDl(\''+fId+'\',\''+dlNm+'\')" title="Download — '+l+' left today" aria-label="Download — '+l+' left today">⬇️</button>'
-    : '<button class="dlbtn disabled" disabled title="Download limit reached — 5 per day" aria-label="Download limit reached">⬇️</button>';async function shareCurrentShiur(){
+function opPl(fId,nm){
+  var cleanNm=fmN(nm);
+
+  curShiur={
+    id:fId,
+    name:cleanNm,
+    marks:{},
+    lastBeat:0
+  };
+
+  gaEv('shiur_open',{
+    shiur_id:fId,
+    shiur_name:cleanNm
+  });
+
+  setupAudioTracking();
+
+  try{
+    _setHash(
+      (
+        location.hash
+          .replace('#','')
+          .split('&')
+          .filter(function(x){
+            return x.indexOf('sid=')<0 &&
+                   x.indexOf('sn=')<0;
+          })
+          .join('&')+
+        '&sid='+encodeURIComponent(fId)+
+        '&sn='+encodeURIComponent(nm)
+      ).replace(/^&/,'')
+    );
+  }catch(e){}
+
+  document.getElementById('plti').innerHTML=cleanNm;
+
+  document.getElementById('au').src=
+    API_BASE+'/play?id='+encodeURIComponent(fId);
+
+  document.getElementById('dotm').classList.remove('open');
+
+  var l=dlL();
+
+  var dlNm=cleanNm
+    .replace(/'/g,"\\'")
+    .replace(/"/g,'&quot;');
+
+  document.getElementById('dlsec').innerHTML=
+    l>0
+      ? '<button class="dlbtn" onclick="closePlayerMenus();doDl(\''+
+        fId+'\',\''+dlNm+
+        '\')" title="Download — '+l+
+        ' left today" aria-label="Download — '+l+
+        ' left today">⬇️</button>'
+      : '<button class="dlbtn disabled" disabled title="Download limit reached — 5 per day" aria-label="Download limit reached">⬇️</button>';
+
+  document.getElementById('plov').classList.add('open');
+}
+
+async function shareCurrentShiur(){
   if(!curShiur || !curShiur.id){
     alert('קיין שיעור איז נישט אפן');
     return;
