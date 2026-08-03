@@ -934,96 +934,290 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
     height:55px;
   }
 }
-.dotsb{background:none;border:none;cursor:pointer;font-size:1.4rem;color:#ccc;padding:3px 8px;display:block;margin:4px auto 0;border-radius:7px}
-.dotsb:hover{background:#f0f0f0;color:#666}
-.dotm{
-  display:none;
-  width:min(260px,92%);
-  margin:8px auto 2px;
-  padding:9px 12px;
-  background:#f7f8fb;
-  border:1px solid #e0e4ec;
-  border-radius:12px;
-  box-shadow:0 6px 18px rgba(8,18,42,.12);
-}
+/* ===== PREMIUM PLAYER OPTIONS ===== */
 
-.dotm.open{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:18px;
-}
-
-.player-menu-row{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:#69717f;
-  font:600 .68rem Arial,sans-serif;
-}
-
-.player-menu-row select{
-  border:0;
-  border-bottom:1px solid #cbd1dc;
-  background:transparent;
-  color:#162d5a;
-  padding:3px 4px;
-  outline:none;
-  cursor:pointer;
-  font:700 .7rem Arial,sans-serif;
-}
-
-.dlbtn{
-  display:flex!important;
-  align-items:center;
-  justify-content:center;
-  margin:0!important;
-  padding:2px!important;
-  border:0!important;
-  border-radius:0!important;
-  background:transparent!important;
-  color:#162d5a!important;
-  font-size:1.35rem!important;
-  cursor:pointer;
-}
-
-.dlbtn:hover{
-  color:#b8860b!important;
-  transform:scale(1.1);
-}
-
-.dlbtn.disabled{
-  color:#aaa!important;
-  cursor:not-allowed;
-  transform:none;
-}
-  #accPlayerTools{
-  direction:ltr!important;
+.dotsb{
+  display:none!important;
 }
 
 .player-dots-btn{
-  display:block!important;
-  width:auto!important;
-  height:auto!important;
-  min-width:0!important;
-  margin:8px auto 5px!important;
-  padding:0 8px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  margin:10px auto 4px!important;
+  padding:0!important;
   border:0!important;
-  border-radius:0!important;
+  border-radius:50%!important;
   outline:0!important;
   background:transparent!important;
   box-shadow:none!important;
-  color:#8a909b!important;
+  color:#34445f!important;
   font-family:Arial,sans-serif!important;
-  font-size:1.65rem!important;
-  line-height:.7!important;
+  font-size:2rem!important;
+  font-weight:900!important;
+  line-height:1!important;
+  letter-spacing:1px!important;
   cursor:pointer!important;
+  transition:
+    background .18s ease,
+    color .18s ease,
+    transform .18s ease!important;
 }
 
-.player-dots-btn:hover{
+.player-dots-btn:hover,
+.player-dots-btn:focus-visible{
+  background:rgba(22,45,90,.09)!important;
+  color:#0b1d40!important;
+  transform:scale(1.06)!important;
+}
+
+.dotm{
+  display:none;
+  position:relative;
+  width:min(250px,92%);
+  margin:7px auto 4px;
+  padding:8px 10px;
+  direction:ltr;
+  background:#fff;
+  border:1px solid #e5e8ee;
+  border-radius:14px;
+  box-shadow:
+    0 10px 28px rgba(8,18,42,.14),
+    0 2px 6px rgba(8,18,42,.06);
+}
+
+.dotm.open{
+  display:block;
+  animation:playerMenuOpen .18s ease-out;
+}
+
+@keyframes playerMenuOpen{
+  from{
+    opacity:0;
+    transform:translateY(-5px) scale(.98);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+.player-menu-icons{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+  min-height:42px;
+}
+
+.player-menu-action{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#162d5a;
+  cursor:pointer;
+  font:800 .78rem Arial,sans-serif;
+  transition:
+    background .16s ease,
+    color .16s ease,
+    transform .16s ease;
+}
+
+.player-menu-action:hover,
+.player-menu-action:focus-visible{
+  background:rgba(22,45,90,.09);
+  color:#b8860b;
+  transform:scale(1.06);
+  outline:none;
+}
+
+.player-menu-action svg{
+  width:22px;
+  height:22px;
+  display:block;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.player-speed-trigger{
+  font-size:.82rem;
+  letter-spacing:-.2px;
+}
+
+.player-speed-chevron{
+  width:8px;
+  height:8px;
+  margin-left:4px;
+  border-right:1.8px solid currentColor;
+  border-bottom:1.8px solid currentColor;
+  transform:rotate(45deg) translateY(-2px);
+  transition:transform .18s ease;
+}
+
+.player-speed-trigger.open .player-speed-chevron{
+  transform:rotate(225deg) translate(-1px,-1px);
+}
+
+.player-tooltip{
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 8px);
+  z-index:20;
+  transform:translateX(-50%) translateY(3px);
+  padding:5px 8px;
+  border-radius:6px;
+  background:#202124;
+  color:#fff;
+  font:500 .68rem Arial,sans-serif;
+  line-height:1.25;
+  white-space:nowrap;
+  pointer-events:none;
+  opacity:0;
+  visibility:hidden;
+  transition:
+    opacity .14s ease,
+    transform .14s ease,
+    visibility .14s ease;
+}
+
+.player-menu-action:hover .player-tooltip,
+.player-menu-action:focus-visible .player-tooltip{
+  opacity:1;
+  visibility:visible;
+  transform:translateX(-50%) translateY(0);
+}
+
+.speed-material-menu{
+  display:none;
+  width:100%;
+  margin-top:7px;
+  padding:5px 0;
+  border-top:1px solid #eceff3;
+}
+
+.speed-material-menu.open{
+  display:block;
+  animation:playerMenuOpen .16s ease-out;
+}
+
+.speed-material-option{
+  width:100%;
+  min-height:36px;
+  display:grid;
+  grid-template-columns:24px 1fr;
+  align-items:center;
+  gap:7px;
+  padding:6px 12px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#303134;
+  text-align:left;
+  cursor:pointer;
+  font:500 .78rem Arial,sans-serif;
+  transition:background .13s ease;
+}
+
+.speed-material-option:hover,
+.speed-material-option:focus-visible{
+  background:#f1f3f4;
+  outline:none;
+}
+
+.speed-material-option .speed-check{
+  color:#1a73e8;
+  font-size:.9rem;
+  font-weight:900;
+  opacity:0;
+}
+
+.speed-material-option.selected{
+  color:#174ea6;
+  font-weight:700;
+}
+
+.speed-material-option.selected .speed-check{
+  opacity:1;
+}
+
+#dlsec{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.dlbtn{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:38px!important;
+  height:38px!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
   background:transparent!important;
   color:#162d5a!important;
+  cursor:pointer!important;
+  transition:
+    background .16s ease,
+    color .16s ease,
+    transform .16s ease!important;
+}
+
+.dlbtn svg{
+  width:22px!important;
+  height:22px!important;
+  fill:none!important;
+  stroke:currentColor!important;
+  stroke-width:2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+
+.dlbtn:hover{
+  background:rgba(22,45,90,.09)!important;
+  color:#b8860b!important;
+  transform:scale(1.06)!important;
+}
+
+.dlbtn.disabled{
+  color:#a8adb6!important;
+  cursor:not-allowed!important;
   transform:none!important;
+  background:transparent!important;
+}
+
+.dlbtn .player-tooltip{
+  display:block;
+}
+
+#accPlayerTools{
+  direction:ltr!important;
+}
+
+@media(max-width:480px){
+  .dotm{
+    width:min(235px,94%);
+  }
+
+  .player-menu-icons{
+    gap:24px;
+  }
 }
   .dlbtn{display:inline-block;margin-top:4px;padding:7px 15px;background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border-radius:14px;font-size:.77rem;font-weight:700;cursor:pointer;border:none;font-family:'Frank Ruhl Libre',serif}
 .dllim{margin-top:4px;padding:5px 12px;background:#fff3e0;color:#e65100;border-radius:7px;font-size:.75rem}
@@ -2845,7 +3039,7 @@ body.nav-search-open .nbrand{
 
  </div>
 
-<div style="text-align:center;margin:12px 0 8px">
+<div style="text-align:center;margin:10px 0 5px">
   <button
     type="button"
     class="player-dots-btn"
@@ -2857,26 +3051,92 @@ body.nav-search-open .nbrand{
 
 <div class="dotm" id="dotm">
 
-  <div class="player-menu-row">
-  <span>Playback speed</span>
+  <div class="player-menu-icons">
 
-  <select id="proSpeed" onchange="proChooseSpeed(this.value)">
-    <option value="0.75">0.75×</option>
-    <option value="1" selected>Normal</option>
-    <option value="1.25">1.25×</option>
-    <option value="1.5">1.5×</option>
-    <option value="1.75">1.75×</option>
-    <option value="2">2×</option>
-  </select>
-</div>
+    <div id="dlsec"></div>
 
-  <div id="dlsec"></div>
+    <button
+      type="button"
+      id="playerSpeedTrigger"
+      class="player-menu-action player-speed-trigger"
+      onclick="togglePlayerSpeedMenu(event)"
+      aria-label="Playback speed"
+      aria-expanded="false"
+    >
+      <span id="playerSpeedText">1×</span>
+      <span class="player-speed-chevron"></span>
+      <span class="player-tooltip">Playback speed</span>
+    </button>
 
-</div>
-  <div class="plcp">© Shiurei Kelalim</div>
-    </div>
   </div>
-</div>
+
+  <div
+    id="playerSpeedMenu"
+    class="speed-material-menu"
+    role="menu"
+    aria-label="Playback speed"
+  >
+    <button
+      type="button"
+      class="speed-material-option"
+      data-speed="0.75"
+      onclick="proChooseSpeed(0.75)"
+    >
+      <span class="speed-check">✓</span>
+      <span>0.75×</span>
+    </button>
+
+    <button
+      type="button"
+      class="speed-material-option selected"
+      data-speed="1"
+      onclick="proChooseSpeed(1)"
+    >
+      <span class="speed-check">✓</span>
+      <span>1× — Normal</span>
+    </button>
+
+    <button
+      type="button"
+      class="speed-material-option"
+      data-speed="1.25"
+      onclick="proChooseSpeed(1.25)"
+    >
+      <span class="speed-check">✓</span>
+      <span>1.25×</span>
+    </button>
+
+    <button
+      type="button"
+      class="speed-material-option"
+      data-speed="1.5"
+      onclick="proChooseSpeed(1.5)"
+    >
+      <span class="speed-check">✓</span>
+      <span>1.5×</span>
+    </button>
+
+    <button
+      type="button"
+      class="speed-material-option"
+      data-speed="1.75"
+      onclick="proChooseSpeed(1.75)"
+    >
+      <span class="speed-check">✓</span>
+      <span>1.75×</span>
+    </button>
+
+    <button
+      type="button"
+      class="speed-material-option"
+      data-speed="2"
+      onclick="proChooseSpeed(2)"
+    >
+      <span class="speed-check">✓</span>
+      <span>2×</span>
+    </button>
+  </div>
+
 </div>
 
 <!-- YOM TOV POPUP - UPDATED -->
@@ -3321,18 +3581,32 @@ function rfDl(){
   var b=s.querySelector('button');
   if(!b)return;
 
-  b.textContent='⬇️';
+  b.innerHTML=
+  '<svg viewBox="0 0 24 24" aria-hidden="true">'+
+    '<path d="M12 3v12"></path>'+
+    '<path d="m7 10 5 5 5-5"></path>'+
+    '<path d="M5 20h14"></path>'+
+  '</svg>'+
+  '<span class="player-tooltip"></span>';
 
   if(l<=0){
     b.disabled=true;
     b.classList.add('disabled');
     b.title='Download limit reached — 5 per day';
     b.setAttribute('aria-label','Download limit reached');
+    var tip=b.querySelector('.player-tooltip');
+if(tip){
+  tip.textContent='Download limit reached';
+}
   }else{
     b.disabled=false;
     b.classList.remove('disabled');
     b.title='Download — '+l+' left today';
     b.setAttribute('aria-label','Download — '+l+' left today');
+    var tip=b.querySelector('.player-tooltip');
+if(tip){
+  tip.textContent='Download — '+l+' left today';
+}
   }
 }function smoothTop(){try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}}
 function setActiveHome(on){var hb=document.querySelector('.ntb-home');if(hb)hb.classList.toggle('active',!!on);}
@@ -4080,14 +4354,25 @@ function opPl(fId,nm){
     .replace(/'/g,"\\'")
     .replace(/"/g,'&quot;');
 
-  document.getElementById('dlsec').innerHTML=
-    l>0
-      ? '<button class="dlbtn" onclick="closePlayerMenus();doDl(\''+
-        fId+'\',\''+dlNm+
-        '\')" title="Download — '+l+
-        ' left today" aria-label="Download — '+l+
-        ' left today">⬇️</button>'
-      : '<button class="dlbtn disabled" disabled title="Download limit reached — 5 per day" aria-label="Download limit reached">⬇️</button>';
+ var downloadSvg=
+  '<svg viewBox="0 0 24 24" aria-hidden="true">'+
+    '<path d="M12 3v12"></path>'+
+    '<path d="m7 10 5 5 5-5"></path>'+
+    '<path d="M5 20h14"></path>'+
+  '</svg>';
+
+document.getElementById('dlsec').innerHTML=
+  l>0
+    ? '<button class="dlbtn" onclick="closePlayerMenus();doDl(\''+
+      fId+'\',\''+dlNm+
+      '\')" aria-label="Download — '+l+
+      ' left today">'+
+      downloadSvg+
+      '<span class="player-tooltip">Download — '+l+
+      ' left today</span></button>'
+    : '<button class="dlbtn disabled" disabled aria-label="Download limit reached">'+
+      downloadSvg+
+      '<span class="player-tooltip">Download limit reached</span></button>';
 
   document.getElementById('plov').classList.add('open');
 }
@@ -5707,9 +5992,75 @@ function proSetSpeed(value){
   au.playbackRate=Number(value)||1;
 }
 
+function playerSpeedLabel(value){
+  var n=Number(value)||1;
+
+  if(n===1)return '1×';
+
+  return String(n).replace(/\.0+$/,'')+'×';
+}
+
+function updatePlayerSpeedMenu(value){
+  var n=Number(value)||1;
+  var text=document.getElementById('playerSpeedText');
+  var options=document.querySelectorAll(
+    '#playerSpeedMenu .speed-material-option'
+  );
+
+  if(text){
+    text.textContent=playerSpeedLabel(n);
+  }
+
+  options.forEach(function(option){
+    var selected=Number(option.getAttribute('data-speed'))===n;
+
+    option.classList.toggle('selected',selected);
+    option.setAttribute(
+      'aria-checked',
+      selected ? 'true' : 'false'
+    );
+  });
+}
+
+function togglePlayerSpeedMenu(event){
+  if(event){
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  var menu=document.getElementById('playerSpeedMenu');
+  var trigger=document.getElementById('playerSpeedTrigger');
+
+  if(!menu || !trigger)return;
+
+  var open=!menu.classList.contains('open');
+
+  menu.classList.toggle('open',open);
+  trigger.classList.toggle('open',open);
+  trigger.setAttribute(
+    'aria-expanded',
+    open ? 'true' : 'false'
+  );
+}
+
+function closePlayerSpeedMenu(){
+  var menu=document.getElementById('playerSpeedMenu');
+  var trigger=document.getElementById('playerSpeedTrigger');
+
+  if(menu){
+    menu.classList.remove('open');
+  }
+
+  if(trigger){
+    trigger.classList.remove('open');
+    trigger.setAttribute('aria-expanded','false');
+  }
+}
+
 function proChooseSpeed(value){
   proSetSpeed(value);
-  closePlayerMenus();
+  updatePlayerSpeedMenu(value);
+  closePlayerSpeedMenu();
 }
 
 function proSeek(value){
