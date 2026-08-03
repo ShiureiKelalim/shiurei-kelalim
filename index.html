@@ -2933,6 +2933,113 @@ body.nav-search-open .nbrand{
   }
 }
                          
+
+/* ===== PLAYER ACCOUNT TOOLS + BOOKMARK MARKS ===== */
+.pro-time-row{
+  grid-template-columns:42px minmax(0,1fr) 42px!important;
+}
+
+.pro-progress-wrap{
+  position:relative;
+  width:100%;
+  min-width:0;
+  height:19px;
+  display:flex;
+  align-items:center;
+}
+
+.pro-progress-wrap .pro-progress{
+  position:relative;
+  z-index:2;
+}
+
+.pro-bookmark-marks{
+  position:absolute;
+  z-index:4;
+  left:7px;
+  right:7px;
+  top:50%;
+  height:0;
+  pointer-events:none;
+}
+
+.pro-bookmark-mark{
+  position:absolute;
+  top:0;
+  width:10px;
+  height:10px;
+  padding:0;
+  border:2px solid #fff;
+  border-radius:50%;
+  background:#e53935;
+  box-shadow:0 1px 5px rgba(0,0,0,.35);
+  transform:translate(-50%,-50%);
+  cursor:pointer;
+  pointer-events:auto;
+  transition:transform .14s ease,background .14s ease;
+}
+
+.pro-bookmark-mark:hover,
+.pro-bookmark-mark:focus-visible{
+  background:#b8860b;
+  transform:translate(-50%,-50%) scale(1.35);
+  outline:none;
+}
+
+#accPlayerTools{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  width:100%!important;
+  gap:12px!important;
+  margin:8px 0 2px!important;
+  padding:0 5px!important;
+}
+
+#accPlayerTools button{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  margin:0!important;
+  padding:4px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  color:#162d5a!important;
+  box-shadow:none!important;
+  cursor:pointer!important;
+  transition:transform .16s ease,color .16s ease!important;
+}
+
+#accPlayerTools button svg{
+  width:25px;
+  height:25px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.9;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+#accPlayerTools button:hover,
+#accPlayerTools button:focus-visible{
+  color:#b8860b!important;
+  transform:scale(1.12)!important;
+  outline:none!important;
+}
+
+#accPlayerTools .acc-player-playlist{
+  order:1;
+}
+
+#accPlayerTools .acc-player-bookmark{
+  order:2;
+}
+
 </style>
 </head>
 <body>
@@ -3129,16 +3236,19 @@ body.nav-search-open .nbrand{
 
   <div class="pro-time-row">
     <span id="proCurrent">0:00</span>
-    <input
-      id="proProgress"
-      class="pro-progress"
-      type="range"
-      min="0"
-      max="100"
-      value="0"
-      step="0.1"
-      oninput="proSeek(this.value)"
-    >
+    <div class="pro-progress-wrap">
+      <input
+        id="proProgress"
+        class="pro-progress"
+        type="range"
+        min="0"
+        max="100"
+        value="0"
+        step="0.1"
+        oninput="proSeek(this.value)"
+      >
+      <div id="proBookmarkMarks" class="pro-bookmark-marks" aria-hidden="true"></div>
+    </div>
     <span id="proDuration">0:00</span>
   </div>
 
@@ -6159,6 +6269,8 @@ async function accRenderPlayerTools(){
     if(d.ok){
       ACC_DATA=d;
       fav=accIsFav(curShiur.id);
+    }else{
+      ACC_DATA={progress:[],favorites:[],bookmarks:[],playlists:[],playlist_items:[],listen_history:[]};
     }
   }catch(e){}
 
@@ -6172,16 +6284,22 @@ async function accRenderPlayerTools(){
   div.id='accPlayerTools';
 
   div.innerHTML=
-  '<button onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="Playlist">📂</button>'+
-  '<button onclick="accBookmark()" title="Bookmark" aria-label="Bookmark">🔖</button>';
+    '<button class="acc-player-playlist" onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="לייג צו Playlist">'+
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 11h10M4 16h7"></path><path d="M17 14v6M14 17h6"></path></svg>'+
+    '</button>'+
+    '<button class="acc-player-bookmark" onclick="accBookmark()" title="Bookmark ביי די יעצטיגע צייט" aria-label="Bookmark ביי די יעצטיגע צייט">'+
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v18l-5-3-5 3z"></path></svg>'+
+    '</button>';
 
-var copyright=document.querySelector('.plcp');
+  var copyright=document.querySelector('.plcp');
 
-if(copyright && copyright.parentNode===au.parentNode){
-  au.parentNode.insertBefore(div,copyright);
-}else{
-  au.parentNode.appendChild(div);
-}
+  if(copyright && copyright.parentNode===au.parentNode){
+    au.parentNode.insertBefore(div,copyright);
+  }else{
+    au.parentNode.appendChild(div);
+  }
+
+  renderPlayerBookmarkMarks();
 }
 
 function proFormatTime(sec){
@@ -6349,6 +6467,9 @@ function proUpdatePlayer(){
     au.addEventListener(eventName,proUpdatePlayer);
   });
 
+  au.addEventListener('loadedmetadata',renderPlayerBookmarkMarks);
+  au.addEventListener('durationchange',renderPlayerBookmarkMarks);
+
   proUpdatePlayer();
 })();
 function accJump(sec){var au=document.getElementById('au');if(au)au.currentTime=Math.max(0,au.currentTime+sec);}
@@ -6361,11 +6482,97 @@ if(topFav){
   topFav.classList.toggle('is-fav',add);
 }
 }
-function accBookmark(){
-  if(!curShiur||!curShiur.id)return;var au=document.getElementById('au'),pos=au?au.currentTime:0;
-  accPicker('🔖 Bookmark','<div style="font-size:.78rem;color:#666;margin-bottom:7px">'+esc(curShiur.name||'שיעור')+' — '+formatTime(pos)+'</div><input class="acc-field" id="accBookmarkName" placeholder="נאמען (אפשענאל)"><div class="acc-actions"><button class="sbtn" onclick="accSaveBookmark('+Number(pos)+')">היטן</button><button class="sbtn" style="background:#777" onclick="accClosePicker()">פארמאכן</button></div>');
+async function accBookmark(){
+  if(!curShiur||!curShiur.id)return;
+
+  var d;
+  try{
+    d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});
+  }catch(e){
+    d={ok:false};
+  }
+
+  if(!d.ok){
+    openMyAccount();
+    return;
+  }
+
+  ACC_DATA=d;
+
+  var au=document.getElementById('au');
+  var pos=au?au.currentTime:0;
+  var existing=(d.bookmarks||[]).filter(function(x){return x.shiur_id===curShiur.id;});
+  var nextNumber=existing.length+1;
+
+  accPicker(
+    '🔖 Bookmark',
+    '<div style="font-size:.78rem;color:#666;margin-bottom:7px">'+
+      esc(curShiur.name||'שיעור')+' — '+formatTime(pos)+
+    '</div>'+
+    '<input class="acc-field" id="accBookmarkName" value="Bookmark '+nextNumber+'" placeholder="Bookmark נאמען">'+
+    '<div class="acc-actions">'+
+      '<button class="sbtn" onclick="accSaveBookmark('+Number(pos)+')">היטן</button>'+
+      '<button class="sbtn" style="background:#777" onclick="accClosePicker()">פארמאכן</button>'+
+    '</div>'
+  );
+
+  setTimeout(function(){
+    var input=document.getElementById('accBookmarkName');
+    if(input){input.focus();input.select();}
+  },30);
 }
-async function accSaveBookmark(pos){var i=document.getElementById('accBookmarkName'),r=await accApi('bookmark_add',{shiur_id:curShiur.id,shiur_name:curShiur.name||'שיעור',position:pos,title:(i?i.value:'').trim()});if(!r.ok){alert(r.error||'נישט געלונגען');return;}accClosePicker();}
+
+async function accSaveBookmark(pos){
+  var i=document.getElementById('accBookmarkName');
+  var title=(i?i.value:'').trim();
+  var r=await accApi('bookmark_add',{
+    shiur_id:curShiur.id,
+    shiur_name:curShiur.name||'שיעור',
+    position:pos,
+    title:title
+  });
+
+  if(!r.ok){
+    if(r.error&&r.error.indexOf('אריינלאגן')>=0){openMyAccount();return;}
+    alert(r.error||'נישט געלונגען');
+    return;
+  }
+
+  accClosePicker();
+  await accRenderPlayerTools();
+}
+
+function renderPlayerBookmarkMarks(){
+  var layer=document.getElementById('proBookmarkMarks');
+  var au=document.getElementById('au');
+
+  if(!layer)return;
+  layer.innerHTML='';
+
+  if(!curShiur||!curShiur.id||!au||!isFinite(au.duration)||!au.duration)return;
+
+  var marks=(ACC_DATA.bookmarks||[])
+    .filter(function(x){return x.shiur_id===curShiur.id;})
+    .sort(function(a,b){return Number(a.position||0)-Number(b.position||0);});
+
+  marks.forEach(function(mark,index){
+    var pos=Math.max(0,Math.min(Number(mark.position||0),au.duration));
+    var percent=(pos/au.duration)*100;
+    var btn=document.createElement('button');
+    btn.type='button';
+    btn.className='pro-bookmark-mark';
+    btn.style.left=percent+'%';
+    btn.title=(mark.title||('Bookmark '+(index+1)))+' — '+formatTime(pos);
+    btn.setAttribute('aria-label',btn.title);
+    btn.onclick=function(event){
+      event.preventDefault();
+      event.stopPropagation();
+      au.currentTime=pos;
+      proUpdatePlayer();
+    };
+    layer.appendChild(btn);
+  });
+}
 async function accAddToPlaylist(){
   if(!curShiur||!curShiur.id)return;var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});if(!d.ok){openMyAccount();return;}
   if(!d.playlists.length){createPlaylistPrompt();return;}
