@@ -1881,8 +1881,42 @@ font-weight:bold;
 .acc-picker-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.acc-picker-title{font-size:1rem;font-weight:900;color:#162d5a}.acc-picker-close{border:0;background:#eee;width:28px;height:28px;border-radius:50%;cursor:pointer;font-weight:900}
 .acc-field{width:100%;padding:9px 11px;border:2px solid #dde3f0;border-radius:9px;font:inherit;outline:none}.acc-field:focus{border-color:#162d5a}
 .acc-actions{display:flex;gap:7px;justify-content:center;margin-top:9px}.acc-actions .sbtn{padding:8px!important;font-size:.78rem!important}
-.plbx{max-width:450px!important;border-radius:16px!important}.plvis{height:66px!important;font-size:1.8rem!important}.plbd{padding:10px 13px 11px!important}.plti{font-size:.86rem!important;margin-bottom:7px!important;max-height:2.7em;overflow:auto}.plbd audio{height:38px!important}.dotsb{font-size:1.15rem!important;margin-top:1px!important;padding:1px 7px!important}.plcp{margin-top:4px!important;font-size:.58rem!important}
-#accPlayerTools{
+.plbx{
+  max-width:620px!important;
+  width:calc(100vw - 28px)!important;
+  border-radius:20px!important;
+}
+
+.plvis{
+  height:82px!important;
+  font-size:2.2rem!important;
+}
+
+.plbd{
+  padding:18px 24px 16px!important;
+}
+
+.plti{
+  font-size:.96rem!important;
+  margin-bottom:13px!important;
+  max-height:2.8em;
+  overflow:auto;
+}
+
+.plbd audio{
+  height:38px!important;
+}
+
+.dotsb{
+  font-size:1.15rem!important;
+  margin-top:1px!important;
+  padding:1px 7px!important;
+}
+
+.plcp{
+  margin-top:5px!important;
+  font-size:.6rem!important;
+}#accPlayerTools{
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
@@ -1916,9 +1950,10 @@ font-weight:bold;
 #accPlayerTools button.is-fav{
   background:transparent!important;
   color:#c62838!important;
-}@media(max-width:480px){.accgrid{grid-template-columns:repeat(2,1fr)}#m-account .mbx{padding:14px!important}.plbx{
-  max-width:420px!important;
-  width:calc(100vw - 20px)!important;
+}@media(max-width:480px){.accgrid{grid-template-columns:repeat(2,1fr)}#m-account .mbx{padding:14px!important}
+.plbx{
+  max-width:620px!important;
+  width:calc(100vw - 16px)!important;
 }
 
 /* VERY SMALL MOBILE / BASIC PHONES */
@@ -2784,7 +2819,120 @@ body.nav-search-open .nbrand{
     font-size:.65rem!important;
   }
 }
+/* ===== WIDE PROFESSIONAL PLAYER CONTROLS ===== */
 
+.pro-main-controls-wide{
+  direction:ltr;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  margin:19px 0 12px;
+}
+
+.pro-jump-group{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+
+.pro-jump-btn{
+  min-width:43px;
+  height:42px;
+  padding:0 7px;
+  border:0;
+  border-radius:12px;
+  background:transparent;
+  color:#162d5a;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  font:800 .69rem Arial,sans-serif;
+  line-height:1;
+  transition:
+    background .16s ease,
+    color .16s ease,
+    transform .16s ease;
+}
+
+.pro-jump-btn:hover,
+.pro-jump-btn:focus-visible{
+  background:rgba(22,45,90,.09);
+  color:#b8860b;
+  transform:translateY(-2px);
+  outline:none;
+}
+
+.pro-jump-arrow{
+  font-size:1.25rem;
+  font-weight:900;
+  line-height:.8;
+}
+
+.pro-main-controls-wide .pro-play-btn{
+  width:68px;
+  min-width:68px;
+  height:68px;
+}
+
+.pro-main-controls-wide .pro-play-btn svg{
+  width:32px;
+  height:32px;
+}
+
+@media(max-width:620px){
+  .plbd{
+    padding-left:10px!important;
+    padding-right:10px!important;
+  }
+
+  .pro-main-controls-wide{
+    gap:7px;
+  }
+
+  .pro-jump-group{
+    gap:1px;
+  }
+
+  .pro-jump-btn{
+    min-width:34px;
+    width:34px;
+    height:38px;
+    padding:0 2px;
+    font-size:.59rem;
+  }
+
+  .pro-jump-arrow{
+    font-size:1.05rem;
+  }
+
+  .pro-main-controls-wide .pro-play-btn{
+    width:58px;
+    min-width:58px;
+    height:58px;
+  }
+}
+
+@media(max-width:420px){
+  .pro-main-controls-wide{
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .pro-main-controls-wide .pro-play-btn{
+    order:1;
+  }
+
+  .pro-jump-group{
+    order:2;
+    width:calc(50% - 5px);
+  }
+}
+                         
 </style>
 </head>
 <body>
@@ -2994,50 +3142,118 @@ body.nav-search-open .nbrand{
     <span id="proDuration">0:00</span>
   </div>
 
-  <div class="pro-main-controls">
+<div class="pro-main-controls pro-main-controls-wide">
+
+  <div class="pro-jump-group">
 
     <button
       type="button"
-      class="pro-icon-btn pro-skip"
+      class="pro-jump-btn"
+      onclick="accJump(-300)"
+      title="5 מינוט צוריק"
+      aria-label="5 מינוט צוריק"
+    >
+      <span class="pro-jump-arrow">↶</span>
+      <span>5m</span>
+    </button>
+
+    <button
+      type="button"
+      class="pro-jump-btn"
+      onclick="accJump(-60)"
+      title="1 מינוט צוריק"
+      aria-label="1 מינוט צוריק"
+    >
+      <span class="pro-jump-arrow">↶</span>
+      <span>1m</span>
+    </button>
+
+    <button
+      type="button"
+      class="pro-jump-btn"
       onclick="accJump(-30)"
       title="30 סעקונדעס צוריק"
       aria-label="30 סעקונדעס צוריק"
     >
-      <svg viewBox="0 0 32 32">
-        <path d="M9 8H4v-5"></path>
-        <path d="M4.5 8.5A12 12 0 1 1 4 19"></path>
-        <text x="16" y="21">30</text>
-      </svg>
+      <span class="pro-jump-arrow">↶</span>
+      <span>30s</span>
     </button>
 
     <button
       type="button"
-      id="proPlayBtn"
-      class="pro-play-btn"
-      onclick="proTogglePlay()"
-      title="Play"
-      aria-label="Play"
+      class="pro-jump-btn"
+      onclick="accJump(-5)"
+      title="5 סעקונדעס צוריק"
+      aria-label="5 סעקונדעס צוריק"
     >
-      <svg id="proPlayIcon" viewBox="0 0 32 32">
-        <path d="M11 7l14 9-14 9z"></path>
-      </svg>
+      <span class="pro-jump-arrow">↶</span>
+      <span>5s</span>
+    </button>
+
+  </div>
+
+  <button
+    type="button"
+    id="proPlayBtn"
+    class="pro-play-btn"
+    onclick="proTogglePlay()"
+    title="Play"
+    aria-label="Play"
+  >
+    <svg id="proPlayIcon" viewBox="0 0 32 32">
+      <path d="M11 7l14 9-14 9z"></path>
+    </svg>
+  </button>
+
+  <div class="pro-jump-group">
+
+    <button
+      type="button"
+      class="pro-jump-btn"
+      onclick="accJump(5)"
+      title="5 סעקונדעס פארויס"
+      aria-label="5 סעקונדעס פארויס"
+    >
+      <span>5s</span>
+      <span class="pro-jump-arrow">↷</span>
     </button>
 
     <button
       type="button"
-      class="pro-icon-btn pro-skip"
+      class="pro-jump-btn"
       onclick="accJump(30)"
       title="30 סעקונדעס פארויס"
       aria-label="30 סעקונדעס פארויס"
     >
-      <svg viewBox="0 0 32 32">
-        <path d="M23 8h5v-5"></path>
-        <path d="M27.5 8.5A12 12 0 1 0 28 19"></path>
-        <text x="16" y="21">30</text>
-      </svg>
+      <span>30s</span>
+      <span class="pro-jump-arrow">↷</span>
     </button>
 
- </div>
+    <button
+      type="button"
+      class="pro-jump-btn"
+      onclick="accJump(60)"
+      title="1 מינוט פארויס"
+      aria-label="1 מינוט פארויס"
+    >
+      <span>1m</span>
+      <span class="pro-jump-arrow">↷</span>
+    </button>
+
+    <button
+      type="button"
+      class="pro-jump-btn"
+      onclick="accJump(300)"
+      title="5 מינוט פארויס"
+      aria-label="5 מינוט פארויס"
+    >
+      <span>5m</span>
+      <span class="pro-jump-arrow">↷</span>
+    </button>
+
+  </div>
+
+</div>
 
 <div style="text-align:center;margin:10px 0 5px">
   <button
