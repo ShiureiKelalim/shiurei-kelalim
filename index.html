@@ -2958,8 +2958,7 @@ body.nav-search-open .nbrand{
 }
 
 .bookmark-marker{
-  -webkit-appearance:none!important;
-  appearance:none!important;
+  all:unset!important;
   display:block!important;
   position:absolute!important;
   top:50%!important;
@@ -2967,19 +2966,16 @@ body.nav-search-open .nbrand{
   height:7px!important;
   min-width:7px!important;
   min-height:7px!important;
-  padding:0!important;
-  margin:0!important;
-  border:0!important;
+  border:1.5px solid #fff!important;
   border-radius:50%!important;
   background:#050505!important;
-  box-shadow:0 1px 4px rgba(0,0,0,.55)!important;
+  box-shadow:0 1px 4px rgba(0,0,0,.65)!important;
   transform:translate(-50%,-50%)!important;
   cursor:pointer!important;
   pointer-events:auto!important;
-  z-index:21!important;
-  font-size:0!important;
-  line-height:0!important;
+  z-index:999!important;
   opacity:1!important;
+  box-sizing:border-box!important;
 }
 
 .bookmark-marker:hover,
@@ -6303,20 +6299,37 @@ function clearBookmarkMarkers(){
 function currentShiurBookmarks(){
   if(!window.curShiur || !curShiur.id)return [];
 
-  var currentId=String(curShiur.id||'').trim();
-  var currentName=String(curShiur.name||'').trim();
+  var all=(ACC_DATA.bookmarks||[]);
+  var curId=String(curShiur.id||'');
 
-  return (ACC_DATA.bookmarks||[])
-    .filter(function(x){
-      var bookmarkId=String(x.shiur_id||'').trim();
-      var bookmarkName=String(x.shiur_name||'').trim();
+  /* First use the exact shiur id. */
+  var exact=all.filter(function(x){
+    return String(x.shiur_id||'')===curId;
+  });
 
-      return bookmarkId===currentId ||
-        (!bookmarkId && currentName && bookmarkName===currentName);
-    })
-    .sort(function(a,b){
-      return Number(a.position||0)-Number(b.position||0);
+  /*
+    Older saved bookmarks can sometimes carry an older shiur token.
+    In that case fall back to the saved shiur name so the bookmark
+    still appears on the correct shiur line.
+  */
+  if(!exact.length){
+    var curName=String(curShiur.name||'')
+      .replace(/<[^>]*>/g,'')
+      .replace(/\s+/g,' ')
+      .trim();
+
+    exact=all.filter(function(x){
+      var savedName=String(x.shiur_name||'')
+        .replace(/<[^>]*>/g,'')
+        .replace(/\s+/g,' ')
+        .trim();
+      return !!curName && savedName===curName;
     });
+  }
+
+  return exact.sort(function(a,b){
+    return Number(a.position||0)-Number(b.position||0);
+  });
 }
 
 function closeBookmarkLinePop(){
@@ -6371,11 +6384,10 @@ function renderBookmarkMarkers(){
     var pct=Math.max(0,Math.min(100,(pos/au.duration)*100));
     var title=(bm.title||'').trim() || ('Bookmark '+(index+1));
 
-    var marker=document.createElement('span');
+    var marker=document.createElement('button');
+    marker.type='button';
     marker.className='bookmark-marker';
     marker.style.left=pct+'%';
-    marker.setAttribute('role','button');
-    marker.setAttribute('tabindex','0');
     marker.setAttribute('aria-label',title+' — '+proFormatTime(pos));
 
     marker.onclick=function(e){
@@ -6384,13 +6396,6 @@ function renderBookmarkMarkers(){
       au.currentTime=pos;
       proUpdatePlayer();
       showBookmarkLinePop(marker,bm,index,pos,pct);
-    };
-
-    marker.onkeydown=function(e){
-      if(e.key==='Enter' || e.key===' '){
-        e.preventDefault();
-        marker.click();
-      }
     };
 
     layer.appendChild(marker);
@@ -6409,6 +6414,7 @@ async function refreshPlayerBookmarks(){
     if(d.ok){
       ACC_DATA=d;
       renderBookmarkMarkers();
+      setTimeout(renderBookmarkMarkers,150);
       return true;
     }
   }catch(e){}
@@ -6667,18 +6673,6 @@ async function accSaveBookmark(pos){
   }
 
   accClosePicker();
-
-  /* Show the new bookmark on the line immediately, then sync from account. */
-  if(!Array.isArray(ACC_DATA.bookmarks))ACC_DATA.bookmarks=[];
-  ACC_DATA.bookmarks.push({
-    id:r.id || ('local-'+Date.now()),
-    shiur_id:curShiur.id,
-    shiur_name:curShiur.name||'שיעור',
-    position:pos,
-    title:title
-  });
-  renderBookmarkMarkers();
-
   await refreshPlayerBookmarks();
 }
 
