@@ -2950,40 +2950,42 @@ body.nav-search-open .nbrand{
 }
 
 .bookmark-markers{
-  position:absolute;
-  left:0;
-  right:0;
-  top:50%;
-  height:0;
-  z-index:6;
-  pointer-events:none;
+  position:absolute!important;
+  inset:0!important;
+  z-index:20!important;
+  pointer-events:none!important;
+  overflow:visible!important;
 }
 
 .bookmark-marker{
-  position:absolute;
-  top:0;
-  width:7px!important;
-  height:7px!important;
-  min-width:7px!important;
-  min-height:7px!important;
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  display:block!important;
+  position:absolute!important;
+  top:50%!important;
+  width:8px!important;
+  height:8px!important;
+  min-width:8px!important;
+  min-height:8px!important;
   padding:0!important;
   margin:0!important;
-  border:1px solid #fff!important;
+  border:2px solid #fff!important;
   border-radius:50%!important;
-  background:#111827!important;
-  box-shadow:0 1px 3px rgba(0,0,0,.38)!important;
+  background:#111!important;
+  box-shadow:0 1px 4px rgba(0,0,0,.55)!important;
   transform:translate(-50%,-50%)!important;
   cursor:pointer!important;
   pointer-events:auto!important;
-  z-index:7!important;
+  z-index:21!important;
   font-size:0!important;
   line-height:0!important;
+  opacity:1!important;
 }
 
 .bookmark-marker:hover,
 .bookmark-marker:focus-visible{
-  width:8px!important;
-  height:8px!important;
+  width:9px!important;
+  height:9px!important;
   background:#000!important;
   outline:none!important;
 }
@@ -6284,6 +6286,7 @@ async function accRenderPlayerTools(){
 
   if(loggedIn){
     renderBookmarkMarkers();
+    requestAnimationFrame(renderBookmarkMarkers);
   }else{
     clearBookmarkMarkers();
   }
