@@ -2966,7 +2966,7 @@ body.nav-search-open .nbrand{
 
 .bookmark-marker{
   position:absolute!important;
-  top:50%!important;
+  top:11px!important;
   width:14px!important;
   height:14px!important;
   margin:0!important;
@@ -5466,7 +5466,253 @@ return;
 }
 
 var SHIUREI_VISITOR_ID=getShiureiVisitorId();
+// ===== SITE VISIT + NAVIGATION TRACKING =====
 
+var SITE_VISIT_ID=(function(){
+  try{
+    var id=sessionStorage.getItem('sk_site_visit_id');
+
+    if(!id){
+      id='visit_'+
+        Date.now().toString(36)+'_'+
+        Math.random().toString(36).slice(2)+
+        Math.random().toString(36).slice(2);
+
+      sessionStorage.setItem('sk_site_visit_id',id);
+    }
+
+    return id;
+  }catch(e){
+    return 'visit_'+Date.now().toString(36)+'_'+
+      Math.random().toString(36).slice(2);
+  }
+})();
+
+var SITE_LAST_PAGE_KEY='';
+var SITE_LAST_PAGE_NAME='';
+var SITE_TRACK_STARTED=false;
+
+function sitePageInfo(){
+  try{
+    // Account / Admin
+    var acc=document.getElementById('m-account');
+
+    if(acc && acc.classList.contains('open')){
+      var hash=String(location.hash||'').replace(/^#/,'');
+
+      var accTitle=document.getElementById('accModalTitle');
+      var title=accTitle
+        ? String(accTitle.textContent||'').trim()
+        : 'מיין אקאונט';
+
+      var innerTitle=document.querySelector(
+        '#accBox .mt'
+      );
+
+      if(innerTitle && String(innerTitle.textContent||'').trim()){
+        title=String(innerTitle.textContent||'').trim();
+      }
+
+      return {
+        key:hash || 'account',
+        name:title || 'מיין אקאונט'
+      };
+    }
+
+    // אנדערע Modals
+    var modal=document.querySelector('.mov.open');
+
+    if(modal){
+      var modalNames={
+        'm-hl':'האטליין',
+        'm-ct':'Contact Us',
+        'm-sub':'סובסקרייב',
+        'm-don':'Donate',
+        'm-privacy':'Privacy Policy',
+        'm-lat':'די נייעסטע שיעור',
+        'm-pwd':'Password',
+        'm-nyt':'יום טוב שיעורים'
+      };
+
+      return {
+        key:'modal:'+modal.id,
+        name:modalNames[modal.id] || modal.id
+      };
+    }
+
+    // יעצט שפילנדע שיעור
+    var player=document.getElementById('plov');
+
+    if(
+      player &&
+      player.classList.contains('open') &&
+      window.curShiur &&
+      curShiur.id
+    ){
+      return {
+        key:'shiur:'+String(curShiur.id),
+        name:'שיעור: '+String(curShiur.name||'שיעור')
+      };
+    }
+
+    // זוך רעזולטאטן
+    var searchBox=document.getElementById('srch');
+
+    if(
+      searchBox &&
+      String(searchBox.value||'').trim() &&
+      document.getElementById('ca') &&
+      document.getElementById('ca').style.display!=='none'
+    ){
+      return {
+        key:'search:'+String(searchBox.value||'').trim(),
+        name:'זוך: '+String(searchBox.value||'').trim()
+      };
+    }
+
+    // פאלדער / קאטעגאריע
+    if(
+      typeof nav!=='undefined' &&
+      Array.isArray(nav) &&
+      nav.length &&
+      document.getElementById('ca') &&
+      document.getElementById('ca').style.display!=='none'
+    ){
+      return {
+        key:'folder:'+String(nav[nav.length-1].id||''),
+        name:nav.map(function(x){
+          return String(x.name||'');
+        }).filter(Boolean).join(' → ')
+      };
+    }
+
+    // Home
+    return {
+      key:'home',
+      name:'הויבט בלאט'
+    };
+
+  }catch(e){
+    return {
+      key:'unknown',
+      name:'אומבאקאנט'
+    };
+  }
+}
+
+function sitePostVisit(eventType){
+  try{
+    fetch(API_BASE+'/site-visit',{
+      method:'POST',
+      credentials:'include',
+      keepalive:true,
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        visit_id:SITE_VISIT_ID,
+        visitor_id:SHIUREI_VISITOR_ID,
+        event_type:eventType||'heartbeat'
+      })
+    }).catch(function(){});
+  }catch(e){}
+}
+
+function sitePostPageEvent(info,fromInfo){
+  try{
+    info=info||sitePageInfo();
+    fromInfo=fromInfo||{key:'',name:''};
+
+    fetch(API_BASE+'/site-page-event',{
+      method:'POST',
+      credentials:'include',
+      keepalive:true,
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        visit_id:SITE_VISIT_ID,
+        visitor_id:SHIUREI_VISITOR_ID,
+
+        event_type:'navigation',
+
+        page_key:info.key,
+        page_name:info.name,
+
+        from_page_key:fromInfo.key||'',
+        from_page_name:fromInfo.name||'',
+
+        to_page_key:info.key||'',
+        to_page_name:info.name||'',
+
+        path:
+          location.pathname+
+          location.search+
+          location.hash
+      })
+    }).catch(function(){});
+  }catch(e){}
+}
+
+function siteCheckNavigation(){
+  var info=sitePageInfo();
+
+  if(!SITE_TRACK_STARTED){
+    SITE_TRACK_STARTED=true;
+
+    SITE_LAST_PAGE_KEY=info.key;
+    SITE_LAST_PAGE_NAME=info.name;
+
+    sitePostPageEvent(
+      info,
+      {key:'',name:'סייט אריינקום'}
+    );
+
+    return;
+  }
+
+  if(info.key===SITE_LAST_PAGE_KEY)return;
+
+  var previous={
+    key:SITE_LAST_PAGE_KEY,
+    name:SITE_LAST_PAGE_NAME
+  };
+
+  SITE_LAST_PAGE_KEY=info.key;
+  SITE_LAST_PAGE_NAME=info.name;
+
+  sitePostPageEvent(info,previous);
+}
+
+(function startSiteTracking(){
+  setTimeout(function(){
+    sitePostVisit('start');
+    siteCheckNavigation();
+
+    setInterval(function(){
+      if(document.visibilityState==='visible'){
+        sitePostVisit('heartbeat');
+        siteCheckNavigation();
+      }
+    },30000);
+
+    setInterval(function(){
+      siteCheckNavigation();
+    },1000);
+
+  },800);
+})();
+
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='visible'){
+    sitePostVisit('heartbeat');
+    siteCheckNavigation();
+  }
+});
+
+window.addEventListener('pagehide',function(){
+  sitePostVisit('end');
+});
 function sendListeningEvent(type){
   try{
     if(!window.curShiur || !curShiur.id)return;
