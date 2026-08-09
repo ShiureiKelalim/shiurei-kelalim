@@ -2934,17 +2934,112 @@ body.nav-search-open .nbrand{
 }
                          
 
-/* ===== PLAYER ACCOUNT TOOLS + BOOKMARK MARKS ===== */
-.pro-progress-wrap{position:relative;width:100%;height:18px;display:flex;align-items:center}
-.pro-progress-wrap .pro-progress{position:relative;z-index:2}
-.pro-bookmark-marks{position:absolute;left:0;right:0;top:0;bottom:0;z-index:4;pointer-events:none}
-.pro-bookmark-mark{position:absolute;top:50%;width:10px;height:10px;border:2px solid #fff;border-radius:50%;background:#c62828;box-shadow:0 1px 5px rgba(0,0,0,.35);transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer;padding:0}
-.pro-bookmark-mark:hover,.pro-bookmark-mark:focus-visible{transform:translate(-50%,-50%) scale(1.25);outline:none}
-.player-account-tools{direction:ltr;display:flex;align-items:center;justify-content:space-between;margin:8px 3px 0}
-.player-account-tool{position:relative;width:38px;height:38px;padding:0;border:0;background:transparent;color:#162d5a;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color .16s ease,transform .16s ease}
-.player-account-tool:hover,.player-account-tool:focus-visible{color:#b8860b;transform:scale(1.08);outline:none}
-.player-account-tool svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.player-account-tool:hover .player-tooltip,.player-account-tool:focus-visible .player-tooltip{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+/* ===== PLAYER BOOKMARK DOTS ===== */
+.pro-progress-wrap{
+  position:relative;
+  width:100%;
+  min-width:0;
+  height:22px;
+  display:flex;
+  align-items:center;
+}
+
+.pro-progress-wrap .pro-progress{
+  position:relative;
+  z-index:1;
+}
+
+.bookmark-markers{
+  position:absolute;
+  left:0;
+  right:0;
+  top:50%;
+  height:0;
+  z-index:4;
+  pointer-events:none;
+}
+
+.bookmark-marker{
+  position:absolute;
+  top:0;
+  width:9px;
+  height:9px;
+  padding:0;
+  margin:0;
+  border:2px solid #fff;
+  border-radius:50%;
+  background:#111827;
+  box-shadow:0 1px 4px rgba(0,0,0,.4);
+  transform:translate(-50%,-50%);
+  cursor:pointer;
+  pointer-events:auto;
+  z-index:5;
+}
+
+.bookmark-marker:hover,
+.bookmark-marker:focus-visible{
+  width:11px;
+  height:11px;
+  outline:none;
+  background:#000;
+}
+
+.bookmark-marker-pop{
+  display:none;
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  transform:translateX(-50%);
+  min-width:145px;
+  max-width:210px;
+  padding:8px 9px;
+  border-radius:8px;
+  background:#202124;
+  color:#fff;
+  box-shadow:0 5px 16px rgba(0,0,0,.25);
+  font:500 .69rem Arial,sans-serif;
+  line-height:1.35;
+  white-space:nowrap;
+  text-align:left;
+  z-index:30;
+}
+
+.bookmark-marker:hover .bookmark-marker-pop,
+.bookmark-marker:focus-within .bookmark-marker-pop{
+  display:block;
+}
+
+.bookmark-marker-title{
+  font-weight:700;
+  margin-bottom:2px;
+}
+
+.bookmark-marker-time{
+  color:#d7dce4;
+}
+
+.bookmark-marker-remove{
+  display:block;
+  margin-top:6px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#ffb4ab;
+  font:700 .67rem Arial,sans-serif;
+  cursor:pointer;
+}
+
+.bookmark-marker-remove:hover{
+  text-decoration:underline;
+}
+
+#accPlayerTools{
+  width:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  padding:0 8px!important;
+}
 </style>
 </head>
 <body>
@@ -3117,18 +3212,6 @@ body.nav-search-open .nbrand{
 </button>
 
     <button class="plcl" onclick="closePl()">✕</button>
-    <button
-  type="button"
-  id="playerFavTop"
-  class="player-top-fav"
-  onclick="accToggleFav()"
-  title="Favorite"
-  aria-label="Favorite"
->
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M12 2.8l2.8 5.7 6.3.9-4.6 4.4 1.1 6.2-5.6-2.9L6.4 20l1.1-6.2-4.6-4.4 6.3-.9z"></path>
-  </svg>
-</button>
 
     <div class="share-msg" id="shareMsg">✓ לינק קאפירט</div>
 
@@ -3152,7 +3235,7 @@ body.nav-search-open .nbrand{
         step="0.1"
         oninput="proSeek(this.value)"
       >
-      <div id="proBookmarkMarks" class="pro-bookmark-marks" aria-label="Bookmarks"></div>
+      <div id="bookmarkMarkers" class="bookmark-markers" aria-label="Bookmarks"></div>
     </div>
     <span id="proDuration">0:00</span>
   </div>
@@ -3268,17 +3351,6 @@ body.nav-search-open .nbrand{
 
   </div>
 
-</div>
-
-<div class="player-account-tools">
-  <button type="button" class="player-account-tool player-playlist-tool" onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="לייג צו Playlist">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 11h10M4 16h7"></path><path d="M17 13v7M13.5 16.5H20.5"></path></svg>
-    <span class="player-tooltip">Playlist</span>
-  </button>
-  <button type="button" class="player-account-tool player-bookmark-tool" onclick="accBookmark()" title="מאך Bookmark" aria-label="מאך Bookmark">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5A1.5 1.5 0 0 1 8.5 3h7A1.5 1.5 0 0 1 17 4.5V21l-5-3.4L7 21z"></path></svg>
-    <span class="player-tooltip">Bookmark</span>
-  </button>
 </div>
 
 <div style="text-align:center;margin:10px 0 5px">
@@ -4592,6 +4664,8 @@ function opPl(fId,nm){
 
   document.getElementById('plti').innerHTML=cleanNm;
 
+  clearBookmarkMarkers();
+
   document.getElementById('au').src=
     API_BASE+'/play?id='+encodeURIComponent(fId);
 
@@ -4624,7 +4698,6 @@ document.getElementById('dlsec').innerHTML=
       '<span class="player-tooltip">Download limit reached</span></button>';
 
   document.getElementById('plov').classList.add('open');
-  loadPlayerBookmarks();
 }
 
 async function shareCurrentShiur(){
@@ -6174,7 +6247,7 @@ async function accRenderPlayerTools(){
   var old=document.getElementById('accPlayerTools');
   if(old)old.remove();
 
-  var fav=false;
+  var loggedIn=false;
 
   try{
     var d=await fetch(API_BASE+'/user-data',{
@@ -6185,30 +6258,117 @@ async function accRenderPlayerTools(){
 
     if(d.ok){
       ACC_DATA=d;
-      fav=accIsFav(curShiur.id);
+      loggedIn=true;
     }
   }catch(e){}
-
-  var topFav=document.getElementById('playerFavTop');
-
-  if(topFav){
-    topFav.classList.toggle('is-fav',fav);
-  }
 
   var div=document.createElement('div');
   div.id='accPlayerTools';
 
   div.innerHTML=
-  '<button onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="Playlist">📂</button>'+
-  '<button onclick="accBookmark()" title="Bookmark" aria-label="Bookmark">🔖</button>';
+    '<button onclick="accAddToPlaylist()" title="לייג צו Playlist" aria-label="Playlist">📂</button>'+
+    '<button onclick="accBookmark()" title="Bookmark" aria-label="Bookmark">🔖</button>';
 
-var copyright=document.querySelector('.plcp');
+  var copyright=document.querySelector('.plcp');
 
-if(copyright && copyright.parentNode===au.parentNode){
-  au.parentNode.insertBefore(div,copyright);
-}else{
-  au.parentNode.appendChild(div);
+  if(copyright && copyright.parentNode===au.parentNode){
+    au.parentNode.insertBefore(div,copyright);
+  }else{
+    au.parentNode.appendChild(div);
+  }
+
+  if(loggedIn){
+    renderBookmarkMarkers();
+  }else{
+    clearBookmarkMarkers();
+  }
 }
+
+function clearBookmarkMarkers(){
+  var layer=document.getElementById('bookmarkMarkers');
+  if(layer)layer.innerHTML='';
+}
+
+function currentShiurBookmarks(){
+  if(!window.curShiur || !curShiur.id)return [];
+
+  return (ACC_DATA.bookmarks||[])
+    .filter(function(x){
+      return x.shiur_id===curShiur.id;
+    })
+    .sort(function(a,b){
+      return Number(a.position||0)-Number(b.position||0);
+    });
+}
+
+function renderBookmarkMarkers(){
+  var layer=document.getElementById('bookmarkMarkers');
+  var au=document.getElementById('au');
+
+  if(!layer || !au)return;
+
+  layer.innerHTML='';
+
+  if(!isFinite(au.duration) || !au.duration)return;
+
+  var list=currentShiurBookmarks();
+
+  list.forEach(function(bm,index){
+    var pos=Math.max(0,Number(bm.position||0));
+    var pct=Math.max(0,Math.min(100,(pos/au.duration)*100));
+    var title=(bm.title||'').trim() || ('Bookmark '+(index+1));
+
+    var marker=document.createElement('button');
+    marker.type='button';
+    marker.className='bookmark-marker';
+    marker.style.left=pct+'%';
+    marker.setAttribute('aria-label',title+' — '+proFormatTime(pos));
+    marker.onclick=function(e){
+      if(e && e.target && e.target.classList.contains('bookmark-marker-remove'))return;
+      au.currentTime=pos;
+      proUpdatePlayer();
+    };
+
+    var pop=document.createElement('span');
+    pop.className='bookmark-marker-pop';
+    pop.innerHTML=
+      '<span class="bookmark-marker-title">'+esc(title)+'</span>'+
+      '<span class="bookmark-marker-time">'+proFormatTime(pos)+' אינעם שיעור</span>'+
+      '<button type="button" class="bookmark-marker-remove">אוועקנעמען</button>';
+
+    var removeBtn=pop.querySelector('.bookmark-marker-remove');
+    removeBtn.onclick=function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      removePlayerBookmark(bm.id);
+    };
+
+    marker.appendChild(pop);
+    layer.appendChild(marker);
+  });
+}
+
+async function refreshPlayerBookmarks(){
+  try{
+    var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});
+    if(d.ok){
+      ACC_DATA=d;
+      renderBookmarkMarkers();
+      return true;
+    }
+  }catch(e){}
+
+  clearBookmarkMarkers();
+  return false;
+}
+
+async function removePlayerBookmark(id){
+  var r=await accApi('bookmark_remove',{id:id});
+  if(!r.ok){
+    alert(r.error||'נישט געלונגען');
+    return;
+  }
+  await refreshPlayerBookmarks();
 }
 
 function proFormatTime(sec){
@@ -6376,6 +6536,9 @@ function proUpdatePlayer(){
     au.addEventListener(eventName,proUpdatePlayer);
   });
 
+  au.addEventListener('loadedmetadata',renderBookmarkMarkers);
+  au.addEventListener('durationchange',renderBookmarkMarkers);
+
   proUpdatePlayer();
 })();
 function accJump(sec){var au=document.getElementById('au');if(au)au.currentTime=Math.max(0,au.currentTime+sec);}
@@ -6390,21 +6553,68 @@ if(topFav){
 }
 async function accBookmark(){
   if(!curShiur||!curShiur.id)return;
-  var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();}).catch(function(){return {ok:false};});
-  if(!d.ok){openMyAccount();return;}
+
+  var d;
+  try{
+    d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});
+  }catch(e){
+    d={ok:false};
+  }
+
+  if(!d.ok){
+    openMyAccount();
+    return;
+  }
+
   ACC_DATA=d;
-  var au=document.getElementById('au'),pos=au?au.currentTime:0;
-  var count=(d.bookmarks||[]).filter(function(x){return x.shiur_id===curShiur.id;}).length;
-  var suggested='Bookmark '+(count+1);
-  accPicker('🔖 Bookmark','<div style="font-size:.78rem;color:#666;margin-bottom:7px">'+esc(curShiur.name||'שיעור')+' — '+formatTime(pos)+'</div><input class="acc-field" id="accBookmarkName" value="'+esc(suggested)+'" placeholder="Bookmark נאמען"><div class="acc-actions"><button class="sbtn" onclick="accSaveBookmark('+Number(pos)+')">היטן</button><button class="sbtn" style="background:#777" onclick="accClosePicker()">פארמאכן</button></div>');
+
+  var au=document.getElementById('au');
+  var pos=au?au.currentTime:0;
+  var nextNum=currentShiurBookmarks().length+1;
+  var defaultName='Bookmark '+nextNum;
+
+  accPicker(
+    '🔖 Bookmark',
+    '<div style="font-size:.78rem;color:#666;margin-bottom:7px">'+
+      esc(curShiur.name||'שיעור')+' — '+formatTime(pos)+
+    '</div>'+
+    '<input class="acc-field" id="accBookmarkName" value="'+esc(defaultName)+'" placeholder="Bookmark נאמען">'+
+    '<div class="acc-actions">'+
+      '<button class="sbtn" onclick="accSaveBookmark('+Number(pos)+')">היטן</button>'+
+      '<button class="sbtn" style="background:#777" onclick="accClosePicker()">פארמאכן</button>'+
+    '</div>'
+  );
+
+  setTimeout(function(){
+    var i=document.getElementById('accBookmarkName');
+    if(i){i.focus();i.select();}
+  },50);
 }
+
 async function accSaveBookmark(pos){
   var i=document.getElementById('accBookmarkName');
-  var r=await accApi('bookmark_add',{shiur_id:curShiur.id,shiur_name:curShiur.name||'שיעור',position:pos,title:(i?i.value:'').trim()});
-  if(!r.ok){alert(r.error||'נישט געלונגען');return;}
+  var title=(i?i.value:'').trim();
+
+  if(!title){
+    title='Bookmark '+(currentShiurBookmarks().length+1);
+  }
+
+  var r=await accApi('bookmark_add',{
+    shiur_id:curShiur.id,
+    shiur_name:curShiur.name||'שיעור',
+    position:pos,
+    title:title
+  });
+
+  if(!r.ok){
+    alert(r.error||'נישט געלונגען');
+    return;
+  }
+
   accClosePicker();
-  await loadPlayerBookmarks();
+  await refreshPlayerBookmarks();
 }
+
 async function accAddToPlaylist(){
   if(!curShiur||!curShiur.id)return;var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();});if(!d.ok){openMyAccount();return;}
   if(!d.playlists.length){createPlaylistPrompt();return;}
@@ -6434,39 +6644,6 @@ function accSaveProgressNow(){try{if(!curShiur||!curShiur.id)return;var au=docum
 })();
   (function(){var oldOpPl=window.opPl;if(typeof oldOpPl==='function'){window.opPl=function(fId,nm){oldOpPl(fId,nm);setTimeout(accRenderPlayerTools,250);clearInterval(ACC_SAVE_TIMER);ACC_SAVE_TIMER=setInterval(accSaveProgressNow,45000);};}window.addEventListener('beforeunload',accSaveProgressNow);})();
 
-
-
-async function loadPlayerBookmarks(){
-  var marks=document.getElementById('proBookmarkMarks');
-  var au=document.getElementById('au');
-  if(!marks){return;}
-  marks.innerHTML='';
-  if(!curShiur||!curShiur.id)return;
-  var d=await fetch(API_BASE+'/user-data',{credentials:'include'}).then(function(r){return r.json();}).catch(function(){return {ok:false};});
-  if(!d.ok)return;
-  ACC_DATA=d;
-  function render(){
-    marks.innerHTML='';
-    if(!au||!isFinite(au.duration)||!au.duration)return;
-    (d.bookmarks||[]).filter(function(x){return x.shiur_id===curShiur.id;}).forEach(function(x,index){
-      var pct=Math.max(0,Math.min(100,(Number(x.position||0)/au.duration)*100));
-      var b=document.createElement('button');
-      b.type='button';
-      b.className='pro-bookmark-mark';
-      b.style.left=pct+'%';
-      b.title=(x.title||('Bookmark '+(index+1)))+' — '+formatTime(Number(x.position||0));
-      b.setAttribute('aria-label',b.title);
-      b.onclick=function(e){e.preventDefault();e.stopPropagation();au.currentTime=Number(x.position||0);proUpdatePlayer();};
-      marks.appendChild(b);
-    });
-  }
-  render();
-  if(au && !au.dataset.bookmarkMarksBound){
-    au.dataset.bookmarkMarksBound='1';
-    au.addEventListener('loadedmetadata',loadPlayerBookmarks);
-    au.addEventListener('durationchange',loadPlayerBookmarks);
-  }
-}
 </script>
 </body>
 </html>
