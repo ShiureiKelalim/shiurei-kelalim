@@ -2962,14 +2962,14 @@ body.nav-search-open .nbrand{
 .bookmark-marker{
   position:absolute;
   top:0;
-  width:9px;
-  height:9px;
+  width:7px;
+  height:7px;
   padding:0;
   margin:0;
-  border:2px solid #fff;
+  border:1px solid #fff;
   border-radius:50%;
   background:#111827;
-  box-shadow:0 1px 4px rgba(0,0,0,.4);
+  box-shadow:0 1px 3px rgba(0,0,0,.38);
   transform:translate(-50%,-50%);
   cursor:pointer;
   pointer-events:auto;
@@ -2978,8 +2978,8 @@ body.nav-search-open .nbrand{
 
 .bookmark-marker:hover,
 .bookmark-marker:focus-visible{
-  width:11px;
-  height:11px;
+  width:8px;
+  height:8px;
   outline:none;
   background:#000;
 }
@@ -3004,17 +3004,18 @@ body.nav-search-open .nbrand{
   z-index:30;
 }
 
-.bookmark-marker:hover .bookmark-marker-pop,
-.bookmark-marker:focus-within .bookmark-marker-pop{
+.bookmark-marker.is-open .bookmark-marker-pop{
   display:block;
 }
 
 .bookmark-marker-title{
+  display:block;
   font-weight:700;
   margin-bottom:2px;
 }
 
 .bookmark-marker-time{
+  display:block;
   color:#d7dce4;
 }
 
@@ -6318,15 +6319,31 @@ function renderBookmarkMarkers(){
     var pct=Math.max(0,Math.min(100,(pos/au.duration)*100));
     var title=(bm.title||'').trim() || ('Bookmark '+(index+1));
 
-    var marker=document.createElement('button');
-    marker.type='button';
+    var marker=document.createElement('div');
     marker.className='bookmark-marker';
     marker.style.left=pct+'%';
+    marker.setAttribute('role','button');
+    marker.setAttribute('tabindex','0');
     marker.setAttribute('aria-label',title+' — '+proFormatTime(pos));
-    marker.onclick=function(e){
+
+    function openThisBookmark(e){
       if(e && e.target && e.target.classList.contains('bookmark-marker-remove'))return;
+
+      document.querySelectorAll('.bookmark-marker.is-open').forEach(function(x){
+        if(x!==marker)x.classList.remove('is-open');
+      });
+
       au.currentTime=pos;
       proUpdatePlayer();
+      marker.classList.add('is-open');
+    }
+
+    marker.onclick=openThisBookmark;
+    marker.onkeydown=function(e){
+      if(e.key==='Enter' || e.key===' '){
+        e.preventDefault();
+        openThisBookmark(e);
+      }
     };
 
     var pop=document.createElement('span');
@@ -6347,6 +6364,14 @@ function renderBookmarkMarkers(){
     layer.appendChild(marker);
   });
 }
+
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.bookmark-marker')){
+    document.querySelectorAll('.bookmark-marker.is-open').forEach(function(x){
+      x.classList.remove('is-open');
+    });
+  }
+});
 
 async function refreshPlayerBookmarks(){
   try{
