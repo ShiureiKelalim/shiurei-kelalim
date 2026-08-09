@@ -2934,7 +2934,7 @@ body.nav-search-open .nbrand{
 }
                          
 
-/* ===== PLAYER BOOKMARK DOTS ===== */
+/* ===== PLAYER BOOKMARK DOTS — CLEAN ===== */
 .pro-progress-wrap{
   position:relative;
   width:100%;
@@ -2955,71 +2955,75 @@ body.nav-search-open .nbrand{
   right:0;
   top:50%;
   height:0;
-  z-index:4;
+  z-index:6;
   pointer-events:none;
 }
 
 .bookmark-marker{
   position:absolute;
   top:0;
-  width:7px;
-  height:7px;
-  padding:0;
-  margin:0;
-  border:1px solid #fff;
-  border-radius:50%;
-  background:#111827;
-  box-shadow:0 1px 3px rgba(0,0,0,.38);
-  transform:translate(-50%,-50%);
-  cursor:pointer;
-  pointer-events:auto;
-  z-index:5;
+  width:7px!important;
+  height:7px!important;
+  min-width:7px!important;
+  min-height:7px!important;
+  padding:0!important;
+  margin:0!important;
+  border:1px solid #fff!important;
+  border-radius:50%!important;
+  background:#111827!important;
+  box-shadow:0 1px 3px rgba(0,0,0,.38)!important;
+  transform:translate(-50%,-50%)!important;
+  cursor:pointer!important;
+  pointer-events:auto!important;
+  z-index:7!important;
+  font-size:0!important;
+  line-height:0!important;
 }
 
 .bookmark-marker:hover,
 .bookmark-marker:focus-visible{
-  width:8px;
-  height:8px;
-  outline:none;
-  background:#000;
+  width:8px!important;
+  height:8px!important;
+  background:#000!important;
+  outline:none!important;
 }
 
-.bookmark-marker-pop{
+.bookmark-line-pop{
   display:none;
   position:absolute;
-  left:50%;
-  bottom:14px;
+  top:14px;
   transform:translateX(-50%);
-  min-width:145px;
-  max-width:210px;
-  padding:8px 9px;
+  min-width:155px;
+  max-width:220px;
+  padding:8px 10px;
   border-radius:8px;
   background:#202124;
   color:#fff;
-  box-shadow:0 5px 16px rgba(0,0,0,.25);
+  box-shadow:0 5px 16px rgba(0,0,0,.28);
   font:500 .69rem Arial,sans-serif;
-  line-height:1.35;
+  line-height:1.4;
   white-space:nowrap;
   text-align:left;
-  z-index:30;
+  pointer-events:auto;
+  z-index:50;
 }
 
-.bookmark-marker.is-open .bookmark-marker-pop{
+.bookmark-line-pop.open{
   display:block;
 }
 
-.bookmark-marker-title{
+.bookmark-line-pop-title{
   display:block;
   font-weight:700;
   margin-bottom:2px;
 }
 
-.bookmark-marker-time{
+.bookmark-line-pop-time{
   display:block;
   color:#d7dce4;
 }
 
-.bookmark-marker-remove{
+.bookmark-line-pop-remove{
   display:block;
   margin-top:6px;
   padding:0;
@@ -3030,7 +3034,7 @@ body.nav-search-open .nbrand{
   cursor:pointer;
 }
 
-.bookmark-marker-remove:hover{
+.bookmark-line-pop-remove:hover{
   text-decoration:underline;
 }
 
@@ -6288,6 +6292,9 @@ async function accRenderPlayerTools(){
 function clearBookmarkMarkers(){
   var layer=document.getElementById('bookmarkMarkers');
   if(layer)layer.innerHTML='';
+
+  var oldPop=document.getElementById('bookmarkLinePop');
+  if(oldPop)oldPop.remove();
 }
 
 function currentShiurBookmarks(){
@@ -6302,6 +6309,40 @@ function currentShiurBookmarks(){
     });
 }
 
+function closeBookmarkLinePop(){
+  var pop=document.getElementById('bookmarkLinePop');
+  if(pop)pop.remove();
+}
+
+function showBookmarkLinePop(marker,bm,index,pos,pct){
+  closeBookmarkLinePop();
+
+  var wrap=document.querySelector('.pro-progress-wrap');
+  if(!wrap)return;
+
+  var title=(bm.title||'').trim() || ('Bookmark '+(index+1));
+
+  var pop=document.createElement('div');
+  pop.id='bookmarkLinePop';
+  pop.className='bookmark-line-pop open';
+  pop.style.left=pct+'%';
+
+  pop.innerHTML=
+    '<span class="bookmark-line-pop-title">'+esc(title)+'</span>'+ 
+    '<span class="bookmark-line-pop-time">'+proFormatTime(pos)+' אינעם שיעור</span>'+ 
+    '<button type="button" class="bookmark-line-pop-remove">אוועקנעמען</button>';
+
+  var removeBtn=pop.querySelector('.bookmark-line-pop-remove');
+  removeBtn.onclick=function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    removePlayerBookmark(bm.id);
+  };
+
+  pop.addEventListener('click',function(e){e.stopPropagation();});
+  wrap.appendChild(pop);
+}
+
 function renderBookmarkMarkers(){
   var layer=document.getElementById('bookmarkMarkers');
   var au=document.getElementById('au');
@@ -6309,6 +6350,7 @@ function renderBookmarkMarkers(){
   if(!layer || !au)return;
 
   layer.innerHTML='';
+  closeBookmarkLinePop();
 
   if(!isFinite(au.duration) || !au.duration)return;
 
@@ -6319,57 +6361,27 @@ function renderBookmarkMarkers(){
     var pct=Math.max(0,Math.min(100,(pos/au.duration)*100));
     var title=(bm.title||'').trim() || ('Bookmark '+(index+1));
 
-    var marker=document.createElement('div');
+    var marker=document.createElement('button');
+    marker.type='button';
     marker.className='bookmark-marker';
     marker.style.left=pct+'%';
-    marker.setAttribute('role','button');
-    marker.setAttribute('tabindex','0');
     marker.setAttribute('aria-label',title+' — '+proFormatTime(pos));
 
-    function openThisBookmark(e){
-      if(e && e.target && e.target.classList.contains('bookmark-marker-remove'))return;
-
-      document.querySelectorAll('.bookmark-marker.is-open').forEach(function(x){
-        if(x!==marker)x.classList.remove('is-open');
-      });
-
-      au.currentTime=pos;
-      proUpdatePlayer();
-      marker.classList.add('is-open');
-    }
-
-    marker.onclick=openThisBookmark;
-    marker.onkeydown=function(e){
-      if(e.key==='Enter' || e.key===' '){
-        e.preventDefault();
-        openThisBookmark(e);
-      }
-    };
-
-    var pop=document.createElement('span');
-    pop.className='bookmark-marker-pop';
-    pop.innerHTML=
-      '<span class="bookmark-marker-title">'+esc(title)+'</span>'+
-      '<span class="bookmark-marker-time">'+proFormatTime(pos)+' אינעם שיעור</span>'+
-      '<button type="button" class="bookmark-marker-remove">אוועקנעמען</button>';
-
-    var removeBtn=pop.querySelector('.bookmark-marker-remove');
-    removeBtn.onclick=function(e){
+    marker.onclick=function(e){
       e.preventDefault();
       e.stopPropagation();
-      removePlayerBookmark(bm.id);
+      au.currentTime=pos;
+      proUpdatePlayer();
+      showBookmarkLinePop(marker,bm,index,pos,pct);
     };
 
-    marker.appendChild(pop);
     layer.appendChild(marker);
   });
 }
 
 document.addEventListener('click',function(e){
-  if(!e.target.closest('.bookmark-marker')){
-    document.querySelectorAll('.bookmark-marker.is-open').forEach(function(x){
-      x.classList.remove('is-open');
-    });
+  if(!e.target.closest('.bookmark-line-pop') && !e.target.closest('.bookmark-marker')){
+    closeBookmarkLinePop();
   }
 });
 
