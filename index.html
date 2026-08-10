@@ -4688,7 +4688,16 @@ document.getElementById('dlsec').innerHTML=
       downloadSvg+
       '<span class="player-tooltip">Download limit reached</span></button>';
 
-  document.getElementById('plov').classList.add('open');
+   document.getElementById('plov').classList.add('open');
+
+  /* LOAD ACCOUNT BOOKMARKS FOR THIS SHIUR */
+  setTimeout(function(){
+    accRenderPlayerTools();
+  },50);
+
+  setTimeout(function(){
+    refreshPlayerBookmarks();
+  },300);
 }
 
 async function shareCurrentShiur(){
