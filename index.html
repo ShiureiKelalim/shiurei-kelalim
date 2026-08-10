@@ -6915,8 +6915,27 @@ async function accSaveBookmark(pos){
     return;
   }
 
+  /* גלייך לייג דעם נייעם Bookmark אריין אינעם Player */
+  if(!ACC_DATA || typeof ACC_DATA!=='object'){
+    ACC_DATA={};
+  }
+
+  if(!Array.isArray(ACC_DATA.bookmarks)){
+    ACC_DATA.bookmarks=[];
+  }
+
+  ACC_DATA.bookmarks.push({
+    id:r.id || r.bookmark_id || ('temp_'+Date.now()),
+    shiur_id:curShiur.id,
+    shiur_name:curShiur.name||'שיעור',
+    position:Number(pos),
+    title:title
+  });
+
   accClosePicker();
-  await refreshPlayerBookmarks();
+
+  /* צייכן דעם פינטל גלייך — נישט ווארטן אויפן סערווער */
+  renderBookmarkMarkers();
 }
 
 async function accAddToPlaylist(){
