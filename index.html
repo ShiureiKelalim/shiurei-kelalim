@@ -4690,14 +4690,7 @@ document.getElementById('dlsec').innerHTML=
 
    document.getElementById('plov').classList.add('open');
 
-  /* LOAD ACCOUNT BOOKMARKS FOR THIS SHIUR */
-  setTimeout(function(){
-    accRenderPlayerTools();
-  },50);
 
-  setTimeout(function(){
-    refreshPlayerBookmarks();
-  },300);
 }
 
 async function shareCurrentShiur(){
@@ -6625,49 +6618,114 @@ function showBookmarkLinePop(marker,bm,index,pos,pct){
   wrap.appendChild(pop);
 }
 
-function renderBookmarkMarkers(){
+async function renderBookmarkMarkers(){
   var layer=document.getElementById('bookmarkMarkers');
   var au=document.getElementById('au');
 
-  if(!layer || !au)return;
+  if(!layer || !au || !curShiur || !curShiur.id)return;
 
   layer.innerHTML='';
   closeBookmarkLinePop();
 
+  /* אויב דער שיעור איז נאכנישט געלאדנט, ווארט */
   var duration=Number(au.duration||0);
-  if(!isFinite(duration) || duration<=0)return;
 
-  var list=currentShiurBookmarks();
+  if(!isFinite(duration) || duration<=0){
+    return;
+  }
+
+  /* נעם די אמת'ע Bookmarks גלייך פונעם אקאונט */
+  var d;
+
+  try{
+    d=await fetch(API_BASE+'/user-data',{
+      credentials:'include'
+    }).then(function(r){
+      return r.json();
+    });
+  }catch(e){
+    return;
+  }
+
+  if(!d || !d.ok || !Array.isArray(d.bookmarks)){
+    return;
+  }
+
+  ACC_DATA=d;
+
+  var curId=String(curShiur.id||'').trim();
+
+  var curName=String(curShiur.name||'')
+    .replace(/<[^>]*>/g,'')
+    .replace(/[״"׳']/g,'')
+    .replace(/\s+/g,' ')
+    .trim();
+
+  var list=d.bookmarks.filter(function(bm){
+
+    var bmId=String(bm.shiur_id||'').trim();
+
+    var bmName=String(bm.shiur_name||'')
+      .replace(/<[^>]*>/g,'')
+      .replace(/[״"׳']/g,'')
+      .replace(/\s+/g,' ')
+      .trim();
+
+    return (
+      (curId && bmId===curId) ||
+      (curName && bmName===curName)
+    );
+  });
+
+  list.sort(function(a,b){
+    return Number(a.position||0)-Number(b.position||0);
+  });
 
   list.forEach(function(bm,index){
-    var pos=Math.max(0,Number(bm.position||0));
+
+    var pos=Number(bm.position||0);
+
     if(!isFinite(pos))return;
 
-    var pct=Math.max(0,Math.min(100,(pos/duration)*100));
+    var pct=Math.max(
+      0,
+      Math.min(100,(pos/duration)*100)
+    );
+
     var title=(bm.title||'').trim() || ('Bookmark '+(index+1));
 
-    var marker=document.createElement('div');
+    var marker=document.createElement('button');
+
+    marker.type='button';
     marker.className='bookmark-marker';
-    marker.setAttribute('role','button');
-    marker.setAttribute('tabindex','0');
-    marker.setAttribute('aria-label',title+' — '+proFormatTime(pos));
-    marker.style.setProperty('left',pct+'%','important');
-    marker.innerHTML='<span class="bookmark-marker-dot" aria-hidden="true"></span>';
 
-    function goToBookmark(e){
-      if(e){
-        e.preventDefault();
-        e.stopPropagation();
-      }
+    marker.style.setProperty(
+      'left',
+      pct+'%',
+      'important'
+    );
+
+    marker.setAttribute(
+      'aria-label',
+      title+' — '+proFormatTime(pos)
+    );
+
+    marker.onclick=function(e){
+      e.preventDefault();
+      e.stopPropagation();
+
       au.currentTime=Math.min(pos,duration);
-      proUpdatePlayer();
-      showBookmarkLinePop(marker,bm,index,pos,pct);
-    }
 
-    marker.addEventListener('click',goToBookmark);
-    marker.addEventListener('keydown',function(e){
-      if(e.key==='Enter' || e.key===' '){goToBookmark(e);}
-    });
+      proUpdatePlayer();
+
+      showBookmarkLinePop(
+        marker,
+        bm,
+        index,
+        pos,
+        pct
+      );
+    };
 
     layer.appendChild(marker);
   });
