@@ -6536,27 +6536,51 @@ function currentShiurBookmarks(){
   if(!window.curShiur)return [];
 
   var all=Array.isArray(ACC_DATA.bookmarks) ? ACC_DATA.bookmarks : [];
-  var curId=String(curShiur.id||'');
 
-  function normName(v){
-    return String(v||'')
+  var curId=String(curShiur.id||'').trim();
+  var curName=String(curShiur.name||'')
+    .replace(/<[^>]*>/g,'')
+    .replace(/[״"׳']/g,'')
+    .replace(/\s+/g,' ')
+    .trim()
+    .toLowerCase();
+
+  var found=all.filter(function(x){
+
+    var bmId=String(
+      x.shiur_id ||
+      x.file_id ||
+      x.id_of_shiur ||
+      ''
+    ).trim();
+
+    var bmName=String(
+      x.shiur_name ||
+      x.name ||
+      x.title_of_shiur ||
+      ''
+    )
       .replace(/<[^>]*>/g,'')
       .replace(/[״"׳']/g,'')
       .replace(/\s+/g,' ')
-      .trim();
-  }
+      .trim()
+      .toLowerCase();
 
-  var curName=normName(curShiur.name||'');
+    if(curId && bmId && bmId===curId){
+      return true;
+    }
 
-  var found=all.filter(function(x){
-    return curId && String(x.shiur_id||'')===curId;
+    if(curName && bmName && bmName===curName){
+      return true;
+    }
+
+    return false;
   });
 
-  if(!found.length && curName){
-    found=all.filter(function(x){
-      return normName(x.shiur_name||'')===curName;
-    });
-  }
+  return found.sort(function(a,b){
+    return Number(a.position||0)-Number(b.position||0);
+  });
+}
 
   return found.sort(function(a,b){
     return Number(a.position||0)-Number(b.position||0);
