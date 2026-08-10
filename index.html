@@ -6694,16 +6694,37 @@ async function renderBookmarkMarkers(){
 
     var title=(bm.title||'').trim() || ('Bookmark '+(index+1));
 
-    var marker=document.createElement('button');
+   var marker=document.createElement('button');
 
-    marker.type='button';
-    marker.className='bookmark-marker';
+marker.type='button';
+marker.className='bookmark-marker';
 
-    marker.style.setProperty(
-      'left',
-      pct+'%',
-      'important'
-    );
+var progress=document.getElementById('proProgress');
+var markerTop=11;
+
+if(progress){
+  markerTop=progress.offsetTop+(progress.offsetHeight/2);
+}
+
+marker.style.cssText=
+  'position:absolute!important;'+
+  'left:'+pct+'%!important;'+
+  'top:'+markerTop+'px!important;'+
+  'width:10px!important;'+
+  'height:10px!important;'+
+  'min-width:10px!important;'+
+  'min-height:10px!important;'+
+  'padding:0!important;'+
+  'margin:0!important;'+
+  'transform:translate(-50%,-50%)!important;'+
+  'border:1.5px solid #fff!important;'+
+  'border-radius:50%!important;'+
+  'background:#000!important;'+
+  'box-shadow:0 1px 4px rgba(0,0,0,.65)!important;'+
+  'opacity:1!important;'+
+  'display:block!important;'+
+  'z-index:100!important;'+
+  'cursor:pointer!important;';
 
     marker.setAttribute(
       'aria-label',
