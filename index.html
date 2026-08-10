@@ -3013,7 +3013,8 @@ body.nav-search-open .nbrand{
   font:500 .69rem Arial,sans-serif;
   line-height:1.4;
   white-space:nowrap;
-  text-align:left;
+  text-align:right;
+direction:rtl;
   pointer-events:auto;
   z-index:80;
 }
@@ -6602,10 +6603,14 @@ function showBookmarkLinePop(marker,bm,index,pos,pct){
   pop.className='bookmark-line-pop open';
   pop.style.left=pct+'%';
 
-  pop.innerHTML=
-    '<span class="bookmark-line-pop-title">'+esc(title)+'</span>'+ 
-    '<span class="bookmark-line-pop-time">'+proFormatTime(pos)+' אינעם שיעור</span>'+ 
-    '<button type="button" class="bookmark-line-pop-remove">אוועקנעמען</button>';
+pop.setAttribute('dir','rtl');
+
+pop.innerHTML=
+  '<span class="bookmark-line-pop-title">'+esc(title)+'</span>'+
+  '<span class="bookmark-line-pop-time">'+
+    'אינעם שיעור&nbsp; <bdi dir="ltr">'+proFormatTime(pos)+'</bdi>'+
+  '</span>'+
+  '<button type="button" class="bookmark-line-pop-remove">אוועקנעמען</button>';
 
   var removeBtn=pop.querySelector('.bookmark-line-pop-remove');
   removeBtn.onclick=function(e){
@@ -6710,10 +6715,10 @@ marker.style.cssText=
   'position:absolute!important;'+
   'left:'+pct+'%!important;'+
   'top:'+markerTop+'px!important;'+
-  'width:10px!important;'+
-  'height:10px!important;'+
-  'min-width:10px!important;'+
-  'min-height:10px!important;'+
+ 'width:7px!important;'+
+'height:7px!important;'+
+'min-width:7px!important;'+
+'min-height:7px!important;'+
   'padding:0!important;'+
   'margin:0!important;'+
   'transform:translate(-50%,-50%)!important;'+
@@ -6730,6 +6735,7 @@ marker.style.cssText=
       'aria-label',
       title+' — '+proFormatTime(pos)
     );
+   marker.setAttribute('title','Bookmark');
 
     marker.onclick=function(e){
       e.preventDefault();
