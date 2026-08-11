@@ -3021,7 +3021,7 @@ direction:rtl;
 
 .bookmark-line-pop.open{display:block;}
 .bookmark-line-pop-title{display:block;font-weight:700;margin-bottom:2px;margin-left:6px;}
-.bookmark-line-pop-time{display:block;color:#d7dce4;}
+.bookmark-line-pop-time{display:inline-block;color:#d7dce4;margin-right:7px;margin-left:7px;}
 .bookmark-line-pop-remove{display:block;margin-top:6px;padding:0;border:0;background:transparent;color:#ffb4ab;font:700 .67rem Arial,sans-serif;cursor:pointer;}
 .bookmark-line-pop-remove:hover{text-decoration:underline;}
 
@@ -6620,7 +6620,13 @@ pop.innerHTML=
   };
 
   pop.addEventListener('click',function(e){e.stopPropagation();});
-  wrap.appendChild(pop);
+ wrap.appendChild(pop);
+
+setTimeout(function(){
+  if(document.getElementById('bookmarkLinePop')===pop){
+    closeBookmarkLinePop();
+  }
+},4000);
 }
 
 async function renderBookmarkMarkers(){
