@@ -7594,7 +7594,44 @@ function accSaveProgressNow(){try{if(!curShiur||!curShiur.id)return;var au=docum
 
   updatePlayerNotes();
 })();
-  
+
+  (function(){
+  function forcePlayerLook(){
+    var box=document.querySelector('#plov .plbx');
+    var vis=document.querySelector('#plov .plvis');
+    var body=document.querySelector('#plov .plbd');
+
+    if(box){
+      box.style.setProperty(
+        'background',
+        'radial-gradient(circle at 18% 15%,rgba(212,175,55,.10),transparent 34%), linear-gradient(145deg,#24281f 0%,#192535 52%,#0d192b 100%)',
+        'important'
+      );
+      box.style.setProperty('border','1px solid rgba(212,175,55,.55)','important');
+    }
+
+    if(vis){
+      vis.style.setProperty('background','transparent','important');
+      vis.style.setProperty('background-image','none','important');
+    }
+
+    if(body){
+      body.style.setProperty('background','transparent','important');
+      body.style.setProperty('background-image','none','important');
+    }
+  }
+
+  forcePlayerLook();
+
+  var oldOpen=window.opPl;
+  if(typeof oldOpen==='function'){
+    window.opPl=function(){
+      var r=oldOpen.apply(this,arguments);
+      setTimeout(forcePlayerLook,20);
+      return r;
+    };
+  }
+})();
 </script>
 </body>
 </html>
