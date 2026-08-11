@@ -6508,15 +6508,21 @@ function showStats(){
       h+='<div class="acc-empty">קיין אקאונטס נישט דא</div>';
     }
 
-    users.forEach(function(u){
+        users.forEach(function(u){
+      var isDeleted=!!u.deleted_at;
+
       var meta=
         (u.email||'')+
         ' • '+
-        (Number(u.verified)===1 ? 'וועריפייד' : 'נישט וועריפייד')+
+        (isDeleted
+          ? 'אקאונט פארמאכט'
+          : (Number(u.verified)===1 ? 'וועריפייד' : 'נישט וועריפייד'))+
         (Number(u.is_admin)===1 ? ' • אדמין' : '');
 
       h+=accRow(
-        Number(u.is_admin)===1 ? '👑' : '👤',
+        isDeleted
+          ? '🚫'
+          : (Number(u.is_admin)===1 ? '👑' : '👤'),
         u.full_name||'אן נאמען',
         meta,
         "showAdminUser('"+jsq(u.id)+"','"+jsq(u.full_name||u.email||'אקאונט')+"')"
@@ -6575,12 +6581,23 @@ function showStats(){
         '<span style="width:58px"></span>'+
       '</div>';
 
-    h+=
+        h+=
       '<div style="background:#fff;border:1px solid #e4dfd3;border-radius:12px;padding:12px;margin-bottom:10px">'+
+
+        (u.deleted_at
+          ? '<div style="background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a;border-radius:9px;padding:9px;margin-bottom:10px;text-align:center;font-weight:900">'+
+              '🚫 אקאונט פארמאכט'+
+              '<div style="font-size:.75rem;font-weight:600;margin-top:3px">'+
+                'פארמאכט: '+esc(accDate(u.deleted_at))+
+              '</div>'+
+            '</div>'
+          : '')+
+
         '<div><b>אימעיל:</b> <span dir="ltr">'+esc(u.email||'')+'</span></div>'+
         '<div><b>וועריפייד:</b> '+(Number(u.verified)===1?'יא':'ניין')+'</div>'+
         '<div><b>אימעיל־סובסקרייבד:</b> '+(Number(u.email_subscribed)===1?'יא':'ניין')+'</div>'+
         '<div><b>אקאונט געשאפן:</b> '+esc(accDate(u.created_at))+'</div>'+
+        '<div><b>סטאטוס:</b> '+(u.deleted_at?'פארמאכט':'אקטיוו')+'</div>'+
       '</div>';
 
     h+=
