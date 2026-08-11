@@ -3062,6 +3062,97 @@ direction:rtl;
   justify-content:space-between!important;
   padding:0 8px!important;
 }
+
+/* ===== PLAYER VISUAL FINISH ===== */
+
+.plbx{
+  width:min(720px,94vw)!important;
+  max-width:720px!important;
+  overflow:hidden!important;
+}
+
+.plbd{
+  position:relative!important;
+  z-index:3!important;
+  padding:22px 34px 24px!important;
+}
+
+/* floating music notes */
+.player-floating-notes{
+  position:absolute;
+  inset:70px 20px 18px;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:1;
+}
+
+.pnote{
+  position:absolute;
+  color:#162d5a;
+  opacity:.14;
+  font-family:Arial,sans-serif;
+  font-weight:700;
+  animation:pnoteFloat 12s ease-in-out infinite alternate;
+}
+
+.pnote1{left:9%;top:18%;font-size:22px;animation-duration:11s;}
+.pnote2{left:78%;top:22%;font-size:27px;animation-duration:14s;animation-delay:-4s;}
+.pnote3{left:24%;top:70%;font-size:18px;animation-duration:13s;animation-delay:-7s;}
+.pnote4{left:67%;top:68%;font-size:20px;animation-duration:10s;animation-delay:-3s;}
+.pnote5{left:48%;top:42%;font-size:15px;animation-duration:15s;animation-delay:-9s;}
+
+@keyframes pnoteFloat{
+  0%{
+    transform:translate(0,0) rotate(-8deg);
+  }
+  35%{
+    transform:translate(28px,-18px) rotate(8deg);
+  }
+  70%{
+    transform:translate(-20px,20px) rotate(-5deg);
+  }
+  100%{
+    transform:translate(18px,8px) rotate(10deg);
+  }
+}
+
+/* stop notes when paused */
+.plbx.player-paused .pnote{
+  animation-play-state:paused!important;
+}
+
+/* volume */
+.pro-volume-row{
+  direction:ltr;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:min(240px,70%);
+  margin:15px auto 2px;
+}
+
+.pro-volume-icon{
+  font-size:16px;
+  line-height:1;
+}
+
+.pro-volume{
+  width:160px;
+  height:4px;
+  cursor:pointer;
+  accent-color:#d4af37;
+}
+
+@media(max-width:600px){
+  .plbd{
+    padding:18px 16px 22px!important;
+  }
+
+  .player-floating-notes{
+    inset:65px 10px 15px;
+  }
+}    
 </style>
 </head>
 <body>
@@ -3237,8 +3328,17 @@ direction:rtl;
 
     <div class="share-msg" id="shareMsg">✓ לינק קאפירט</div>
 
-    <div class="plvis">🎵</div>
-    <div class="plbd">
+   <div class="plvis">🎵</div>
+
+<div class="player-floating-notes" id="playerFloatingNotes" aria-hidden="true">
+  <span class="pnote pnote1">♪</span>
+  <span class="pnote pnote2">♫</span>
+  <span class="pnote pnote3">♬</span>
+  <span class="pnote pnote4">♪</span>
+  <span class="pnote pnote5">♫</span>
+</div>
+
+<div class="plbd">
       <div class="plti" id="plti"></div>
 <audio id="au" autoplay controlsList="nodownload" oncontextmenu="return false;"></audio>
 
@@ -3373,6 +3473,21 @@ direction:rtl;
 
   </div>
 
+</div>
+
+<div class="pro-volume-row">
+  <span class="pro-volume-icon">🔊</span>
+  <input
+    id="proVolume"
+    class="pro-volume"
+    type="range"
+    min="0"
+    max="1"
+    step="0.01"
+    value="1"
+    oninput="document.getElementById('au').volume=Number(this.value)"
+    aria-label="Volume"
+  >
 </div>
 
 <div style="text-align:center;margin:10px 0 5px">
@@ -7154,6 +7269,23 @@ function accSaveProgressNow(){try{if(!curShiur||!curShiur.id)return;var au=docum
 })();
   (function(){var oldOpPl=window.opPl;if(typeof oldOpPl==='function'){window.opPl=function(fId,nm){oldOpPl(fId,nm);setTimeout(accRenderPlayerTools,250);clearInterval(ACC_SAVE_TIMER);ACC_SAVE_TIMER=setInterval(accSaveProgressNow,45000);};}window.addEventListener('beforeunload',accSaveProgressNow);})();
 
+(function(){
+  var au=document.getElementById('au');
+  var box=document.querySelector('#plov .plbx');
+
+  if(!au || !box)return;
+
+  function updatePlayerNotes(){
+    box.classList.toggle('player-paused',au.paused);
+  }
+
+  au.addEventListener('play',updatePlayerNotes);
+  au.addEventListener('pause',updatePlayerNotes);
+  au.addEventListener('ended',updatePlayerNotes);
+
+  updatePlayerNotes();
+})();
+  
 </script>
 </body>
 </html>
