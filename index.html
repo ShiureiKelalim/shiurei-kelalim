@@ -3066,27 +3066,68 @@ direction:rtl;
 
 /* ===== PLAYER FINAL LOOK ===== */
 
-/* Player background */
 .plbx{
+  width:min(720px,94vw)!important;
+  max-width:720px!important;
+  position:relative!important;
+  overflow:hidden!important;
+  background:linear-gradient(145deg,#b84b2f 0%,#952849 48%,#6b1731 100%)!important;
+  border:1px solid rgba(240,196,75,.65)!important;
+  box-shadow:0 20px 55px rgba(45,5,20,.40)!important;
+}
+
+.plvis{
+  height:105px!important;
+  position:relative!important;
+  z-index:4!important;
   background:
-    radial-gradient(circle at 22% 12%,rgba(255,195,90,.20),transparent 34%),
-    radial-gradient(circle at 82% 85%,rgba(70,8,32,.25),transparent 38%),
-    linear-gradient(145deg,#c4572e 0%,#9b2445 46%,#68152f 100%)!important;
+    radial-gradient(circle at center,rgba(255,211,91,.18),transparent 45%),
+    transparent!important;
+  color:#f0ca4d!important;
+}
 
-  border:1px solid rgba(232,195,77,.65)!important;
+.plbd{
+  position:relative!important;
+  z-index:4!important;
+  background:transparent!important;
+  padding:22px 34px 28px!important;
+}
 
-  box-shadow:
-    0 20px 55px rgba(45,5,20,.42),
-    0 0 0 5px rgba(126,24,53,.12)!important;
+.plti{
+  color:#fff0bd!important;
+  font-weight:900!important;
+}
+
+.pro-time-row{
+  color:#f5d98c!important;
+}
+
+.pro-jump-btn{
+  color:#ffe8a1!important;
+}
+
+.pro-play-btn{
+  background:rgba(80,12,38,.62)!important;
+  color:#ffe477!important;
+  border:1.5px solid #d7b337!important;
+  box-shadow:0 7px 20px rgba(45,5,20,.30)!important;
+}
+
+.player-dots-btn{
+  color:#ffe69a!important;
+}
+
+.plcp{
+  color:rgba(255,244,205,.48)!important;
 }
 
 
-/* ===== MOVING MUSIC NOTES ===== */
+/* ===== MOVING NOTES ===== */
 
 .player-floating-notes{
   position:absolute!important;
   inset:0!important;
-  z-index:2!important;
+  z-index:3!important;
   overflow:hidden!important;
   pointer-events:none!important;
 }
@@ -3094,144 +3135,122 @@ direction:rtl;
 .pnote{
   position:absolute!important;
   display:block!important;
-
   color:#f2d46b!important;
-  opacity:.25!important;
-
+  opacity:.32!important;
   font-family:Arial,sans-serif!important;
   font-weight:700!important;
-
-  will-change:transform;
+  will-change:transform!important;
 }
 
-
-/* Note 1 */
 .pnote1{
-  left:5%!important;
-  top:18%!important;
-  font-size:25px!important;
-  animation:musicMove1 13s ease-in-out infinite alternate!important;
+  left:8%!important;
+  top:14%!important;
+  font-size:24px!important;
+  animation:noteA 11s linear infinite!important;
 }
 
-/* Note 2 */
 .pnote2{
-  left:76%!important;
-  top:15%!important;
-  font-size:30px!important;
-  animation:musicMove2 16s ease-in-out infinite alternate!important;
-  animation-delay:-4s!important;
+  left:78%!important;
+  top:18%!important;
+  font-size:28px!important;
+  animation:noteB 14s linear infinite!important;
 }
 
-/* Note 3 */
 .pnote3{
-  left:15%!important;
-  top:67%!important;
-  font-size:21px!important;
-  animation:musicMove3 15s ease-in-out infinite alternate!important;
-  animation-delay:-7s!important;
-}
-
-/* Note 4 */
-.pnote4{
-  left:70%!important;
-  top:65%!important;
-  font-size:25px!important;
-  animation:musicMove4 14s ease-in-out infinite alternate!important;
-  animation-delay:-3s!important;
-}
-
-/* Note 5 */
-.pnote5{
-  left:43%!important;
-  top:38%!important;
+  left:20%!important;
+  top:66%!important;
   font-size:20px!important;
-  animation:musicMove5 17s ease-in-out infinite alternate!important;
-  animation-delay:-9s!important;
+  animation:noteC 13s linear infinite!important;
 }
 
-
-/* זיי פארן איבערן Player */
-@keyframes musicMove1{
-  0%   {transform:translate(0,0) rotate(-12deg);}
-  25%  {transform:translate(230px,80px) rotate(10deg);}
-  50%  {transform:translate(480px,210px) rotate(-8deg);}
-  75%  {transform:translate(300px,360px) rotate(12deg);}
-  100% {transform:translate(40px,250px) rotate(-10deg);}
+.pnote4{
+  left:68%!important;
+  top:67%!important;
+  font-size:23px!important;
+  animation:noteD 12s linear infinite!important;
 }
 
-@keyframes musicMove2{
-  0%   {transform:translate(0,0) rotate(8deg);}
-  25%  {transform:translate(-260px,110px) rotate(-10deg);}
-  50%  {transform:translate(-480px,280px) rotate(12deg);}
-  75%  {transform:translate(-210px,390px) rotate(-8deg);}
-  100% {transform:translate(20px,220px) rotate(10deg);}
+.pnote5{
+  left:47%!important;
+  top:40%!important;
+  font-size:18px!important;
+  animation:noteE 15s linear infinite!important;
 }
 
-@keyframes musicMove3{
-  0%   {transform:translate(0,0) rotate(-8deg);}
-  25%  {transform:translate(180px,-220px) rotate(12deg);}
-  50%  {transform:translate(430px,-100px) rotate(-10deg);}
-  75%  {transform:translate(300px,80px) rotate(8deg);}
-  100% {transform:translate(30px,-50px) rotate(-12deg);}
+@keyframes noteA{
+  0%{transform:translate(0,0) rotate(0deg);}
+  25%{transform:translate(260px,90px) rotate(12deg);}
+  50%{transform:translate(500px,250px) rotate(-10deg);}
+  75%{transform:translate(260px,380px) rotate(8deg);}
+  100%{transform:translate(0,0) rotate(0deg);}
 }
 
-@keyframes musicMove4{
-  0%   {transform:translate(0,0) rotate(10deg);}
-  25%  {transform:translate(-190px,-260px) rotate(-12deg);}
-  50%  {transform:translate(-450px,-80px) rotate(8deg);}
-  75%  {transform:translate(-280px,100px) rotate(-8deg);}
-  100% {transform:translate(-20px,-80px) rotate(12deg);}
+@keyframes noteB{
+  0%{transform:translate(0,0) rotate(0deg);}
+  25%{transform:translate(-250px,120px) rotate(-10deg);}
+  50%{transform:translate(-500px,300px) rotate(12deg);}
+  75%{transform:translate(-220px,390px) rotate(-8deg);}
+  100%{transform:translate(0,0) rotate(0deg);}
 }
 
-@keyframes musicMove5{
-  0%   {transform:translate(0,0) rotate(-10deg);}
-  25%  {transform:translate(250px,150px) rotate(9deg);}
-  50%  {transform:translate(-180px,270px) rotate(-7deg);}
-  75%  {transform:translate(-260px,-100px) rotate(11deg);}
-  100% {transform:translate(170px,-180px) rotate(-9deg);}
+@keyframes noteC{
+  0%{transform:translate(0,0);}
+  25%{transform:translate(190px,-240px);}
+  50%{transform:translate(430px,-80px);}
+  75%{transform:translate(260px,100px);}
+  100%{transform:translate(0,0);}
 }
 
+@keyframes noteD{
+  0%{transform:translate(0,0);}
+  25%{transform:translate(-220px,-260px);}
+  50%{transform:translate(-430px,-100px);}
+  75%{transform:translate(-250px,90px);}
+  100%{transform:translate(0,0);}
+}
 
-/* ווען Pause — שטעלן זיך די Notes אפ */
+@keyframes noteE{
+  0%{transform:translate(0,0);}
+  25%{transform:translate(210px,160px);}
+  50%{transform:translate(-210px,270px);}
+  75%{transform:translate(-240px,-130px);}
+  100%{transform:translate(0,0);}
+}
+
 .plbx.player-paused .pnote{
   animation-play-state:paused!important;
 }
 
 
-/* ===== BIGGER VOLUME ===== */
+/* ===== VOLUME ===== */
 
 .pro-volume-row{
   direction:ltr!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-
-  gap:13px!important;
-
-  width:390px!important;
+  gap:14px!important;
+  width:460px!important;
   max-width:88%!important;
-
-  margin:18px auto 5px!important;
-
-  color:#ffe69a!important;
+  margin:19px auto 6px!important;
 }
 
 .pro-volume-icon{
   font-size:22px!important;
-  line-height:1!important;
 }
 
 .pro-volume{
-  width:330px!important;
+  width:390px!important;
   max-width:100%!important;
   height:7px!important;
   cursor:pointer!important;
-  accent-color:#e8c83e!important;
+  accent-color:#e6c43f!important;
 }
 
-
-/* Mobile */
 @media(max-width:600px){
+  .plbd{
+    padding:18px 16px 23px!important;
+  }
 
   .pro-volume-row{
     width:310px!important;
@@ -3241,8 +3260,7 @@ direction:rtl;
   .pro-volume{
     width:255px!important;
   }
-
-}       
+}
 </style>
 </head>
 <body>
@@ -6458,14 +6476,26 @@ function showStats(){
       h+='<div class="acc-empty">קיין אקאונטס נישט דא</div>';
     }
 
-        users.forEach(function(u){
+          users.forEach(function(u){
       var isDeleted=!!u.deleted_at;
 
+      var realName=u.full_name||'אן נאמען';
+      var realEmail=u.email||'';
+
+      if(isDeleted && u.deleted_identity){
+        var parts=String(u.deleted_identity).split(' — ');
+
+        if(parts.length>=2){
+          realName=parts[0]||realName;
+          realEmail=parts.slice(1).join(' — ')||realEmail;
+        }
+      }
+
       var meta=
-        (u.email||'')+
+        realEmail+
         ' • '+
         (isDeleted
-          ? 'אקאונט פארמאכט'
+          ? 'פארמאכט'
           : (Number(u.verified)===1 ? 'וועריפייד' : 'נישט וועריפייד'))+
         (Number(u.is_admin)===1 ? ' • אדמין' : '');
 
@@ -6473,9 +6503,9 @@ function showStats(){
         isDeleted
           ? '🚫'
           : (Number(u.is_admin)===1 ? '👑' : '👤'),
-        u.full_name||'אן נאמען',
+        realName,
         meta,
-        "showAdminUser('"+jsq(u.id)+"','"+jsq(u.full_name||u.email||'אקאונט')+"')"
+        "showAdminUser('"+jsq(u.id)+"','"+jsq(realName||realEmail||'אקאונט')+"')"
       );
     });
 
@@ -6524,29 +6554,45 @@ function showStats(){
     }
 
     var u=d.user||{};
+
+    var realName=u.full_name||u.email||'אקאונט';
+    var realEmail=u.email||'';
+
+    if(u.deleted_at && u.deleted_identity){
+      var identityParts=String(u.deleted_identity).split(' — ');
+
+      if(identityParts.length>=2){
+        realName=identityParts[0]||realName;
+        realEmail=identityParts.slice(1).join(' — ')||realEmail;
+      }
+    }
+
     var h=
       '<div class="acc-section-head">'+
         '<button class="sbtn acc-back" onclick="showAdminUsers()">← צוריק</button>'+
-        '<div class="mt">👤 '+esc(u.full_name||u.email||'אקאונט')+'</div>'+
+        '<div class="mt">👤 '+esc(realName)+'</div>'+
         '<span style="width:58px"></span>'+
       '</div>';
 
-        h+=
+    h+=
       '<div style="background:#fff;border:1px solid #e4dfd3;border-radius:12px;padding:12px;margin-bottom:10px">'+
 
         (u.deleted_at
           ? '<div style="background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a;border-radius:9px;padding:9px;margin-bottom:10px;text-align:center;font-weight:900">'+
               '🚫 אקאונט פארמאכט'+
-              '<div style="font-size:.75rem;font-weight:600;margin-top:3px">'+
-                'פארמאכט: '+esc(accDate(u.deleted_at))+
-              '</div>'+
             '</div>'
           : '')+
 
-        '<div><b>אימעיל:</b> <span dir="ltr">'+esc(u.email||'')+'</span></div>'+
+        '<div><b>נאמען:</b> '+esc(realName)+'</div>'+
+        '<div><b>אימעיל:</b> <span dir="ltr">'+esc(realEmail)+'</span></div>'+
         '<div><b>וועריפייד:</b> '+(Number(u.verified)===1?'יא':'ניין')+'</div>'+
         '<div><b>אימעיל־סובסקרייבד:</b> '+(Number(u.email_subscribed)===1?'יא':'ניין')+'</div>'+
-        '<div><b>אקאונט געשאפן:</b> '+esc(accDate(u.created_at))+'</div>'+
+        '<div><b>אקאונט געעפנט:</b> '+esc(accDate(u.created_at))+'</div>'+
+
+        (u.deleted_at
+          ? '<div><b>אקאונט פארמאכט:</b> '+esc(accDate(u.deleted_at))+'</div>'
+          : '')+
+
         '<div><b>סטאטוס:</b> '+(u.deleted_at?'פארמאכט':'אקטיוו')+'</div>'+
       '</div>';
 
