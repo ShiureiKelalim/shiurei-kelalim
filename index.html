@@ -3293,6 +3293,186 @@ direction:rtl;
     width:195px!important;
   }
 }
+
+/* ===== PLAYER FINAL LOOK ===== */
+
+/* Player background */
+.plbx{
+  background:
+    radial-gradient(circle at 22% 12%,rgba(255,195,90,.20),transparent 34%),
+    radial-gradient(circle at 82% 85%,rgba(70,8,32,.25),transparent 38%),
+    linear-gradient(145deg,#c4572e 0%,#9b2445 46%,#68152f 100%)!important;
+
+  border:1px solid rgba(232,195,77,.65)!important;
+
+  box-shadow:
+    0 20px 55px rgba(45,5,20,.42),
+    0 0 0 5px rgba(126,24,53,.12)!important;
+}
+
+
+/* ===== MOVING MUSIC NOTES ===== */
+
+.player-floating-notes{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+
+.pnote{
+  position:absolute!important;
+  display:block!important;
+
+  color:#f2d46b!important;
+  opacity:.25!important;
+
+  font-family:Arial,sans-serif!important;
+  font-weight:700!important;
+
+  will-change:transform;
+}
+
+
+/* Note 1 */
+.pnote1{
+  left:5%!important;
+  top:18%!important;
+  font-size:25px!important;
+  animation:musicMove1 13s ease-in-out infinite alternate!important;
+}
+
+/* Note 2 */
+.pnote2{
+  left:76%!important;
+  top:15%!important;
+  font-size:30px!important;
+  animation:musicMove2 16s ease-in-out infinite alternate!important;
+  animation-delay:-4s!important;
+}
+
+/* Note 3 */
+.pnote3{
+  left:15%!important;
+  top:67%!important;
+  font-size:21px!important;
+  animation:musicMove3 15s ease-in-out infinite alternate!important;
+  animation-delay:-7s!important;
+}
+
+/* Note 4 */
+.pnote4{
+  left:70%!important;
+  top:65%!important;
+  font-size:25px!important;
+  animation:musicMove4 14s ease-in-out infinite alternate!important;
+  animation-delay:-3s!important;
+}
+
+/* Note 5 */
+.pnote5{
+  left:43%!important;
+  top:38%!important;
+  font-size:20px!important;
+  animation:musicMove5 17s ease-in-out infinite alternate!important;
+  animation-delay:-9s!important;
+}
+
+
+/* זיי פארן איבערן Player */
+@keyframes musicMove1{
+  0%   {transform:translate(0,0) rotate(-12deg);}
+  25%  {transform:translate(230px,80px) rotate(10deg);}
+  50%  {transform:translate(480px,210px) rotate(-8deg);}
+  75%  {transform:translate(300px,360px) rotate(12deg);}
+  100% {transform:translate(40px,250px) rotate(-10deg);}
+}
+
+@keyframes musicMove2{
+  0%   {transform:translate(0,0) rotate(8deg);}
+  25%  {transform:translate(-260px,110px) rotate(-10deg);}
+  50%  {transform:translate(-480px,280px) rotate(12deg);}
+  75%  {transform:translate(-210px,390px) rotate(-8deg);}
+  100% {transform:translate(20px,220px) rotate(10deg);}
+}
+
+@keyframes musicMove3{
+  0%   {transform:translate(0,0) rotate(-8deg);}
+  25%  {transform:translate(180px,-220px) rotate(12deg);}
+  50%  {transform:translate(430px,-100px) rotate(-10deg);}
+  75%  {transform:translate(300px,80px) rotate(8deg);}
+  100% {transform:translate(30px,-50px) rotate(-12deg);}
+}
+
+@keyframes musicMove4{
+  0%   {transform:translate(0,0) rotate(10deg);}
+  25%  {transform:translate(-190px,-260px) rotate(-12deg);}
+  50%  {transform:translate(-450px,-80px) rotate(8deg);}
+  75%  {transform:translate(-280px,100px) rotate(-8deg);}
+  100% {transform:translate(-20px,-80px) rotate(12deg);}
+}
+
+@keyframes musicMove5{
+  0%   {transform:translate(0,0) rotate(-10deg);}
+  25%  {transform:translate(250px,150px) rotate(9deg);}
+  50%  {transform:translate(-180px,270px) rotate(-7deg);}
+  75%  {transform:translate(-260px,-100px) rotate(11deg);}
+  100% {transform:translate(170px,-180px) rotate(-9deg);}
+}
+
+
+/* ווען Pause — שטעלן זיך די Notes אפ */
+.plbx.player-paused .pnote{
+  animation-play-state:paused!important;
+}
+
+
+/* ===== BIGGER VOLUME ===== */
+
+.pro-volume-row{
+  direction:ltr!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+
+  gap:13px!important;
+
+  width:390px!important;
+  max-width:88%!important;
+
+  margin:18px auto 5px!important;
+
+  color:#ffe69a!important;
+}
+
+.pro-volume-icon{
+  font-size:22px!important;
+  line-height:1!important;
+}
+
+.pro-volume{
+  width:330px!important;
+  max-width:100%!important;
+  height:7px!important;
+  cursor:pointer!important;
+  accent-color:#e8c83e!important;
+}
+
+
+/* Mobile */
+@media(max-width:600px){
+
+  .pro-volume-row{
+    width:310px!important;
+    max-width:90%!important;
+  }
+
+  .pro-volume{
+    width:255px!important;
+  }
+
+}       
 </style>
 </head>
 <body>
