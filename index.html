@@ -3025,6 +3025,31 @@ direction:rtl;
 .bookmark-line-pop-remove{display:block;margin-top:6px;padding:0;border:0;background:transparent;color:#ffb4ab;font:700 .67rem Arial,sans-serif;cursor:pointer;}
 .bookmark-line-pop-remove:hover{text-decoration:underline;}
 
+.bookmark-line-pop.open{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:9px!important;
+  direction:rtl!important;
+}
+
+.bookmark-line-pop-title,
+.bookmark-line-pop-time,
+.bookmark-line-pop-back,
+.bookmark-line-pop-remove{
+  display:inline-block!important;
+  margin:0!important;
+  white-space:nowrap!important;
+}
+
+.bookmark-line-pop-back,
+.bookmark-line-pop-remove{
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  cursor:pointer!important;
+}
+
 #accPlayerTools{
   width:100%!important;
   display:flex!important;
@@ -6606,13 +6631,32 @@ function showBookmarkLinePop(marker,bm,index,pos,pct){
 pop.setAttribute('dir','rtl');
 
 pop.innerHTML=
-  '<span class="bookmark-line-pop-title">'+esc(title)+'</span>'+
+  '<span class="bookmark-line-pop-title" dir="ltr">'+esc(title)+'</span>'+
   '<span class="bookmark-line-pop-time">'+
-    'אינעם שיעור&nbsp; <bdi dir="ltr">'+proFormatTime(pos)+'</bdi>'+
+    'אינעם שיעור <bdi dir="ltr">'+proFormatTime(pos)+'</bdi>'+
   '</span>'+
+  '<button type="button" class="bookmark-line-pop-back">צוריק גיין</button>'+
   '<button type="button" class="bookmark-line-pop-remove">אוועקנעמען</button>';
 
   var removeBtn=pop.querySelector('.bookmark-line-pop-remove');
+  var backBtn=pop.querySelector('.bookmark-line-pop-back');
+
+if(backBtn){
+  backBtn.onclick=function(e){
+    e.preventDefault();
+    e.stopPropagation();
+
+    if(isFinite(window.BOOKMARK_RETURN_TIME)){
+      var au=document.getElementById('au');
+      if(au){
+        au.currentTime=window.BOOKMARK_RETURN_TIME;
+        proUpdatePlayer();
+      }
+    }
+
+    closeBookmarkLinePop();
+  };
+}
   removeBtn.onclick=function(e){
     e.preventDefault();
     e.stopPropagation();
@@ -6626,7 +6670,7 @@ setTimeout(function(){
   if(document.getElementById('bookmarkLinePop')===pop){
     closeBookmarkLinePop();
   }
-},4000);
+},6000);
 }
 
 async function renderBookmarkMarkers(){
@@ -6712,26 +6756,40 @@ marker.className='bookmark-marker';
 
 var progress=document.getElementById('proProgress');
 var markerTop=11;
+var markerLeft=0;
 
 if(progress){
   markerTop=progress.offsetTop+(progress.offsetHeight/2);
+
+  /*
+    דער range-thumb איז 15px.
+    דער צענטער פונעם thumb קען נישט גיין ביז 0 אדער 100%;
+    דעריבער רעכענען מיר דעם Bookmark אויפן זעלבן אמת'ן track.
+  */
+  var thumbHalf=7.5;
+  var trackWidth=Math.max(0,progress.clientWidth-(thumbHalf*2));
+
+  markerLeft=
+    progress.offsetLeft+
+    thumbHalf+
+    (trackWidth*(pct/100));
 }
 
 marker.style.cssText=
   'position:absolute!important;'+
-  'left:'+pct+'%!important;'+
+  'left:'+markerLeft+'px!important;'+
   'top:'+markerTop+'px!important;'+
- 'width:7px!important;'+
-'height:7px!important;'+
-'min-width:7px!important;'+
-'min-height:7px!important;'+
+  'width:7px!important;'+
+  'height:7px!important;'+
+  'min-width:7px!important;'+
+  'min-height:7px!important;'+
   'padding:0!important;'+
   'margin:0!important;'+
   'transform:translate(-50%,-50%)!important;'+
-  'border:1.5px solid #fff!important;'+
+  'border:1px solid #fff!important;'+
   'border-radius:50%!important;'+
   'background:#000!important;'+
-  'box-shadow:0 1px 4px rgba(0,0,0,.65)!important;'+
+  'box-shadow:0 1px 3px rgba(0,0,0,.7)!important;'+
   'opacity:1!important;'+
   'display:block!important;'+
   'z-index:100!important;'+
@@ -6741,12 +6799,16 @@ marker.style.cssText=
       'aria-label',
       title+' — '+proFormatTime(pos)
     );
-   marker.setAttribute('title','Bookmark');
+   marker.setAttribute(
+  'title',
+  title+' — '+proFormatTime(pos)
+);
 
     marker.onclick=function(e){
       e.preventDefault();
       e.stopPropagation();
 
+      window.BOOKMARK_RETURN_TIME=Number(au.currentTime||0);
       au.currentTime=Math.min(pos,duration);
 
       proUpdatePlayer();
