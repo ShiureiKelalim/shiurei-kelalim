@@ -3024,6 +3024,11 @@ direction:rtl;
 .bookmark-line-pop-time{display:inline-block;color:#d7dce4;margin-right:7px;margin-left:7px;}
 .bookmark-line-pop-remove{display:block;margin-top:6px;padding:0;border:0;background:transparent;color:#ffb4ab;font:700 .67rem Arial,sans-serif;cursor:pointer;}
 .bookmark-line-pop-remove:hover{text-decoration:underline;}
+ .bookmark-sep{
+  display:inline-block!important;
+  width:8px!important;
+  flex:0 0 8px!important;
+}
 
 .bookmark-line-pop.open{
   display:flex!important;
@@ -6632,10 +6637,11 @@ pop.setAttribute('dir','rtl');
 
 pop.innerHTML=
   '<span class="bookmark-line-pop-title" dir="ltr">'+esc(title)+'</span>'+
+  '<span class="bookmark-sep">&nbsp;&nbsp;</span>'+
   '<span class="bookmark-line-pop-time">'+
     'אינעם שיעור <bdi dir="ltr">'+proFormatTime(pos)+'</bdi>'+
   '</span>'+
-  '<button type="button" class="bookmark-line-pop-back">צוריק גיין</button>'+
+  '<span class="bookmark-sep">&nbsp;&nbsp;</span>'+
   '<button type="button" class="bookmark-line-pop-remove">אוועקנעמען</button>';
 
   var removeBtn=pop.querySelector('.bookmark-line-pop-remove');
