@@ -3467,11 +3467,11 @@ direction:rtl;
 /* ↶ / ↷ Hover — קלאר קליקבאר */
 #plov .pro-jump-toggle:hover,
 #plov .pro-jump-toggle:focus-visible{
-  background:rgba(212,175,55,.22)!important;
-  border-color:rgba(212,175,55,.80)!important;
-  color:#ffffff!important;
+  background:#d4af37!important;
+  border-color:#ffe58a!important;
+  color:#17263a!important;
   transform:scale(1.14)!important;
-  box-shadow:0 3px 12px rgba(0,0,0,.30)!important;
+  box-shadow:0 3px 12px rgba(0,0,0,.38)!important;
   cursor:pointer!important;
 }
 
@@ -3504,16 +3504,18 @@ direction:rtl;
 }
 
 /* נאר ביים קליקן אויפן עראל עפנט זיך */
-#plov .pro-jump-choices.open{
+#plov .pro-jump-choices[hidden]{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+
+#plov .pro-jump-choices:not([hidden]){
   display:flex!important;
   visibility:visible!important;
   opacity:1!important;
   pointer-events:auto!important;
-}
-
-/* ווען די אויסוואלן זענען אפן — באהאלט נאר יענעם עראל */
-#plov .pro-jump-side:has(.pro-jump-choices.open) > .pro-jump-toggle{
-  visibility:hidden!important;
 }
 
 /* די צייט קנעפלעך */
@@ -3548,11 +3550,11 @@ direction:rtl;
 
 /* 5s / 30s / 1m / 5m Hover — קלאר קליקבאר */
 #plov .pro-jump-choices > span:hover{
-  background:rgba(212,175,55,.26)!important;
-  border-color:rgba(212,175,55,.75)!important;
-  color:#ffffff!important;
-  transform:translateY(-1px) scale(1.07)!important;
-  box-shadow:0 2px 7px rgba(0,0,0,.28)!important;
+  background:#d4af37!important;
+  border-color:#ffe58a!important;
+  color:#17263a!important;
+  transform:translateY(-1px) scale(1.08)!important;
+  box-shadow:0 2px 8px rgba(0,0,0,.35)!important;
   cursor:pointer!important;
 }
 </style>
@@ -3845,12 +3847,12 @@ direction:rtl;
     aria-label="צוריק"
   >↶</button>
 
-  <div id="jumpBackChoices" class="pro-jump-choices">
-    <span onclick="accJump(-300)">5m</span>
-    <span onclick="accJump(-60)">1m</span>
-    <span onclick="accJump(-30)">30s</span>
-    <span onclick="accJump(-5)">5s</span>
-  </div>
+  <div id="jumpBackChoices" class="pro-jump-choices" hidden>
+  <span onclick="accJump(-300)">5m</span>
+  <span onclick="accJump(-60)">1m</span>
+  <span onclick="accJump(-30)">30s</span>
+  <span onclick="accJump(-5)">5s</span>
+</div>
 
 </div>
 
@@ -3877,12 +3879,12 @@ direction:rtl;
     aria-label="פארויס"
   >↷</button>
 
-  <div id="jumpForwardChoices" class="pro-jump-choices">
-    <span onclick="accJump(5)">5s</span>
-    <span onclick="accJump(30)">30s</span>
-    <span onclick="accJump(60)">1m</span>
-    <span onclick="accJump(300)">5m</span>
-  </div>
+  <div id="jumpForwardChoices" class="pro-jump-choices" hidden>
+  <span onclick="accJump(5)">5s</span>
+  <span onclick="accJump(30)">30s</span>
+  <span onclick="accJump(60)">1m</span>
+  <span onclick="accJump(300)">5m</span>
+</div>
 
 </div>
 </div>
@@ -7893,7 +7895,7 @@ function accSaveProgressNow(){try{if(!curShiur||!curShiur.id)return;var au=docum
   }
 })();
 
-  var jumpChoicesTimer = null;
+ var jumpChoicesTimer = null;
 
 function toggleJumpChoices(id){
   var back = document.getElementById('jumpBackChoices');
@@ -7902,18 +7904,18 @@ function toggleJumpChoices(id){
 
   if(!menu) return;
 
-  var wasOpen = menu.classList.contains('open');
+  var wasOpen = !menu.hidden;
 
-  if(back) back.classList.remove('open');
-  if(forward) forward.classList.remove('open');
+  if(back) back.hidden = true;
+  if(forward) forward.hidden = true;
 
   clearTimeout(jumpChoicesTimer);
 
   if(!wasOpen){
-    menu.classList.add('open');
+    menu.hidden = false;
 
     jumpChoicesTimer = setTimeout(function(){
-      menu.classList.remove('open');
+      menu.hidden = true;
     },10000);
   }
 }
