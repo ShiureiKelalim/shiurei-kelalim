@@ -3553,7 +3553,7 @@ direction:rtl;
         <button class="nb" onclick="openM('m-don')">Donate</button>
     <button class="nb" onclick="openM('m-ct')">Contact Us</button>
     <button class="nb" onclick="openM('m-sub')">סובסקרייב</button>
-    <button class="nb" onclick="openM('m-hl')">האטליין</button>
+    <a class="nb" href="/?m=m-hl" onclick="openM('m-hl');return false;">האטליין</a>
   </div>
 
   <div class="nav-main">
@@ -3669,11 +3669,11 @@ direction:rtl;
 
       <div class="ftr-col">
         <h4>הויפט קאטעגאריעס</h4>
-        <a href="#" onclick="showTab('orach',null);return false;">אורח חיים</a>
-        <a href="#" onclick="showTab('yoreh',null);return false;">יורה דעה</a>
-        <a href="#" onclick="showTab('even',null);return false;">אבן העזר</a>
-        <a href="#" onclick="showTab('choshen',null);return false;">חושן משפט</a>
-        <a href="#" onclick="showTab('moadim',null);return false;">מועדים וזמנים</a>
+        <a href="/?section=orach" onclick="showTab('orach',null);return false;">אורח חיים</a>
+<a href="/?section=yoreh" onclick="showTab('yoreh',null);return false;">יורה דעה</a>
+<a href="/?section=even" onclick="showTab('even',null);return false;">אבן העזר</a>
+<a href="/?section=choshen" onclick="showTab('choshen',null);return false;">חושן משפט</a>
+<a href="/?section=moadim" onclick="showTab('moadim',null);return false;">מועדים וזמנים</a>
       </div>
 
       <div class="ftr-col">
@@ -3684,7 +3684,7 @@ direction:rtl;
 
       <div class="ftr-col">
         <h4>אינפארמאציע</h4>
-        <a href="#" onclick="openM('m-hl',true);return false;">האטליין</a>
+        <a href="/?m=m-hl" onclick="openM('m-hl',true);return false;">האטליין</a>
         <a href="#" onclick="openM('m-sub');return false;">סובסקרייב</a>
         <a href="#" onclick="openM('m-don');return false;">Donate</a>
         <a href="#" onclick="openM('m-privacy');return false;">Privacy Policy</a>
@@ -3769,112 +3769,64 @@ direction:rtl;
 
   <div class="pro-jump-group">
 
-    <button
-      type="button"
-      class="pro-jump-btn"
-      onclick="accJump(-300)"
-      title="5 מינוט צוריק"
-      aria-label="5 מינוט צוריק"
-    >
-      <span class="pro-jump-arrow">↶</span>
-      <span>5m</span>
-    </button>
+  <span class="pro-jump-btn" onclick="accJump(-300)" title="5 מינוט צוריק" aria-label="5 מינוט צוריק">
+    <span class="pro-jump-arrow">↶</span>
+    <span>5m</span>
+  </span>
 
-    <button
-      type="button"
-      class="pro-jump-btn"
-      onclick="accJump(-60)"
-      title="1 מינוט צוריק"
-      aria-label="1 מינוט צוריק"
-    >
-      <span class="pro-jump-arrow">↶</span>
-      <span>1m</span>
-    </button>
+  <span class="pro-jump-btn" onclick="accJump(-60)" title="1 מינוט צוריק" aria-label="1 מינוט צוריק">
+    <span class="pro-jump-arrow">↶</span>
+    <span>1m</span>
+  </span>
 
-    <button
-      type="button"
-      class="pro-jump-btn"
-      onclick="accJump(-30)"
-      title="30 סעקונדעס צוריק"
-      aria-label="30 סעקונדעס צוריק"
-    >
-      <span class="pro-jump-arrow">↶</span>
-      <span>30s</span>
-    </button>
+  <span class="pro-jump-btn" onclick="accJump(-30)" title="30 סעקונדעס צוריק" aria-label="30 סעקונדעס צוריק">
+    <span class="pro-jump-arrow">↶</span>
+    <span>30s</span>
+  </span>
 
-    <button
-      type="button"
-      class="pro-jump-btn"
-      onclick="accJump(-5)"
-      title="5 סעקונדעס צוריק"
-      aria-label="5 סעקונדעס צוריק"
-    >
-      <span class="pro-jump-arrow">↶</span>
-      <span>5s</span>
-    </button>
+  <span class="pro-jump-btn" onclick="accJump(-5)" title="5 סעקונדעס צוריק" aria-label="5 סעקונדעס צוריק">
+    <span class="pro-jump-arrow">↶</span>
+    <span>5s</span>
+  </span>
 
-  </div>
+</div>
 
-  <button
-    type="button"
-    id="proPlayBtn"
-    class="pro-play-btn"
-    onclick="proTogglePlay()"
-    title="Play"
-    aria-label="Play"
-  >
-    <svg id="proPlayIcon" viewBox="0 0 32 32">
-      <path d="M11 7l14 9-14 9z"></path>
-    </svg>
-  </button>
+<button
+  type="button"
+  id="proPlayBtn"
+  class="pro-play-btn"
+  onclick="proTogglePlay()"
+  title="Play"
+  aria-label="Play"
+>
+  <svg id="proPlayIcon" viewBox="0 0 32 32">
+    <path d="M11 7l14 9-14 9z"></path>
+  </svg>
+</button>
 
-  <div class="pro-jump-group">
+<div class="pro-jump-group">
 
-    <button
-      type="button"
-      class="pro-jump-btn"
-      onclick="accJump(5)"
-      title="5 סעקונדעס פארויס"
-      aria-label="5 סעקונדעס פארויס"
-    >
-      <span>5s</span>
-      <span class="pro-jump-arrow">↷</span>
-    </button>
+  <span class="pro-jump-btn" onclick="accJump(5)" title="5 סעקונדעס פארויס" aria-label="5 סעקונדעס פארויס">
+    <span>5s</span>
+    <span class="pro-jump-arrow">↷</span>
+  </span>
 
-    <button
-      type="button"
-      class="pro-jump-btn"
-      onclick="accJump(30)"
-      title="30 סעקונדעס פארויס"
-      aria-label="30 סעקונדעס פארויס"
-    >
-      <span>30s</span>
-      <span class="pro-jump-arrow">↷</span>
-    </button>
+  <span class="pro-jump-btn" onclick="accJump(30)" title="30 סעקונדעס פארויס" aria-label="30 סעקונדעס פארויס">
+    <span>30s</span>
+    <span class="pro-jump-arrow">↷</span>
+  </span>
 
-    <button
-      type="button"
-      class="pro-jump-btn"
-      onclick="accJump(60)"
-      title="1 מינוט פארויס"
-      aria-label="1 מינוט פארויס"
-    >
-      <span>1m</span>
-      <span class="pro-jump-arrow">↷</span>
-    </button>
+  <span class="pro-jump-btn" onclick="accJump(60)" title="1 מינוט פארויס" aria-label="1 מינוט פארויס">
+    <span>1m</span>
+    <span class="pro-jump-arrow">↷</span>
+  </span>
 
-    <button
-      type="button"
-      class="pro-jump-btn"
-      onclick="accJump(300)"
-      title="5 מינוט פארויס"
-      aria-label="5 מינוט פארויס"
-    >
-      <span>5m</span>
-      <span class="pro-jump-arrow">↷</span>
-    </button>
+  <span class="pro-jump-btn" onclick="accJump(300)" title="5 מינוט פארויס" aria-label="5 מינוט פארויס">
+    <span>5m</span>
+    <span class="pro-jump-arrow">↷</span>
+  </span>
 
-  </div>
+</div>
 
 </div>
 
@@ -4267,6 +4219,20 @@ var TABS={
 };
 var MO=['ניסן','אייר','סיון','תמוז','אב','אלול','תשרי','חשון','כסלו','טבת','שבט','אדר'];
 var nav=[],stmr=null,ytFId='',ytNm='',pwOk=false,pend=null,dAmt=18,latF=null;
+  // ===== MAIN SECTION DIRECT LINKS FOR GOOGLE =====
+async function openSectionFromUrl(){
+  try{
+    var p = new URLSearchParams(location.search);
+    var section = String(p.get('section') || '').trim();
+
+    if(!section || !TABS[section]) return false;
+
+    await showTab(section, null);
+    return true;
+  }catch(e){
+    return false;
+  }
+}
   function gaEv(name, params){
   try{
     if(typeof gtag === 'function'){
@@ -5980,9 +5946,13 @@ return;
     await loadLatest();
   }
 }else{
-  loadLatest();
-  checkYomTov();
-  _readHash();
+  var openedSection=await openSectionFromUrl();
+
+  if(!openedSection){
+    loadLatest();
+    checkYomTov();
+    _readHash();
+  }
 }
 })();
   /* ===== MY ACCOUNT UI START ===== */
