@@ -3542,66 +3542,135 @@ direction:rtl;
   outline:0!important;
   box-shadow:none!important;
 }
-                         /* JUMP ARROWS + OPEN CHOICES */
+                         /* JUMP ARROWS + OPEN CHOICES — FINAL */
+
+#plov .pro-main-controls-wide{
+  position:relative!important;
+  flex-wrap:nowrap!important;
+  overflow:visible!important;
+}
+
 #plov .pro-jump-side{
   position:relative!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
+  width:58px!important;
+  min-width:58px!important;
+  overflow:visible!important;
 }
 
+/* נאר דער עראל זעט מען */
 #plov .pro-jump-toggle{
   -webkit-appearance:none!important;
   appearance:none!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+
+  width:48px!important;
+  height:48px!important;
+  padding:0!important;
+  margin:0!important;
+
   border:0!important;
   outline:0!important;
+  border-radius:50%!important;
   background:transparent!important;
   box-shadow:none!important;
-  color:#fff6c8!important;
-  font-size:2rem!important;
+
+  color:#fff2ad!important;
+  font-family:Arial,sans-serif!important;
+  font-size:2.15rem!important;
   font-weight:900!important;
   line-height:1!important;
+
   cursor:pointer!important;
-  padding:8px 12px!important;
-  transition:transform .18s ease,color .18s ease!important;
+  pointer-events:auto!important;
+
+  transition:
+    background .16s ease,
+    color .16s ease,
+    transform .16s ease,
+    box-shadow .16s ease!important;
 }
 
-#plov .pro-jump-toggle:hover{
-  color:#fff!important;
-  transform:scale(1.18)!important;
+/* מייז דערויף — קלאר קליקבאר */
+#plov .pro-jump-toggle:hover,
+#plov .pro-jump-toggle:focus-visible{
+  background:rgba(212,175,55,.18)!important;
+  color:#ffffff!important;
+  transform:scale(1.14)!important;
+  box-shadow:0 0 0 1px rgba(212,175,55,.45)!important;
+  outline:none!important;
 }
 
+/* אויסוואלן זענען אינגאנצן באהאלטן */
 #plov .pro-jump-choices{
   display:none!important;
-  position:absolute;
-  top:calc(100% + 5px);
-  left:50%;
-  transform:translateX(-50%);
-  z-index:100;
-  padding:7px 9px;
-  gap:7px;
-  background:#18283b;
-  border:1px solid rgba(212,175,55,.65);
-  border-radius:10px;
-  box-shadow:0 6px 18px rgba(0,0,0,.35);
-  white-space:nowrap;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+
+  position:absolute!important;
+  top:50%!important;
+  left:50%!important;
+
+  transform:translate(-50%,-50%)!important;
+
+  z-index:5000!important;
+
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+
+  padding:7px 9px!important;
+
+  background:#18283b!important;
+  border:1px solid rgba(212,175,55,.72)!important;
+  border-radius:11px!important;
+  box-shadow:0 7px 22px rgba(0,0,0,.45)!important;
+
+  white-space:nowrap!important;
 }
 
+/* נאר נאכן דריקן עפנט זיך */
 #plov .pro-jump-choices.open{
   display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
 }
 
+/* בשעת עס איז אפן באהאלט דעם גרויסן עראל */
+#plov .pro-jump-side:has(.pro-jump-choices.open) .pro-jump-toggle{
+  visibility:hidden!important;
+}
+
+/* 5s / 30s / 1m / 5m */
 #plov .pro-jump-choices span{
-  color:#fff6c8!important;
-  font:900 .74rem Arial,sans-serif!important;
-  padding:5px 6px!important;
-  border-radius:6px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+
+  min-width:35px!important;
+  height:31px!important;
+  padding:0 5px!important;
+
+  color:#fff3b5!important;
+  background:transparent!important;
+  border-radius:7px!important;
+
+  font:900 .72rem Arial,sans-serif!important;
+  line-height:1!important;
+
   cursor:pointer!important;
+  user-select:none!important;
 }
 
 #plov .pro-jump-choices span:hover{
-  background:rgba(212,175,55,.20)!important;
-  color:#fff!important;
+  background:rgba(212,175,55,.22)!important;
+  color:#ffffff!important;
   transform:scale(1.08)!important;
 }
 </style>
@@ -5591,12 +5660,32 @@ async function checkYomTov(){
 function openYomTovBtn(){
   if(ytFId){
     var ytName=ytNm.replace(/^הלכות\s+/,'');
+
     document.getElementById('ytpt').textContent='עס קומען די טעג פון '+ytName;
     document.getElementById('ytps').textContent='';
     document.getElementById('ytpp').textContent='עס זענען דא שיעורים פאר '+ytName+':';
+
     document.getElementById('ytp').classList.add('open');
   }else{
-    openM('m-nyt');
+    var m=document.getElementById('m-nyt');
+
+    if(m){
+      var box=m.querySelector('.mbx');
+
+      if(box){
+        box.innerHTML=
+          '<button class="mx" onclick="closeM(\'m-nyt\')">✕</button>'+
+          '<div class="mt">שיעורים על היו״ט</div>'+
+          '<p style="text-align:center;color:#555;line-height:1.9;margin:12px 0 18px">'+
+            'עס איז דערווייל נאכנישט דא קיין אפדעיט פארן קומענדיגן יו״ט.<br><br>'+
+            'אלע שיעורים אויף מועדים וזמנים קענט איר טרעפן ביי '+
+            '<a href="#" onclick="closeM(\'m-nyt\');showTab(\'moadim\',null);return false;" '+
+            'style="color:#162d5a;font-weight:900;text-decoration:underline">מועדים וזמנים</a>.'+
+          '</p>';
+      }
+
+      openM('m-nyt');
+    }
   }
 }
 function goYomTov(){closeYtp();if(ytFId){showTab('moadim',null);setTimeout(function(){nav.push({id:ytFId,name:ytNm});rBC();lFld(ytFId);},300);}}
@@ -5886,6 +5975,28 @@ function installPWA_or_show(){if(_pwaPrompt){installPWA();}else{alert('צו אי
 var seoCode=p.get('seo');
 var modal=p.get('m');
 var sectionCode=p.get('section');
+  if(modal === 'm-hl'){
+  var hotlineTitle='האטליין - שיעורי כללים';
+  var hotlineDescription='שיעורי כללים האטליין - טעלעפאן נומערן און אינפארמאציע איבערן שיעורי כללים האטליין.';
+  var hotlineUrl=location.origin+location.pathname+'?m=m-hl';
+
+  document.title=hotlineTitle;
+
+  var hotlineDesc=document.getElementById('seo-description');
+  if(hotlineDesc) hotlineDesc.setAttribute('content',hotlineDescription);
+
+  var hotlineCanonical=document.getElementById('seo-canonical');
+  if(hotlineCanonical) hotlineCanonical.setAttribute('href',hotlineUrl);
+
+  var hotlineOgTitle=document.getElementById('seo-og-title');
+  if(hotlineOgTitle) hotlineOgTitle.setAttribute('content',hotlineTitle);
+
+  var hotlineOgDescription=document.getElementById('seo-og-description');
+  if(hotlineOgDescription) hotlineOgDescription.setAttribute('content',hotlineDescription);
+
+  var hotlineOgUrl=document.getElementById('seo-og-url');
+  if(hotlineOgUrl) hotlineOgUrl.setAttribute('content',hotlineUrl);
+}
 
 if(sectionCode && TABS[sectionCode]){
   var sectionName=TABS[sectionCode].name;
