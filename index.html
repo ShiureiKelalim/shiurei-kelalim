@@ -3953,6 +3953,24 @@ direction:rtl;
 
 <div class="pro-main-controls pro-main-controls-wide">
 
+  <div class="pro-jump-side">
+
+  <button
+    type="button"
+    class="pro-jump-toggle"
+    onclick="toggleJumpChoices('jumpBackChoices')"
+    title="צוריק"
+    aria-label="צוריק"
+  >↶</button>
+
+  <div id="jumpBackChoices" class="pro-jump-choices">
+    <span onclick="accJump(-300)">5m</span>
+    <span onclick="accJump(-60)">1m</span>
+    <span onclick="accJump(-30)">30s</span>
+    <span onclick="accJump(-5)">5s</span>
+  </div>
+
+</div>
  
 <button
   type="button"
