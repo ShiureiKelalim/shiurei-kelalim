@@ -68,15 +68,21 @@
 (function(){
   try{
     var p = new URLSearchParams(location.search);
+
     if(p.get('m')){
       document.documentElement.classList.add('direct-modal-loading');
+    }
+
+    if(p.get('section')){
+      document.documentElement.classList.add('direct-section-loading');
     }
   }catch(e){}
 })();
 </script>
 
 <style>
-html.direct-modal-loading body{
+html.direct-modal-loading body,
+html.direct-section-loading body{
   visibility:hidden;
 }
   /* ===== RESPONSIVE TOP NAV — NO HORIZONTAL SCROLL ===== */
@@ -4249,7 +4255,9 @@ async function openSectionFromUrl(){
     console.error('Direct section open failed:', section, e);
     return false;
   }finally{
+      }finally{
     SEO_ROUTE_LOADING=false;
+    document.documentElement.classList.remove('direct-section-loading');
   }
 }
   function gaEv(name, params){
