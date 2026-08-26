@@ -3505,6 +3505,43 @@ direction:rtl;
   outline:none!important;
   box-shadow:none!important;
 }
+                         /* KILL NATIVE BUTTON BOXES COMPLETELY */
+#plov button.pro-jump-btn{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  background:none!important;
+  background-color:transparent!important;
+  border:0!important;
+  border-style:none!important;
+  outline:0!important;
+  box-shadow:none!important;
+
+  color:#fff6c8!important;
+  font-weight:900!important;
+
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+
+  min-width:43px!important;
+  height:42px!important;
+  padding:0 7px!important;
+
+  cursor:pointer!important;
+}
+
+#plov button.pro-jump-btn:hover,
+#plov button.pro-jump-btn:focus,
+#plov button.pro-jump-btn:active{
+  -webkit-appearance:none!important;
+  appearance:none!important;
+  background:none!important;
+  background-color:transparent!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
 </style>
 </head>
 <body>
@@ -3520,14 +3557,28 @@ direction:rtl;
   </div>
 
   <div class="nav-main">
-    <button class="ntb ntb-home" onclick="showLanding()">הויפט בלאט</button>
-    <button class="ntb" id="tb-or" onclick="showTab('orach',this)">אורח חיים</button>
-    <button class="ntb" id="tb-yo" onclick="showTab('yoreh',this)">יורה דעה</button>
-    <button class="ntb" id="tb-ev" onclick="showTab('even',this)">אבן העזר</button>
-    <button class="ntb" id="tb-ch" onclick="showTab('choshen',this)">חושן משפט</button>
-    <button class="ntb" id="tb-mo" onclick="showTab('moadim',this)">מועדים וזמנים</button>
-  </div>
+  <a class="ntb ntb-home" href="/" onclick="showLanding();return false;">הויפט בלאט</a>
 
+  <a class="ntb" id="tb-or"
+     href="/?section=orach"
+     onclick="showTab('orach',this);return false;">אורח חיים</a>
+
+  <a class="ntb" id="tb-yo"
+     href="/?section=yoreh"
+     onclick="showTab('yoreh',this);return false;">יורה דעה</a>
+
+  <a class="ntb" id="tb-ev"
+     href="/?section=even"
+     onclick="showTab('even',this);return false;">אבן העזר</a>
+
+  <a class="ntb" id="tb-ch"
+     href="/?section=choshen"
+     onclick="showTab('choshen',this);return false;">חושן משפט</a>
+
+  <a class="ntb" id="tb-mo"
+     href="/?section=moadim"
+     onclick="showTab('moadim',this);return false;">מועדים וזמנים</a>
+</div>
   <div class="nav-side nav-side-left">
     <button class="nav-srch-btn" onclick="togNavSrch()" title="זוך שיעורים">🔍</button>
     <div class="nav-si" id="nav-si">
