@@ -4251,11 +4251,10 @@ async function openSectionFromUrl(){
     );
 
     return true;
-  }catch(e){
+   }catch(e){
     console.error('Direct section open failed:', section, e);
     return false;
   }finally{
-      }finally{
     SEO_ROUTE_LOADING=false;
     document.documentElement.classList.remove('direct-section-loading');
   }
