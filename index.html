@@ -4146,24 +4146,31 @@ var MO=['ניסן','אייר','סיון','תמוז','אב','אלול','תשרי'
 var nav=[],stmr=null,ytFId='',ytNm='',pwOk=false,pend=null,dAmt=18,latF=null;
   // ===== MAIN SECTION DIRECT LINKS FOR GOOGLE =====
 async function openSectionFromUrl(){
+  var p = new URLSearchParams(location.search);
+  var section = String(p.get('section') || '').trim();
+
+  if(!section || !TABS[section]){
+    return false;
+  }
+
+  SEO_ROUTE_LOADING=true;
+
   try{
-    var p = new URLSearchParams(location.search);
-    var section = String(p.get('section') || '').trim();
+    await loadLatest();
+    await showTab(section, null);
 
-    if(!section || !TABS[section]) return false;
-
-    SEO_ROUTE_LOADING=true;
-
-    try{
-      await showTab(section, null);
-    }finally{
-      SEO_ROUTE_LOADING=false;
-    }
+    history.replaceState(
+      null,
+      '',
+      location.pathname+'?section='+encodeURIComponent(section)
+    );
 
     return true;
   }catch(e){
-    SEO_ROUTE_LOADING=false;
+    console.error('Direct section open failed:', section, e);
     return false;
+  }finally{
+    SEO_ROUTE_LOADING=false;
   }
 }
   function gaEv(name, params){
@@ -5953,6 +5960,8 @@ return;
   if(modal==='m-lat'){
     await loadLatest();
   }
+
+  document.documentElement.classList.remove('direct-modal-loading');
 }else{
   var openedSection=await openSectionFromUrl();
 
