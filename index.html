@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -466,10 +467,6 @@ html.direct-modal-loading body{
   color:#f5d98c!important;
 }
 
-.plbx .pro-jump-btn{
-  color:#ffe8a1!important;
-}
-
 .plbx .pro-play-btn{
   background:rgba(80,12,38,.62)!important;
   color:#ffe477!important;
@@ -600,7 +597,7 @@ body{font-family:'Frank Ruhl Libre',Arial,sans-serif;background:#f0ece4;color:#2
     font-size:.82rem;
   }
 }
-  
+
 /* LANDING */
 .latw{max-width:780px;margin:50px auto 35px;padding:0 12px}
 .latc{display:flex;align-items:center;justify-content:center;gap:14px;background:linear-gradient(135deg,#162d5a,#2a548f);border-radius:14px;padding:20px 22px;color:#fff;cursor:pointer;transition:all .24s;text-align:center}
@@ -2870,49 +2867,6 @@ body.nav-search-open .nbrand{
   margin:19px 0 12px;
 }
 
-.pro-jump-group{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-}
-
-.pro-jump-btn{
-  min-width:43px;
-  height:42px;
-  padding:0 7px;
-  border:0;
-  border-radius:12px;
-  background:transparent;
-  color:#162d5a;
-  cursor:pointer;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:0;
-  font:800 .69rem Arial,sans-serif;
-  line-height:1;
-  transition:
-    background .16s ease,
-    color .16s ease,
-    transform .16s ease;
-}
-
-.pro-jump-btn:hover,
-.pro-jump-btn:focus-visible{
-  background:rgba(22,45,90,.09);
-  color:#b8860b;
-  transform:translateY(-2px);
-  outline:none;
-}
-
-.pro-jump-arrow{
-  font-size:1.25rem;
-  font-weight:900;
-  line-height:.8;
-}
-
 .pro-main-controls-wide .pro-play-btn{
   width:68px;
   min-width:68px;
@@ -2934,23 +2888,7 @@ body.nav-search-open .nbrand{
     gap:7px;
   }
 
-  .pro-jump-group{
-    gap:1px;
-  }
-
-  .pro-jump-btn{
-    min-width:34px;
-    width:34px;
-    height:38px;
-    padding:0 2px;
-    font-size:.59rem;
-  }
-
-  .pro-jump-arrow{
-    font-size:1.05rem;
-  }
-
-  .pro-main-controls-wide .pro-play-btn{
+.pro-main-controls-wide .pro-play-btn{
     width:58px;
     min-width:58px;
     height:58px;
@@ -2967,12 +2905,8 @@ body.nav-search-open .nbrand{
     order:1;
   }
 
-  .pro-jump-group{
-    order:2;
-    width:calc(50% - 5px);
-  }
 }
-                         
+
 
 /* ===== PLAYER BOOKMARK DOTS — REBUILT ===== */
 .pro-progress-wrap{
@@ -3145,10 +3079,6 @@ direction:rtl;
 
 .pro-time-row{
   color:#f5d98c!important;
-}
-
-.pro-jump-btn{
-  color:#ffe8a1!important;
 }
 
 .pro-play-btn{
@@ -3331,10 +3261,6 @@ direction:rtl;
   color:#f5d98c!important;
 }
 
-.pro-jump-btn{
-  color:#ffe8a1!important;
-}
-
 .pro-play-btn{
   background:rgba(80,12,38,.62)!important;
   color:#ffe477!important;
@@ -3404,10 +3330,6 @@ direction:rtl;
 }
 
 #plov .pro-time-row,
-#plov .pro-jump-btn{
-  color:#f5d98c!important;
-}
-
 #plov .pro-play-btn{
   background:#17263a!important;
   color:#f1d36b!important;
@@ -3432,11 +3354,6 @@ direction:rtl;
 
 #plov .pro-time-row{
   color:#ffe8a0!important;
-}
-
-#plov .pro-jump-btn{
-  color:#fff0b5!important;
-  font-weight:800!important;
 }
 
 #plov .pro-play-btn{
@@ -3479,70 +3396,10 @@ direction:rtl;
   font-weight:800!important;
   text-shadow:0 1px 3px #000!important;
 }
-                         /* MAKE -15 +15 CLEAR */
-#plov .pro-jump-btn,
-#plov .pro-jump-btn *,
-#plov .pro-jump-num,
-#plov .pro-jump-label{
-  color:#ffffff!important;
-  opacity:1!important;
-  font-weight:900!important;
-  filter:none!important;
-  text-shadow:0 1px 3px rgba(0,0,0,.9)!important;
-}
-                         /* REMOVE BOXES AROUND -15 +15 */
-#plov .pro-jump-btn{
-  background:transparent!important;
-  border:none!important;
-  outline:none!important;
-  box-shadow:none!important;
-}
 
-#plov .pro-jump-btn:hover,
-#plov .pro-jump-btn:focus{
-  background:transparent!important;
-  border:none!important;
-  outline:none!important;
-  box-shadow:none!important;
-}
-                         /* KILL NATIVE BUTTON BOXES COMPLETELY */
-#plov button.pro-jump-btn{
-  -webkit-appearance:none!important;
-  appearance:none!important;
-  background:none!important;
-  background-color:transparent!important;
-  border:0!important;
-  border-style:none!important;
-  outline:0!important;
-  box-shadow:none!important;
 
-  color:#fff6c8!important;
-  font-weight:900!important;
 
-  display:flex!important;
-  flex-direction:column!important;
-  align-items:center!important;
-  justify-content:center!important;
-
-  min-width:43px!important;
-  height:42px!important;
-  padding:0 7px!important;
-
-  cursor:pointer!important;
-}
-
-#plov button.pro-jump-btn:hover,
-#plov button.pro-jump-btn:focus,
-#plov button.pro-jump-btn:active{
-  -webkit-appearance:none!important;
-  appearance:none!important;
-  background:none!important;
-  background-color:transparent!important;
-  border:0!important;
-  outline:0!important;
-  box-shadow:none!important;
-}
-                         /* JUMP ARROWS + OPEN CHOICES — FINAL */
+/* JUMP ARROWS + OPEN CHOICES — FINAL */
 
 #plov .pro-main-controls-wide{
   position:relative!important;
@@ -3774,7 +3631,7 @@ direction:rtl;
   </div>
 
 </nav>
-  
+
 <!-- TABS (hidden) -->
 <div class="tbar">
   <button class="tb" onclick="showTab('orach',this)">אורח חיים</button>
@@ -3817,7 +3674,7 @@ direction:rtl;
     </div>
   </div>
 
-  
+
 
   <div class="secw">
     <div class="sech">Select Section / בחר נושא</div>
@@ -3971,7 +3828,7 @@ direction:rtl;
   </div>
 
 </div>
- 
+
 <button
   type="button"
   id="proPlayBtn"
@@ -4857,7 +4714,7 @@ async function lFld(fId){
     if(!latF){
     try{ await loadLatest(); }catch(e){}
   }
-  
+
   var el=document.getElementById('fl');
   el.innerHTML='<div class="loading">⏳ Loading...</div>';
   try{
@@ -5058,7 +4915,7 @@ async function doSrch(term){
     }
   }catch(e){}
 }
-    
+
 
     var folders=[], audio=[], seen={};
 
@@ -6104,7 +5961,7 @@ if(sectionCode && TABS[sectionCode]){
     }
   };
 
- 
+
 
   schema.textContent=JSON.stringify(schemaData);
   document.head.appendChild(schema);
@@ -6544,8 +6401,8 @@ navRight.insertBefore(b,navRight.firstChild);
   if(!document.getElementById('m-account')){
     var d=document.createElement('div');
     d.id='m-account'; d.className='mov';
-    d.innerHTML='<button class="mov-back" onclick="closeMyAccount()">← צוריק</button>'+ 
-      '<div class="mbx"><button class="mx" onclick="closeMyAccount()">×</button>'+ 
+    d.innerHTML='<button class="mov-back" onclick="closeMyAccount()">← צוריק</button>'+
+      '<div class="mbx"><button class="mx" onclick="closeMyAccount()">×</button>'+
       '<div class="mi">👤</div><div class="mt" id="accModalTitle">מיין אקאונט</div><div id="accBox"></div></div>';
     document.body.appendChild(d);
   }
@@ -6567,7 +6424,7 @@ if(accountBtn)accountBtn.classList.add('active');
   accSetRoute('account','מיין אקאונט',!!fromHash);
   loadAccountBox();
 }
-  
+
 function closeMyAccount(){
   var accountBtn=document.getElementById('myAccountBtn');
 if(accountBtn)accountBtn.classList.remove('active');
@@ -6586,8 +6443,8 @@ async function loadAccountBox(){
     var r=await fetch(API_BASE+'/auth/me',{credentials:'include'}),d=await r.json();
     if(d.ok&&d.logged_in){
       document.getElementById('accModalTitle').textContent='מיין אקאונט';
-      box.innerHTML='<div class="okm" style="padding:6px 0 10px">איר זענט אריינגעלאגט אלס <b>'+esc(d.user.full_name||d.user.email)+'</b></div>'+ 
-        '<button class="sbtn" onclick="loadMyShiurim()">מיינע שיעורים</button>'+ 
+      box.innerHTML='<div class="okm" style="padding:6px 0 10px">איר זענט אריינגעלאגט אלס <b>'+esc(d.user.full_name||d.user.email)+'</b></div>'+
+        '<button class="sbtn" onclick="loadMyShiurim()">מיינע שיעורים</button>'+
         '<button class="sbtn" style="margin-top:7px;background:#777" onclick="logoutAccount()">ארויסלאגן</button>';
     }else showLoginForm();
   }catch(e){showLoginForm();}
@@ -6787,10 +6644,10 @@ async function resetPasswordNow(email){
     '</div>'+
     '<button class="sbtn" onclick="showLoginForm()">גיי צו Login</button>';
 }
-  
+
 function showRegisterForm(){
-  document.getElementById('accBox').innerHTML='<div class="fld"><label>גאנצע נאמען</label><input id="regName"></div>'+ 
-    '<div class="fld"><label>אימעל</label><input id="regEmail" type="email"></div>'+ 
+  document.getElementById('accBox').innerHTML='<div class="fld"><label>גאנצע נאמען</label><input id="regName"></div>'+
+    '<div class="fld"><label>אימעל</label><input id="regEmail" type="email"></div>'+
     '<div class="fld"><label>פעסווארד</label>'+
   '<div class="pass-wrap">'+
     '<input id="regPass" type="password" autocomplete="new-password">'+
@@ -6804,8 +6661,8 @@ function showRegisterForm(){
     '<button type="button" class="pass-eye" title="ווייז פעסווארד" onclick="togglePassword(\'regPass2\',this)">👁</button>'+
   '</div>'+
 '</div>'+
-    '<label style="display:block;margin:8px 0;color:#444;font-size:.82rem"><input id="regSub" type="checkbox"> באקומען נייע שיעורים אויפן אימעל</label>'+ 
-    '<button class="sbtn" onclick="registerAccount()">מאך אקאונט</button><div class="erm" id="accErr"></div>'+ 
+    '<label style="display:block;margin:8px 0;color:#444;font-size:.82rem"><input id="regSub" type="checkbox"> באקומען נייע שיעורים אויפן אימעל</label>'+
+    '<button class="sbtn" onclick="registerAccount()">מאך אקאונט</button><div class="erm" id="accErr"></div>'+
     '<button class="sbtn" style="margin-top:7px;background:#777" onclick="showLoginForm()">צוריק צו Login</button>';
 }
 async function registerAccount(){
