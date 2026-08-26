@@ -3953,30 +3953,7 @@ direction:rtl;
 
 <div class="pro-main-controls pro-main-controls-wide">
 
- var jumpChoicesTimer = null;
-
-function toggleJumpChoices(id){
-  var back = document.getElementById('jumpBackChoices');
-  var forward = document.getElementById('jumpForwardChoices');
-  var menu = document.getElementById(id);
-
-  if(!menu) return;
-
-  var wasOpen = menu.style.display === 'flex';
-
-  if(back) back.style.display = 'none';
-  if(forward) forward.style.display = 'none';
-
-  clearTimeout(jumpChoicesTimer);
-
-  if(!wasOpen){
-    menu.style.display = 'flex';
-
-    jumpChoicesTimer = setTimeout(function(){
-      menu.style.display = 'none';
-    },10000);
-  }
-}
+ 
 <button
   type="button"
   id="proPlayBtn"
@@ -4407,9 +4384,17 @@ async function openSectionFromUrl(){
 
     if(!section || !TABS[section]) return false;
 
-    await showTab(section, null);
+    SEO_ROUTE_LOADING=true;
+
+    try{
+      await showTab(section, null);
+    }finally{
+      SEO_ROUTE_LOADING=false;
+    }
+
     return true;
   }catch(e){
+    SEO_ROUTE_LOADING=false;
     return false;
   }
 }
