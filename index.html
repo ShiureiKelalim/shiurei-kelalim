@@ -3953,25 +3953,30 @@ direction:rtl;
 
 <div class="pro-main-controls pro-main-controls-wide">
 
- <div class="pro-jump-side">
+ var jumpChoicesTimer = null;
 
-  <button
-    type="button"
-    class="pro-jump-toggle"
-    onclick="toggleJumpChoices('jumpBackChoices')"
-    title="צוריק"
-    aria-label="צוריק"
-  >↶</button>
+function toggleJumpChoices(id){
+  var back = document.getElementById('jumpBackChoices');
+  var forward = document.getElementById('jumpForwardChoices');
+  var menu = document.getElementById(id);
 
-  <div id="jumpBackChoices" class="pro-jump-choices">
-    <span onclick="accJump(-300)">5m</span>
-    <span onclick="accJump(-60)">1m</span>
-    <span onclick="accJump(-30)">30s</span>
-    <span onclick="accJump(-5)">5s</span>
-  </div>
+  if(!menu) return;
 
-</div>
+  var wasOpen = menu.style.display === 'flex';
 
+  if(back) back.style.display = 'none';
+  if(forward) forward.style.display = 'none';
+
+  clearTimeout(jumpChoicesTimer);
+
+  if(!wasOpen){
+    menu.style.display = 'flex';
+
+    jumpChoicesTimer = setTimeout(function(){
+      menu.style.display = 'none';
+    },10000);
+  }
+}
 <button
   type="button"
   id="proPlayBtn"
