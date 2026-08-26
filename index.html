@@ -3399,136 +3399,29 @@ direction:rtl;
 
 
 
-/* JUMP ARROWS + OPEN CHOICES — FINAL */
+var jumpChoicesTimer = null;
 
-#plov .pro-main-controls-wide{
-  position:relative!important;
-  flex-wrap:nowrap!important;
-  overflow:visible!important;
-}
+function toggleJumpChoices(id){
+  var back = document.getElementById('jumpBackChoices');
+  var forward = document.getElementById('jumpForwardChoices');
+  var menu = document.getElementById(id);
 
-#plov .pro-jump-side{
-  position:relative!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  width:58px!important;
-  min-width:58px!important;
-  overflow:visible!important;
-}
+  if(!menu) return;
 
-/* נאר דער עראל זעט מען */
-#plov .pro-jump-toggle{
-  -webkit-appearance:none!important;
-  appearance:none!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
+  var wasOpen = menu.classList.contains('open');
 
-  width:48px!important;
-  height:48px!important;
-  padding:0!important;
-  margin:0!important;
+  if(back) back.classList.remove('open');
+  if(forward) forward.classList.remove('open');
 
-  border:0!important;
-  outline:0!important;
-  border-radius:50%!important;
-  background:transparent!important;
-  box-shadow:none!important;
+  clearTimeout(jumpChoicesTimer);
 
-  color:#fff2ad!important;
-  font-family:Arial,sans-serif!important;
-  font-size:2.15rem!important;
-  font-weight:900!important;
-  line-height:1!important;
+  if(!wasOpen){
+    menu.classList.add('open');
 
-  cursor:pointer!important;
-  pointer-events:auto!important;
-
-  transition:
-    background .16s ease,
-    color .16s ease,
-    transform .16s ease,
-    box-shadow .16s ease!important;
-}
-
-/* מייז דערויף — קלאר קליקבאר */
-#plov .pro-jump-toggle:hover,
-#plov .pro-jump-toggle:focus-visible{
-  background:rgba(212,175,55,.18)!important;
-  color:#ffffff!important;
-  transform:scale(1.14)!important;
-  box-shadow:0 0 0 1px rgba(212,175,55,.45)!important;
-  outline:none!important;
-}
-
-/* אויסוואלן זענען אינגאנצן באהאלטן */
-#plov .pro-jump-choices{
-  display:none!important;
-  visibility:hidden!important;
-  opacity:0!important;
-  pointer-events:none!important;
-
-  position:absolute!important;
-  top:50%!important;
-  left:50%!important;
-
-  transform:translate(-50%,-50%)!important;
-
-  z-index:5000!important;
-
-  align-items:center!important;
-  justify-content:center!important;
-  gap:8px!important;
-
-  padding:7px 9px!important;
-
-  background:#18283b!important;
-  border:1px solid rgba(212,175,55,.72)!important;
-  border-radius:11px!important;
-  box-shadow:0 7px 22px rgba(0,0,0,.45)!important;
-
-  white-space:nowrap!important;
-}
-
-/* נאר נאכן דריקן עפנט זיך */
-#plov .pro-jump-choices.open{
-  display:flex!important;
-  visibility:visible!important;
-  opacity:1!important;
-  pointer-events:auto!important;
-}
-
-/* בשעת עס איז אפן באהאלט דעם גרויסן עראל */
-#plov .pro-jump-side:has(.pro-jump-choices.open) .pro-jump-toggle{
-  visibility:hidden!important;
-}
-
-/* 5s / 30s / 1m / 5m */
-#plov .pro-jump-choices span{
-  display:inline-flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-
-  min-width:35px!important;
-  height:31px!important;
-  padding:0 5px!important;
-
-  color:#fff3b5!important;
-  background:transparent!important;
-  border-radius:7px!important;
-
-  font:900 .72rem Arial,sans-serif!important;
-  line-height:1!important;
-
-  cursor:pointer!important;
-  user-select:none!important;
-}
-
-#plov .pro-jump-choices span:hover{
-  background:rgba(212,175,55,.22)!important;
-  color:#ffffff!important;
-  transform:scale(1.08)!important;
+    jumpChoicesTimer = setTimeout(function(){
+      menu.classList.remove('open');
+    },10000);
+  }
 }
 </style>
   <script type="application/ld+json">
