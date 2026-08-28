@@ -6480,11 +6480,10 @@ async function loadAccountBox(){
   try{
     var r=await fetch(API_BASE+'/auth/me',{credentials:'include'}),d=await r.json();
     if(d.ok&&d.logged_in){
-      document.getElementById('accModalTitle').textContent='מיין אקאונט';
-      box.innerHTML='<div class="okm" style="padding:6px 0 10px">איר זענט אריינגעלאגט אלס <b>'+esc(d.user.full_name||d.user.email)+'</b></div>'+
-        '<button class="sbtn" onclick="loadMyShiurim()">מיינע שיעורים</button>'+
-        '<button class="sbtn" style="margin-top:7px;background:#777" onclick="logoutAccount()">ארויסלאגן</button>';
-    }else showLoginForm();
+  loadMyShiurim();
+}else{
+  showLoginForm();
+}
   }catch(e){showLoginForm();}
 }
   function togglePassword(inputId,button){
@@ -6768,9 +6767,13 @@ async function loadMyShiurim(){
   accCard('📊','מיין פארשריט','', 'showStats()')+
 accCard('⚙️','Settings','', 'showAccountSettings()')+
 (Number(d.user && d.user.is_admin)===1
+(Number(d.user && d.user.is_admin)===1
   ? accCard('👑','אדמין','', 'showAdminDashboard()')
   : '')
-+'</div>';
++'</div>'+
+'<button class="sbtn" '+
+'style="margin-top:16px;background:#777" '+
+'onclick="logoutAccount()">ארויסלאגן</button>';
 }
 function dedupeHistory(arr){var seen={},out=[];(arr||[]).forEach(function(x){if(!seen[x.shiur_id]){seen[x.shiur_id]=1;out.push(x);}});return out.slice(0,5);}
 function accOpenShiur(id,pos,name){closeMyAccount();opPl(id,name||'שיעור');setTimeout(function(){var au=document.getElementById('au');if(au&&pos){try{au.currentTime=Number(pos)||0;}catch(e){}}},700);}
