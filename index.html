@@ -5721,20 +5721,45 @@ async function doDl(fId,nm){
   }
 
   try{
-    var url=
+    var baseUrl=
       API_BASE+
       '/play?id='+
       encodeURIComponent(fId)+
       '&download=1';
 
-    /*
-      Browser הייבט אן דעם Download גלייך.
-      דער MP3 גייט ווייטער בלויז דורך אונזער Worker.
-      קיין Google Drive URL ווערט נישט געגעבן צום Browser.
-    */
+    /* שנעל טשעקן Worker limit — קיין MP3 ווערט דא נישט אראפגעלאדנט */
+    var check=await fetch(
+      baseUrl+'&check=1',
+      {
+        credentials:'include',
+        cache:'no-store'
+      }
+    );
+
+    if(check.status===429){
+      alert('נאר 5 דאונלאודס ערלויבט א טאג. פרובירט מארגן.');
+      rfDl();
+      return;
+    }
+
+    if(check.status===401){
+      pend={
+        download:true,
+        id:fId,
+        name:nm
+      };
+
+      openM('m-pwd');
+      return;
+    }
+
+    if(!check.ok){
+      throw new Error('Download check failed');
+    }
+
     var a=document.createElement('a');
 
-    a.href=url;
+    a.href=baseUrl;
     a.download=(nm||'shiur')+'.mp3';
     a.style.display='none';
 
