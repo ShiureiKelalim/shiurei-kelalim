@@ -4808,10 +4808,10 @@ if(tip){
   tip.textContent='Download limit reached';
 }
   }else{
-    b.disabled=false;
-    b.classList.remove('disabled');
-   b.onclick=...
-    b.title='Download — '+l+' left today';
+  b.disabled=false;
+  b.classList.remove('disabled');
+  b.onclick=null;
+  b.title='Download — '+l+' left today';
     b.setAttribute('aria-label','Download — '+l+' left today');
     var tip=b.querySelector('.player-tooltip');
 if(tip){
