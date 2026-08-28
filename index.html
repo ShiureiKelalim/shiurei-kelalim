@@ -7976,7 +7976,20 @@ function closePlayerSpeedMenu(){
 function proChooseSpeed(value){
   proSetSpeed(value);
   updatePlayerSpeedMenu(value);
-  closePlayerSpeedMenu();
+
+  var speedMenu=document.getElementById('playerSpeedMenu');
+  var speedTrigger=document.getElementById('playerSpeedTrigger');
+
+  if(speedMenu){
+    speedMenu.classList.remove('open');
+  }
+
+  if(speedTrigger){
+    speedTrigger.classList.remove('open');
+    speedTrigger.setAttribute('aria-expanded','false');
+  }
+
+  closePlayerMenus();
 }
 
 function proSeek(value){
@@ -9183,6 +9196,178 @@ function toggleJumpChoices(id){
 
     finalPlayerPatch();
 
+  }
+
+})();
+</script>
+  <style>
+
+/* ===== PLAYER SMALL FINAL FIX ===== */
+
+/* 1. Progress bar:
+   געהערט = גאלד
+   נאכנישט געהערט = ווייך קרעם/גרוי
+*/
+#plov .pro-progress{
+  background:linear-gradient(
+    to right,
+    #d6b33f 0%,
+    #d6b33f var(--progress,0%),
+    #d8dce2 var(--progress,0%),
+    #d8dce2 100%
+  )!important;
+}
+
+#plov .pro-progress::-webkit-slider-runnable-track{
+  background:transparent!important;
+}
+
+#plov .pro-progress::-moz-range-track{
+  background:#d8dce2!important;
+}
+
+#plov .pro-progress::-moz-range-progress{
+  background:#d6b33f!important;
+}
+
+
+/* 2. Volume speaker — clean monochrome icon */
+#plov .pro-volume-icon{
+  font-size:0!important;
+  color:#e2cb82!important;
+  width:21px!important;
+  height:21px!important;
+}
+
+#plov .pro-volume-icon::before{
+  content:none!important;
+}
+
+#plov .pro-volume-icon svg{
+  width:19px!important;
+  height:19px!important;
+  display:block!important;
+  fill:none!important;
+  stroke:#e2cb82!important;
+  stroke-width:1.8!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+
+
+/* Volume line */
+#plov .pro-volume::-webkit-slider-runnable-track{
+  height:3px!important;
+  background:#e2cb82!important;
+}
+
+#plov .pro-volume::-moz-range-track{
+  height:3px!important;
+  background:#e2cb82!important;
+}
+
+
+/* 3. Options boxes — softer, not bright white */
+#plov .dotm,
+#plov .speed-material-menu{
+  background:#f1efe9!important;
+  border-color:#d1cec5!important;
+}
+
+#plov .dlbtn,
+#plov .player-speed-trigger,
+#plov .speed-material-option{
+  background:#f1efe9!important;
+  color:#202124!important;
+}
+
+#plov .dlbtn:hover,
+#plov .player-speed-trigger:hover,
+#plov .player-speed-trigger:focus-visible,
+#plov .speed-material-option:hover,
+#plov .speed-material-option:focus-visible{
+  background:#dedbd3!important;
+}
+
+#plov .speed-material-option.selected{
+  background:#d8d6d0!important;
+}
+
+
+/* 4. Remove icons from Download + Playback speed rows */
+#plov .dlbtn{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  padding:0 16px!important;
+}
+
+#plov .dlbtn svg{
+  display:none!important;
+}
+
+#plov .dlbtn::after{
+  grid-column:auto!important;
+  content:'Download'!important;
+}
+
+
+#plov .player-speed-trigger{
+  display:grid!important;
+  grid-template-columns:1fr auto 12px!important;
+  padding:0 16px!important;
+}
+
+#plov .player-speed-trigger::before{
+  display:none!important;
+  content:none!important;
+}
+
+#plov .player-speed-trigger::after{
+  grid-column:1!important;
+}
+
+#plov #playerSpeedText{
+  grid-column:2!important;
+}
+
+#plov .player-speed-chevron{
+  grid-column:3!important;
+}
+
+
+/* Download wait stays visible */
+#plov .dlbtn.downloading::after{
+  content:'ביטע ווארט…'!important;
+  direction:rtl!important;
+  font-weight:700!important;
+}
+
+</style>
+
+
+<script>
+(function(){
+
+  /* Replace emoji speaker with clean SVG speaker */
+  function fixPlayerSpeaker(){
+
+    var speaker=document.querySelector('#plov .pro-volume-icon');
+
+    if(!speaker)return;
+
+    speaker.innerHTML=
+      '<svg viewBox="0 0 24 24" aria-hidden="true">'+
+        '<path d="M4 10v4h4l5 4V6L8 10H4"></path>'+
+        '<path d="M16 9c1.2 1.4 1.2 4.6 0 6"></path>'+
+        '<path d="M18.5 6.5c3 3 3 8 0 11"></path>'+
+      '</svg>';
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',fixPlayerSpeaker);
+  }else{
+    fixPlayerSpeaker();
   }
 
 })();
