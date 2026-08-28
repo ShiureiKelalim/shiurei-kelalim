@@ -4803,6 +4803,7 @@ function rfDl(){
     e.stopPropagation();
     alert('נאר 5 דאונלאודס ערלויבט א טאג. פרובירט מארגן.');
   };
+     b.textContent='נאר 5 דאונלאודס ערלויבט א טאג — פרובירט מארגן';
     var tip=b.querySelector('.player-tooltip');
 if(tip){
   tip.textContent='Download limit reached';
@@ -4810,6 +4811,7 @@ if(tip){
   }else{
   b.disabled=false;
   b.classList.remove('disabled');
+   b.textContent='Download';
   b.onclick=null;
   b.title='Download — '+l+' left today';
     b.setAttribute('aria-label','Download — '+l+' left today');
