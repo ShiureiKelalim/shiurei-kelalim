@@ -5584,9 +5584,9 @@ document.getElementById('dlsec').innerHTML=
       downloadSvg+
       '<span class="player-tooltip">Download — '+l+
       ' left today</span></button>'
-    : '<button class="dlbtn disabled" disabled aria-label="Download limit reached">'+
+    : '<button class="dlbtn disabled" onclick="alert(\'נאר 5 דאונלאודס ערלויבט א טאג. פרובירט מארגן.\')" aria-label="נאר 5 דאונלאודס ערלויבט א טאג. פרובירט מארגן.">'+
       downloadSvg+
-      '<span class="player-tooltip">Download limit reached</span></button>';
+      '<span class="player-tooltip">נאר 5 דאונלאודס ערלויבט א טאג. פרובירט מארגן.</span></button>';
 
    document.getElementById('plov').classList.add('open');
 
@@ -9334,6 +9334,12 @@ function toggleJumpChoices(id){
 #plov .dlbtn::after{
   grid-column:auto!important;
   content:'Download'!important;
+}
+
+#plov .dlbtn.disabled::after{
+  content:'5 Downloads per day — try again tomorrow'!important;
+  font-size:12px!important;
+  font-weight:600!important;
 }
 
 
