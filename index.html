@@ -7062,10 +7062,30 @@ async function registerAccount(){
 }
 function showVerifyForm(email){document.getElementById('accBox').innerHTML='<div class="okm">א קאוד איז געשיקט געווארן צו:<br><b>'+esc(email)+'</b></div><div class="fld"><label>וועריפיקאציע קאוד</label><input id="verifyCode" inputmode="numeric"></div><button class="sbtn" onclick="verifyAccount(\''+jsq(email)+'\')">וועריפיי</button><div class="erm" id="accErr"></div>';}
 async function verifyAccount(email){
-  var err=document.getElementById('accErr');err.style.display='none';
-  var r=await fetch(API_BASE+'/auth/verify',{method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,code:verifyCode.value.trim()})}),d=await r.json();
-  if(!d.ok){err.textContent=d.error||'קאוד איז נישט ריכטיג';err.style.display='block';return;}
-  document.getElementById('accBox').innerHTML='<div class="okm">אימעל וועריפייד בהצלחה!</div><button class="sbtn" onclick="showLoginForm()">גיי צו Login</button>';
+  var err=document.getElementById('accErr');
+  err.style.display='none';
+
+  var r=await fetch(API_BASE+'/auth/verify',{
+    method:'POST',
+    credentials:'include',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({
+      email:email,
+      code:verifyCode.value.trim()
+    })
+  });
+
+  var d=await r.json();
+
+  if(!d.ok){
+    err.textContent=d.error||'קאוד איז נישט ריכטיג';
+    err.style.display='block';
+    return;
+  }
+
+  loadMyShiurim();
 }
 async function loginAccount(){
   var err=document.getElementById('accErr');
