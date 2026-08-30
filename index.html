@@ -5807,12 +5807,24 @@ async function doDl(fId,nm){
 }
   function closePl(){
   var a=document.getElementById('au');
-  if(a){a.pause();a.removeAttribute('src');a.load();}
+
+  if(a){
+    if(window.curShiur && curShiur.id){
+      sendListeningEvent('pause');
+      accSaveProgressNow();
+    }
+
+    a.pause();
+    a.removeAttribute('src');
+    a.load();
+  }
+
   var p=document.getElementById('plov');
   if(p)p.classList.remove('open');
+
   var d=document.getElementById('dotm');
   if(d)d.classList.remove('open');
-  }
+}
 var PLAYER_MENU_TIMER=null;
 
 function closePlayerMenus(){
