@@ -4101,7 +4101,20 @@ direction:rtl;
 
     <button class="plcl" onclick="closePl()">✕</button>
 
-    <div class="share-msg" id="shareMsg">✓ לינק קאפירט</div>
+<button
+  type="button"
+  id="playerFavTop"
+  class="player-top-fav"
+  onclick="accToggleFav()"
+  title="Favorites"
+  aria-label="Favorites"
+>
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M12 21s-7-4.35-9.5-8.5C.5 9 2.5 5 6.5 5c2.3 0 4 1.4 5.5 3.2C13.5 6.4 15.2 5 17.5 5c4 0 6 4 4 7.5C19 16.65 12 21 12 21z"></path>
+  </svg>
+</button>
+
+<div class="share-msg" id="shareMsg">✓ לינק קאפירט</div>
 
    <div class="plvis">🎵</div>
 
@@ -7590,6 +7603,14 @@ async function accRenderPlayerTools(){
       ACC_DATA=d;
       loggedIn=true;
     }
+    var topFav=document.getElementById('playerFavTop');
+
+if(topFav){
+  topFav.classList.toggle(
+    'is-fav',
+    loggedIn && accIsFav(curShiur.id)
+  );
+}
   }catch(e){}
 
   var div=document.createElement('div');
