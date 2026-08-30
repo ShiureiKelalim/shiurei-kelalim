@@ -483,6 +483,78 @@ html.direct-section-loading body{
 .plbx .player-dots-btn{
   color:#ffe69a!important;
 }
+  /* ===== PROFESSIONAL MY ACCOUNT LIST ===== */
+
+#m-account{
+  overflow-y:auto!important;
+  -webkit-overflow-scrolling:touch;
+}
+
+#m-account .mbx{
+  max-width:520px!important;
+  width:calc(100% - 24px)!important;
+  margin:18px auto 70px!important;
+  padding:20px 18px 28px!important;
+}
+
+#m-account #accBox{
+  padding-bottom:22px;
+}
+
+#m-account .accgrid{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:9px!important;
+  width:100%!important;
+  margin-top:12px!important;
+}
+
+#m-account .acccard{
+  width:100%!important;
+  min-height:64px!important;
+  padding:10px 16px!important;
+  display:grid!important;
+  grid-template-columns:42px 1fr auto!important;
+  align-items:center!important;
+  gap:10px!important;
+  text-align:right!important;
+  border-radius:12px!important;
+}
+
+#m-account .acci{
+  font-size:1.25rem!important;
+  margin:0!important;
+  text-align:center!important;
+}
+
+#m-account .acct{
+  font-size:.9rem!important;
+  margin:0!important;
+  line-height:1.3!important;
+}
+
+#m-account .accc{
+  min-width:24px;
+  margin:0!important;
+  text-align:center!important;
+  font-size:.85rem!important;
+}
+
+#m-account .sbtn{
+  margin-bottom:4px;
+}
+
+@media(max-width:480px){
+  #m-account .mbx{
+    width:calc(100% - 12px)!important;
+    margin:8px auto 60px!important;
+    padding:16px 12px 26px!important;
+  }
+
+  #m-account .accgrid{
+    grid-template-columns:none!important;
+  }
+}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z1GLNQLRH1"></script>
 <script>
@@ -4055,6 +4127,34 @@ direction:rtl;
       </div>
 
       <div class="ftr-col">
+  <h4>מיין אקאונט</h4>
+
+  <a href="#account-favorites"
+     onclick="openAccountFooter('favorites');return false;">
+    Favorites
+  </a>
+
+  <a href="#account-bookmarks"
+     onclick="openAccountFooter('bookmarks');return false;">
+    Bookmarks
+  </a>
+
+  <a href="#account-playlists"
+     onclick="openAccountFooter('playlists');return false;">
+    Playlists
+  </a>
+
+  <a href="#account-recent"
+     onclick="openAccountFooter('recent');return false;">
+    לעצט געהערט
+  </a>
+
+  <a href="#account-settings"
+     onclick="openAccountFooter('settings');return false;">
+    Settings
+  </a>
+</div>
+      <div class="ftr-col">
         <h4>אינפארמאציע</h4>
         <a href="/?m=m-hl" onclick="openM('m-hl',true);return false;">האטליין</a>
         <a href="#" onclick="openM('m-sub');return false;">סובסקרייב</a>
@@ -5780,7 +5880,29 @@ async function doDl(fId,nm){
 
     document.body.appendChild(a);
 
-    cDl();
+        cDl();
+
+    try{
+      fetch(API_BASE+'/site-page-event',{
+        method:'POST',
+        credentials:'include',
+        keepalive:true,
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+          visit_id:SITE_VISIT_ID,
+          visitor_id:SHIUREI_VISITOR_ID,
+          event_type:'download',
+          page_key:'shiur_download',
+          page_name:nm||'שיעור',
+          path:
+            location.pathname+
+            location.search+
+            location.hash
+        })
+      }).catch(function(){});
+    }catch(e){}
 
     a.click();
 
@@ -6837,6 +6959,33 @@ function accSetRoute(route,title,replace){
   document.title=title+' - שיעורי כללים';
   try{history[replace?'replaceState':'pushState'](null,'',location.pathname+'#'+route);}catch(e){}
 }
+  async function openAccountFooter(section){
+  openMyAccount();
+
+  try{
+    var r=await fetch(API_BASE+'/auth/me',{
+      credentials:'include'
+    });
+
+    var d=await r.json();
+
+    if(!d.ok || !d.logged_in){
+      showLoginForm();
+      return;
+    }
+
+    await loadMyShiurim();
+
+    if(section==='favorites') showFavorites();
+    else if(section==='bookmarks') showBookmarks();
+    else if(section==='playlists') showPlaylists();
+    else if(section==='recent') showRecent();
+    else if(section==='settings') showAccountSettings();
+
+  }catch(e){
+    showLoginForm();
+  }
+}
 function openMyAccount(fromHash){
   var accountBtn=document.getElementById('myAccountBtn');
 if(accountBtn)accountBtn.classList.add('active');
@@ -7163,16 +7312,14 @@ async function loadMyShiurim(){
   ACC_DATA=d;ACC_DATA.listen_history=dedupeHistory(d.listen_history||[]);
   document.getElementById('accModalTitle').textContent='מיין אקאונט';accSetRoute('account','מיין אקאונט',true);
   box.innerHTML='<div class="accgrid">'+
-    accCard('▶️','ווייטער הערן',ACC_DATA.listen_history.length,'showHistory()')+
-    accCard('☆','Favorites',d.favorites.length,'showFavorites()')+
-    accCard('🔖','Bookmarks',d.bookmarks.length,'showBookmarks()')+
-    accCard('📂','Playlists',d.playlists.length,'showPlaylists()')+
-    accCard('🕘','לעצט געהערט',ACC_DATA.listen_history.length,'showRecent()')+
-  accCard('📊','מיין פארשריט','', 'showStats()')+
-accCard('⚙️','Settings','', 'showAccountSettings()')+
-(Number(d.user && d.user.is_admin)===1
-  ? accCard('👑','אדמין','', 'showAdminDashboard()')
-  : '')
+  accCard('☆','Favorites',d.favorites.length,'showFavorites()')+
+  accCard('🔖','Bookmarks',d.bookmarks.length,'showBookmarks()')+
+  accCard('📂','Playlists',d.playlists.length,'showPlaylists()')+
+  accCard('🕘','לעצט געהערט',ACC_DATA.listen_history.length,'showRecent()')+
+  accCard('⚙️','Settings','', 'showAccountSettings()')+
+  (Number(d.user && d.user.is_admin)===1
+    ? accCard('👑','אדמין','', 'showAdminDashboard()')
+    : '')
 +'</div>'+
 '<button class="sbtn" '+
 'style="margin-top:16px;background:#777" '+
