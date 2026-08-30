@@ -4605,7 +4605,7 @@ direction:rtl;
 
     <div style="border-top:1px solid #f0ece4;margin:18px 0 12px"></div>
 
-    <button class="don-toggle" type="button" onclick="toggleDonNotes()">הארות</button>
+    <button class="don-toggle" type="button" onclick="toggleDonNotes()">שיקט אן הארה בנוגע א נדבה</button>
 
 <div class="don-slide" id="don-notes-box">
   <div class="fld"><label>נאמען (אפשנאל)</label><input class="don-input" type="text" id="donNoteName"></div>
@@ -6990,28 +6990,77 @@ function accSetRoute(route,title,replace){
   document.title=title+' - שיעורי כללים';
   try{history[replace?'replaceState':'pushState'](null,'',location.pathname+'#'+route);}catch(e){}
 }
-  async function openAccountFooter(section){
-  openMyAccount();
+ async function openAccountFooter(section){
+  var modal=document.getElementById('m-account');
+  var box=document.getElementById('accBox');
+  var accountBtn=document.getElementById('myAccountBtn');
+
+  if(!modal || !box)return;
+
+  if(accountBtn){
+    accountBtn.classList.add('active');
+  }
+
+  modal.classList.add('open');
+  document.body.classList.add('modal-open');
+  document.documentElement.classList.add('modal-open');
+
+  modal.scrollTop=0;
+
+  box.innerHTML='<div class="loading">לאודינג...</div>';
 
   try{
     var r=await fetch(API_BASE+'/auth/me',{
       credentials:'include'
     });
 
-    var d=await r.json();
+    var me=await r.json();
 
-    if(!d.ok || !d.logged_in){
+    if(!me.ok || !me.logged_in){
+      accSetRoute('account','מיין אקאונט',true);
       showLoginForm();
       return;
     }
 
-    await loadMyShiurim();
+    var ur=await fetch(API_BASE+'/user-data',{
+      credentials:'include'
+    });
 
-    if(section==='favorites') showFavorites();
-    else if(section==='bookmarks') showBookmarks();
-    else if(section==='playlists') showPlaylists();
-    else if(section==='recent') showRecent();
-    else if(section==='settings') showAccountSettings();
+    var d=await ur.json();
+
+    if(!d.ok){
+      showLoginForm();
+      return;
+    }
+
+    ACC_DATA=d;
+    ACC_DATA.listen_history=dedupeHistory(d.listen_history||[]);
+
+    document.getElementById('accModalTitle').textContent='מיין אקאונט';
+
+    if(section==='favorites'){
+      showFavorites();
+    }
+    else if(section==='bookmarks'){
+      showBookmarks();
+    }
+    else if(section==='playlists'){
+      showPlaylists();
+    }
+    else if(section==='recent'){
+      showRecent();
+    }
+    else if(section==='settings'){
+      showAccountSettings();
+    }
+    else{
+      loadMyShiurim();
+    }
+
+  }catch(e){
+    showLoginForm();
+  }
+}
 
   }catch(e){
     showLoginForm();
@@ -9994,6 +10043,318 @@ body{
   .ftr-copy{
     font-size:.58rem!important;
     margin-top:14px!important;
+  }
+}
+    /* =========================================================
+   FINAL TOP NAV + ACCOUNT MODAL FIX
+   ========================================================= */
+
+:root{
+  --sk-nav-height:64px;
+}
+
+/* NAV שטענדיג אויבן */
+.premium-nav{
+  position:fixed!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+
+  width:100%!important;
+  max-width:100%!important;
+  height:var(--sk-nav-height)!important;
+  min-height:var(--sk-nav-height)!important;
+
+  z-index:6000!important;
+
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,2.25fr) minmax(0,1fr)!important;
+  align-items:center!important;
+
+  padding:5px 8px!important;
+  gap:5px!important;
+
+  background:#08162f!important;
+}
+
+/* ווייל NAV איז fixed */
+body{
+  padding-top:var(--sk-nav-height)!important;
+}
+
+.nav-main,
+.nav-side{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:0!important;
+  overflow:hidden!important;
+}
+
+.nav-main{
+  display:grid!important;
+  grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  gap:4px!important;
+  flex-wrap:nowrap!important;
+}
+
+.nav-main .ntb{
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+
+  height:42px!important;
+  padding:4px 2px!important;
+
+  font-size:clamp(.55rem,.75vw,.80rem)!important;
+  line-height:1.05!important;
+
+  white-space:nowrap!important;
+  overflow:hidden!important;
+
+  border-radius:8px!important;
+}
+
+.nav-side{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  align-items:center!important;
+  gap:1px!important;
+}
+
+.nav-side .nb{
+  flex:1 1 0!important;
+  min-width:0!important;
+
+  padding:4px 1px!important;
+
+  font-size:clamp(.43rem,.58vw,.66rem)!important;
+  line-height:1.05!important;
+
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+
+.nbrand{
+  min-width:0!important;
+  max-width:100%!important;
+
+  padding:0 2px!important;
+  font-size:clamp(.52rem,.68vw,.78rem)!important;
+
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+
+.nav-srch-btn{
+  flex:0 0 25px!important;
+  width:25px!important;
+  min-width:25px!important;
+  padding:2px!important;
+}
+
+/* SEARCH טאר נישט צושטופן דעם סייט */
+.nav-si{
+  min-width:0!important;
+  flex:0 1 0!important;
+}
+
+.nav-si.open,
+body.nav-search-open .nav-si.open{
+  flex:1 1 70px!important;
+  width:auto!important;
+  max-width:110px!important;
+}
+
+.nav-si input,
+body.nav-search-open .nav-si input{
+  width:100%!important;
+  min-width:0!important;
+  padding:4px!important;
+  font-size:.62rem!important;
+}
+
+
+/* ACCOUNT / MODALS — פונקט אונטער NAV */
+#m-account{
+  position:fixed!important;
+  top:var(--sk-nav-height)!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+
+  width:100%!important;
+  height:auto!important;
+
+  padding:18px 12px 70px!important;
+
+  background:#f0ece4!important;
+
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+
+  z-index:5000!important;
+
+  -webkit-overflow-scrolling:touch!important;
+}
+
+#m-account .mbx{
+  margin:0 auto 50px!important;
+  max-height:none!important;
+  overflow:visible!important;
+}
+
+
+/* =========================================================
+   SMALL SCREEN
+   ביידע חלקים בלייבן זעבאר
+   ========================================================= */
+
+@media(max-width:700px){
+
+  :root{
+    --sk-nav-height:88px;
+  }
+
+  .premium-nav{
+    height:var(--sk-nav-height)!important;
+    min-height:var(--sk-nav-height)!important;
+
+    display:grid!important;
+
+    grid-template-columns:
+      minmax(0,1fr)
+      minmax(0,1fr)!important;
+
+    grid-template-rows:34px 44px!important;
+
+    padding:4px!important;
+    gap:2px 4px!important;
+
+    border-bottom:none!important;
+    box-shadow:0 2px 7px rgba(0,0,0,.18)!important;
+  }
+
+  /*
+    לינקע + רעכטע controls אינעם אויבערשטן קליינעם row
+  */
+  .nav-side-left{
+    grid-column:1!important;
+    grid-row:1!important;
+
+    order:0!important;
+
+    width:100%!important;
+
+    display:flex!important;
+    flex-wrap:nowrap!important;
+
+    justify-content:flex-start!important;
+  }
+
+  .nav-side-right{
+    grid-column:2!important;
+    grid-row:1!important;
+
+    order:0!important;
+
+    width:100%!important;
+
+    display:flex!important;
+    flex-wrap:nowrap!important;
+
+    justify-content:flex-end!important;
+  }
+
+  /*
+    אלע 6 הויפט קאטעגאריעס אינעם צווייטן row
+  */
+  .nav-main{
+    grid-column:1 / -1!important;
+    grid-row:2!important;
+
+    order:0!important;
+
+    width:100%!important;
+
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+
+    gap:2px!important;
+  }
+
+  .nav-main .ntb{
+    min-width:0!important;
+    height:40px!important;
+
+    padding:4px 1px!important;
+
+    font-size:clamp(.43rem,1.55vw,.60rem)!important;
+
+    white-space:nowrap!important;
+    line-height:1.05!important;
+
+    border-radius:7px!important;
+    box-shadow:none!important;
+  }
+
+  .nav-side .nb{
+    flex:1 1 0!important;
+    min-width:0!important;
+
+    padding:2px 1px!important;
+
+    font-size:clamp(.39rem,1.25vw,.53rem)!important;
+  }
+
+  .nbrand{
+    font-size:clamp(.47rem,1.5vw,.62rem)!important;
+  }
+
+  .nav-srch-btn{
+    flex:0 0 22px!important;
+    width:22px!important;
+    min-width:22px!important;
+    font-size:.78rem!important;
+  }
+
+  .nav-si.open,
+  body.nav-search-open .nav-si.open{
+    flex:1 1 55px!important;
+    max-width:85px!important;
+  }
+
+  .nav-si input,
+  body.nav-search-open .nav-si input{
+    padding:3px!important;
+    font-size:.55rem!important;
+  }
+
+  #m-account{
+    top:var(--sk-nav-height)!important;
+    padding:10px 7px 55px!important;
+  }
+}
+
+
+/* גאר קליינע טעלעפאן */
+@media(max-width:390px){
+
+  .nav-main .ntb{
+    font-size:clamp(.38rem,1.45vw,.50rem)!important;
+    padding-left:0!important;
+    padding-right:0!important;
+  }
+
+  .nav-side .nb{
+    font-size:clamp(.35rem,1.15vw,.46rem)!important;
+  }
+
+  .nbrand{
+    font-size:.50rem!important;
   }
 }
 </style>
