@@ -10398,6 +10398,115 @@ body.nav-search-open .nav-si input{
     font-size:clamp(.40rem,.50vw,.56rem)!important;
   }
 }
+    /* ===== FINAL NAV SPACING POLISH ===== */
+
+/* גיב אביסל מער פלאץ פאר ביידע זייטן */
+.premium-nav{
+  grid-template-columns:
+    minmax(0,24%)
+    minmax(0,52%)
+    minmax(0,24%)!important;
+
+  gap:8px!important;
+}
+
+/* הויפט קנעפלעך */
+.nav-main{
+  min-width:0!important;
+  gap:4px!important;
+}
+
+.nav-main .ntb{
+  min-width:0!important;
+  width:100%!important;
+
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+
+  font-size:clamp(.64rem,.82vw,.88rem)!important;
+}
+
+/* לינקע קליינע לינקס — מער זעבאר */
+.nav-side-left{
+  min-width:0!important;
+  gap:4px!important;
+  padding-right:8px!important;
+}
+
+.nav-side-left .nb{
+  min-width:0!important;
+  padding:5px 4px!important;
+
+  font-size:clamp(.50rem,.61vw,.68rem)!important;
+  font-weight:700!important;
+
+  overflow:hidden!important;
+  white-space:nowrap!important;
+}
+
+/* רעכטע זייט — Search + Shiurei Kelalim מער אוועק פון או"ח */
+.nav-side-right{
+  min-width:0!important;
+  gap:5px!important;
+  padding-left:14px!important;
+}
+
+.nbrand{
+  padding-left:8px!important;
+  padding-right:4px!important;
+
+  font-size:clamp(.67rem,.78vw,.92rem)!important;
+}
+
+.nav-srch-btn{
+  margin-left:4px!important;
+  margin-right:4px!important;
+}
+
+/* Search טאר נישט אריינדריקן די הויפט קנעפלעך */
+body.nav-search-open .premium-nav{
+  grid-template-columns:
+    minmax(0,25%)
+    minmax(0,50%)
+    minmax(0,25%)!important;
+}
+
+
+/* מיטלגרויסע סקרינס */
+@media(max-width:1200px) and (min-width:701px){
+
+  .premium-nav{
+    grid-template-columns:
+      minmax(0,25%)
+      minmax(0,50%)
+      minmax(0,25%)!important;
+
+    gap:5px!important;
+  }
+
+  .nav-main .ntb{
+    font-size:clamp(.57rem,.72vw,.76rem)!important;
+  }
+
+  .nav-side-left{
+    gap:2px!important;
+    padding-right:5px!important;
+  }
+
+  .nav-side-left .nb{
+    padding:4px 2px!important;
+    font-size:clamp(.45rem,.54vw,.60rem)!important;
+  }
+
+  .nav-side-right{
+    padding-left:8px!important;
+  }
+
+  .nbrand{
+    font-size:clamp(.57rem,.67vw,.76rem)!important;
+  }
+}
 </style>
 
 
