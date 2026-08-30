@@ -5863,7 +5863,10 @@ async function doDl(fId,nm){
       API_BASE+
       '/play?id='+
       encodeURIComponent(fId)+
-      '&download=1';
+     '&download=1'+
+'&name='+encodeURIComponent(
+  (nm||'שיעור')+' - שיעורי כללים'
+);
 
     /* שנעל טשעקן Worker limit — קיין MP3 ווערט דא נישט אראפגעלאדנט */
     var check=await fetch(
