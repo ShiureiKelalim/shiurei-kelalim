@@ -10353,6 +10353,48 @@ body.nav-search-open .nav-si input{
     font-size:.50rem!important;
   }
 }
+    /* ===== SMALL NAV POLISH ===== */
+
+.nav-main .ntb{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+
+  font-size:clamp(.60rem,.82vw,.86rem)!important;
+  line-height:1!important;
+
+  padding-top:0!important;
+  padding-bottom:0!important;
+}
+
+.nav-side{
+  min-width:0!important;
+}
+
+.nav-side-left{
+  gap:2px!important;
+}
+
+.nav-side .nb{
+  min-width:0!important;
+  font-size:clamp(.44rem,.56vw,.62rem)!important;
+  padding-left:1px!important;
+  padding-right:1px!important;
+}
+
+.nav-side-left .nb{
+  flex:1 1 0!important;
+}
+
+@media(max-width:900px){
+  .nav-main .ntb{
+    font-size:clamp(.54rem,.75vw,.72rem)!important;
+  }
+
+  .nav-side .nb{
+    font-size:clamp(.40rem,.50vw,.56rem)!important;
+  }
+}
 </style>
 
 
