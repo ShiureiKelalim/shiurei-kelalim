@@ -10507,6 +10507,108 @@ body.nav-search-open .premium-nav{
     font-size:clamp(.57rem,.67vw,.76rem)!important;
   }
 }
+    /* ===== HARD FINAL DESKTOP NAV FIX ===== */
+
+@media(min-width:701px){
+
+  .premium-nav{
+    grid-template-columns:
+      minmax(285px,27%)
+      minmax(570px,46%)
+      minmax(285px,27%)!important;
+
+    gap:14px!important;
+    padding-left:10px!important;
+    padding-right:16px!important;
+  }
+
+  /* לינקע זייט: Donate / Contact / Subscribe / Hotline */
+  .nav-side-left{
+    min-width:285px!important;
+    width:100%!important;
+    gap:9px!important;
+    padding-right:16px!important;
+    overflow:visible!important;
+  }
+
+  .nav-side-left .nb{
+    flex:1 1 auto!important;
+    min-width:max-content!important;
+    width:auto!important;
+
+    padding:6px 7px!important;
+
+    font-size:.70rem!important;
+    font-weight:800!important;
+
+    overflow:visible!important;
+    text-overflow:unset!important;
+    white-space:nowrap!important;
+  }
+
+  /* הויפט 6 קנעפלעך */
+  .nav-main{
+    width:100%!important;
+    min-width:570px!important;
+    gap:5px!important;
+  }
+
+  .nav-main .ntb{
+    min-width:0!important;
+    width:100%!important;
+    padding:0 4px!important;
+
+    font-size:.82rem!important;
+
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+
+  /* רעכטע זייט: Search + Shiurei Kelalim */
+  .nav-side-right{
+    min-width:285px!important;
+    width:100%!important;
+
+    justify-content:flex-end!important;
+
+    gap:10px!important;
+    padding-left:28px!important;
+
+    overflow:visible!important;
+  }
+
+  .nbrand{
+    flex:0 0 auto!important;
+    min-width:max-content!important;
+
+    margin-left:10px!important;
+    margin-right:8px!important;
+
+    padding:0!important;
+
+    font-size:.82rem!important;
+
+    overflow:visible!important;
+  }
+
+  .nav-srch-btn{
+    flex:0 0 30px!important;
+    min-width:30px!important;
+
+    margin-left:8px!important;
+    margin-right:8px!important;
+
+    font-size:1.05rem!important;
+  }
+
+  body.nav-search-open .premium-nav{
+    grid-template-columns:
+      minmax(285px,27%)
+      minmax(550px,44%)
+      minmax(310px,29%)!important;
+  }
+}
 </style>
 
 
