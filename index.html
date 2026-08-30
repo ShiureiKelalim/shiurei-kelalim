@@ -4558,11 +4558,34 @@ direction:rtl;
         און געזאגט ווערן אויפן האטליין
       </div>
 
-      <input class="don-soul" type="text" id="donDedText" placeholder='לע"נ .... לזכות'>
-      <div id="donDedErr" class="don-err">ביטע שרייבט אריין די הקדשה.</div>
-      <div id="donDedOk" class="don-ok">✓ אייער הקדשה איז אויפגענומען געווארן.</div>
+     <input class="don-soul" type="text" id="donDedText" placeholder='לע"נ .... לזכות'>
 
-      <button class="sbtn" style="margin-top:10px" onclick="sendDedication()">שיקט</button>
+<div style="text-align:center;color:#777;font-size:.76rem;line-height:1.6;margin:10px 5px 6px">
+  ביטע לייגט אריין אייער אימעיל אדרעס, כדי מיר זאלן זיך קענען מיט אייך פארבינדן אויב עס איז דא סיי וועלכע קשיא.
+</div>
+
+<input
+  class="don-soul"
+  type="email"
+  id="donDedEmail"
+  placeholder="אייער אימעיל אדרעס"
+  autocomplete="email"
+>
+
+<div id="donDedErr" class="don-err">
+  ביטע לייגט אריין די הקדשה און א גילטיגע אימעיל אדרעס.
+</div>
+
+<div id="donDedOk" class="don-ok">
+  ✓ אייער הקדשה איז אויפגענומען געווארן.
+</div>
+
+<button
+  class="sbtn"
+  style="margin-top:10px;margin-bottom:8px"
+  onclick="sendDedication()">
+  שיקט
+</button>
     </div>
 
     <button id="donGoBtn" class="sbtn don-main-btn" onclick="goDonate()">
@@ -6124,8 +6147,11 @@ function toggleDonDedication(){
 
 function sendDedication(){
   var txt=document.getElementById('donDedText').value.trim();
+  var email=document.getElementById('donDedEmail').value.trim();
+
   var amtEl=document.querySelector('input[name="donAmt"]:checked');
   var amt=amtEl?amtEl.value:'';
+
   var err=document.getElementById('donDedErr');
   var ok=document.getElementById('donDedOk');
   var box=document.getElementById('don-ded-box');
@@ -6133,23 +6159,28 @@ function sendDedication(){
   err.style.display='none';
   ok.style.display='none';
 
-  if(!txt){
+  if(!txt || !email || !email.includes('@')){
     err.style.display='block';
     return;
   }
 
   donSendMail(
     'Donation Dedication - Shiurei Kelalim',
-    'New dedication submitted from the donation page\n\nAmount selected: '+amt+'\n\nDedication:\n'+txt+'\n\nTime: '+new Date().toLocaleString(),
-    DON_MAIL_TO
+    'New dedication submitted from the donation page\n\n'+
+    'Amount selected: '+amt+'\n'+
+    'Email: '+email+'\n\n'+
+    'Dedication:\n'+txt+'\n\n'+
+    'Time: '+new Date().toLocaleString(),
+    email
   );
 
-  ok.textContent='✓ אייער נעמען איז אריינגעגעבן געווארן.';
+  ok.textContent='✓ אייער הקדשה איז אריינגעגעבן געווארן.';
   ok.style.display='block';
 
   setTimeout(function(){
     if(box)box.classList.remove('open');
     document.getElementById('donDedText').value='';
+    document.getElementById('donDedEmail').value='';
   },1200);
 
   gaEv('donation_dedication_submit',{amount:amt});
