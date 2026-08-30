@@ -9631,7 +9631,340 @@ function toggleJumpChoices(id){
   direction:rtl!important;
   font-weight:700!important;
 }
+/* =========================================================
+   FINAL RESPONSIVE NAV + FOOTER
+   ========================================================= */
 
+/* ---------- TOP NAV: NEVER HORIZONTAL SCROLL ---------- */
+html,
+body{
+  max-width:100%!important;
+  overflow-x:hidden!important;
+}
+
+.premium-nav{
+  width:100%!important;
+  max-width:100vw!important;
+  box-sizing:border-box!important;
+  overflow-x:hidden!important;
+}
+
+.nav-main,
+.nav-side{
+  min-width:0!important;
+  max-width:100%!important;
+}
+
+.nav-main .ntb,
+.nav-side .nb,
+.nbrand{
+  min-width:0!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+}
+
+
+/* ---------- LAPTOP / SMALLER SCREEN ---------- */
+@media(max-width:1200px){
+
+  .premium-nav{
+    padding-left:4px!important;
+    padding-right:4px!important;
+    gap:3px!important;
+    overflow:hidden!important;
+  }
+
+  .nav-main{
+    gap:3px!important;
+  }
+
+  .nav-main .ntb{
+    min-width:0!important;
+    padding:7px 3px!important;
+    font-size:clamp(.55rem,.72vw,.76rem)!important;
+  }
+
+  .nav-side{
+    min-width:0!important;
+    gap:1px!important;
+  }
+
+  .nav-side .nb{
+    min-width:0!important;
+    padding:4px 2px!important;
+    font-size:clamp(.46rem,.58vw,.64rem)!important;
+  }
+
+  .nbrand{
+    font-size:clamp(.55rem,.68vw,.76rem)!important;
+    padding-left:2px!important;
+    padding-right:2px!important;
+  }
+
+  .nav-srch-btn{
+    min-width:22px!important;
+    padding-left:2px!important;
+    padding-right:2px!important;
+  }
+
+  .nav-si.open,
+  body.nav-search-open .nav-si.open{
+    max-width:55%!important;
+  }
+}
+
+
+/* ---------- PHONE / SMALL SCREEN ---------- */
+@media(max-width:700px){
+
+  /*
+    קיין דעקאראטיווע אונטערשטע ליין אויף קליינע סקרינס
+  */
+  .premium-nav{
+    border-bottom:none!important;
+    box-shadow:none!important;
+
+    display:flex!important;
+    flex-direction:column!important;
+
+    width:100%!important;
+    padding:4px!important;
+    gap:4px!important;
+
+    overflow:hidden!important;
+  }
+
+  /*
+    די 6 הויפט קנעפלעך בלייבן אלע אויף איין שורה
+  */
+  .nav-main{
+    order:1!important;
+
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+
+    width:100%!important;
+    gap:2px!important;
+
+    overflow:hidden!important;
+  }
+
+  .nav-main .ntb{
+    width:100%!important;
+    min-width:0!important;
+
+    min-height:34px!important;
+    height:auto!important;
+
+    padding:5px 1px!important;
+
+    font-size:clamp(.45rem,1.55vw,.62rem)!important;
+    line-height:1.08!important;
+
+    border-radius:7px!important;
+
+    white-space:nowrap!important;
+    overflow:hidden!important;
+
+    box-shadow:none!important;
+  }
+
+  /*
+    Contact / Donate / Subscribe / Hotline וכו׳
+    אויך איין שורה
+  */
+  .nav-side{
+    width:100%!important;
+    min-width:0!important;
+
+    display:flex!important;
+    flex-wrap:nowrap!important;
+
+    justify-content:space-between!important;
+    align-items:center!important;
+
+    gap:1px!important;
+
+    overflow:hidden!important;
+  }
+
+  .nav-side-left{
+    order:0!important;
+  }
+
+  .nav-side-right{
+    order:2!important;
+  }
+
+  .nav-side .nb{
+    flex:1 1 0!important;
+    min-width:0!important;
+
+    padding:4px 1px!important;
+
+    font-size:clamp(.42rem,1.35vw,.58rem)!important;
+    line-height:1.05!important;
+
+    white-space:nowrap!important;
+    overflow:hidden!important;
+  }
+
+  .nbrand{
+    flex:0 1 auto!important;
+    min-width:0!important;
+
+    font-size:clamp(.52rem,1.7vw,.68rem)!important;
+  }
+
+  .nav-srch-btn{
+    flex:0 0 25px!important;
+    min-width:25px!important;
+
+    padding:1px!important;
+    font-size:.88rem!important;
+  }
+
+  /*
+    SEARCH נעמט נאר די פלאץ וואס איז פאראן,
+    עס שטופט נישט דעם סייט ארויס פונעם Screen
+  */
+  .nav-si,
+  body.nav-search-open .nav-si{
+    flex:1 1 0!important;
+    min-width:0!important;
+  }
+
+  .nav-si.open,
+  body.nav-search-open .nav-si.open{
+    max-width:none!important;
+    width:auto!important;
+  }
+
+  .nav-si input,
+  body.nav-search-open .nav-si input{
+    width:100%!important;
+    min-width:0!important;
+
+    padding:4px 4px!important;
+    font-size:clamp(.54rem,1.7vw,.68rem)!important;
+  }
+}
+
+
+/* ---------- VERY SMALL PHONE ---------- */
+@media(max-width:390px){
+
+  .nav-main{
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+  }
+
+  .nav-main .ntb{
+    min-height:31px!important;
+    padding:4px 0!important;
+    font-size:clamp(.40rem,1.5vw,.53rem)!important;
+    white-space:nowrap!important;
+  }
+
+  .nav-side .nb{
+    padding:3px 0!important;
+    font-size:clamp(.38rem,1.25vw,.50rem)!important;
+  }
+
+  .nbrand{
+    font-size:clamp(.47rem,1.55vw,.60rem)!important;
+  }
+}
+
+
+/* =========================================================
+   FOOTER — ALWAYS ONE PROFESSIONAL ROW
+   ========================================================= */
+
+.ftr-grid{
+  width:100%!important;
+  max-width:1200px!important;
+
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+
+  gap:clamp(5px,1vw,16px)!important;
+
+  align-items:stretch!important;
+}
+
+.ftr-col{
+  width:100%!important;
+  min-width:0!important;
+
+  padding:
+    clamp(8px,1.2vw,18px)
+    clamp(4px,.8vw,14px)!important;
+
+  border-radius:clamp(9px,1vw,16px)!important;
+
+  overflow:hidden!important;
+}
+
+.ftr-col h4{
+  font-size:clamp(.65rem,1vw,1rem)!important;
+  margin-bottom:clamp(6px,.8vw,12px)!important;
+
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+
+.ftr-col a{
+  font-size:clamp(.56rem,.82vw,.86rem)!important;
+
+  padding:
+    clamp(2px,.35vw,5px)
+    0!important;
+
+  line-height:1.3!important;
+
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+}
+
+
+/* FOOTER — SMALL PHONE, STILL ONE ROW */
+@media(max-width:700px){
+
+  footer{
+    padding-left:4px!important;
+    padding-right:4px!important;
+  }
+
+  .ftr-grid{
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:3px!important;
+  }
+
+  .ftr-col{
+    padding:8px 2px!important;
+    border-radius:8px!important;
+  }
+
+  .ftr-col h4{
+    font-size:clamp(.47rem,1.65vw,.63rem)!important;
+    margin-bottom:5px!important;
+  }
+
+  .ftr-col a{
+    font-size:clamp(.41rem,1.45vw,.56rem)!important;
+    padding:2px 0!important;
+  }
+
+  .ftr-copy{
+    font-size:.58rem!important;
+    margin-top:14px!important;
+  }
+}
 </style>
 
 
