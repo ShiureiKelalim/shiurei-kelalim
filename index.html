@@ -7159,8 +7159,16 @@ accCard('⚙️','Settings','', 'showAccountSettings()')+
 'style="margin-top:16px;background:#777" '+
 'onclick="logoutAccount()">ארויסלאגן</button>';
 }
-function dedupeHistory(arr){var seen={},out=[];(arr||[]).forEach(function(x){if(!seen[x.shiur_id]){seen[x.shiur_id]=1;out.push(x);}});return out.slice(0,5);}
-function accOpenShiur(id,pos,name){closeMyAccount();opPl(id,name||'שיעור');setTimeout(function(){var au=document.getElementById('au');if(au&&pos){try{au.currentTime=Number(pos)||0;}catch(e){}}},700);}
+function dedupeHistory(arr){
+  var seen={},out=[];
+  (arr||[]).forEach(function(x){
+    if(!seen[x.shiur_id]){
+      seen[x.shiur_id]=1;
+      out.push(x);
+    }
+  });
+  return out.slice(0,15);
+}function accOpenShiur(id,pos,name){closeMyAccount();opPl(id,name||'שיעור');setTimeout(function(){var au=document.getElementById('au');if(au&&pos){try{au.currentTime=Number(pos)||0;}catch(e){}}},700);}
 function accRow(icon,name,meta,click,actions){return '<div class="acc-row"><div class="acc-row-icon">'+icon+'</div><div class="acc-row-main" onclick="'+click+'"><div class="acc-row-name">'+esc(name)+'</div>'+(meta?'<div class="acc-row-meta">'+meta+'</div>':'')+'</div>'+(actions||'')+'</div>';}
 function showHistory(){
   accSetRoute('account-history','ווייטער הערן');var d=ACC_DATA,h=accHead('▶️ ווייטער הערן')+'<div class="acc-list">';
@@ -7168,8 +7176,51 @@ function showHistory(){
   d.listen_history.forEach(function(x){var n=x.shiur_name||'שיעור';h+=accRow('▶️',n,'ווייטער ביי '+formatTime(x.position||0),"accOpenShiur('"+jsq(x.shiur_id)+"',"+Number(x.position||0)+",'"+jsq(n)+"')");});
   document.getElementById('accBox').innerHTML=h+'</div>';
 }
-function showRecent(){accSetRoute('account-recent','לעצט געהערט');showHistory();accSetRoute('account-recent','לעצט געהערט',true);document.querySelector('#accBox .mt').textContent='🕘 לעצט געהערט';}
-function showFavorites(){
+function showRecent(){
+  accSetRoute('account-recent','לעצט געהערט');
+
+  var d=ACC_DATA;
+  var h=accHead('🕘 לעצט געהערט')+'<div class="acc-list">';
+
+  if(!d.listen_history.length){
+    h+='<div class="acc-empty">נאך נישט געהערט קיין שיעורים</div>';
+  }
+
+  d.listen_history.forEach(function(x){
+    var n=x.shiur_name||'שיעור';
+
+    h+=accRow(
+      '▶️',
+      n,
+      accDate(x.listened_at)+' • ביי '+formatTime(x.position||0),
+      "accOpenShiur('"+jsq(x.shiur_id)+"',"+Number(x.position||0)+",'"+jsq(n)+"')",
+      '<button class="acc-mini-btn danger" '+
+      'title="אראפנעמען" '+
+      'onclick="event.stopPropagation();accRemoveHistory(\''+
+      jsq(x.shiur_id)+
+      '\')">🗑</button>'
+    );
+  });
+
+  document.getElementById('accBox').innerHTML=h+'</div>';
+}
+  async function accRemoveHistory(id){
+  var r=await accApi('history_remove',{
+    shiur_id:id
+  });
+
+  if(!r.ok){
+    alert(r.error||'נישט געלונגען');
+    return;
+  }
+
+  ACC_DATA.listen_history=(ACC_DATA.listen_history||[]).filter(function(x){
+    return x.shiur_id!==id;
+  });
+
+  showRecent();
+}
+  function showFavorites(){
   accSetRoute('account-favorites','Favorites');var d=ACC_DATA,h=accHead('☆ Favorites')+'<div class="acc-list">';
   if(!d.favorites.length)h+='<div class="acc-empty">נאך נישט דא</div>';
   d.favorites.forEach(function(x){var n=x.shiur_name||'שיעור';h+=accRow('☆',n,accDate(x.added_at),"accOpenShiur('"+jsq(x.shiur_id)+"',0,'"+jsq(n)+"')",'<button class="acc-mini-btn danger" onclick="event.stopPropagation();accRemoveFavorite(\''+jsq(x.shiur_id)+'\')">🗑</button>');});
@@ -7192,7 +7243,7 @@ function showPlaylists(){
 function showStats(){
   accSetRoute('account-stats','מיין פארשריט');var d=ACC_DATA,total=0;(d.progress||[]).forEach(function(x){total+=Number(x.position||0);});
   var hrs=Math.floor(total/3600),mins=Math.round((total%3600)/60),heard=(d.progress||[]).length;
-  document.getElementById('accBox').innerHTML=accHead('📊 מיין פארשריט')+'<div class="accgrid">'+accCard('🎧','שיעורים',heard,'void(0)')+accCard('🕒','הער־צייט',hrs+'ש '+mins+'מ','void(0)')+accCard('❤️','Favorites',d.favorites.length,'void(0)')+accCard('🔖','Bookmarks',d.bookmarks.length,'void(0)')+accCard('📂','Playlists',d.playlists.length,'void(0)')+'</div>';
+  document.getElementById('accBox').innerHTML=accHead('📊 מיין פארשריט')+'<div class="accgrid">'+accCard('🎧','שיעורים',heard,'void(0)')+accCard('🕒','הער־צייט',hrs+'ש '+mins+'מ','void(0)')+accCard('☆','Favorites',d.favorites.length,'void(0)')+accCard('🔖','Bookmarks',d.bookmarks.length,'void(0)')+accCard('📂','Playlists',d.playlists.length,'void(0)')+'</div>';
 }
   async function showAdminDashboard(){
   accSetRoute('account-admin','אדמין');
