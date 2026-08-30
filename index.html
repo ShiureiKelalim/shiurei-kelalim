@@ -5809,9 +5809,16 @@ async function doDl(fId,nm){
   var a=document.getElementById('au');
 
   if(a){
-    if(window.curShiur && curShiur.id){
+    var lastPos=Number(a.currentTime||0);
+
+    if(window.curShiur && curShiur.id && lastPos>0){
+      accApi('progress',{
+        shiur_id:curShiur.id,
+        shiur_name:curShiur.name||'שיעור',
+        position:lastPos
+      });
+
       sendListeningEvent('pause');
-      accSaveProgressNow();
     }
 
     a.pause();
