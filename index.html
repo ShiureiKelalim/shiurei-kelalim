@@ -19,7 +19,7 @@
 <meta
   id="seo-description"
   name="description"
-  content="שיעורי כללים על ד׳ חלקי שולחן ערוך מאת הרה״ג ר׳ יואל פילאפף שליט״א דומ״ץ בטאהש. שיעורי הלכה ואגדה. אורח חיים, יורה דעה, אבן העזר, חושן משפט, מועדים וזמנים."
+  content="שיעורי כללים בהלכה ואגדה על ד׳ חלקי שולחן ערוך מאת הרה״ג ר׳ יואל פילאפף שליט״א דומ״ץ בטאהש"
 >
 
 <meta
@@ -37,13 +37,13 @@
 <meta
   id="seo-og-title"
   property="og:title"
-  content="שיעורי כללים — הלכה ואגדה"
+  content="שיעורי כללים על ד' חלקי שולחן ערוך"
 >
 
 <meta
   id="seo-og-description"
   property="og:description"
-  content="שיעורי כללים על ד׳ חלקי שולחן ערוך מאת הרה״ג ר׳ יואל פילאפף שליט״א דומ״ץ בטאהש. שיעורי הלכה ואגדה. אורח חיים, יורה דעה, אבן העזר, חושן משפט, מועדים וזמנים."
+  content="שיעורי כללים בהלכה ואגדה על ד׳ חלקי שולחן ערוך מאת הרה״ג ר׳ יואל פילאפף שליט״א דומ״ץ בטאהש"
 >
 
 <meta
@@ -3952,36 +3952,42 @@ direction:rtl;
       "@type": "ListItem",
       "position": 1,
       "name": "אורח חיים",
+      "description": "שיעורים בשולחן ערוך אורח חיים",
       "url": "https://www.shiureikelalim.com/?section=orach"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "יורה דעה",
+      "description": "שיעורים בשולחן ערוך יורה דעה",
       "url": "https://www.shiureikelalim.com/?section=yoreh"
     },
     {
       "@type": "ListItem",
       "position": 3,
       "name": "אבן העזר",
+      "description": "שיעורים בשולחן ערוך אבן העזר",
       "url": "https://www.shiureikelalim.com/?section=even"
     },
     {
       "@type": "ListItem",
       "position": 4,
       "name": "חושן משפט",
+      "description": "שיעורים בשולחן ערוך חושן משפט",
       "url": "https://www.shiureikelalim.com/?section=choshen"
     },
     {
       "@type": "ListItem",
       "position": 5,
       "name": "מועדים וזמנים",
+      "description": "שיעורים לפי חדשי השנה",
       "url": "https://www.shiureikelalim.com/?section=moadim"
     },
     {
       "@type": "ListItem",
       "position": 6,
       "name": "האטליין",
+      "description": "לשמיעת השיעורים בטלפון",
       "url": "https://www.shiureikelalim.com/?m=m-hl"
     }
   ]
@@ -6486,7 +6492,7 @@ var modal=p.get('m');
 var sectionCode=p.get('section');
   if(modal === 'm-hl'){
   var hotlineTitle='האטליין - שיעורי כללים';
-  var hotlineDescription='שיעורי כללים האטליין - טעלעפאן נומערן און אינפארמאציע איבערן שיעורי כללים האטליין.';
+  var hotlineDescription='לשמיעת השיעורים בטלפון';
   var hotlineUrl=location.origin+location.pathname+'?m=m-hl';
 
   document.title=hotlineTitle;
@@ -6509,11 +6515,23 @@ var sectionCode=p.get('section');
 
 if(sectionCode && TABS[sectionCode]){
   var sectionName=TABS[sectionCode].name;
+  
 
   var sectionTitle=sectionName+' - שיעורי כללים';
-  var sectionDescription=
-    'שיעורים בנושא '+sectionName+
-    ' באתר שיעורי כללים על ד׳ חלקי שולחן ערוך.';
+
+var sectionDescription=
+  sectionCode==='orach'
+    ? 'שיעורים בשולחן ערוך אורח חיים'
+    : sectionCode==='yoreh'
+      ? 'שיעורים בשולחן ערוך יורה דעה'
+      : sectionCode==='even'
+        ? 'שיעורים בשולחן ערוך אבן העזר'
+        : sectionCode==='choshen'
+          ? 'שיעורים בשולחן ערוך חושן משפט'
+          : sectionCode==='moadim'
+            ? 'שיעורים לפי חדשי השנה'
+            : 'שיעורים בנושא '+sectionName+
+              ' באתר שיעורי כללים על ד׳ חלקי שולחן ערוך.';
 
   var sectionUrl=
     location.origin+
