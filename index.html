@@ -1,4 +1,4 @@
-
+9
 
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
@@ -4957,15 +4957,31 @@ if(tip){
   }else{
   b.disabled=false;
   b.classList.remove('disabled');
-   b.textContent='Download';
-  b.onclick=null;
+
+  b.onclick=function(e){
+    e.preventDefault();
+    e.stopPropagation();
+
+    if(window.curShiur && curShiur.id){
+      doDl(
+        curShiur.id,
+        curShiur.name || 'שיעור'
+      );
+    }
+  };
+
   b.title='Download — '+l+' left today';
-    b.setAttribute('aria-label','Download — '+l+' left today');
-    var tip=b.querySelector('.player-tooltip');
-if(tip){
-  tip.textContent='Download — '+l+' left today';
-}
+  b.setAttribute(
+    'aria-label',
+    'Download — '+l+' left today'
+  );
+
+  var tip=b.querySelector('.player-tooltip');
+
+  if(tip){
+    tip.textContent='Download — '+l+' left today';
   }
+}
 }function smoothTop(){try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){window.scrollTo(0,0);}}
 function setActiveHome(on){var hb=document.querySelector('.ntb-home');if(hb)hb.classList.toggle('active',!!on);}
 function closeAllPopups(keepPwd){
