@@ -4912,6 +4912,16 @@ function isPr(nm){return PROT.some(function(k){return nm.includes(k)})}
 function gDl(){var t=new Date().toDateString();var d=JSON.parse(localStorage.getItem('dlx')||'{"d":"","c":0}');if(d.d!==t){d.d=t;d.c=0;}return d;}
 function dlL(){return Math.max(0,5-gDl().c)}
 function cDl(){var d=gDl();if(d.c<5){d.c++;localStorage.setItem('dlx',JSON.stringify(d));}setTimeout(rfDl,150);}
+  function setDlFromServer(left){
+  left=Math.max(0,Math.min(5,Number(left)||0));
+
+  var d={
+    d:new Date().toDateString(),
+    c:5-left
+  };
+
+  localStorage.setItem('dlx',JSON.stringify(d));
+}
 function rfDl(){
   var l=dlL();
   var s=document.getElementById('dlsec');
@@ -5725,6 +5735,38 @@ document.getElementById('dlsec').innerHTML=
       '<span class="player-tooltip">נאר 5 דאונלאודס ערלויבט א טאג. פרובירט מארגן.</span></button>';
 
    document.getElementById('plov').classList.add('open');
+  (async function(){
+  try{
+    var checkUrl=
+      API_BASE+
+      '/play?id='+
+      encodeURIComponent(fId)+
+      '&download=1&check=1'+
+      '&name='+encodeURIComponent(
+        (cleanNm||'שיעור')+' - שיעורי כללים'
+      );
+
+    var r=await fetch(checkUrl,{
+      credentials:'include',
+      cache:'no-store'
+    });
+
+    if(r.status===429){
+      setDlFromServer(0);
+      rfDl();
+      return;
+    }
+
+    if(r.ok){
+      var d=await r.json();
+
+      if(typeof d.downloadsLeft==='number'){
+        setDlFromServer(d.downloadsLeft);
+        rfDl();
+      }
+    }
+  }catch(e){}
+})();
 
 
 }
@@ -5844,11 +5886,7 @@ function showShareMessage(){
 async function doDl(fId,nm){
   var b=document.querySelector('#dlsec .dlbtn');
 
-  if(dlL()<=0){
-    alert('נאר 5 דאונלאודס ערלויבט א טאג. פרובירט מארגן.');
-    rfDl();
-    return;
-  }
+ 
 
   clearTimeout(PLAYER_MENU_TIMER);
 
@@ -5878,10 +5916,12 @@ async function doDl(fId,nm){
     );
 
     if(check.status===429){
-      alert('נאר 5 דאונלאודס ערלויבט א טאג. פרובירט מארגן.');
-      rfDl();
-      return;
-    }
+  setDlFromServer(0);
+  rfDl();
+
+  alert('איר האט שוין גענוצט אלע 5 דאונלאודס פאר היינט. ביטע פרובירט נאכאמאל מארגן.');
+  return;
+}
 
     if(check.status===401){
       pend={
@@ -5897,6 +5937,18 @@ async function doDl(fId,nm){
     if(!check.ok){
       throw new Error('Download check failed');
     }
+    var checkData={};
+
+try{
+  checkData=await check.json();
+}catch(e){}
+
+if(
+  checkData &&
+  typeof checkData.downloadsLeft==='number'
+){
+  setDlFromServer(checkData.downloadsLeft);
+}
 
     var a=document.createElement('a');
 
@@ -6954,8 +7006,8 @@ var ACC_RETURN_HASH='';
 var ACC_OPEN_PLAYLIST=null;
 
 (function(){
-  var navRight=document.querySelector('.nav-side-right');
-  if(navRight && !document.getElementById('myAccountBtn')){
+  var navAccountSide=document.querySelector('.nav-side-left');
+if(navAccountSide && !document.getElementById('myAccountBtn')){
     var b=document.createElement('button');
 
 b.id='myAccountBtn';
@@ -6974,7 +7026,7 @@ b.onclick=function(){
   openMyAccount();
 };
 
-navRight.insertBefore(b,navRight.firstChild);
+navAccountSide.appendChild(b);
   }
   if(!document.getElementById('m-account')){
     var d=document.createElement('div');
@@ -7077,13 +7129,50 @@ if(accountBtn)accountBtn.classList.add('active');
 
 function closeMyAccount(){
   var accountBtn=document.getElementById('myAccountBtn');
-if(accountBtn)accountBtn.classList.remove('active');
+
+  if(accountBtn){
+    accountBtn.classList.remove('active');
+  }
+
   document.title='שיעורי כללים';
-  document.getElementById('m-account').classList.remove('open');
+
+  var modal=document.getElementById('m-account');
+  if(modal){
+    modal.classList.remove('open');
+  }
+
   document.body.classList.remove('modal-open');
+  document.documentElement.classList.remove('modal-open');
+
   accClosePicker();
-  try{history.replaceState(null,'',location.pathname+(ACC_RETURN_HASH||''));}catch(e){}
+
+  try{
+    history.replaceState(
+      null,
+      '',
+      location.pathname+(ACC_RETURN_HASH||'')
+    );
+  }catch(e){}
 }
+  window.addEventListener('popstate',function(){
+  var modal=document.getElementById('m-account');
+
+  if(
+    modal &&
+    modal.classList.contains('open') &&
+    location.hash.indexOf('#account')!==0
+  ){
+    modal.classList.remove('open');
+
+    document.body.classList.remove('modal-open');
+    document.documentElement.classList.remove('modal-open');
+
+    var accountBtn=document.getElementById('myAccountBtn');
+    if(accountBtn){
+      accountBtn.classList.remove('active');
+    }
+  }
+});
 function esc(s){return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function jsq(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,' ');}
 
@@ -10765,7 +10854,71 @@ body.nav-search-open .premium-nav{
     transform:translateX(-18px)!important;
   }
 }
-    
+
+    /* ===== FINAL EXACT CENTER DESKTOP NAV ===== */
+@media(min-width:1051px){
+
+  .premium-nav{
+    grid-template-columns:
+      minmax(0,1fr)
+      auto
+      minmax(0,1fr)!important;
+
+    gap:12px!important;
+  }
+
+  /* די 6 הויפט קנעפלעך — ממש צענטער פונעם Screen */
+  .nav-main{
+    width:auto!important;
+    min-width:600px!important;
+
+    margin:0!important;
+    transform:none!important;
+
+    justify-self:center!important;
+    align-self:center!important;
+
+    gap:5px!important;
+  }
+
+  /* Donate / Contact / Subscribe / Hotline */
+  .nav-side-right{
+    width:100%!important;
+    min-width:0!important;
+
+    margin:0!important;
+    padding:0 10px!important;
+
+    transform:none!important;
+
+    justify-content:space-evenly!important;
+  }
+
+  /* Search + Shiurei Kelalim */
+  .nav-side-left{
+    position:relative!important;
+
+    width:100%!important;
+    min-width:0!important;
+
+    margin:0!important;
+    padding:0 55px 0 10px!important;
+
+    transform:none!important;
+
+    justify-content:center!important;
+    gap:12px!important;
+  }
+
+  /* Account icon — פיזיש ביים רעכטן עק */
+  .nav-side-left #myAccountBtn{
+    position:absolute!important;
+    right:8px!important;
+    left:auto!important;
+
+    margin:0!important;
+  }
+}
 </style>
 
 
